@@ -4,6 +4,8 @@ sidebar_position: 1
 
 # Overview
 
+Whether you're integrating your storefront or looking for ways to extend Printcart, the following guide will help you achieve your goals.
+
 ## Authentication
 
 ## API
@@ -14,4 +16,4 @@ sidebar_position: 1
 
 ### Webhook
 
-[Webhooks](/docs/api-reference/webhooks)
+[Webhooks](/docs/reference/webhooks)
