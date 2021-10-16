@@ -42,7 +42,7 @@ const darkCodeTheme = require("prism-react-renderer/themes/dracula");
         {
           specs: [
             {
-              spec: "./api-data/api.yaml",
+              spec: "./api-data/printcart-api.yaml",
               routePath: '/rest-api-reference/',
             },
           ],
