@@ -1,0 +1,2285 @@
+swagger: "2.0"
+info:
+  # description: "This is a sample server Petstore server.  You can find out more about     Swagger at [http://swagger.io](http://swagger.io) or on [irc.freenode.net, #swagger](http://swagger.io/irc/).      For this sample, you can use the api key `special-key` to test the authorization     filters."
+  version: "1.0.0"
+  title: "PrintCart Rest API"
+  # termsOfService: "http://swagger.io/terms/"
+  # contact:
+  #   email: "apiteam@swagger.io"
+  # license:
+  #   name: "Apache 2.0"
+  #   url: "http://www.apache.org/licenses/LICENSE-2.0.html"
+# host: "petstore.swagger.io"
+basePath: "https://printcart.com/api/v1"
+tags:
+  - name: "Product"
+  - name: "Side"
+  - name: "Clipart"
+  - name: "Image"
+  - name: "Font"
+  - name: "Design"
+  - name: "Storage"
+  - name: "Project"
+  - name: "Account"
+schemes:
+  - "https"
+paths:
+  /account:
+    post:
+      tags:
+        - "Account"
+      # summary: "Add a new pet to the store"
+      # description: ""
+      operationId: "createAccount"
+      summary: "Create Account"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - in: "body"
+          name: "body"
+          # description: "Pet object that needs to be added to the store"
+          required: true
+          schema:
+            $ref: "#/definitions/Account"
+      responses:
+        "400":
+          description: "Invalid input"
+        "201":
+          description: "Created successfully"
+          schema:
+            $ref: "#/definitions/UserResponse"
+    get:
+      tags:
+        - "Account"
+      operationId: "getAccount"
+      summary: "Get Account Info"
+      produces:
+        - "application/json"
+      responses:
+        "200":
+          description: "Retrieved successfully"
+          schema:
+            $ref: "#/definitions/UserResponse"
+      security:
+        - ApiKeyAuth: []
+    put:
+      tags:
+        - "Account"
+      # summary: "Updated Account"
+      # description: "This can only be done by the logged in Account."
+      operationId: "updateAccount"
+      summary: "Update Account Details"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - in: "body"
+          name: "body"
+          # description: "Pet object that needs to be added to the store"
+          required: true
+          schema:
+            $ref: "#/definitions/Account"
+      responses:
+        "400":
+          description: "Invalid input"
+        "200":
+          description: "Updated successfully"
+          schema:
+            $ref: "#/definitions/UserResponse"
+      security:
+        - ApiKeyAuth:
+            - "write:pets"
+            - "read:pets"
+  /account/token_revoke:
+    put:
+      tags:
+        - "Account"
+      # summary: "Updated Account"
+      # description: "This can only be done by the logged in Account."
+      operationId: "tokenRevoke"
+      summary: "Renew API Key"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - in: "body"
+          name: "body"
+          # description: "Pet object that needs to be added to the store"
+          required: true
+          schema:
+            $ref: "#/definitions/ApiToken"
+      responses:
+        "200":
+          description: "Updated successfully"
+          schema:
+            $ref: "#/definitions/ApiToken"
+      security:
+        - ApiKeyAuth:
+            - "write:pets"
+            - "read:pets"
+  /products:
+    post:
+      tags:
+        - "Product"
+      # summary:
+      # description:
+      operationId: "postProduct"
+      summary: "Create new product"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - in: "body"
+          name: "body"
+          # description: "Pet object that needs to be added to the store"
+          required: true
+          schema:
+            $ref: "#/definitions/Product"
+      responses:
+        "400":
+          description: "Invalid input"
+        "201":
+          description: "Created successfully"
+          schema:
+            $ref: "#/definitions/ProductResponse"
+      security:
+        - ApiKeyAuth:
+            - "write:pets"
+            - "read:pets"
+    get:
+      tags:
+        - "Product"
+      # summary: "..."
+      # description: "..."
+      operationId: "getProduct"
+      summary: "Get a list of products"
+      produces:
+        - "application/json"
+      responses:
+        "200":
+          description: "Retrieved successfully"
+          schema:
+            $ref: "#/definitions/ProductResponse"
+        "404":
+          description: "Not found"
+      security:
+        - ApiKeyAuth:
+            - "write:pets"
+  /products/{productId}:
+    get:
+      tags:
+        - "Product"
+      # summary: "Find pet by ID"
+      # description: "Returns a single pet"
+      operationId: "getProductById"
+      summary: "Get product details"
+      produces:
+        - "application/json"
+      parameters:
+        - name: "productId"
+          in: "path"
+          description: "Product ID"
+          required: true
+          type: "string"
+      responses:
+        "200":
+          description: "Retrieved successfully"
+          schema:
+            $ref: "#/definitions/ProductResponse"
+        "403":
+          description: "Forbidden"
+        "404":
+          description: "Not found"
+      security:
+        - ApiKeyAuth:
+            - "write:pets"
+    put:
+      tags:
+        - "Product"
+      # summary:
+      # description:
+      operationId: "updateProduct"
+      summary: "Update product details"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - name: "productId"
+          in: "path"
+          description: "Product ID"
+          required: true
+          type: "string"
+        - in: "body"
+          name: "body"
+          # description: "Pet object that needs to be added to the store"
+          required: true
+          schema:
+            $ref: "#/definitions/Product"
+      responses:
+        "400":
+          description: "Invalid input"
+        "200":
+          description: "Updated successfully"
+          schema:
+            $ref: "#/definitions/ProductResponse"
+        "403":
+          description: "Forbidden"
+        "404":
+          description: "Not found"
+      security:
+        - ApiKeyAuth:
+            - "write:pets"
+            - "read:pets"
+    delete:
+      tags:
+        - "Product"
+      # summary:
+      # description:
+      operationId: "deleteProduct"
+      summary: "Delete a product"
+      produces:
+        - "application/json"
+      parameters:
+        - name: "productId"
+          in: "path"
+          description: "Product ID"
+          required: true
+          type: "string"
+      responses:
+        "204":
+          description: "Deleted successfully"
+        "403":
+          description: "Forbidden"
+        "404":
+          description: "Not found"
+      security:
+        - ApiKeyAuth:
+            - "write:pets"
+            - "read:pets"
+  /products/{productId}/designs:
+    get:
+      tags:
+        - "Product"
+      # summary: "Find pet by ID"
+      # description: "Returns a single pet"
+      operationId: "getDesignsByProduct"
+      summary: "Get a list of designs by product"
+      produces:
+        - "application/json"
+      parameters:
+        - name: "productId"
+          in: "path"
+          description: "Product ID"
+          required: true
+          type: "string"
+      responses:
+        "200":
+          description: "Retrieved successfully"
+          schema:
+            $ref: "#/definitions/DesignResponse"
+        "403":
+          description: "Forbidden"
+        "404":
+          description: "Not found"
+      security:
+        - ApiKeyAuth:
+            - "write:pets"
+  /products/{productId}/sides:
+    get:
+      tags:
+        - "Product"
+      # summary: "Find pet by ID"
+      # description: "Returns a single pet"
+      operationId: "getSidesByProduct"
+      summary: "Get a list of sides by product"
+      produces:
+        - "application/json"
+      parameters:
+        - name: "productId"
+          in: "path"
+          description: "Product ID"
+          required: true
+          type: "string"
+      responses:
+        "200":
+          description: "Retrieved successfully"
+          schema:
+            $ref: "#/definitions/SideResponse"
+        "403":
+          description: "Forbidden"
+        "404":
+          description: "Not found"
+      security:
+        - ApiKeyAuth:
+            - "write:pets"
+  /products/{productId}/designs/count:
+    get:
+      tags:
+        - "Product"
+      # summary: "..."
+      # description: "..."
+      operationId: "getCountDesignsByProduct"
+      summary: "Get a count of designs by product"
+      parameters:
+        - name: "productId"
+          in: "path"
+          description: "Product ID"
+          required: true
+          type: "string"
+      produces:
+        - "application/json"
+      responses:
+        "200":
+          description: "Retrieved successfully"
+          schema:
+            $ref: "#/definitions/DesignCount"
+      security:
+        - ApiKeyAuth:
+            - "write:pets"
+  /products/{productId}/sides/count:
+    get:
+      tags:
+        - "Product"
+      # summary: "..."
+      # description: "..."
+      operationId: "getCountSidesByProduct"
+      summary: "Get a count of sides by product"
+      parameters:
+        - name: "productId"
+          in: "path"
+          description: "Product ID"
+          required: true
+          type: "string"
+      produces:
+        - "application/json"
+      responses:
+        "200":
+          description: "Retrieved successfully"
+          schema:
+            $ref: "#/definitions/SideCount"
+      security:
+        - ApiKeyAuth:
+            - "write:pets"
+  /products/count:
+    get:
+      tags:
+        - "Product"
+      # summary: "..."
+      # description: "..."
+      operationId: "getCountProduct"
+      summary: "Get a count of products"
+      produces:
+        - "application/json"
+      responses:
+        "200":
+          description: "Retrieved successfully"
+          schema:
+            $ref: "#/definitions/ProductCount"
+      security:
+        - ApiKeyAuth:
+            - "write:pets"
+  /sides:
+    post:
+      tags:
+        - "Side"
+      # summary:
+      # description:
+      operationId: "postSide"
+      summary: "Create new product side"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - in: "body"
+          name: "body"
+          # description: "Pet object that needs to be added to the store"
+          required: true
+          schema:
+            $ref: "#/definitions/Side"
+      responses:
+        "400":
+          description: "Invalid input"
+        "201":
+          description: "Created successfully"
+          schema:
+            $ref: "#/definitions/SideResponse"
+      security:
+        - ApiKeyAuth:
+            - "write:pets"
+            - "read:pets"
+    get:
+      tags:
+        - "Side"
+      # summary: "..."
+      # description: "..."
+      operationId: "getSide"
+      summary: "Get a list of product sides"
+      produces:
+        - "application/json"
+      responses:
+        "200":
+          description: "Retrieved successfully"
+          schema:
+            $ref: "#/definitions/SideResponse"
+        "404":
+          description: "Not found"
+      security:
+        - ApiKeyAuth:
+            - "write:pets" 
+  /sides/{sideId}:
+    get:
+      tags:
+        - "Side"
+      # summary: "Find pet by ID"
+      # description: "Returns a single pet"
+      operationId: "getSideById"
+      summary: "Get product side details"
+      produces:
+        - "application/json"
+      parameters:
+        - name: "sideId"
+          in: "path"
+          description: "Side ID"
+          required: true
+          type: "string"
+      responses:
+        "200":
+          description: "Retrieved successfully"
+          schema:
+            $ref: "#/definitions/SideResponse"
+        "403":
+          description: "Forbidden"
+        "404":
+          description: "Not found"
+      security:
+        - ApiKeyAuth:
+            - "write:pets"
+    put:
+      tags:
+        - "Side"
+      # summary:
+      # description:
+      operationId: "updateSide"
+      summary: "Update a product side details"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - name: "sideId"
+          in: "path"
+          description: "Side ID"
+          required: true
+          type: "string"
+        - in: "body"
+          name: "body"
+          # description: "Pet object that needs to be added to the store"
+          required: true
+          schema:
+            $ref: "#/definitions/Side"
+      responses:
+        "400":
+          description: "Invalid input"
+        "200":
+          description: "Updated successfully"
+          schema:
+            $ref: "#/definitions/SideResponse"
+        "403":
+          description: "Forbidden"
+        "404":
+          description: "Not found"
+      security:
+        - ApiKeyAuth:
+            - "write:pets"
+            - "read:pets"
+    delete:
+      tags:
+        - "Side"
+      # summary:
+      # description:
+      operationId: "deleteSide"
+      summary: "Delete a product side"
+      produces:
+        - "application/json"
+      parameters:
+        - name: "sideId"
+          in: "path"
+          description: "Side ID"
+          required: true
+          type: "string"
+      responses:
+        "204":
+          description: "Deleted successfully"
+        "403":
+          description: "Forbidden"
+        "404":
+          description: "Not found"
+      security:
+        - ApiKeyAuth:
+            - "write:pets"
+            - "read:pets"
+  /sides/count:
+    get:
+      tags:
+        - "Side"
+      # summary: "..."
+      # description: "..."
+      operationId: "getCountSide"
+      summary: "Get a count of product sides"
+      produces:
+        - "application/json"
+      responses:
+        "200":
+          description: "Retrieved successfully"
+          schema:
+            $ref: "#/definitions/SideCount"
+      security:
+        - ApiKeyAuth:
+            - "write:pets"
+  /cliparts:
+    post:
+      tags:
+        - "Clipart"
+      # summary:
+      # description:
+      operationId: "postClipart"
+      summary: "Create new clipart"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - in: "body"
+          name: "body"
+          # description: "Pet object that needs to be added to the store"
+          required: true
+          schema:
+            $ref: "#/definitions/Clipart"
+      responses:
+        "400":
+          description: "Invalid input"
+        "201":
+          description: "Created successfully"
+          schema:
+            $ref: "#/definitions/ClipartResponse"
+      security:
+        - ApiKeyAuth:
+            - "write:pets"
+            - "read:pets"
+    get:
+      tags:
+        - "Clipart"
+      # summary: "..."
+      # description: "..."
+      operationId: "getClipart"
+      summary: "Get a list of cliparts"
+      produces:
+        - "application/json"
+      responses:
+        "200":
+          description: "Retrieved successfully"
+          schema:
+            $ref: "#/definitions/ClipartResponse"
+        "404":
+          description: "Not found"
+      security:
+        - ApiKeyAuth:
+            - "write:pets"
+  /cliparts/{clipartId}:
+    get:
+      tags:
+        - "Clipart"
+      # summary: "Find pet by ID"
+      # description: "Returns a single pet"
+      operationId: "getClipartById"
+      summary: "Get clipart details"
+      produces:
+        - "application/json"
+      parameters:
+        - name: "clipartId"
+          in: "path"
+          description: "Clipart ID"
+          required: true
+          type: "string"
+      responses:
+        "200":
+          description: "Retrieved successfully"
+          schema:
+            $ref: "#/definitions/ClipartResponse"
+        "403":
+          description: "Forbidden"
+        "404":
+          description: "Not found"
+      security:
+        - ApiKeyAuth:
+            - "write:pets"
+    put:
+      tags:
+        - "Clipart"
+      # summary:
+      # description:
+      operationId: "updateClipart"
+      summary: "Update clipart details"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - name: "clipartId"
+          in: "path"
+          description: "Clipart ID"
+          required: true
+          type: "string"
+        - in: "body"
+          name: "body"
+          # description: "Pet object that needs to be added to the store"
+          required: true
+          schema:
+            $ref: "#/definitions/Clipart"
+      responses:
+        "400":
+          description: "Invalid input"
+        "200":
+          description: "Updated successfully"
+          schema:
+            $ref: "#/definitions/ClipartResponse"
+        "403":
+          description: "Forbidden"
+        "404":
+          description: "Not found"
+      security:
+        - ApiKeyAuth:
+            - "write:pets"
+            - "read:pets"
+    delete:
+      tags:
+        - "Clipart"
+      # summary:
+      # description:
+      operationId: "deleteClipart"
+      summary: "Delete a clipart"
+      produces:
+        - "application/json"
+      parameters:
+        - name: "clipartId"
+          in: "path"
+          description: "Clipart ID"
+          required: true
+          type: "string"
+      responses:
+        "204":
+          description: "Deleted successfully"
+        "403":
+          description: "Forbidden"
+        "404":
+          description: "Not found"
+      security:
+        - ApiKeyAuth:
+            - "write:pets"
+            - "read:pets"
+  /cliparts/count:
+    get:
+      tags:
+        - "Clipart"
+      # summary: "..."
+      # description: "..."
+      operationId: "getCountClipart"
+      summary: "Get a count of cliparts"
+      produces:
+        - "application/json"
+      responses:
+        "200":
+          description: "Retrieved successfully"
+          schema:
+            $ref: "#/definitions/ClipartCount"
+      security:
+        - ApiKeyAuth:
+            - "write:pets"
+  /fonts:
+    post:
+      tags:
+        - "Font"
+      # summary: "Add a new pet to the store"
+      # description: ""
+      operationId: "addFont"
+      summary: "Add new font"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - in: "body"
+          name: "body"
+          # description: "Pet object that needs to be added to the store"
+          required: true
+          schema:
+            $ref: "#/definitions/Font"
+      responses:
+        "400":
+          description: "Invalid input"
+        "201":
+          description: "Created successfully"
+          schema:
+            $ref: "#/definitions/FontResponse"
+      security:
+        - ApiKeyAuth:
+            - "write:pets"
+            - "read:pets"
+    get:
+      tags:
+        - "Font"
+      # summary: "..."
+      # description: "..."
+      operationId: "getFonts"
+      summary: "Get a list of fonts"
+      produces:
+        - "application/json"
+      responses:
+        "200":
+          description: "Retrieved successfully"
+          schema:
+            $ref: "#/definitions/FontResponse"
+        "404":
+          description: "Not found"
+      security:
+        - ApiKeyAuth:
+            - "write:pets"  
+  /fonts/{fontId}:
+    get:
+      tags:
+        - "Font"
+      operationId: "getFontById"
+      summary: "Get font details"
+      produces:
+        - "application/json"
+      parameters:
+        - name: "fontId"
+          in: "path"
+          description: "Font ID"
+          required: true
+          type: "string"
+      responses:
+        "200":
+          schema:
+            $ref: "#/definitions/FontResponse"
+        "403":
+          description: "Forbidden"
+        "404":
+          description: "Not found"
+      security:
+        - ApiKeyAuth:
+            - "write:pets"
+    put:
+      tags:
+        - "Font"
+      # summary:
+      # description:
+      operationId: "updateFont"
+      summary: "Update font details"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - name: "fontId"
+          in: "path"
+          description: "Font ID"
+          required: true
+          type: "string"
+        - in: "body"
+          name: "body"
+          # description: "Pet object that needs to be added to the store"
+          required: true
+          schema:
+            $ref: "#/definitions/Font"
+      responses:
+        "400":
+          description: "Invalid input"
+        "200":
+          description: "Updated successfully"
+          schema:
+            $ref: "#/definitions/FontResponse"
+        "403":
+          description: "Forbidden"
+        "404":
+          description: "Not found"
+      security:
+        - ApiKeyAuth:
+            - "write:pets"
+            - "read:pets"
+    delete:
+      tags:
+        - "Font"
+      # summary:
+      # description:
+      operationId: "deleteFont"
+      summary: "Delete font"
+      produces:
+        - "application/json"
+      parameters:
+        - name: "fontId"
+          in: "path"
+          description: "Font ID"
+          required: true
+          type: "string"
+      responses:
+        "204":
+          description: "Deleted successfully"
+        "403":
+          description: "Forbidden"
+        "404":
+          description: "Not found"
+      security:
+        - ApiKeyAuth:
+            - "write:pets"
+            - "read:pets"
+  /fonts/count:
+    get:
+      tags:
+        - "Font"
+      # summary: "..."
+      # description: "..."
+      operationId: "getCountFont"
+      summary: "Get a count of fonts"
+      produces:
+        - "application/json"
+      responses:
+        "200":
+          description: "Retrieved successfully"
+          schema:
+            $ref: "#/definitions/FontCount"
+      security:
+        - ApiKeyAuth:
+            - "write:pets"
+  /images:
+    post:
+      tags:
+        - "Image"
+      # summary:
+      # description:
+      operationId: "uploadFile"
+      summary: "Add new image"
+      consumes:
+        - "multipart/form-data"
+      produces:
+        - "application/json"
+      parameters:
+        - name: "imageFile"
+          in: "formData"
+          description: "Image to upload"
+          required: true
+          type: "file"
+      responses:
+        "201":
+          description: "File successfully uploaded"
+          schema:
+            $ref: "#/definitions/ImageResponse"
+        "405":
+          description: "File upload missing"
+      security:
+        - ApiKeyAuth:
+            - "write:pets"
+            - "read:pets"
+    get:
+      tags:
+        - "Image"
+      # summary: "..."
+      # description: "..."
+      operationId: "getImage"
+      summary: "Get a list of images"
+      produces:
+        - "application/json"
+      responses:
+        "200":
+          description: "Retrieved successfully"
+          schema:
+            $ref: "#/definitions/ImageResponse"
+        "404":
+          description: "Not found"
+      security:
+        - ApiKeyAuth:
+            - "write:pets"
+  /images/{imageId}:
+    get:
+      tags:
+        - "Image"
+      # summary: "Find pet by ID"
+      # description: "Returns a single pet"
+      operationId: "getImageById"
+      summary: "Get image ietails"
+      produces:
+        - "application/json"
+      parameters:
+        - name: "imageId"
+          in: "path"
+          description: "Image ID"
+          required: true
+          type: "string"
+      responses:
+        "200":
+          description: "Retrieved successfully"
+          schema:
+            $ref: "#/definitions/ImageResponse"
+        "403":
+          description: "Forbidden"
+        "404":
+          description: "Not found"
+      security:
+        - ApiKeyAuth:
+            - "write:pets"
+    delete:
+      tags:
+        - "Image"
+      # summary:
+      # description:
+      operationId: "deleteImage"
+      summary: "Delete a image"
+      produces:
+        - "application/json"
+      parameters:
+        - name: "imageID"
+          in: "path"
+          description: "Image ID"
+          required: true
+          type: "string"
+      responses:
+        "204":
+          description: "Deleted successfully"
+        "403":
+          description: "Forbidden"
+        "404":
+          description: "Not found"
+      security:
+        - ApiKeyAuth:
+            - "write:pets"
+            - "read:pets"
+  /images/count:
+    get:
+      tags:
+        - "Image"
+      # summary: "..."
+      # description: "..."
+      operationId: "getCountImage"
+      summary: "Get a count of images"
+      produces:
+        - "application/json"
+      responses:
+        "200":
+          description: "Retrieved successfully"
+          schema:
+            $ref: "#/definitions/ImageCount"
+      security:
+        - ApiKeyAuth:
+            - "write:pets"
+  /designs:
+    post:
+      tags:
+        - "Design"
+      # summary:
+      # description:
+      operationId: "postDesign"
+      summary: "Create new design"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - in: "body"
+          name: "body"
+          # description: "Pet object that needs to be added to the store"
+          required: true
+          schema:
+            $ref: "#/definitions/Design"
+      responses:
+        "400":
+          description: "Invalid input"
+        "201":
+          description: "Created successfully"
+          schema:
+            $ref: "#/definitions/DesignResponse"
+      security:
+        - ApiKeyAuth:
+            - "write:pets"
+            - "read:pets"
+    get:
+      tags:
+        - "Design"
+      # summary: "..."
+      # description: "..."
+      operationId: "getDesign"
+      summary: "Get a list of designs"
+      produces:
+        - "application/json"
+      responses:
+        "200":
+          description: "Retrieved successfully"
+          schema:
+            $ref: "#/definitions/DesignResponse"
+        "404":
+          description: "Not found"
+      security:
+        - ApiKeyAuth:
+            - "write:pets"
+  /designs/{designId}:
+    get:
+      tags:
+        - "Design"
+      # summary: "Find pet by ID"
+      # description: "Returns a single pet"
+      operationId: "getDesignById"
+      summary: "Get design details"
+      produces:
+        - "application/json"
+      parameters:
+        - name: "designId"
+          in: "path"
+          description: "Design ID"
+          required: true
+          type: "string"
+      responses:
+        "200":
+          description: "Retrieved successfully"
+          schema:
+            $ref: "#/definitions/DesignResponse"
+        "403":
+          description: "Forbidden"
+        "404":
+          description: "Not found"
+      security:
+        - ApiKeyAuth:
+            - "write:pets"
+    put:
+      tags:
+        - "Design"
+      # summary:
+      # description:
+      operationId: "updateDesign"
+      summary: "Update design details"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - name: "designId"
+          in: "path"
+          description: "Design ID"
+          required: true
+          type: "string"
+        - in: "body"
+          name: "body"
+          # description: "Pet object that needs to be added to the store"
+          required: true
+          schema:
+            $ref: "#/definitions/Design"
+      responses:
+        "400":
+          description: "Invalid input"
+        "200":
+          description: "Updated successfully"
+          schema:
+            $ref: "#/definitions/DesignResponse"
+        "403":
+          description: "Forbidden"
+        "404":
+          description: "Not found"
+      security:
+        - ApiKeyAuth:
+            - "write:pets"
+            - "read:pets"
+    delete:
+      tags:
+        - "Design"
+      # summary:
+      # description:
+      operationId: "deleteDesign"
+      summary: "Delete a design"
+      produces:
+        - "application/json"
+      parameters:
+        - name: "designId"
+          in: "path"
+          description: "Design ID"
+          required: true
+          type: "string"
+      responses:
+        "204":
+          description: "Deleted successfully"
+        "403":
+          description: "Forbidden"
+        "404":
+          description: "Not found"
+      security:
+        - ApiKeyAuth:
+            - "write:pets"
+            - "read:pets"  
+  /designs/{designId}/storages:
+    get:
+      tags:
+        - "Design"
+      # summary: "Find pet by ID"
+      # description: "Returns a single pet"
+      operationId: "getStoragesByDesign"
+      summary: "Get a list of storages by design"
+      produces:
+        - "application/json"
+      parameters:
+        - name: "designId"
+          in: "path"
+          description: "Design ID"
+          required: true
+          type: "string"
+      responses:
+        "200":
+          description: "Retrieved successfully"
+          schema:
+            $ref: "#/definitions/CategoryResponse"
+        "403":
+          description: "Forbidden"
+        "404":
+          description: "Not found"
+      security:
+        - ApiKeyAuth:
+            - "write:pets" 
+  /designs/count:
+    get:
+      tags:
+        - "Design"
+      # summary: "..."
+      # description: "..."
+      operationId: "getCountDesign"
+      summary: "Get a count of designs"
+      produces:
+        - "application/json"
+      responses:
+        "200":
+          description: "Retrieved successfully"
+          schema:
+            $ref: "#/definitions/DesignCount"
+      security:
+        - ApiKeyAuth:
+            - "write:pets"
+  /storages:
+    post:
+      tags:
+        - "Storage"
+      # summary:
+      # description:
+      operationId: "postCategory"
+      summary: "Create new design storage"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - in: "body"
+          name: "body"
+          # description: "Pet object that needs to be added to the store"
+          required: true
+          schema:
+            $ref: "#/definitions/Category"
+      responses:
+        "400":
+          description: "Invalid input"
+        "201":
+          description: "Created successfully"
+          schema:
+            $ref: "#/definitions/CategoryResponse"
+      security:
+        - ApiKeyAuth:
+            - "write:pets"
+            - "read:pets"
+    get:
+      tags:
+        - "Storage"
+      # summary: "..."
+      # description: "..."
+      operationId: "getCategory"
+      summary: "Get a list of design storages"
+      produces:
+        - "application/json"
+      responses:
+        "200":
+          description: "Retrieved successfully"
+          schema:
+            $ref: "#/definitions/CategoryResponse"
+        "404":
+          description: "Not found"
+      security:
+        - ApiKeyAuth:
+            - "write:pets"
+  /storages/{storageId}:
+    get:
+      tags:
+        - "Storage"
+      # summary: "Find pet by ID"
+      # description: "Returns a single pet"
+      operationId: "getCategoryById"
+      summary: "Get design storage details"
+      produces:
+        - "application/json"
+      parameters:
+        - name: "storageId"
+          in: "path"
+          description: "Storage ID"
+          required: true
+          type: "string"
+      responses:
+        "200":
+          description: "Retrieved successfully"
+          schema:
+            $ref: "#/definitions/CategoryResponse"
+        "403":
+          description: "Forbidden"
+        "404":
+          description: "Not found"
+      security:
+        - ApiKeyAuth:
+            - "write:pets"
+    put:
+      tags:
+        - "Storage"
+      # summary:
+      # description:
+      operationId: "updateCategory"
+      summary: "Update design storage details"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - name: "storageId"
+          in: "path"
+          description: "Storage ID"
+          required: true
+          type: "string"
+        - in: "body"
+          name: "body"
+          # description: "Pet object that needs to be added to the store"
+          required: true
+          schema:
+            $ref: "#/definitions/Category"
+      responses:
+        "400":
+          description: "Invalid input"
+        "200":
+          description: "Updated successfully"
+          schema:
+            $ref: "#/definitions/CategoryResponse"
+        "403":
+          description: "Forbidden"
+        "404":
+          description: "Not found"
+      security:
+        - ApiKeyAuth:
+            - "write:pets"
+            - "read:pets"
+    delete:
+      tags:
+        - "Storage"
+      # summary:
+      # description:
+      operationId: "deleteCategory"
+      summary: "Delete a design storage"
+      produces:
+        - "application/json"
+      parameters:
+        - name: "storageId"
+          in: "path"
+          description: "Storage ID"
+          required: true
+          type: "string"
+      responses:
+        "204":
+          description: "Deleted successfully"
+        "403":
+          description: "Forbidden"
+        "404":
+          description: "Not found"
+      security:
+        - ApiKeyAuth:
+            - "write:pets"
+            - "read:pets"
+  /storages/{storageId}/designs:
+    get:
+      tags:
+        - "Storage"
+      # summary: "Find pet by ID"
+      # description: "Returns a single pet"
+      operationId: "getDesignsByStorage"
+      summary: "Get a list of designs by storage"
+      produces:
+        - "application/json"
+      parameters:
+        - name: "storageId"
+          in: "path"
+          description: "Storage ID"
+          required: true
+          type: "string"
+      responses:
+        "200":
+          description: "Retrieved successfully"
+          schema:
+            $ref: "#/definitions/DesignResponse"
+        "403":
+          description: "Forbidden"
+        "404":
+          description: "Not found"
+      security:
+        - ApiKeyAuth:
+            - "write:pets"
+  /storages/count:
+    get:
+      tags:
+        - "Storage"
+      # summary: "..."
+      # description: "..."
+      operationId: "getCountCategory"
+      summary: "Get a count of design storages"
+      produces:
+        - "application/json"
+      responses:
+        "200":
+          description: "Retrieved successfully"
+          schema:
+            $ref: "#/definitions/CategoryCount"
+      security:
+        - ApiKeyAuth:
+            - "write:pets"
+  
+  /projects:
+    post:
+      tags:
+        - "Project"
+      # summary:
+      # description:
+      operationId: "postProject"
+      summary: "Create new project"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - in: "body"
+          name: "body"
+          # description: "Pet object that needs to be added to the store"
+          required: true
+          schema:
+            $ref: "#/definitions/Project"
+      responses:
+        "400":
+          description: "Invalid input"
+        "201":
+          description: "Created successfully"
+          schema:
+            $ref: "#/definitions/ProjectResponse"
+      security:
+        - ApiKeyAuth:
+            - "write:pets"
+            - "read:pets"
+    get:
+      tags:
+        - "Project"
+      # summary: "..."
+      # description: "..."
+      operationId: "getProject"
+      summary: "Get a list of projects"
+      produces:
+        - "application/json"
+      responses:
+        "200":
+          description: "Retrieved successfully"
+          schema:
+            $ref: "#/definitions/ProjectResponse"
+        "404":
+          description: "Not found"
+      security:
+        - ApiKeyAuth:
+            - "write:pets"
+  /projects/{projectId}:
+    get:
+      tags:
+        - "Project"
+      # summary: "Find pet by ID"
+      # description: "Returns a single pet"
+      operationId: "getProjectById"
+      summary: "Get project details"
+      produces:
+        - "application/json"
+      parameters:
+        - name: "projectId"
+          in: "path"
+          description: "Project ID"
+          required: true
+          type: "string"
+      responses:
+        "200":
+          description: "Retrieved successfully"
+          schema:
+            $ref: "#/definitions/ProjectResponse"
+        "403":
+          description: "Forbidden"
+        "404":
+          description: "Not found"
+      security:
+        - ApiKeyAuth:
+            - "write:pets"
+    put:
+      tags:
+        - "Project"
+      # summary:
+      # description:
+      operationId: "updateProject"
+      summary: "Update project details"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - name: "projectId"
+          in: "path"
+          description: "Project ID"
+          required: true
+          type: "string"
+        - in: "body"
+          name: "body"
+          # description: "Pet object that needs to be added to the store"
+          required: true
+          schema:
+            $ref: "#/definitions/Project"
+      responses:
+        "400":
+          description: "Invalid input"
+        "200":
+          description: "Updated successfully"
+          schema:
+            $ref: "#/definitions/ProjectResponse"
+        "403":
+          description: "Forbidden"
+        "404":
+          description: "Not found"
+      security:
+        - ApiKeyAuth:
+            - "write:pets"
+            - "read:pets"
+    delete:
+      tags:
+        - "Project"
+      # summary:
+      # description:
+      operationId: "deleteProject"
+      summary: "Delete a project"
+      produces:
+        - "application/json"
+      parameters:
+        - name: "projectId"
+          in: "path"
+          description: "Project ID"
+          required: true
+          type: "string"
+      responses:
+        "204":
+          description: "Deleted successfully"
+        "403":
+          description: "Forbidden"
+        "404":
+          description: "Not found"
+      security:
+        - ApiKeyAuth:
+            - "write:pets"
+            - "read:pets"
+  /projects/{projectId}/designs:
+    get:
+      tags:
+        - "Project"
+      # summary: "Find pet by ID"
+      # description: "Returns a single pet"
+      operationId: "getDesignsByProject"
+      summary: "Get a list of designs by project"
+      produces:
+        - "application/json"
+      parameters:
+        - name: "projectId"
+          in: "path"
+          description: "Project ID"
+          required: true
+          type: "string"
+      responses:
+        "200":
+          description: "Retrieved successfully"
+          schema:
+            $ref: "#/definitions/DesignResponse"
+        "403":
+          description: "Forbidden"
+        "404":
+          description: "Not found"
+      security:
+        - ApiKeyAuth:
+            - "write:pets"
+  /projects/{projectId}/products:
+    get:
+      tags:
+        - "Project"
+      # summary: "Find pet by ID"
+      # description: "Returns a single pet"
+      operationId: "getProductsByProject"
+      summary: "Get a list of products by project"
+      produces:
+        - "application/json"
+      parameters:
+        - name: "projectId"
+          in: "path"
+          description: "Project ID"
+          required: true
+          type: "string"
+      responses:
+        "200":
+          description: "Retrieved successfully"
+          schema:
+            $ref: "#/definitions/ProductResponse"
+        "403":
+          description: "Forbidden"
+        "404":
+          description: "Not found"
+      security:
+        - ApiKeyAuth:
+            - "write:pets"
+  /projects/count:
+    get:
+      tags:
+        - "Project"
+      # summary: "..."
+      # description: "..."
+      operationId: "getCountProject"
+      summary: "Get a count of projects"
+      produces:
+        - "application/json"
+      responses:
+        "200":
+          description: "Retrieved successfully"
+          schema:
+            $ref: "#/definitions/ProjectCount"
+      security:
+        - ApiKeyAuth:
+            - "write:pets"
+  /projects/{projectId}/designs/count:
+    get:
+      tags:
+        - "Project"
+      # summary: "..."
+      # description: "..."
+      operationId: "getCountDesignsByProject"
+      summary: "Get a count of designs by project"
+      parameters:
+        - name: "projectId"
+          in: "path"
+          description: "Project ID"
+          required: true
+          type: "string"
+      produces:
+        - "application/json"
+      responses:
+        "200":
+          description: "Retrieved successfully"
+          schema:
+            $ref: "#/definitions/DesignCount"
+      security:
+        - ApiKeyAuth:
+            - "write:pets"
+  /projects/{projectId}/products/count:
+    get:
+      tags:
+        - "Project"
+      # summary: "..."
+      # description: "..."
+      operationId: "getCountProductsByProject"
+      summary: "Get a count of products by project"
+      parameters:
+        - name: "projectId"
+          in: "path"
+          description: "Project ID"
+          required: true
+          type: "string"
+      produces:
+        - "application/json"
+      responses:
+        "200":
+          description: "Retrieved successfully"
+          schema:
+            $ref: "#/definitions/ProductCount"
+      security:
+        - ApiKeyAuth:
+            - "write:pets" 
+securityDefinitions:
+  ApiKeyAuth:
+    type: "apiKey"
+    name: "Authorization"
+    in: "header"
+  BasicAuth:
+    type: "basic"
+definitions:
+  Account:
+    type: "object"
+    required:
+      - "name"
+      - "email"
+      - "password"
+    properties:
+      name:
+        type: "string"
+      email:
+        type: "string"
+        format: "email"
+      password:
+        type: "string"
+      avatar_img_url:
+        type: "string"
+    xml:
+      name: "Account"
+  UserResponse:
+    type: "object"
+    properties:
+      id:
+        type: "string"
+      name:
+        type: "string"
+      email:
+        type: "string"
+        format: "email"
+      email_verified_at:
+        type: "string"
+      avatar_img_url:
+        type: "string"
+      created_at:
+        type: "string"
+      updated_at:
+        type: "string"
+      api_token:
+        type: "string"
+      message:
+        type: "string"
+    xml:
+      name: "UserToken"
+  ApiToken:
+    type: "object"
+    properties:
+      api_token:
+        type: "string"
+    xml:
+      name: "ApiToken"
+  Font:
+    type: "object"
+    required:
+      - "name"
+    properties:
+      name:
+        type: "string"
+      url:
+        type: "string"
+    xml:
+      name: "Font"
+  FontResponse:
+    type: "object"
+    properties:
+      id:
+        type: "string"
+      name:
+        type: "string"
+      url:
+        type: "string"
+      created_at:
+        type: "string"
+      updated_at:
+        type: "string"
+      message:
+        type: "string"
+    xml:
+      name: "FontResponse"
+  FontCount:
+    type: "object"
+    properties:
+      count:
+        type: "integer"
+        format: "int64"
+    xml:
+      name: "FontCount"
+  ImageResponse:
+    type: "object"
+    properties:
+      id:
+        type: "string"
+      name:
+        type: "string"
+      url:
+        type: "string"
+      alt:
+        type: "string"
+      width:
+        type: "integer"
+        format: "int64"
+      height:
+        type: "integer"
+        format: "int64"
+      created_at:
+        type: "string"
+      updated_at:
+        type: "string"
+      message:
+        type: "string"
+    xml:
+      name: "ImageResponse"
+  ImageCount:
+    type: "object"
+    properties:
+      count:
+        type: "integer"
+        format: "int64"
+    xml:
+      name: "ImageCount"
+  Clipart:
+    type: "object"
+    required:
+      - "name"
+      - "image_id"
+    properties:
+      name:
+        type: "string"
+      image_id:
+        type: "string"
+    xml:
+      name: "Clipart"
+  ClipartResponse:
+    type: "object"
+    properties:
+      name:
+        type: "string"
+      image:
+        $ref: "#/definitions/ImageResponse"
+      created_at:
+        type: "string"
+      updated_at:
+        type: "string"
+      message:
+        type: "string"
+    xml:
+      name: "ClipartResponse"
+  ClipartCount:
+    type: "object"
+    properties:
+      count:
+        type: "integer"
+        format: "int64"
+    xml:
+      name: "ClipartCount"
+  Product:
+    type: "object"
+    required:
+      - "name"
+    properties:
+      name:
+        type: "string"
+      dynamic_side:
+        type: "boolean"
+      viewport_width:
+        type: "integer"
+        format: "int64"
+      viewport_height:
+        type: "integer"
+        format: "int64"
+      scale:
+        type: "integer"
+        format: "int64"
+      dpi:
+        type: "integer"
+        format: "int64"
+      dimension_unit:
+        type: "string"
+        enum:
+          - "inch"
+          - "cm"
+      status:
+        type: "string"
+        enum:
+          - "publish"
+          - "draft"
+          - "trashed"
+          - "deleted"
+      allowed_file_types:
+        type: "string"
+        enum:
+          - "jpg"
+          - "png"
+          - "ai"
+          - "ps"
+          - "pdf"
+          - "bmp"
+          - "iddd"
+      max_file_upload:
+        type: "integer"
+        format: "int64"
+      min_jpg_dpi:
+        type: "integer"
+        format: "int64"
+    xml:
+      name: "Product"
+  ProductResponse:
+    type: "object"
+    properties:
+      id:
+        type: "string"
+      name:
+        type: "string"
+      dynamic_side:
+        type: "boolean"
+      viewport_width:
+        type: "integer"
+        format: "int64"
+      viewport_height:
+        type: "integer"
+        format: "int64"
+      scale:
+        type: "integer"
+        format: "int64"
+      dpi:
+        type: "integer"
+        format: "int64"
+      dimension_unit:
+        type: "string"
+      status:
+        type: "string"
+      allowed_file_types:
+        type: "string"
+        enum:
+          - "jpg"
+          - "png"
+          - "ai"
+          - "ps"
+          - "pdf"
+          - "bmp"
+          - "iddd"
+      max_file_upload:
+        type: "integer"
+        format: "int64"
+      min_jpg_dpi:
+        type: "integer"
+        format: "int64"
+      created_at:
+        type: "string"
+      updated_at:
+        type: "string"
+      message:
+        type: "string"
+    xml:
+      name: "ProductResponse"
+  ProductCount:
+    type: "object"
+    properties:
+      count:
+        type: "integer"
+        format: "int64"
+    xml:
+      name: "ProductResponse"
+  Project:
+    type: "object"
+    required:
+      - "name"
+    properties:
+      name:
+        type: "string"
+      status:
+        type: "string"
+        enum:
+          - "processing"
+          - "reviewing"
+          - "accepted"
+          - "trashed"
+          - "deleted"
+      note:
+        type: "string"
+    xml:
+      name: "Project"
+  ProjectCount:
+    type: "object"
+    properties:
+      count:
+        type: "integer"
+        format: "int64"
+    xml:
+      name: "ProjectCount"
+  ProjectResponse:
+    type: "object"
+    properties:
+      id:
+        type: "string"
+      name:
+        type: "string"
+      status:
+        type: "string"
+        enum:
+          - "processing"
+          - "reviewing"
+          - "accepted"
+          - "trashed"
+          - "deleted"
+      note:
+        type: "string"
+      created_at:
+        type: "string"
+      updated_at:
+        type: "string"
+      message:
+        type: "string"
+    xml:
+      name: "ProjectResponse"
+  Side:
+    type: "object"
+    required:
+      - "product_id"
+      - "name"
+      - "bg_img_id"
+    properties:
+      product_id:
+        type: "string"
+      name:
+        type: "string"
+      bg_type:
+        type: "string"
+        enum:
+          - "color"
+          - "image"
+          - "transparent"
+      bg_color_value:
+        type: "string"
+      img_top_pos:
+        type: "integer"
+        format: "int64"
+      img_left_pos:
+        type: "integer"
+        format: "int64"
+      img_bottom_pos:
+        type: "integer"
+        format: "int64"
+      img_right_pos:
+        type: "integer"
+        format: "int64"
+      img_overlay:
+        type: "string"
+      version:
+        type: "string"
+      ratio:
+        type: "integer"
+        format: "int64"
+      background_included:
+        type: "boolean"
+      show_overlay:
+        type: "boolean"
+      include_overlay:
+        type: "boolean"
+      product_width:
+        type: "integer"
+        format: "int64"
+      product_height:
+        type: "integer"
+        format: "int64"
+      real_width:
+        type: "integer"
+        format: "int64"
+      real_height:
+        type: "integer"
+        format: "int64"
+      real_top:
+        type: "integer"
+        format: "int64"
+      real_left:
+        type: "integer"
+        format: "int64"
+      area_design_width:
+        type: "integer"
+        format: "int64"
+      area_design_heigh:
+        type: "integer"
+        format: "int64"
+      area_design_left:
+        type: "integer"
+        format: "int64"
+      area_design_top:
+        type: "integer"
+        format: "int64"
+      show_bleed:
+        type: "boolean"
+      bleed_top_bottom:
+        type: "number"
+        format: "float"
+      bleed_left_right:
+        type: "number"
+        format: "float"
+      show_safe_zone:
+        type: "boolean"
+      margin_vertical:
+        type: "integer"
+        format: "int64"
+      margin_horizontal:
+        type: "integer"
+        format: "int64"
+      bg_img_id:
+        type: "string"
+    xml:
+      name: "Side"
+  SideCount:
+    type: "object"
+    properties:
+      count:
+        type: "integer"
+        format: "int64"
+    xml:
+      name: "SideCount"
+  SideResponse:
+    type: "object"
+    properties:
+      id:
+        type: "string"
+      product:
+        $ref: "#/definitions/ProductResponse"
+      name:
+        type: "string"
+      bg_type:
+        type: "string"
+        enum:
+          - "color"
+          - "image"
+          - "transparent"
+      bg_color_value:
+        type: "string"
+      img_top_pos:
+        type: "integer"
+        format: "int64"
+      img_left_pos:
+        type: "integer"
+        format: "int64"
+      img_bottom_pos:
+        type: "integer"
+        format: "int64"
+      img_right_pos:
+        type: "integer"
+        format: "int64"
+      img_overlay:
+        type: "string"
+      version:
+        type: "string"
+      ratio:
+        type: "integer"
+        format: "int64"
+      background_included:
+        type: "boolean"
+      show_overlay:
+        type: "boolean"
+      include_overlay:
+        type: "boolean"
+      product_width:
+        type: "integer"
+        format: "int64"
+      product_height:
+        type: "integer"
+        format: "int64"
+      real_width:
+        type: "integer"
+        format: "int64"
+      real_height:
+        type: "integer"
+        format: "int64"
+      real_top:
+        type: "integer"
+        format: "int64"
+      real_left:
+        type: "integer"
+        format: "int64"
+      area_design_width:
+        type: "integer"
+        format: "int64"
+      area_design_heigh:
+        type: "integer"
+        format: "int64"
+      area_design_left:
+        type: "integer"
+        format: "int64"
+      area_design_top:
+        type: "integer"
+        format: "int64"
+      show_bleed:
+        type: "boolean"
+      bleed_top_bottom:
+        type: "number"
+        format: "float"
+      bleed_left_right:
+        type: "number"
+        format: "float"
+      show_safe_zone:
+        type: "boolean"
+      margin_vertical:
+        type: "integer"
+        format: "int64"
+      margin_horizontal:
+        type: "integer"
+        format: "int64"
+      image:
+        $ref: "#/definitions/ImageResponse"
+      created_at:
+        type: "string"
+      updated_at:
+        type: "string"
+      message:
+        type: "string"
+    xml:
+      name: "SideResponse"
+  Category:
+    type: "object"
+    required:
+      - "name"
+    properties:
+      name:
+        type: "string"
+      parent_id:
+        type: "string"
+    xml:
+      name: "Category"
+  CategoryCount:
+    type: "object"
+    properties:
+      count:
+        type: "integer"
+        format: "int64"
+    xml:
+      name: "CategoryCount"
+  CategoryResponse:
+    type: "object"
+    properties:
+      id:
+        type: "string"
+      name:
+        type: "string"
+      parent:
+        $ref: "#/definitions/Category"
+      created_at:
+        type: "string"
+      updated_at:
+        type: "string"
+      message:
+        type: "string"
+    xml:
+      name: "CategoryResponse"
+  Design:
+    type: "object"
+    required:
+      - "project_id"
+      - "side_id"
+      - "preview_image_id"
+      - "design_image_id"
+    properties:
+      project_id:
+        type: "string"
+      side_id:
+        type: "string"
+      design_with:
+        type: "integer"
+        format: "int64"
+      design_height:
+        type: "integer"
+        format: "int64"
+      design_ratio:
+        type: "number"
+        format: "float"
+      design_top_pos:
+        type: "integer"
+        format: "int64"
+      design_left_pos:
+        type: "integer"
+        format: "int64"
+      pdf_url:
+        type: "string"
+      preview_image_id:
+        type: "string"
+      design_image_id:
+        type: "string"
+      quantity:
+        type: "integer"
+        format: "int64"
+      note:
+        type: "string"
+      status:
+        type: "string"
+        enum:
+          - "accepted"
+          - "processing"
+          - "declined"
+          - "trashed"
+          - "deleted"
+    xml:
+      name: "Design"
+  DesignCount:
+    type: "object"
+    properties:
+      count:
+        type: "integer"
+        format: "int64"
+    xml:
+      name: "DesignCount"
+  DesignResponse:
+    type: "object"
+    properties:
+      id:
+        type: "string"
+      project:
+        $ref: "#/definitions/ProjectResponse"
+      side:
+        $ref: "#/definitions/SideResponse"
+      design_with:
+        type: "integer"
+        format: "int64"
+      design_height:
+        type: "integer"
+        format: "int64"
+      design_ratio:
+        type: "number"
+        format: "float"
+      design_top_pos:
+        type: "integer"
+        format: "int64"
+      design_left_pos:
+        type: "integer"
+        format: "int64"
+      pdf_url:
+        type: "string"
+      preview_image:
+        $ref: "#/definitions/ImageResponse"
+      design_image:
+        $ref: "#/definitions/ImageResponse"
+      quantity:
+        type: "integer"
+        format: "int64"
+      note:
+        type: "string"
+      status:
+        type: "string"
+        enum:
+          - "accepted"
+          - "processing"
+          - "declined"
+          - "trashed"
+          - "deleted"
+      created_at:
+        type: "string"
+      updated_at:
+        type: "string"
+      message:
+        type: "string"
+    xml:
+      name: "DesignResponse"
+externalDocs:
+  description: "Find out more about Swagger"
+  url: "http://swagger.io"
