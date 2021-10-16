@@ -46,6 +46,8 @@ paths:
       responses:
         "400":
           description: "Invalid input"
+          schema:
+            $ref: "#/definitions/InvalidInput"
         "201":
           description: "Created successfully"
           schema:
@@ -62,6 +64,10 @@ paths:
           description: "Retrieved successfully"
           schema:
             $ref: "#/definitions/UserResponse"
+        "401":
+          description: "Unauthenticated"
+          schema:
+            $ref: "#/definitions/Unauthenticated"
       security:
         - ApiKeyAuth: []
     put:
@@ -85,10 +91,16 @@ paths:
       responses:
         "400":
           description: "Invalid input"
+          schema:
+            $ref: "#/definitions/InvalidInput"
         "200":
           description: "Updated successfully"
           schema:
             $ref: "#/definitions/UserResponse"
+        "401":
+          description: "Unauthenticated"
+          schema:
+            $ref: "#/definitions/Unauthenticated"
       security:
         - ApiKeyAuth:
             - "write:pets"
@@ -117,6 +129,10 @@ paths:
           description: "Updated successfully"
           schema:
             $ref: "#/definitions/ApiToken"
+        "401":
+          description: "Unauthenticated"
+          schema:
+            $ref: "#/definitions/Unauthenticated"
       security:
         - ApiKeyAuth:
             - "write:pets"
@@ -143,10 +159,16 @@ paths:
       responses:
         "400":
           description: "Invalid input"
+          schema:
+            $ref: "#/definitions/InvalidInput"
         "201":
           description: "Created successfully"
           schema:
             $ref: "#/definitions/ProductResponse"
+        "401":
+          description: "Unauthenticated"
+          schema:
+            $ref: "#/definitions/Unauthenticated"
       security:
         - BasicAuth: []
     get:
@@ -165,6 +187,12 @@ paths:
             $ref: "#/definitions/ProductResponse"
         "404":
           description: "Not found"
+          schema:
+            $ref: "#/definitions/NotFound"
+        "401":
+          description: "Unauthenticated"
+          schema:
+            $ref: "#/definitions/Unauthenticated"
       security:
         - ApiKeyAuth: []
   /products/{productId}:
@@ -190,8 +218,16 @@ paths:
             $ref: "#/definitions/ProductResponse"
         "403":
           description: "Forbidden"
+          schema:
+            $ref: "#/definitions/Forbidden"
         "404":
           description: "Not found"
+          schema:
+            $ref: "#/definitions/NotFound"
+        "401":
+          description: "Unauthenticated"
+          schema:
+            $ref: "#/definitions/Unauthenticated"
       security:
         - ApiKeyAuth: []
     put:
@@ -220,14 +256,24 @@ paths:
       responses:
         "400":
           description: "Invalid input"
+          schema:
+            $ref: "#/definitions/InvalidInput"
         "200":
           description: "Updated successfully"
           schema:
             $ref: "#/definitions/ProductResponse"
+        "401":
+          description: "Unauthenticated"
+          schema:
+            $ref: "#/definitions/Unauthenticated"
         "403":
           description: "Forbidden"
+          schema:
+            $ref: "#/definitions/Forbidden"
         "404":
           description: "Not found"
+          schema:
+            $ref: "#/definitions/NotFound"
       security:
         - BasicAuth: []
     delete:
@@ -248,10 +294,20 @@ paths:
       responses:
         "204":
           description: "Deleted successfully"
+          schema:
+            $ref: "#/definitions/Deleted"
+        "401":
+          description: "Unauthenticated"
+          schema:
+            $ref: "#/definitions/Unauthenticated"
         "403":
           description: "Forbidden"
+          schema:
+            $ref: "#/definitions/Forbidden"
         "404":
           description: "Not found"
+          schema:
+            $ref: "#/definitions/NotFound"
       security:
         - BasicAuth: []
   /products/{productId}/designs:
@@ -275,10 +331,18 @@ paths:
           description: "Retrieved successfully"
           schema:
             $ref: "#/definitions/DesignResponse"
+        "401":
+          description: "Unauthenticated"
+          schema:
+            $ref: "#/definitions/Unauthenticated"
         "403":
           description: "Forbidden"
+          schema:
+            $ref: "#/definitions/Forbidden"
         "404":
           description: "Not found"
+          schema:
+            $ref: "#/definitions/NotFound"
       security:
         - ApiKeyAuth: []
   /products/{productId}/sides:
@@ -302,10 +366,18 @@ paths:
           description: "Retrieved successfully"
           schema:
             $ref: "#/definitions/SideResponse"
+        "401":
+          description: "Unauthenticated"
+          schema:
+            $ref: "#/definitions/Unauthenticated"
         "403":
           description: "Forbidden"
+          schema:
+            $ref: "#/definitions/Forbidden"
         "404":
           description: "Not found"
+          schema:
+            $ref: "#/definitions/NotFound"
       security:
         - ApiKeyAuth: []
   /products/{productId}/designs/count:
@@ -329,6 +401,10 @@ paths:
           description: "Retrieved successfully"
           schema:
             $ref: "#/definitions/DesignCount"
+        "401":
+          description: "Unauthenticated"
+          schema:
+            $ref: "#/definitions/Unauthenticated"
       security:
         - ApiKeyAuth: []
   /products/{productId}/sides/count:
@@ -352,6 +428,10 @@ paths:
           description: "Retrieved successfully"
           schema:
             $ref: "#/definitions/SideCount"
+        "401":
+          description: "Unauthenticated"
+          schema:
+            $ref: "#/definitions/Unauthenticated"
       security:
         - ApiKeyAuth: []
   /products/count:
@@ -369,6 +449,10 @@ paths:
           description: "Retrieved successfully"
           schema:
             $ref: "#/definitions/ProductCount"
+        "401":
+          description: "Unauthenticated"
+          schema:
+            $ref: "#/definitions/Unauthenticated"
       security:
         - ApiKeyAuth: []
   /sides:
@@ -393,10 +477,16 @@ paths:
       responses:
         "400":
           description: "Invalid input"
+          schema:
+            $ref: "#/definitions/InvalidInput"
         "201":
           description: "Created successfully"
           schema:
             $ref: "#/definitions/SideResponse"
+        "401":
+          description: "Unauthenticated"
+          schema:
+            $ref: "#/definitions/Unauthenticated"
       security:
         - BasicAuth: []
     get:
@@ -413,8 +503,14 @@ paths:
           description: "Retrieved successfully"
           schema:
             $ref: "#/definitions/SideResponse"
+        "401":
+          description: "Unauthenticated"
+          schema:
+            $ref: "#/definitions/Unauthenticated"
         "404":
           description: "Not found"
+          schema:
+            $ref: "#/definitions/NotFound"
       security:
         - ApiKeyAuth: []
   /sides/{sideId}:
@@ -438,10 +534,18 @@ paths:
           description: "Retrieved successfully"
           schema:
             $ref: "#/definitions/SideResponse"
+        "401":
+          description: "Unauthenticated"
+          schema:
+            $ref: "#/definitions/Unauthenticated"
         "403":
           description: "Forbidden"
+          schema:
+            $ref: "#/definitions/Forbidden"
         "404":
           description: "Not found"
+          schema:
+            $ref: "#/definitions/NotFound"
       security:
         - ApiKeyAuth: []
     put:
@@ -470,14 +574,24 @@ paths:
       responses:
         "400":
           description: "Invalid input"
+          schema:
+            $ref: "#/definitions/InvalidInput"
         "200":
           description: "Updated successfully"
           schema:
             $ref: "#/definitions/SideResponse"
+        "401":
+          description: "Unauthenticated"
+          schema:
+            $ref: "#/definitions/Unauthenticated"
         "403":
           description: "Forbidden"
+          schema:
+            $ref: "#/definitions/Forbidden"
         "404":
           description: "Not found"
+          schema:
+            $ref: "#/definitions/NotFound"
       security:
         - BasicAuth: []
     delete:
@@ -498,10 +612,20 @@ paths:
       responses:
         "204":
           description: "Deleted successfully"
+          schema:
+            $ref: "#/definitions/Deleted"
+        "401":
+          description: "Unauthenticated"
+          schema:
+            $ref: "#/definitions/Unauthenticated"
         "403":
           description: "Forbidden"
+          schema:
+            $ref: "#/definitions/Forbidden"
         "404":
           description: "Not found"
+          schema:
+            $ref: "#/definitions/NotFound"
       security:
         - BasicAuth: []
   /sides/count:
@@ -519,6 +643,10 @@ paths:
           description: "Retrieved successfully"
           schema:
             $ref: "#/definitions/SideCount"
+        "401":
+          description: "Unauthenticated"
+          schema:
+            $ref: "#/definitions/Unauthenticated"
       security:
         - ApiKeyAuth: []
   /cliparts:
@@ -543,10 +671,16 @@ paths:
       responses:
         "400":
           description: "Invalid input"
+          schema:
+            $ref: "#/definitions/InvalidInput"
         "201":
           description: "Created successfully"
           schema:
             $ref: "#/definitions/ClipartResponse"
+        "401":
+          description: "Unauthenticated"
+          schema:
+            $ref: "#/definitions/Unauthenticated"
       security:
         - BasicAuth: []
     get:
@@ -563,8 +697,14 @@ paths:
           description: "Retrieved successfully"
           schema:
             $ref: "#/definitions/ClipartResponse"
+        "401":
+          description: "Unauthenticated"
+          schema:
+            $ref: "#/definitions/Unauthenticated"
         "404":
           description: "Not found"
+          schema:
+            $ref: "#/definitions/NotFound"
       security:
         - ApiKeyAuth: []
   /cliparts/{clipartId}:
@@ -588,10 +728,18 @@ paths:
           description: "Retrieved successfully"
           schema:
             $ref: "#/definitions/ClipartResponse"
+        "401":
+          description: "Unauthenticated"
+          schema:
+            $ref: "#/definitions/Unauthenticated"
         "403":
           description: "Forbidden"
+          schema:
+            $ref: "#/definitions/Forbidden"
         "404":
           description: "Not found"
+          schema:
+            $ref: "#/definitions/NotFound"
       security:
         - ApiKeyAuth: []
     put:
@@ -620,14 +768,24 @@ paths:
       responses:
         "400":
           description: "Invalid input"
+          schema:
+            $ref: "#/definitions/InvalidInput"
         "200":
           description: "Updated successfully"
           schema:
             $ref: "#/definitions/ClipartResponse"
+        "401":
+          description: "Unauthenticated"
+          schema:
+            $ref: "#/definitions/Unauthenticated"
         "403":
           description: "Forbidden"
+          schema:
+            $ref: "#/definitions/Forbidden"
         "404":
           description: "Not found"
+          schema:
+            $ref: "#/definitions/NotFound"
       security:
         - BasicAuth: []
     delete:
@@ -648,10 +806,20 @@ paths:
       responses:
         "204":
           description: "Deleted successfully"
+          schema:
+            $ref: "#/definitions/Deleted"
+        "401":
+          description: "Unauthenticated"
+          schema:
+            $ref: "#/definitions/Unauthenticated"
         "403":
           description: "Forbidden"
+          schema:
+            $ref: "#/definitions/Forbidden"
         "404":
           description: "Not found"
+          schema:
+            $ref: "#/definitions/NotFound"
       security:
         - BasicAuth: []
   /cliparts/count:
@@ -669,6 +837,10 @@ paths:
           description: "Retrieved successfully"
           schema:
             $ref: "#/definitions/ClipartCount"
+        "401":
+          description: "Unauthenticated"
+          schema:
+            $ref: "#/definitions/Unauthenticated"
       security:
         - ApiKeyAuth: []
   /fonts:
@@ -693,10 +865,16 @@ paths:
       responses:
         "400":
           description: "Invalid input"
+          schema:
+            $ref: "#/definitions/InvalidInput"
         "201":
           description: "Created successfully"
           schema:
             $ref: "#/definitions/FontResponse"
+        "401":
+          description: "Unauthenticated"
+          schema:
+            $ref: "#/definitions/Unauthenticated"
       security:
         - BasicAuth: []
     get:
@@ -713,8 +891,14 @@ paths:
           description: "Retrieved successfully"
           schema:
             $ref: "#/definitions/FontResponse"
+        "401":
+          description: "Unauthenticated"
+          schema:
+            $ref: "#/definitions/Unauthenticated"
         "404":
           description: "Not found"
+          schema:
+            $ref: "#/definitions/NotFound"
       security:
         - ApiKeyAuth: []
   /fonts/{fontId}:
@@ -735,10 +919,18 @@ paths:
         "200":
           schema:
             $ref: "#/definitions/FontResponse"
+        "401":
+          description: "Unauthenticated"
+          schema:
+            $ref: "#/definitions/Unauthenticated"
         "403":
           description: "Forbidden"
+          schema:
+            $ref: "#/definitions/Forbidden"
         "404":
           description: "Not found"
+          schema:
+            $ref: "#/definitions/NotFound"
       security:
         - ApiKeyAuth: []
     put:
@@ -767,14 +959,24 @@ paths:
       responses:
         "400":
           description: "Invalid input"
+          schema:
+            $ref: "#/definitions/InvalidInput"
         "200":
           description: "Updated successfully"
           schema:
             $ref: "#/definitions/FontResponse"
+        "401":
+          description: "Unauthenticated"
+          schema:
+            $ref: "#/definitions/Unauthenticated"
         "403":
           description: "Forbidden"
+          schema:
+            $ref: "#/definitions/Forbidden"
         "404":
           description: "Not found"
+          schema:
+            $ref: "#/definitions/NotFound"
       security:
         - BasicAuth: []
     delete:
@@ -795,10 +997,20 @@ paths:
       responses:
         "204":
           description: "Deleted successfully"
+          schema:
+            $ref: "#/definitions/Deleted"
+        "401":
+          description: "Unauthenticated"
+          schema:
+            $ref: "#/definitions/Unauthenticated"
         "403":
           description: "Forbidden"
+          schema:
+            $ref: "#/definitions/Forbidden"
         "404":
           description: "Not found"
+          schema:
+            $ref: "#/definitions/NotFound"
       security:
         - BasicAuth: []
   /fonts/count:
@@ -816,6 +1028,10 @@ paths:
           description: "Retrieved successfully"
           schema:
             $ref: "#/definitions/FontCount"
+        "401":
+          description: "Unauthenticated"
+          schema:
+            $ref: "#/definitions/Unauthenticated"
       security:
         - ApiKeyAuth: []
   /images:
@@ -841,6 +1057,10 @@ paths:
           description: "File successfully uploaded"
           schema:
             $ref: "#/definitions/ImageResponse"
+        "401":
+          description: "Unauthenticated"
+          schema:
+            $ref: "#/definitions/Unauthenticated"
         "405":
           description: "File upload missing"
       security:
@@ -859,8 +1079,14 @@ paths:
           description: "Retrieved successfully"
           schema:
             $ref: "#/definitions/ImageResponse"
+        "401":
+          description: "Unauthenticated"
+          schema:
+            $ref: "#/definitions/Unauthenticated"
         "404":
           description: "Not found"
+          schema:
+            $ref: "#/definitions/NotFound"
       security:
         - ApiKeyAuth: []
   /images/{imageId}:
@@ -884,10 +1110,18 @@ paths:
           description: "Retrieved successfully"
           schema:
             $ref: "#/definitions/ImageResponse"
+        "401":
+          description: "Unauthenticated"
+          schema:
+            $ref: "#/definitions/Unauthenticated"
         "403":
           description: "Forbidden"
+          schema:
+            $ref: "#/definitions/Forbidden"
         "404":
           description: "Not found"
+          schema:
+            $ref: "#/definitions/NotFound"
       security:
         - ApiKeyAuth: []
     delete:
@@ -908,10 +1142,20 @@ paths:
       responses:
         "204":
           description: "Deleted successfully"
+          schema:
+            $ref: "#/definitions/Deleted"
+        "401":
+          description: "Unauthenticated"
+          schema:
+            $ref: "#/definitions/Unauthenticated"
         "403":
           description: "Forbidden"
+          schema:
+            $ref: "#/definitions/Forbidden"
         "404":
           description: "Not found"
+          schema:
+            $ref: "#/definitions/NotFound"
       security:
         - BasicAuth: []
   /images/count:
@@ -929,6 +1173,10 @@ paths:
           description: "Retrieved successfully"
           schema:
             $ref: "#/definitions/ImageCount"
+        "401":
+          description: "Unauthenticated"
+          schema:
+            $ref: "#/definitions/Unauthenticated"
       security:
         - ApiKeyAuth: []
   /designs:
@@ -953,6 +1201,12 @@ paths:
       responses:
         "400":
           description: "Invalid input"
+          schema:
+            $ref: "#/definitions/InvalidInput"
+        "401":
+          description: "Unauthenticated"
+          schema:
+            $ref: "#/definitions/Unauthenticated"
         "201":
           description: "Created successfully"
           schema:
@@ -973,8 +1227,14 @@ paths:
           description: "Retrieved successfully"
           schema:
             $ref: "#/definitions/DesignResponse"
+        "401":
+          description: "Unauthenticated"
+          schema:
+            $ref: "#/definitions/Unauthenticated"
         "404":
           description: "Not found"
+          schema:
+            $ref: "#/definitions/NotFound"
       security:
         - ApiKeyAuth: []
   /designs/{designId}:
@@ -998,10 +1258,18 @@ paths:
           description: "Retrieved successfully"
           schema:
             $ref: "#/definitions/DesignResponse"
+        "401":
+          description: "Unauthenticated"
+          schema:
+            $ref: "#/definitions/Unauthenticated"
         "403":
           description: "Forbidden"
+          schema:
+            $ref: "#/definitions/Forbidden"
         "404":
           description: "Not found"
+          schema:
+            $ref: "#/definitions/NotFound"
       security:
         - ApiKeyAuth: []
     put:
@@ -1030,14 +1298,24 @@ paths:
       responses:
         "400":
           description: "Invalid input"
+          schema:
+            $ref: "#/definitions/InvalidInput"
         "200":
           description: "Updated successfully"
           schema:
             $ref: "#/definitions/DesignResponse"
+        "401":
+          description: "Unauthenticated"
+          schema:
+            $ref: "#/definitions/Unauthenticated"    
         "403":
           description: "Forbidden"
+          schema:
+            $ref: "#/definitions/Forbidden"
         "404":
           description: "Not found"
+          schema:
+            $ref: "#/definitions/NotFound"
       security:
         - ApiKeyAuth: []
     delete:
@@ -1058,10 +1336,20 @@ paths:
       responses:
         "204":
           description: "Deleted successfully"
+          schema:
+            $ref: "#/definitions/Deleted"
+        "401":
+          description: "Unauthenticated"
+          schema:
+            $ref: "#/definitions/Unauthenticated"  
         "403":
           description: "Forbidden"
+          schema:
+            $ref: "#/definitions/Forbidden"
         "404":
           description: "Not found"
+          schema:
+            $ref: "#/definitions/NotFound"
       security:
         - ApiKeyAuth: []
   /designs/{designId}/storages:
@@ -1085,10 +1373,18 @@ paths:
           description: "Retrieved successfully"
           schema:
             $ref: "#/definitions/CategoryResponse"
+        "401":
+          description: "Unauthenticated"
+          schema:
+            $ref: "#/definitions/Unauthenticated"    
         "403":
           description: "Forbidden"
+          schema:
+            $ref: "#/definitions/Forbidden"
         "404":
           description: "Not found"
+          schema:
+            $ref: "#/definitions/NotFound"
       security:
         - BasicAuth: []
   /designs/count:
@@ -1106,6 +1402,10 @@ paths:
           description: "Retrieved successfully"
           schema:
             $ref: "#/definitions/DesignCount"
+        "401":
+          description: "Unauthenticated"
+          schema:
+            $ref: "#/definitions/Unauthenticated"    
       security:
         - ApiKeyAuth: []
   /storages:
@@ -1130,10 +1430,16 @@ paths:
       responses:
         "400":
           description: "Invalid input"
+          schema:
+            $ref: "#/definitions/InvalidInput"
         "201":
           description: "Created successfully"
           schema:
             $ref: "#/definitions/CategoryResponse"
+        "401":
+          description: "Unauthenticated"
+          schema:
+            $ref: "#/definitions/Unauthenticated"    
       security:
         - BasicAuth: []
     get:
@@ -1150,8 +1456,14 @@ paths:
           description: "Retrieved successfully"
           schema:
             $ref: "#/definitions/CategoryResponse"
+        "401":
+          description: "Unauthenticated"
+          schema:
+            $ref: "#/definitions/Unauthenticated"    
         "404":
           description: "Not found"
+          schema:
+            $ref: "#/definitions/NotFound"
       security:
         - BasicAuth: []
   /storages/{storageId}:
@@ -1175,10 +1487,18 @@ paths:
           description: "Retrieved successfully"
           schema:
             $ref: "#/definitions/CategoryResponse"
+        "401":
+          description: "Unauthenticated"
+          schema:
+            $ref: "#/definitions/Unauthenticated"    
         "403":
           description: "Forbidden"
+          schema:
+            $ref: "#/definitions/Forbidden"
         "404":
           description: "Not found"
+          schema:
+            $ref: "#/definitions/NotFound"
       security:
         - BasicAuth: []
     put:
@@ -1207,14 +1527,24 @@ paths:
       responses:
         "400":
           description: "Invalid input"
+          schema:
+            $ref: "#/definitions/InvalidInput"
         "200":
           description: "Updated successfully"
           schema:
             $ref: "#/definitions/CategoryResponse"
+        "401":
+          description: "Unauthenticated"
+          schema:
+            $ref: "#/definitions/Unauthenticated"    
         "403":
           description: "Forbidden"
+          schema:
+            $ref: "#/definitions/Forbidden"
         "404":
           description: "Not found"
+          schema:
+            $ref: "#/definitions/NotFound"
       security:
         - BasicAuth: []
     delete:
@@ -1235,10 +1565,20 @@ paths:
       responses:
         "204":
           description: "Deleted successfully"
+          schema:
+            $ref: "#/definitions/Deleted"
+        "401":
+          description: "Unauthenticated"
+          schema:
+            $ref: "#/definitions/Unauthenticated"  
         "403":
           description: "Forbidden"
+          schema:
+            $ref: "#/definitions/Forbidden"
         "404":
           description: "Not found"
+          schema:
+            $ref: "#/definitions/NotFound"
       security:
         - BasicAuth: []
   /storages/{storageId}/designs:
@@ -1262,10 +1602,18 @@ paths:
           description: "Retrieved successfully"
           schema:
             $ref: "#/definitions/DesignResponse"
+        "401":
+          description: "Unauthenticated"
+          schema:
+            $ref: "#/definitions/Unauthenticated"    
         "403":
           description: "Forbidden"
+          schema:
+            $ref: "#/definitions/Forbidden"
         "404":
           description: "Not found"
+          schema:
+            $ref: "#/definitions/NotFound"
       security:
         - ApiKeyAuth: []
   /storages/count:
@@ -1283,6 +1631,10 @@ paths:
           description: "Retrieved successfully"
           schema:
             $ref: "#/definitions/CategoryCount"
+        "401":
+          description: "Unauthenticated"
+          schema:
+            $ref: "#/definitions/Unauthenticated"    
       security:
         - BasicAuth: []
   /projects:
@@ -1307,10 +1659,16 @@ paths:
       responses:
         "400":
           description: "Invalid input"
+          schema:
+            $ref: "#/definitions/InvalidInput"
         "201":
           description: "Created successfully"
           schema:
             $ref: "#/definitions/ProjectResponse"
+        "401":
+          description: "Unauthenticated"
+          schema:
+            $ref: "#/definitions/Unauthenticated"    
       security:
         - ApiKeyAuth: []
     get:
@@ -1327,8 +1685,14 @@ paths:
           description: "Retrieved successfully"
           schema:
             $ref: "#/definitions/ProjectResponse"
+        "401":
+          description: "Unauthenticated"
+          schema:
+            $ref: "#/definitions/Unauthenticated"    
         "404":
           description: "Not found"
+          schema:
+            $ref: "#/definitions/NotFound"
       security:
         - BasicAuth: []
   /projects/{projectId}:
@@ -1352,10 +1716,18 @@ paths:
           description: "Retrieved successfully"
           schema:
             $ref: "#/definitions/ProjectResponse"
+        "401":
+          description: "Unauthenticated"
+          schema:
+            $ref: "#/definitions/Unauthenticated"    
         "403":
           description: "Forbidden"
+          schema:
+            $ref: "#/definitions/Forbidden"
         "404":
           description: "Not found"
+          schema:
+            $ref: "#/definitions/NotFound"
       security:
         - BasicAuth: []
     put:
@@ -1384,14 +1756,24 @@ paths:
       responses:
         "400":
           description: "Invalid input"
+          schema:
+            $ref: "#/definitions/InvalidInput"
         "200":
           description: "Updated successfully"
           schema:
             $ref: "#/definitions/ProjectResponse"
+        "401":
+          description: "Unauthenticated"
+          schema:
+            $ref: "#/definitions/Unauthenticated"    
         "403":
           description: "Forbidden"
+          schema:
+            $ref: "#/definitions/Forbidden"
         "404":
           description: "Not found"
+          schema:
+            $ref: "#/definitions/NotFound"
       security:
         - BasicAuth: []
     delete:
@@ -1412,10 +1794,20 @@ paths:
       responses:
         "204":
           description: "Deleted successfully"
+          schema:
+            $ref: "#/definitions/Deleted"
+        "401":
+          description: "Unauthenticated"
+          schema:
+            $ref: "#/definitions/Unauthenticated"  
         "403":
           description: "Forbidden"
+          schema:
+            $ref: "#/definitions/Forbidden"
         "404":
           description: "Not found"
+          schema:
+            $ref: "#/definitions/NotFound"
       security:
         - BasicAuth: []
   /projects/{projectId}/designs:
@@ -1439,10 +1831,18 @@ paths:
           description: "Retrieved successfully"
           schema:
             $ref: "#/definitions/DesignResponse"
+        "401":
+          description: "Unauthenticated"
+          schema:
+            $ref: "#/definitions/Unauthenticated"    
         "403":
           description: "Forbidden"
+          schema:
+            $ref: "#/definitions/Forbidden"
         "404":
           description: "Not found"
+          schema:
+            $ref: "#/definitions/NotFound"
       security:
         - BasicAuth: []
   /projects/{projectId}/products:
@@ -1466,10 +1866,18 @@ paths:
           description: "Retrieved successfully"
           schema:
             $ref: "#/definitions/ProductResponse"
+        "401":
+          description: "Unauthenticated"
+          schema:
+            $ref: "#/definitions/Unauthenticated"    
         "403":
           description: "Forbidden"
+          schema:
+            $ref: "#/definitions/Forbidden"
         "404":
           description: "Not found"
+          schema:
+            $ref: "#/definitions/NotFound"
       security:
         - BasicAuth: []
   /projects/count:
@@ -1487,6 +1895,10 @@ paths:
           description: "Retrieved successfully"
           schema:
             $ref: "#/definitions/ProjectCount"
+        "401":
+          description: "Unauthenticated"
+          schema:
+            $ref: "#/definitions/Unauthenticated"    
       security:
         - BasicAuth: []
   /projects/{projectId}/designs/count:
@@ -1510,6 +1922,10 @@ paths:
           description: "Retrieved successfully"
           schema:
             $ref: "#/definitions/DesignCount"
+        "401":
+          description: "Unauthenticated"
+          schema:
+            $ref: "#/definitions/Unauthenticated"    
       security:
         - BasicAuth: []
   /projects/{projectId}/products/count:
@@ -1533,6 +1949,10 @@ paths:
           description: "Retrieved successfully"
           schema:
             $ref: "#/definitions/ProductCount"
+        "401":
+          description: "Unauthenticated"
+          schema:
+            $ref: "#/definitions/Unauthenticated"    
       security:
         - BasicAuth: []
 securityDefinitions:
@@ -2199,6 +2619,46 @@ definitions:
         type: "string"
     xml:
       name: "DesignResponse"
+  Unauthenticated:
+    type: "object"
+    properties: 
+      message: 
+        type: "string"
+        description: "Unauthenticated"
+    xml:
+      name: "Unauthenticated"
+  InvalidInput:
+    type: "object"
+    properties: 
+      message: 
+        type: "string"
+        description: "Invalid input"
+    xml:
+      name: "InvalidInput"
+  NotFound:
+    type: "object"
+    properties: 
+      message: 
+        type: "string"
+        description: "Not found"
+    xml:
+      name: "NotFound"
+  Forbidden:
+    type: "object"
+    properties: 
+      message: 
+        type: "string"
+        description: "Forbidden"
+    xml:
+      name: "Forbidden"
+  Deleted:
+    type: "object"
+    properties: 
+      message: 
+        type: "string"
+        description: "Deleted successfully"
+    xml:
+      name: "Deleted"
 externalDocs:
   description: "Find out more about Swagger"
   url: "http://swagger.io"
