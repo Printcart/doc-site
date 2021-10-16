@@ -148,9 +148,7 @@ paths:
           schema:
             $ref: "#/definitions/ProductResponse"
       security:
-        - ApiKeyAuth:
-            - "write:pets"
-            - "read:pets"
+        - BasicAuth: []
     get:
       tags:
         - "Product"
@@ -168,8 +166,7 @@ paths:
         "404":
           description: "Not found"
       security:
-        - ApiKeyAuth:
-            - "write:pets"
+        - ApiKeyAuth: []
   /products/{productId}:
     get:
       tags:
@@ -196,8 +193,7 @@ paths:
         "404":
           description: "Not found"
       security:
-        - ApiKeyAuth:
-            - "write:pets"
+        - ApiKeyAuth: []
     put:
       tags:
         - "Product"
@@ -233,9 +229,7 @@ paths:
         "404":
           description: "Not found"
       security:
-        - ApiKeyAuth:
-            - "write:pets"
-            - "read:pets"
+        - BasicAuth: []
     delete:
       tags:
         - "Product"
@@ -259,9 +253,7 @@ paths:
         "404":
           description: "Not found"
       security:
-        - ApiKeyAuth:
-            - "write:pets"
-            - "read:pets"
+        - BasicAuth: []
   /products/{productId}/designs:
     get:
       tags:
@@ -288,8 +280,7 @@ paths:
         "404":
           description: "Not found"
       security:
-        - ApiKeyAuth:
-            - "write:pets"
+        - ApiKeyAuth: []
   /products/{productId}/sides:
     get:
       tags:
@@ -316,8 +307,7 @@ paths:
         "404":
           description: "Not found"
       security:
-        - ApiKeyAuth:
-            - "write:pets"
+        - ApiKeyAuth: []
   /products/{productId}/designs/count:
     get:
       tags:
@@ -340,8 +330,7 @@ paths:
           schema:
             $ref: "#/definitions/DesignCount"
       security:
-        - ApiKeyAuth:
-            - "write:pets"
+        - ApiKeyAuth: []
   /products/{productId}/sides/count:
     get:
       tags:
@@ -364,8 +353,7 @@ paths:
           schema:
             $ref: "#/definitions/SideCount"
       security:
-        - ApiKeyAuth:
-            - "write:pets"
+        - ApiKeyAuth: []
   /products/count:
     get:
       tags:
@@ -382,8 +370,7 @@ paths:
           schema:
             $ref: "#/definitions/ProductCount"
       security:
-        - ApiKeyAuth:
-            - "write:pets"
+        - ApiKeyAuth: []
   /sides:
     post:
       tags:
@@ -411,9 +398,7 @@ paths:
           schema:
             $ref: "#/definitions/SideResponse"
       security:
-        - ApiKeyAuth:
-            - "write:pets"
-            - "read:pets"
+        - BasicAuth: []
     get:
       tags:
         - "Side"
@@ -431,8 +416,7 @@ paths:
         "404":
           description: "Not found"
       security:
-        - ApiKeyAuth:
-            - "write:pets" 
+        - ApiKeyAuth: []
   /sides/{sideId}:
     get:
       tags:
@@ -459,8 +443,7 @@ paths:
         "404":
           description: "Not found"
       security:
-        - ApiKeyAuth:
-            - "write:pets"
+        - ApiKeyAuth: []
     put:
       tags:
         - "Side"
@@ -496,9 +479,7 @@ paths:
         "404":
           description: "Not found"
       security:
-        - ApiKeyAuth:
-            - "write:pets"
-            - "read:pets"
+        - BasicAuth: []
     delete:
       tags:
         - "Side"
@@ -522,9 +503,7 @@ paths:
         "404":
           description: "Not found"
       security:
-        - ApiKeyAuth:
-            - "write:pets"
-            - "read:pets"
+        - BasicAuth: []
   /sides/count:
     get:
       tags:
@@ -541,8 +520,7 @@ paths:
           schema:
             $ref: "#/definitions/SideCount"
       security:
-        - ApiKeyAuth:
-            - "write:pets"
+        - ApiKeyAuth: []
   /cliparts:
     post:
       tags:
@@ -570,9 +548,7 @@ paths:
           schema:
             $ref: "#/definitions/ClipartResponse"
       security:
-        - ApiKeyAuth:
-            - "write:pets"
-            - "read:pets"
+        - BasicAuth: []
     get:
       tags:
         - "Clipart"
@@ -590,8 +566,7 @@ paths:
         "404":
           description: "Not found"
       security:
-        - ApiKeyAuth:
-            - "write:pets"
+        - ApiKeyAuth: []
   /cliparts/{clipartId}:
     get:
       tags:
@@ -618,8 +593,7 @@ paths:
         "404":
           description: "Not found"
       security:
-        - ApiKeyAuth:
-            - "write:pets"
+        - ApiKeyAuth: []
     put:
       tags:
         - "Clipart"
@@ -655,9 +629,7 @@ paths:
         "404":
           description: "Not found"
       security:
-        - ApiKeyAuth:
-            - "write:pets"
-            - "read:pets"
+        - BasicAuth: []
     delete:
       tags:
         - "Clipart"
@@ -681,9 +653,7 @@ paths:
         "404":
           description: "Not found"
       security:
-        - ApiKeyAuth:
-            - "write:pets"
-            - "read:pets"
+        - BasicAuth: []
   /cliparts/count:
     get:
       tags:
@@ -700,8 +670,7 @@ paths:
           schema:
             $ref: "#/definitions/ClipartCount"
       security:
-        - ApiKeyAuth:
-            - "write:pets"
+        - ApiKeyAuth: []
   /fonts:
     post:
       tags:
@@ -729,9 +698,7 @@ paths:
           schema:
             $ref: "#/definitions/FontResponse"
       security:
-        - ApiKeyAuth:
-            - "write:pets"
-            - "read:pets"
+        - BasicAuth: []
     get:
       tags:
         - "Font"
@@ -749,8 +716,7 @@ paths:
         "404":
           description: "Not found"
       security:
-        - ApiKeyAuth:
-            - "write:pets"  
+        - ApiKeyAuth: []
   /fonts/{fontId}:
     get:
       tags:
@@ -774,8 +740,7 @@ paths:
         "404":
           description: "Not found"
       security:
-        - ApiKeyAuth:
-            - "write:pets"
+        - ApiKeyAuth: []
     put:
       tags:
         - "Font"
@@ -811,9 +776,7 @@ paths:
         "404":
           description: "Not found"
       security:
-        - ApiKeyAuth:
-            - "write:pets"
-            - "read:pets"
+        - BasicAuth: []
     delete:
       tags:
         - "Font"
@@ -837,9 +800,7 @@ paths:
         "404":
           description: "Not found"
       security:
-        - ApiKeyAuth:
-            - "write:pets"
-            - "read:pets"
+        - BasicAuth: []
   /fonts/count:
     get:
       tags:
@@ -856,8 +817,7 @@ paths:
           schema:
             $ref: "#/definitions/FontCount"
       security:
-        - ApiKeyAuth:
-            - "write:pets"
+        - ApiKeyAuth: []
   /images:
     post:
       tags:
@@ -884,9 +844,7 @@ paths:
         "405":
           description: "File upload missing"
       security:
-        - ApiKeyAuth:
-            - "write:pets"
-            - "read:pets"
+        - BasicAuth: []
     get:
       tags:
         - "Image"
@@ -904,8 +862,7 @@ paths:
         "404":
           description: "Not found"
       security:
-        - ApiKeyAuth:
-            - "write:pets"
+        - ApiKeyAuth: []
   /images/{imageId}:
     get:
       tags:
@@ -932,8 +889,7 @@ paths:
         "404":
           description: "Not found"
       security:
-        - ApiKeyAuth:
-            - "write:pets"
+        - ApiKeyAuth: []
     delete:
       tags:
         - "Image"
@@ -957,9 +913,7 @@ paths:
         "404":
           description: "Not found"
       security:
-        - ApiKeyAuth:
-            - "write:pets"
-            - "read:pets"
+        - BasicAuth: []
   /images/count:
     get:
       tags:
@@ -976,8 +930,7 @@ paths:
           schema:
             $ref: "#/definitions/ImageCount"
       security:
-        - ApiKeyAuth:
-            - "write:pets"
+        - ApiKeyAuth: []
   /designs:
     post:
       tags:
@@ -1005,9 +958,7 @@ paths:
           schema:
             $ref: "#/definitions/DesignResponse"
       security:
-        - ApiKeyAuth:
-            - "write:pets"
-            - "read:pets"
+        - ApiKeyAuth: []
     get:
       tags:
         - "Design"
@@ -1025,8 +976,7 @@ paths:
         "404":
           description: "Not found"
       security:
-        - ApiKeyAuth:
-            - "write:pets"
+        - ApiKeyAuth: []
   /designs/{designId}:
     get:
       tags:
@@ -1053,8 +1003,7 @@ paths:
         "404":
           description: "Not found"
       security:
-        - ApiKeyAuth:
-            - "write:pets"
+        - ApiKeyAuth: []
     put:
       tags:
         - "Design"
@@ -1090,9 +1039,7 @@ paths:
         "404":
           description: "Not found"
       security:
-        - ApiKeyAuth:
-            - "write:pets"
-            - "read:pets"
+        - ApiKeyAuth: []
     delete:
       tags:
         - "Design"
@@ -1116,9 +1063,7 @@ paths:
         "404":
           description: "Not found"
       security:
-        - ApiKeyAuth:
-            - "write:pets"
-            - "read:pets"  
+        - ApiKeyAuth: []
   /designs/{designId}/storages:
     get:
       tags:
@@ -1145,8 +1090,7 @@ paths:
         "404":
           description: "Not found"
       security:
-        - ApiKeyAuth:
-            - "write:pets" 
+        - BasicAuth: []
   /designs/count:
     get:
       tags:
@@ -1163,8 +1107,7 @@ paths:
           schema:
             $ref: "#/definitions/DesignCount"
       security:
-        - ApiKeyAuth:
-            - "write:pets"
+        - ApiKeyAuth: []
   /storages:
     post:
       tags:
@@ -1192,9 +1135,7 @@ paths:
           schema:
             $ref: "#/definitions/CategoryResponse"
       security:
-        - ApiKeyAuth:
-            - "write:pets"
-            - "read:pets"
+        - BasicAuth: []
     get:
       tags:
         - "Storage"
@@ -1212,8 +1153,7 @@ paths:
         "404":
           description: "Not found"
       security:
-        - ApiKeyAuth:
-            - "write:pets"
+        - BasicAuth: []
   /storages/{storageId}:
     get:
       tags:
@@ -1240,8 +1180,7 @@ paths:
         "404":
           description: "Not found"
       security:
-        - ApiKeyAuth:
-            - "write:pets"
+        - BasicAuth: []
     put:
       tags:
         - "Storage"
@@ -1277,9 +1216,7 @@ paths:
         "404":
           description: "Not found"
       security:
-        - ApiKeyAuth:
-            - "write:pets"
-            - "read:pets"
+        - BasicAuth: []
     delete:
       tags:
         - "Storage"
@@ -1303,9 +1240,7 @@ paths:
         "404":
           description: "Not found"
       security:
-        - ApiKeyAuth:
-            - "write:pets"
-            - "read:pets"
+        - BasicAuth: []
   /storages/{storageId}/designs:
     get:
       tags:
@@ -1332,8 +1267,7 @@ paths:
         "404":
           description: "Not found"
       security:
-        - ApiKeyAuth:
-            - "write:pets"
+        - ApiKeyAuth: []
   /storages/count:
     get:
       tags:
@@ -1350,9 +1284,7 @@ paths:
           schema:
             $ref: "#/definitions/CategoryCount"
       security:
-        - ApiKeyAuth:
-            - "write:pets"
-  
+        - BasicAuth: []
   /projects:
     post:
       tags:
@@ -1380,9 +1312,7 @@ paths:
           schema:
             $ref: "#/definitions/ProjectResponse"
       security:
-        - ApiKeyAuth:
-            - "write:pets"
-            - "read:pets"
+        - ApiKeyAuth: []
     get:
       tags:
         - "Project"
@@ -1400,8 +1330,7 @@ paths:
         "404":
           description: "Not found"
       security:
-        - ApiKeyAuth:
-            - "write:pets"
+        - BasicAuth: []
   /projects/{projectId}:
     get:
       tags:
@@ -1428,8 +1357,7 @@ paths:
         "404":
           description: "Not found"
       security:
-        - ApiKeyAuth:
-            - "write:pets"
+        - BasicAuth: []
     put:
       tags:
         - "Project"
@@ -1465,9 +1393,7 @@ paths:
         "404":
           description: "Not found"
       security:
-        - ApiKeyAuth:
-            - "write:pets"
-            - "read:pets"
+        - BasicAuth: []
     delete:
       tags:
         - "Project"
@@ -1491,9 +1417,7 @@ paths:
         "404":
           description: "Not found"
       security:
-        - ApiKeyAuth:
-            - "write:pets"
-            - "read:pets"
+        - BasicAuth: []
   /projects/{projectId}/designs:
     get:
       tags:
@@ -1520,8 +1444,7 @@ paths:
         "404":
           description: "Not found"
       security:
-        - ApiKeyAuth:
-            - "write:pets"
+        - BasicAuth: []
   /projects/{projectId}/products:
     get:
       tags:
@@ -1548,8 +1471,7 @@ paths:
         "404":
           description: "Not found"
       security:
-        - ApiKeyAuth:
-            - "write:pets"
+        - BasicAuth: []
   /projects/count:
     get:
       tags:
@@ -1566,8 +1488,7 @@ paths:
           schema:
             $ref: "#/definitions/ProjectCount"
       security:
-        - ApiKeyAuth:
-            - "write:pets"
+        - BasicAuth: []
   /projects/{projectId}/designs/count:
     get:
       tags:
@@ -1590,8 +1511,7 @@ paths:
           schema:
             $ref: "#/definitions/DesignCount"
       security:
-        - ApiKeyAuth:
-            - "write:pets"
+        - BasicAuth: []
   /projects/{projectId}/products/count:
     get:
       tags:
@@ -1614,8 +1534,7 @@ paths:
           schema:
             $ref: "#/definitions/ProductCount"
       security:
-        - ApiKeyAuth:
-            - "write:pets" 
+        - BasicAuth: []
 securityDefinitions:
   ApiKeyAuth:
     type: "apiKey"
