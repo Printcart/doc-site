@@ -1984,23 +1984,26 @@ definitions:
   UserResponse:
     type: "object"
     properties:
-      id:
-        type: "string"
-      name:
-        type: "string"
-      email:
-        type: "string"
-        format: "email"
-      email_verified_at:
-        type: "string"
-      avatar_img_url:
-        type: "string"
-      created_at:
-        type: "string"
-      updated_at:
-        type: "string"
-      api_token:
-        type: "string"
+      data:
+        type: "object"
+        properties:
+          id:
+            type: "string"
+          name:
+            type: "string"
+          email:
+            type: "string"
+            format: "email"
+          email_verified_at:
+            type: "string"
+          avatar_img_url:
+            type: "string"
+          created_at:
+            type: "string"
+          updated_at:
+            type: "string"
+          api_token:
+            type: "string"
       message:
         type: "string"
     xml:
@@ -2009,6 +2012,8 @@ definitions:
     type: "object"
     properties:
       api_token:
+        type: "string"
+      message:
         type: "string"
     xml:
       name: "ApiToken"
@@ -2026,16 +2031,19 @@ definitions:
   FontResponse:
     type: "object"
     properties:
-      id:
-        type: "string"
-      name:
-        type: "string"
-      url:
-        type: "string"
-      created_at:
-        type: "string"
-      updated_at:
-        type: "string"
+      data:
+        type: "object"
+        properties:
+          id:
+            type: "string"
+          name:
+            type: "string"
+          url:
+            type: "string"
+          created_at:
+            type: "string"
+          updated_at:
+            type: "string"
       message:
         type: "string"
     xml:
