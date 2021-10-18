@@ -117,18 +117,11 @@ paths:
         - "application/json"
       produces:
         - "application/json"
-      parameters:
-        - in: "body"
-          name: "body"
-          # description: "Pet object that needs to be added to the store"
-          required: true
-          schema:
-            $ref: "#/definitions/ApiToken"
       responses:
         "200":
           description: "Updated successfully"
           schema:
-            $ref: "#/definitions/ApiToken"
+            $ref: "#/definitions/ApiTokenResponse"
         "401":
           description: "Unauthenticated"
           schema:
@@ -164,7 +157,7 @@ paths:
         "201":
           description: "Created successfully"
           schema:
-            $ref: "#/definitions/ProductResponse"
+            $ref: "#/definitions/ProductResponseDataObject"
         "401":
           description: "Unauthenticated"
           schema:
@@ -184,7 +177,7 @@ paths:
         "200":
           description: "Retrieved successfully"
           schema:
-            $ref: "#/definitions/ProductResponse"
+            $ref: "#/definitions/ProductResponseDataArray"
         "404":
           description: "Not found"
           schema:
@@ -215,7 +208,7 @@ paths:
         "200":
           description: "Retrieved successfully"
           schema:
-            $ref: "#/definitions/ProductResponse"
+            $ref: "#/definitions/ProductResponseDataObject"
         "403":
           description: "Forbidden"
           schema:
@@ -261,7 +254,7 @@ paths:
         "200":
           description: "Updated successfully"
           schema:
-            $ref: "#/definitions/ProductResponse"
+            $ref: "#/definitions/ProductResponseDataObject"
         "401":
           description: "Unauthenticated"
           schema:
@@ -330,7 +323,7 @@ paths:
         "200":
           description: "Retrieved successfully"
           schema:
-            $ref: "#/definitions/DesignResponse"
+            $ref: "#/definitions/DesignResponseDataArray"
         "401":
           description: "Unauthenticated"
           schema:
@@ -365,7 +358,7 @@ paths:
         "200":
           description: "Retrieved successfully"
           schema:
-            $ref: "#/definitions/SideResponse"
+            $ref: "#/definitions/SideResponseDataArray"
         "401":
           description: "Unauthenticated"
           schema:
@@ -482,7 +475,7 @@ paths:
         "201":
           description: "Created successfully"
           schema:
-            $ref: "#/definitions/SideResponse"
+            $ref: "#/definitions/SideResponseDataObject"
         "401":
           description: "Unauthenticated"
           schema:
@@ -502,7 +495,7 @@ paths:
         "200":
           description: "Retrieved successfully"
           schema:
-            $ref: "#/definitions/SideResponse"
+            $ref: "#/definitions/SideResponseDataArray"
         "401":
           description: "Unauthenticated"
           schema:
@@ -533,7 +526,7 @@ paths:
         "200":
           description: "Retrieved successfully"
           schema:
-            $ref: "#/definitions/SideResponse"
+            $ref: "#/definitions/SideResponseDataObject"
         "401":
           description: "Unauthenticated"
           schema:
@@ -579,7 +572,7 @@ paths:
         "200":
           description: "Updated successfully"
           schema:
-            $ref: "#/definitions/SideResponse"
+            $ref: "#/definitions/SideResponseDataObject"
         "401":
           description: "Unauthenticated"
           schema:
@@ -676,7 +669,7 @@ paths:
         "201":
           description: "Created successfully"
           schema:
-            $ref: "#/definitions/ClipartResponse"
+            $ref: "#/definitions/ClipartResponseDataObject"
         "401":
           description: "Unauthenticated"
           schema:
@@ -696,7 +689,7 @@ paths:
         "200":
           description: "Retrieved successfully"
           schema:
-            $ref: "#/definitions/ClipartResponse"
+            $ref: "#/definitions/ClipartResponseDataArray"
         "401":
           description: "Unauthenticated"
           schema:
@@ -727,7 +720,7 @@ paths:
         "200":
           description: "Retrieved successfully"
           schema:
-            $ref: "#/definitions/ClipartResponse"
+            $ref: "#/definitions/ClipartResponseDataObject"
         "401":
           description: "Unauthenticated"
           schema:
@@ -773,7 +766,7 @@ paths:
         "200":
           description: "Updated successfully"
           schema:
-            $ref: "#/definitions/ClipartResponse"
+            $ref: "#/definitions/ClipartResponseDataObject"
         "401":
           description: "Unauthenticated"
           schema:
@@ -870,7 +863,7 @@ paths:
         "201":
           description: "Created successfully"
           schema:
-            $ref: "#/definitions/FontResponse"
+            $ref: "#/definitions/FontResponseDataObject"
         "401":
           description: "Unauthenticated"
           schema:
@@ -890,7 +883,7 @@ paths:
         "200":
           description: "Retrieved successfully"
           schema:
-            $ref: "#/definitions/FontResponse"
+            $ref: "#/definitions/FontResponseDataArray"
         "401":
           description: "Unauthenticated"
           schema:
@@ -918,7 +911,7 @@ paths:
       responses:
         "200":
           schema:
-            $ref: "#/definitions/FontResponse"
+            $ref: "#/definitions/FontResponseDataObject"
         "401":
           description: "Unauthenticated"
           schema:
@@ -964,7 +957,7 @@ paths:
         "200":
           description: "Updated successfully"
           schema:
-            $ref: "#/definitions/FontResponse"
+            $ref: "#/definitions/FontResponseDataObject"
         "401":
           description: "Unauthenticated"
           schema:
@@ -1056,7 +1049,7 @@ paths:
         "201":
           description: "File successfully uploaded"
           schema:
-            $ref: "#/definitions/ImageResponse"
+            $ref: "#/definitions/ImageResponseDataObject"
         "401":
           description: "Unauthenticated"
           schema:
@@ -1078,7 +1071,7 @@ paths:
         "200":
           description: "Retrieved successfully"
           schema:
-            $ref: "#/definitions/ImageResponse"
+            $ref: "#/definitions/ImageResponseDataArray"
         "401":
           description: "Unauthenticated"
           schema:
@@ -1109,7 +1102,7 @@ paths:
         "200":
           description: "Retrieved successfully"
           schema:
-            $ref: "#/definitions/ImageResponse"
+            $ref: "#/definitions/ImageResponseDataObject"
         "401":
           description: "Unauthenticated"
           schema:
@@ -1210,7 +1203,7 @@ paths:
         "201":
           description: "Created successfully"
           schema:
-            $ref: "#/definitions/DesignResponse"
+            $ref: "#/definitions/DesignResponseDataObject"
       security:
         - ApiKeyAuth: []
     get:
@@ -1226,7 +1219,7 @@ paths:
         "200":
           description: "Retrieved successfully"
           schema:
-            $ref: "#/definitions/DesignResponse"
+            $ref: "#/definitions/DesignResponseDataArray"
         "401":
           description: "Unauthenticated"
           schema:
@@ -1257,7 +1250,7 @@ paths:
         "200":
           description: "Retrieved successfully"
           schema:
-            $ref: "#/definitions/DesignResponse"
+            $ref: "#/definitions/DesignResponseDataObject"
         "401":
           description: "Unauthenticated"
           schema:
@@ -1303,7 +1296,7 @@ paths:
         "200":
           description: "Updated successfully"
           schema:
-            $ref: "#/definitions/DesignResponse"
+            $ref: "#/definitions/DesignResponseDataObject"
         "401":
           description: "Unauthenticated"
           schema:
@@ -1372,7 +1365,7 @@ paths:
         "200":
           description: "Retrieved successfully"
           schema:
-            $ref: "#/definitions/CategoryResponse"
+            $ref: "#/definitions/CategoryResponseDataArray"
         "401":
           description: "Unauthenticated"
           schema:
@@ -1435,7 +1428,7 @@ paths:
         "201":
           description: "Created successfully"
           schema:
-            $ref: "#/definitions/CategoryResponse"
+            $ref: "#/definitions/CategoryResponseDataObject"
         "401":
           description: "Unauthenticated"
           schema:
@@ -1455,7 +1448,7 @@ paths:
         "200":
           description: "Retrieved successfully"
           schema:
-            $ref: "#/definitions/CategoryResponse"
+            $ref: "#/definitions/CategoryResponseDataArray"
         "401":
           description: "Unauthenticated"
           schema:
@@ -1486,7 +1479,7 @@ paths:
         "200":
           description: "Retrieved successfully"
           schema:
-            $ref: "#/definitions/CategoryResponse"
+            $ref: "#/definitions/CategoryResponseDataObject"
         "401":
           description: "Unauthenticated"
           schema:
@@ -1532,7 +1525,7 @@ paths:
         "200":
           description: "Updated successfully"
           schema:
-            $ref: "#/definitions/CategoryResponse"
+            $ref: "#/definitions/CategoryResponseDataObject"
         "401":
           description: "Unauthenticated"
           schema:
@@ -1601,7 +1594,7 @@ paths:
         "200":
           description: "Retrieved successfully"
           schema:
-            $ref: "#/definitions/DesignResponse"
+            $ref: "#/definitions/DesignResponseDataArray"
         "401":
           description: "Unauthenticated"
           schema:
@@ -1664,7 +1657,7 @@ paths:
         "201":
           description: "Created successfully"
           schema:
-            $ref: "#/definitions/ProjectResponse"
+            $ref: "#/definitions/ProjectResponseDataObject"
         "401":
           description: "Unauthenticated"
           schema:
@@ -1684,7 +1677,7 @@ paths:
         "200":
           description: "Retrieved successfully"
           schema:
-            $ref: "#/definitions/ProjectResponse"
+            $ref: "#/definitions/ProjectResponseDataArray"
         "401":
           description: "Unauthenticated"
           schema:
@@ -1715,7 +1708,7 @@ paths:
         "200":
           description: "Retrieved successfully"
           schema:
-            $ref: "#/definitions/ProjectResponse"
+            $ref: "#/definitions/ProjectResponseDataObject"
         "401":
           description: "Unauthenticated"
           schema:
@@ -1761,7 +1754,7 @@ paths:
         "200":
           description: "Updated successfully"
           schema:
-            $ref: "#/definitions/ProjectResponse"
+            $ref: "#/definitions/ProjectResponseDataObject"
         "401":
           description: "Unauthenticated"
           schema:
@@ -1830,7 +1823,7 @@ paths:
         "200":
           description: "Retrieved successfully"
           schema:
-            $ref: "#/definitions/DesignResponse"
+            $ref: "#/definitions/DesignResponseDataArray"
         "401":
           description: "Unauthenticated"
           schema:
@@ -1865,7 +1858,7 @@ paths:
         "200":
           description: "Retrieved successfully"
           schema:
-            $ref: "#/definitions/ProductResponse"
+            $ref: "#/definitions/ProductResponseDataArray"
         "401":
           description: "Unauthenticated"
           schema:
@@ -2007,8 +2000,8 @@ definitions:
       message:
         type: "string"
     xml:
-      name: "UserToken"
-  ApiToken:
+      name: "UserResponse"
+  ApiTokenResponse:
     type: "object"
     properties:
       api_token:
@@ -2016,7 +2009,7 @@ definitions:
       message:
         type: "string"
     xml:
-      name: "ApiToken"
+      name: "ApiTokenResponse"
   Font:
     type: "object"
     required:
@@ -2031,29 +2024,49 @@ definitions:
   FontResponse:
     type: "object"
     properties:
-      data:
-        type: "object"
-        properties:
-          id:
-            type: "string"
-          name:
-            type: "string"
-          url:
-            type: "string"
-          created_at:
-            type: "string"
-          updated_at:
-            type: "string"
-      message:
+      id:
+        type: "string"
+      name:
+        type: "string"
+      url:
+        type: "string"
+      created_at:
+        type: "string"
+      updated_at:
         type: "string"
     xml:
       name: "FontResponse"
+  FontResponseDataObject:
+    type: "object"
+    properties:
+      data:
+        type: "object"
+        $ref: "#/definitions/FontResponse"
+      message: 
+        type: "string"
+    xml:
+      name: "FontResponseDataObject"
+  FontResponseDataArray:
+    type: "object"
+    properties:
+      data:
+        type: "array"
+        items:
+          type: "object"
+          $ref: "#/definitions/FontResponse"
+      message:
+        type: "string"
+    xml:
+      name: "FontResponseDataArray"
   FontCount:
     type: "object"
     properties:
-      count:
-        type: "integer"
-        format: "int64"
+      data: 
+        type: "object"
+        properties:
+          count:
+            type: "integer"
+            format: "int64"
     xml:
       name: "FontCount"
   ImageResponse:
@@ -2077,16 +2090,39 @@ definitions:
         type: "string"
       updated_at:
         type: "string"
-      message:
-        type: "string"
     xml:
       name: "ImageResponse"
+  ImageResponseDataObject:
+    type: "object"
+    properties:
+      data:
+        type: "object"
+        $ref: "#/definitions/ImageResponse"
+      message: 
+        type: "string"
+    xml:
+      name: "ImageResponseDataObject"
+  ImageResponseDataArray:
+    type: "object"
+    properties:
+      data:
+        type: "array"
+        items:
+          type: "object"
+          $ref: "#/definitions/ImageResponse"
+      message: 
+        type: "string"
+    xml:
+      name: "ImageResponseDataArray"
   ImageCount:
     type: "object"
     properties:
-      count:
-        type: "integer"
-        format: "int64"
+      data: 
+        type: "object"
+        properties:
+          count:
+            type: "integer"
+            format: "int64"
     xml:
       name: "ImageCount"
   Clipart:
@@ -2104,24 +2140,53 @@ definitions:
   ClipartResponse:
     type: "object"
     properties:
+      id:
+        type: "string"
       name:
         type: "string"
-      image:
-        $ref: "#/definitions/ImageResponse"
+      width:
+        type: "integer"
+        format: "int64"
+      height:
+        type: "integer"
+        format: "int64"
       created_at:
         type: "string"
       updated_at:
         type: "string"
+    xml:
+      name: "ClipartResponse"
+  ClipartResponseDataObject:
+    type: "object"
+    properties:
+      data:
+        type: "object"
+        $ref: "#/definitions/ClipartResponse"
       message:
         type: "string"
     xml:
-      name: "ClipartResponse"
+      name: "ClipartResponseDataObject"
+  ClipartResponseDataArray:
+    type: "object"
+    properties:
+      data:
+        type: "array"
+        items:
+          type: "object"
+          $ref: "#/definitions/ClipartResponse"
+      message:
+        type: "string"
+    xml:
+      name: "ClipartResponseDataArray"
   ClipartCount:
     type: "object"
     properties:
-      count:
-        type: "integer"
-        format: "int64"
+      data: 
+        type: "object"
+        properties:
+          count:
+            type: "integer"
+            format: "int64"
     xml:
       name: "ClipartCount"
   Product:
@@ -2220,18 +2285,42 @@ definitions:
         type: "string"
       updated_at:
         type: "string"
+      
+    xml:
+      name: "ProductResponse"
+  ProductResponseDataObject:
+    type: "object"
+    properties:
+      data:
+        type: "object"
+        $ref: "#/definitions/ProductResponse"
       message:
         type: "string"
     xml:
-      name: "ProductResponse"
+      name: "ProductResponseDataObject"
+  ProductResponseDataArray:
+    type: "object"
+    properties:
+      data:
+        type: "array"
+        items:
+          type: "object"
+          $ref: "#/definitions/ProductResponse"   
+      message:
+        type: "string"
+    xml:
+      name: "ProductResponseDataArray"
   ProductCount:
     type: "object"
     properties:
-      count:
-        type: "integer"
-        format: "int64"
+      data:
+        type: "object"
+        properties:
+          count:
+            type: "integer"
+            format: "int64"
     xml:
-      name: "ProductResponse"
+      name: "ProductCount"
   Project:
     type: "object"
     required:
@@ -2254,9 +2343,12 @@ definitions:
   ProjectCount:
     type: "object"
     properties:
-      count:
-        type: "integer"
-        format: "int64"
+      data:
+        type: "object"
+        properties:
+          count:
+            type: "integer"
+            format: "int64"
     xml:
       name: "ProjectCount"
   ProjectResponse:
@@ -2280,10 +2372,30 @@ definitions:
         type: "string"
       updated_at:
         type: "string"
-      message:
-        type: "string"
     xml:
       name: "ProjectResponse"
+  ProjectResponseDataObject:
+    type: "object"
+    properties:
+      data:
+        type: "object"
+        $ref: "#/definitions/ProjectResponse"
+      message:
+        type: "string"
+    xml: 
+      name: "ProjectResponseDataObject"
+  ProjectResponseDataArray:
+    type: "object"
+    properties:
+      data:
+        type: "array"
+        items:
+          type: "object"
+          $ref: "#/definitions/ProjectResponse"
+      message:
+        type: "string"
+    xml: 
+      name: "ProjectResponseDataArray"      
   Side:
     type: "object"
     required:
@@ -2381,9 +2493,12 @@ definitions:
   SideCount:
     type: "object"
     properties:
-      count:
-        type: "integer"
-        format: "int64"
+      data:
+        type: "object"
+        properties:
+          count:
+            type: "integer"
+            format: "int64"
     xml:
       name: "SideCount"
   SideResponse:
@@ -2480,10 +2595,30 @@ definitions:
         type: "string"
       updated_at:
         type: "string"
+    xml:
+      name: "SideResponse"
+  SideResponseDataObject:
+    type: "object"
+    properties:
+      data:
+        type: "object"
+        $ref: "#/definitions/SideResponse"
       message:
         type: "string"
     xml:
-      name: "SideResponse"
+      name: "SideResponseDataObject"
+  SideResponseDataArray:
+    type: "object"
+    properties:
+      data:
+        type: "array"
+        items:
+          type: "object"
+          $ref: "#/definitions/SideResponse"   
+      message:
+        type: "string"
+    xml:
+      name: "SideResponseDataArray"
   Category:
     type: "object"
     required:
@@ -2498,9 +2633,12 @@ definitions:
   CategoryCount:
     type: "object"
     properties:
-      count:
-        type: "integer"
-        format: "int64"
+      data:
+        type: "object"
+        properties:
+          count:
+            type: "integer"
+            format: "int64"
     xml:
       name: "CategoryCount"
   CategoryResponse:
@@ -2511,15 +2649,35 @@ definitions:
       name:
         type: "string"
       parent:
-        $ref: "#/definitions/Category"
+        type: "string"
       created_at:
         type: "string"
       updated_at:
         type: "string"
+    xml:
+      name: "CategoryResponse"
+  CategoryResponseDataObject:
+    type: "object"
+    properties:
+      data:
+        type: "object"
+        $ref: "#/definitions/CategoryResponse"
       message:
         type: "string"
     xml:
-      name: "CategoryResponse"
+      name: "CategoryResponseDataObject"
+  CategoryResponseDataArray:
+    type: "object"
+    properties:
+      data:
+        type: "array"
+        items:
+          type: "object"
+          $ref: "#/definitions/CategoryResponse"
+      message:
+        type: "string"
+    xml:
+      name: "CategoryResponseDataArray"
   Design:
     type: "object"
     required:
@@ -2571,9 +2729,12 @@ definitions:
   DesignCount:
     type: "object"
     properties:
-      count:
-        type: "integer"
-        format: "int64"
+      data:
+        type: "object"
+        properties:
+          count:
+            type: "integer"
+            format: "int64"
     xml:
       name: "DesignCount"
   DesignResponse:
@@ -2623,10 +2784,30 @@ definitions:
         type: "string"
       updated_at:
         type: "string"
+    xml:
+      name: "DesignResponse"
+  DesignResponseDataObject:
+    type: "object"
+    properties:
+      data:
+        type: "object"
+        $ref: "#/definitions/DesignResponse"
       message:
         type: "string"
     xml:
-      name: "DesignResponse"
+      name: "DesignResponseDataObject"
+  DesignResponseDataArray:
+    type: "object"
+    properties:
+      data:
+        type: "array"
+        items:
+          type: "object"
+          $ref: "#/definitions/DesignResponse"
+      message:
+        type: "string"
+    xml:
+      name: "DesignResponseDataArray"          
   Unauthenticated:
     type: "object"
     properties: 
