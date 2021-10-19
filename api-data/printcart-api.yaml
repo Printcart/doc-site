@@ -2858,7 +2858,7 @@ definitions:
       name:
         type: "string"
         example: "printcart"
-      parent_storage_id:
+      parent_id:
         type: "string"
         example: null
     xml:
