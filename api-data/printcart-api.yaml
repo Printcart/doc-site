@@ -46,10 +46,12 @@ paths:
       responses:
         "400":
           description: "Invalid input"
+          schema:
+            $ref: "#/definitions/InvalidInput"
         "201":
           description: "Created successfully"
           schema:
-            $ref: "#/definitions/UserResponse"
+            $ref: "#/definitions/UserResponseStore" 
     get:
       tags:
         - "Account"
@@ -61,7 +63,11 @@ paths:
         "200":
           description: "Retrieved successfully"
           schema:
-            $ref: "#/definitions/UserResponse"
+            $ref: "#/definitions/UserResponseShow"
+        "401":
+          description: "Unauthenticated"
+          schema:
+            $ref: "#/definitions/Unauthenticated"
       security:
         - ApiKeyAuth: []
     put:
@@ -85,10 +91,16 @@ paths:
       responses:
         "400":
           description: "Invalid input"
+          schema:
+            $ref: "#/definitions/InvalidInput"
         "200":
           description: "Updated successfully"
           schema:
-            $ref: "#/definitions/UserResponse"
+            $ref: "#/definitions/UserResponseUpdate"
+        "401":
+          description: "Unauthenticated"
+          schema:
+            $ref: "#/definitions/Unauthenticated"
       security:
         - ApiKeyAuth:
             - "write:pets"
@@ -105,18 +117,15 @@ paths:
         - "application/json"
       produces:
         - "application/json"
-      parameters:
-        - in: "body"
-          name: "body"
-          # description: "Pet object that needs to be added to the store"
-          required: true
-          schema:
-            $ref: "#/definitions/ApiToken"
       responses:
         "200":
           description: "Updated successfully"
           schema:
-            $ref: "#/definitions/ApiToken"
+            $ref: "#/definitions/ApiTokenResponse"
+        "401":
+          description: "Unauthenticated"
+          schema:
+            $ref: "#/definitions/Unauthenticated"
       security:
         - ApiKeyAuth:
             - "write:pets"
@@ -143,10 +152,16 @@ paths:
       responses:
         "400":
           description: "Invalid input"
+          schema:
+            $ref: "#/definitions/InvalidInput"
         "201":
           description: "Created successfully"
           schema:
-            $ref: "#/definitions/ProductResponse"
+            $ref: "#/definitions/ProductResponseStore"
+        "401":
+          description: "Unauthenticated"
+          schema:
+            $ref: "#/definitions/Unauthenticated"
       security:
         - BasicAuth: []
     get:
@@ -162,9 +177,15 @@ paths:
         "200":
           description: "Retrieved successfully"
           schema:
-            $ref: "#/definitions/ProductResponse"
+            $ref: "#/definitions/ProductResponseShowDataArray"
         "404":
           description: "Not found"
+          schema:
+            $ref: "#/definitions/NotFound"
+        "401":
+          description: "Unauthenticated"
+          schema:
+            $ref: "#/definitions/Unauthenticated"
       security:
         - ApiKeyAuth: []
   /products/{productId}:
@@ -187,11 +208,19 @@ paths:
         "200":
           description: "Retrieved successfully"
           schema:
-            $ref: "#/definitions/ProductResponse"
+            $ref: "#/definitions/ProductResponseShowDataObject"
         "403":
           description: "Forbidden"
+          schema:
+            $ref: "#/definitions/Forbidden"
         "404":
           description: "Not found"
+          schema:
+            $ref: "#/definitions/NotFound"
+        "401":
+          description: "Unauthenticated"
+          schema:
+            $ref: "#/definitions/Unauthenticated"
       security:
         - ApiKeyAuth: []
     put:
@@ -220,14 +249,24 @@ paths:
       responses:
         "400":
           description: "Invalid input"
+          schema:
+            $ref: "#/definitions/InvalidInput"
         "200":
           description: "Updated successfully"
           schema:
-            $ref: "#/definitions/ProductResponse"
+            $ref: "#/definitions/ProductResponseUpdate"
+        "401":
+          description: "Unauthenticated"
+          schema:
+            $ref: "#/definitions/Unauthenticated"
         "403":
           description: "Forbidden"
+          schema:
+            $ref: "#/definitions/Forbidden"
         "404":
           description: "Not found"
+          schema:
+            $ref: "#/definitions/NotFound"
       security:
         - BasicAuth: []
     delete:
@@ -248,10 +287,20 @@ paths:
       responses:
         "204":
           description: "Deleted successfully"
+          schema:
+            $ref: "#/definitions/Deleted"
+        "401":
+          description: "Unauthenticated"
+          schema:
+            $ref: "#/definitions/Unauthenticated"
         "403":
           description: "Forbidden"
+          schema:
+            $ref: "#/definitions/Forbidden"
         "404":
           description: "Not found"
+          schema:
+            $ref: "#/definitions/NotFound"
       security:
         - BasicAuth: []
   /products/{productId}/designs:
@@ -274,11 +323,19 @@ paths:
         "200":
           description: "Retrieved successfully"
           schema:
-            $ref: "#/definitions/DesignResponse"
+            $ref: "#/definitions/DesignResponseShowDataArray"
+        "401":
+          description: "Unauthenticated"
+          schema:
+            $ref: "#/definitions/Unauthenticated"
         "403":
           description: "Forbidden"
+          schema:
+            $ref: "#/definitions/Forbidden"
         "404":
           description: "Not found"
+          schema:
+            $ref: "#/definitions/NotFound"
       security:
         - ApiKeyAuth: []
   /products/{productId}/sides:
@@ -301,11 +358,19 @@ paths:
         "200":
           description: "Retrieved successfully"
           schema:
-            $ref: "#/definitions/SideResponse"
+            $ref: "#/definitions/SideResponseShowDataArray"
+        "401":
+          description: "Unauthenticated"
+          schema:
+            $ref: "#/definitions/Unauthenticated"
         "403":
           description: "Forbidden"
+          schema:
+            $ref: "#/definitions/Forbidden"
         "404":
           description: "Not found"
+          schema:
+            $ref: "#/definitions/NotFound"
       security:
         - ApiKeyAuth: []
   /products/{productId}/designs/count:
@@ -329,6 +394,10 @@ paths:
           description: "Retrieved successfully"
           schema:
             $ref: "#/definitions/DesignCount"
+        "401":
+          description: "Unauthenticated"
+          schema:
+            $ref: "#/definitions/Unauthenticated"
       security:
         - ApiKeyAuth: []
   /products/{productId}/sides/count:
@@ -352,6 +421,10 @@ paths:
           description: "Retrieved successfully"
           schema:
             $ref: "#/definitions/SideCount"
+        "401":
+          description: "Unauthenticated"
+          schema:
+            $ref: "#/definitions/Unauthenticated"
       security:
         - ApiKeyAuth: []
   /products/count:
@@ -369,6 +442,10 @@ paths:
           description: "Retrieved successfully"
           schema:
             $ref: "#/definitions/ProductCount"
+        "401":
+          description: "Unauthenticated"
+          schema:
+            $ref: "#/definitions/Unauthenticated"
       security:
         - ApiKeyAuth: []
   /sides:
@@ -393,10 +470,16 @@ paths:
       responses:
         "400":
           description: "Invalid input"
+          schema:
+            $ref: "#/definitions/InvalidInput"
         "201":
           description: "Created successfully"
           schema:
-            $ref: "#/definitions/SideResponse"
+            $ref: "#/definitions/SideResponseStore"
+        "401":
+          description: "Unauthenticated"
+          schema:
+            $ref: "#/definitions/Unauthenticated"
       security:
         - BasicAuth: []
     get:
@@ -412,9 +495,15 @@ paths:
         "200":
           description: "Retrieved successfully"
           schema:
-            $ref: "#/definitions/SideResponse"
+            $ref: "#/definitions/SideResponseShowDataArray"
+        "401":
+          description: "Unauthenticated"
+          schema:
+            $ref: "#/definitions/Unauthenticated"
         "404":
           description: "Not found"
+          schema:
+            $ref: "#/definitions/NotFound"
       security:
         - ApiKeyAuth: []
   /sides/{sideId}:
@@ -437,11 +526,19 @@ paths:
         "200":
           description: "Retrieved successfully"
           schema:
-            $ref: "#/definitions/SideResponse"
+            $ref: "#/definitions/SideResponseShowDataObject"
+        "401":
+          description: "Unauthenticated"
+          schema:
+            $ref: "#/definitions/Unauthenticated"
         "403":
           description: "Forbidden"
+          schema:
+            $ref: "#/definitions/Forbidden"
         "404":
           description: "Not found"
+          schema:
+            $ref: "#/definitions/NotFound"
       security:
         - ApiKeyAuth: []
     put:
@@ -470,14 +567,24 @@ paths:
       responses:
         "400":
           description: "Invalid input"
+          schema:
+            $ref: "#/definitions/InvalidInput"
         "200":
           description: "Updated successfully"
           schema:
-            $ref: "#/definitions/SideResponse"
+            $ref: "#/definitions/SideResponseUpdate"
+        "401":
+          description: "Unauthenticated"
+          schema:
+            $ref: "#/definitions/Unauthenticated"
         "403":
           description: "Forbidden"
+          schema:
+            $ref: "#/definitions/Forbidden"
         "404":
           description: "Not found"
+          schema:
+            $ref: "#/definitions/NotFound"
       security:
         - BasicAuth: []
     delete:
@@ -498,10 +605,20 @@ paths:
       responses:
         "204":
           description: "Deleted successfully"
+          schema:
+            $ref: "#/definitions/Deleted"
+        "401":
+          description: "Unauthenticated"
+          schema:
+            $ref: "#/definitions/Unauthenticated"
         "403":
           description: "Forbidden"
+          schema:
+            $ref: "#/definitions/Forbidden"
         "404":
           description: "Not found"
+          schema:
+            $ref: "#/definitions/NotFound"
       security:
         - BasicAuth: []
   /sides/count:
@@ -519,6 +636,10 @@ paths:
           description: "Retrieved successfully"
           schema:
             $ref: "#/definitions/SideCount"
+        "401":
+          description: "Unauthenticated"
+          schema:
+            $ref: "#/definitions/Unauthenticated"
       security:
         - ApiKeyAuth: []
   /cliparts:
@@ -543,10 +664,16 @@ paths:
       responses:
         "400":
           description: "Invalid input"
+          schema:
+            $ref: "#/definitions/InvalidInput"
         "201":
           description: "Created successfully"
           schema:
-            $ref: "#/definitions/ClipartResponse"
+            $ref: "#/definitions/ClipartResponseStore"
+        "401":
+          description: "Unauthenticated"
+          schema:
+            $ref: "#/definitions/Unauthenticated"
       security:
         - BasicAuth: []
     get:
@@ -562,9 +689,15 @@ paths:
         "200":
           description: "Retrieved successfully"
           schema:
-            $ref: "#/definitions/ClipartResponse"
+            $ref: "#/definitions/ClipartResponseShowDataArray"
+        "401":
+          description: "Unauthenticated"
+          schema:
+            $ref: "#/definitions/Unauthenticated"
         "404":
           description: "Not found"
+          schema:
+            $ref: "#/definitions/NotFound"
       security:
         - ApiKeyAuth: []
   /cliparts/{clipartId}:
@@ -587,11 +720,19 @@ paths:
         "200":
           description: "Retrieved successfully"
           schema:
-            $ref: "#/definitions/ClipartResponse"
+            $ref: "#/definitions/ClipartResponseShowDataObject"
+        "401":
+          description: "Unauthenticated"
+          schema:
+            $ref: "#/definitions/Unauthenticated"
         "403":
           description: "Forbidden"
+          schema:
+            $ref: "#/definitions/Forbidden"
         "404":
           description: "Not found"
+          schema:
+            $ref: "#/definitions/NotFound"
       security:
         - ApiKeyAuth: []
     put:
@@ -620,14 +761,24 @@ paths:
       responses:
         "400":
           description: "Invalid input"
+          schema:
+            $ref: "#/definitions/InvalidInput"
         "200":
           description: "Updated successfully"
           schema:
-            $ref: "#/definitions/ClipartResponse"
+            $ref: "#/definitions/ClipartResponseUpdate"
+        "401":
+          description: "Unauthenticated"
+          schema:
+            $ref: "#/definitions/Unauthenticated"
         "403":
           description: "Forbidden"
+          schema:
+            $ref: "#/definitions/Forbidden"
         "404":
           description: "Not found"
+          schema:
+            $ref: "#/definitions/NotFound"
       security:
         - BasicAuth: []
     delete:
@@ -648,10 +799,20 @@ paths:
       responses:
         "204":
           description: "Deleted successfully"
+          schema:
+            $ref: "#/definitions/Deleted"
+        "401":
+          description: "Unauthenticated"
+          schema:
+            $ref: "#/definitions/Unauthenticated"
         "403":
           description: "Forbidden"
+          schema:
+            $ref: "#/definitions/Forbidden"
         "404":
           description: "Not found"
+          schema:
+            $ref: "#/definitions/NotFound"
       security:
         - BasicAuth: []
   /cliparts/count:
@@ -669,6 +830,10 @@ paths:
           description: "Retrieved successfully"
           schema:
             $ref: "#/definitions/ClipartCount"
+        "401":
+          description: "Unauthenticated"
+          schema:
+            $ref: "#/definitions/Unauthenticated"
       security:
         - ApiKeyAuth: []
   /fonts:
@@ -693,10 +858,16 @@ paths:
       responses:
         "400":
           description: "Invalid input"
+          schema:
+            $ref: "#/definitions/InvalidInput"
         "201":
           description: "Created successfully"
           schema:
-            $ref: "#/definitions/FontResponse"
+            $ref: "#/definitions/FontResponseStore"
+        "401":
+          description: "Unauthenticated"
+          schema:
+            $ref: "#/definitions/Unauthenticated"
       security:
         - BasicAuth: []
     get:
@@ -712,9 +883,15 @@ paths:
         "200":
           description: "Retrieved successfully"
           schema:
-            $ref: "#/definitions/FontResponse"
+            $ref: "#/definitions/FontResponseShowDataArray"
+        "401":
+          description: "Unauthenticated"
+          schema:
+            $ref: "#/definitions/Unauthenticated"
         "404":
           description: "Not found"
+          schema:
+            $ref: "#/definitions/NotFound"
       security:
         - ApiKeyAuth: []
   /fonts/{fontId}:
@@ -734,11 +911,19 @@ paths:
       responses:
         "200":
           schema:
-            $ref: "#/definitions/FontResponse"
+            $ref: "#/definitions/FontResponseShowDataObject"
+        "401":
+          description: "Unauthenticated"
+          schema:
+            $ref: "#/definitions/Unauthenticated"
         "403":
           description: "Forbidden"
+          schema:
+            $ref: "#/definitions/Forbidden"
         "404":
           description: "Not found"
+          schema:
+            $ref: "#/definitions/NotFound"
       security:
         - ApiKeyAuth: []
     put:
@@ -767,14 +952,24 @@ paths:
       responses:
         "400":
           description: "Invalid input"
+          schema:
+            $ref: "#/definitions/InvalidInput"
         "200":
           description: "Updated successfully"
           schema:
-            $ref: "#/definitions/FontResponse"
+            $ref: "#/definitions/FontResponseUpdate"
+        "401":
+          description: "Unauthenticated"
+          schema:
+            $ref: "#/definitions/Unauthenticated"
         "403":
           description: "Forbidden"
+          schema:
+            $ref: "#/definitions/Forbidden"
         "404":
           description: "Not found"
+          schema:
+            $ref: "#/definitions/NotFound"
       security:
         - BasicAuth: []
     delete:
@@ -795,10 +990,20 @@ paths:
       responses:
         "204":
           description: "Deleted successfully"
+          schema:
+            $ref: "#/definitions/Deleted"
+        "401":
+          description: "Unauthenticated"
+          schema:
+            $ref: "#/definitions/Unauthenticated"
         "403":
           description: "Forbidden"
+          schema:
+            $ref: "#/definitions/Forbidden"
         "404":
           description: "Not found"
+          schema:
+            $ref: "#/definitions/NotFound"
       security:
         - BasicAuth: []
   /fonts/count:
@@ -816,6 +1021,10 @@ paths:
           description: "Retrieved successfully"
           schema:
             $ref: "#/definitions/FontCount"
+        "401":
+          description: "Unauthenticated"
+          schema:
+            $ref: "#/definitions/Unauthenticated"
       security:
         - ApiKeyAuth: []
   /images:
@@ -840,7 +1049,11 @@ paths:
         "201":
           description: "File successfully uploaded"
           schema:
-            $ref: "#/definitions/ImageResponse"
+            $ref: "#/definitions/ImageResponseStore"
+        "401":
+          description: "Unauthenticated"
+          schema:
+            $ref: "#/definitions/Unauthenticated"
         "405":
           description: "File upload missing"
       security:
@@ -858,9 +1071,15 @@ paths:
         "200":
           description: "Retrieved successfully"
           schema:
-            $ref: "#/definitions/ImageResponse"
+            $ref: "#/definitions/ImageResponseShowDataArray"
+        "401":
+          description: "Unauthenticated"
+          schema:
+            $ref: "#/definitions/Unauthenticated"
         "404":
           description: "Not found"
+          schema:
+            $ref: "#/definitions/NotFound"
       security:
         - ApiKeyAuth: []
   /images/{imageId}:
@@ -883,11 +1102,19 @@ paths:
         "200":
           description: "Retrieved successfully"
           schema:
-            $ref: "#/definitions/ImageResponse"
+            $ref: "#/definitions/ImageResponseShowDataObject"
+        "401":
+          description: "Unauthenticated"
+          schema:
+            $ref: "#/definitions/Unauthenticated"
         "403":
           description: "Forbidden"
+          schema:
+            $ref: "#/definitions/Forbidden"
         "404":
           description: "Not found"
+          schema:
+            $ref: "#/definitions/NotFound"
       security:
         - ApiKeyAuth: []
     delete:
@@ -908,10 +1135,20 @@ paths:
       responses:
         "204":
           description: "Deleted successfully"
+          schema:
+            $ref: "#/definitions/Deleted"
+        "401":
+          description: "Unauthenticated"
+          schema:
+            $ref: "#/definitions/Unauthenticated"
         "403":
           description: "Forbidden"
+          schema:
+            $ref: "#/definitions/Forbidden"
         "404":
           description: "Not found"
+          schema:
+            $ref: "#/definitions/NotFound"
       security:
         - BasicAuth: []
   /images/count:
@@ -929,6 +1166,10 @@ paths:
           description: "Retrieved successfully"
           schema:
             $ref: "#/definitions/ImageCount"
+        "401":
+          description: "Unauthenticated"
+          schema:
+            $ref: "#/definitions/Unauthenticated"
       security:
         - ApiKeyAuth: []
   /designs:
@@ -953,10 +1194,16 @@ paths:
       responses:
         "400":
           description: "Invalid input"
+          schema:
+            $ref: "#/definitions/InvalidInput"
+        "401":
+          description: "Unauthenticated"
+          schema:
+            $ref: "#/definitions/Unauthenticated"
         "201":
           description: "Created successfully"
           schema:
-            $ref: "#/definitions/DesignResponse"
+            $ref: "#/definitions/DesignResponseStore"
       security:
         - ApiKeyAuth: []
     get:
@@ -972,9 +1219,15 @@ paths:
         "200":
           description: "Retrieved successfully"
           schema:
-            $ref: "#/definitions/DesignResponse"
+            $ref: "#/definitions/DesignResponseShowDataArray"
+        "401":
+          description: "Unauthenticated"
+          schema:
+            $ref: "#/definitions/Unauthenticated"
         "404":
           description: "Not found"
+          schema:
+            $ref: "#/definitions/NotFound"
       security:
         - ApiKeyAuth: []
   /designs/{designId}:
@@ -997,11 +1250,19 @@ paths:
         "200":
           description: "Retrieved successfully"
           schema:
-            $ref: "#/definitions/DesignResponse"
+            $ref: "#/definitions/DesignResponseShowDataObject"
+        "401":
+          description: "Unauthenticated"
+          schema:
+            $ref: "#/definitions/Unauthenticated"
         "403":
           description: "Forbidden"
+          schema:
+            $ref: "#/definitions/Forbidden"
         "404":
           description: "Not found"
+          schema:
+            $ref: "#/definitions/NotFound"
       security:
         - ApiKeyAuth: []
     put:
@@ -1030,14 +1291,24 @@ paths:
       responses:
         "400":
           description: "Invalid input"
+          schema:
+            $ref: "#/definitions/InvalidInput"
         "200":
           description: "Updated successfully"
           schema:
-            $ref: "#/definitions/DesignResponse"
+            $ref: "#/definitions/DesignResponseUpdate"
+        "401":
+          description: "Unauthenticated"
+          schema:
+            $ref: "#/definitions/Unauthenticated"    
         "403":
           description: "Forbidden"
+          schema:
+            $ref: "#/definitions/Forbidden"
         "404":
           description: "Not found"
+          schema:
+            $ref: "#/definitions/NotFound"
       security:
         - ApiKeyAuth: []
     delete:
@@ -1058,10 +1329,20 @@ paths:
       responses:
         "204":
           description: "Deleted successfully"
+          schema:
+            $ref: "#/definitions/Deleted"
+        "401":
+          description: "Unauthenticated"
+          schema:
+            $ref: "#/definitions/Unauthenticated"  
         "403":
           description: "Forbidden"
+          schema:
+            $ref: "#/definitions/Forbidden"
         "404":
           description: "Not found"
+          schema:
+            $ref: "#/definitions/NotFound"
       security:
         - ApiKeyAuth: []
   /designs/{designId}/storages:
@@ -1084,11 +1365,19 @@ paths:
         "200":
           description: "Retrieved successfully"
           schema:
-            $ref: "#/definitions/CategoryResponse"
+            $ref: "#/definitions/CategoryResponseShowDataArray"
+        "401":
+          description: "Unauthenticated"
+          schema:
+            $ref: "#/definitions/Unauthenticated"    
         "403":
           description: "Forbidden"
+          schema:
+            $ref: "#/definitions/Forbidden"
         "404":
           description: "Not found"
+          schema:
+            $ref: "#/definitions/NotFound"
       security:
         - BasicAuth: []
   /designs/count:
@@ -1106,6 +1395,10 @@ paths:
           description: "Retrieved successfully"
           schema:
             $ref: "#/definitions/DesignCount"
+        "401":
+          description: "Unauthenticated"
+          schema:
+            $ref: "#/definitions/Unauthenticated"    
       security:
         - ApiKeyAuth: []
   /storages:
@@ -1130,10 +1423,16 @@ paths:
       responses:
         "400":
           description: "Invalid input"
+          schema:
+            $ref: "#/definitions/InvalidInput"
         "201":
           description: "Created successfully"
           schema:
-            $ref: "#/definitions/CategoryResponse"
+            $ref: "#/definitions/CategoryResponseStore"
+        "401":
+          description: "Unauthenticated"
+          schema:
+            $ref: "#/definitions/Unauthenticated"    
       security:
         - BasicAuth: []
     get:
@@ -1149,9 +1448,15 @@ paths:
         "200":
           description: "Retrieved successfully"
           schema:
-            $ref: "#/definitions/CategoryResponse"
+            $ref: "#/definitions/CategoryResponseShowDataArray"
+        "401":
+          description: "Unauthenticated"
+          schema:
+            $ref: "#/definitions/Unauthenticated"    
         "404":
           description: "Not found"
+          schema:
+            $ref: "#/definitions/NotFound"
       security:
         - BasicAuth: []
   /storages/{storageId}:
@@ -1174,11 +1479,19 @@ paths:
         "200":
           description: "Retrieved successfully"
           schema:
-            $ref: "#/definitions/CategoryResponse"
+            $ref: "#/definitions/CategoryResponseShowDataObject"
+        "401":
+          description: "Unauthenticated"
+          schema:
+            $ref: "#/definitions/Unauthenticated"    
         "403":
           description: "Forbidden"
+          schema:
+            $ref: "#/definitions/Forbidden"
         "404":
           description: "Not found"
+          schema:
+            $ref: "#/definitions/NotFound"
       security:
         - BasicAuth: []
     put:
@@ -1207,14 +1520,24 @@ paths:
       responses:
         "400":
           description: "Invalid input"
+          schema:
+            $ref: "#/definitions/InvalidInput"
         "200":
           description: "Updated successfully"
           schema:
-            $ref: "#/definitions/CategoryResponse"
+            $ref: "#/definitions/CategoryResponseUpdate"
+        "401":
+          description: "Unauthenticated"
+          schema:
+            $ref: "#/definitions/Unauthenticated"    
         "403":
           description: "Forbidden"
+          schema:
+            $ref: "#/definitions/Forbidden"
         "404":
           description: "Not found"
+          schema:
+            $ref: "#/definitions/NotFound"
       security:
         - BasicAuth: []
     delete:
@@ -1235,10 +1558,20 @@ paths:
       responses:
         "204":
           description: "Deleted successfully"
+          schema:
+            $ref: "#/definitions/Deleted"
+        "401":
+          description: "Unauthenticated"
+          schema:
+            $ref: "#/definitions/Unauthenticated"  
         "403":
           description: "Forbidden"
+          schema:
+            $ref: "#/definitions/Forbidden"
         "404":
           description: "Not found"
+          schema:
+            $ref: "#/definitions/NotFound"
       security:
         - BasicAuth: []
   /storages/{storageId}/designs:
@@ -1261,11 +1594,19 @@ paths:
         "200":
           description: "Retrieved successfully"
           schema:
-            $ref: "#/definitions/DesignResponse"
+            $ref: "#/definitions/DesignResponseShowDataArray"
+        "401":
+          description: "Unauthenticated"
+          schema:
+            $ref: "#/definitions/Unauthenticated"    
         "403":
           description: "Forbidden"
+          schema:
+            $ref: "#/definitions/Forbidden"
         "404":
           description: "Not found"
+          schema:
+            $ref: "#/definitions/NotFound"
       security:
         - ApiKeyAuth: []
   /storages/count:
@@ -1283,6 +1624,10 @@ paths:
           description: "Retrieved successfully"
           schema:
             $ref: "#/definitions/CategoryCount"
+        "401":
+          description: "Unauthenticated"
+          schema:
+            $ref: "#/definitions/Unauthenticated"    
       security:
         - BasicAuth: []
   /projects:
@@ -1307,10 +1652,16 @@ paths:
       responses:
         "400":
           description: "Invalid input"
+          schema:
+            $ref: "#/definitions/InvalidInput"
         "201":
           description: "Created successfully"
           schema:
-            $ref: "#/definitions/ProjectResponse"
+            $ref: "#/definitions/ProjectResponseStore"
+        "401":
+          description: "Unauthenticated"
+          schema:
+            $ref: "#/definitions/Unauthenticated"    
       security:
         - ApiKeyAuth: []
     get:
@@ -1326,9 +1677,15 @@ paths:
         "200":
           description: "Retrieved successfully"
           schema:
-            $ref: "#/definitions/ProjectResponse"
+            $ref: "#/definitions/ProjectResponseShowDataArray"
+        "401":
+          description: "Unauthenticated"
+          schema:
+            $ref: "#/definitions/Unauthenticated"    
         "404":
           description: "Not found"
+          schema:
+            $ref: "#/definitions/NotFound"
       security:
         - BasicAuth: []
   /projects/{projectId}:
@@ -1351,11 +1708,19 @@ paths:
         "200":
           description: "Retrieved successfully"
           schema:
-            $ref: "#/definitions/ProjectResponse"
+            $ref: "#/definitions/ProjectResponseShowDataObject"
+        "401":
+          description: "Unauthenticated"
+          schema:
+            $ref: "#/definitions/Unauthenticated"    
         "403":
           description: "Forbidden"
+          schema:
+            $ref: "#/definitions/Forbidden"
         "404":
           description: "Not found"
+          schema:
+            $ref: "#/definitions/NotFound"
       security:
         - BasicAuth: []
     put:
@@ -1384,14 +1749,24 @@ paths:
       responses:
         "400":
           description: "Invalid input"
+          schema:
+            $ref: "#/definitions/InvalidInput"
         "200":
           description: "Updated successfully"
           schema:
-            $ref: "#/definitions/ProjectResponse"
+            $ref: "#/definitions/ProjectResponseUpdate"
+        "401":
+          description: "Unauthenticated"
+          schema:
+            $ref: "#/definitions/Unauthenticated"    
         "403":
           description: "Forbidden"
+          schema:
+            $ref: "#/definitions/Forbidden"
         "404":
           description: "Not found"
+          schema:
+            $ref: "#/definitions/NotFound"
       security:
         - BasicAuth: []
     delete:
@@ -1412,10 +1787,20 @@ paths:
       responses:
         "204":
           description: "Deleted successfully"
+          schema:
+            $ref: "#/definitions/Deleted"
+        "401":
+          description: "Unauthenticated"
+          schema:
+            $ref: "#/definitions/Unauthenticated"  
         "403":
           description: "Forbidden"
+          schema:
+            $ref: "#/definitions/Forbidden"
         "404":
           description: "Not found"
+          schema:
+            $ref: "#/definitions/NotFound"
       security:
         - BasicAuth: []
   /projects/{projectId}/designs:
@@ -1438,11 +1823,19 @@ paths:
         "200":
           description: "Retrieved successfully"
           schema:
-            $ref: "#/definitions/DesignResponse"
+            $ref: "#/definitions/DesignResponseShowDataArray"
+        "401":
+          description: "Unauthenticated"
+          schema:
+            $ref: "#/definitions/Unauthenticated"    
         "403":
           description: "Forbidden"
+          schema:
+            $ref: "#/definitions/Forbidden"
         "404":
           description: "Not found"
+          schema:
+            $ref: "#/definitions/NotFound"
       security:
         - BasicAuth: []
   /projects/{projectId}/products:
@@ -1465,11 +1858,19 @@ paths:
         "200":
           description: "Retrieved successfully"
           schema:
-            $ref: "#/definitions/ProductResponse"
+            $ref: "#/definitions/ProductResponseShowDataArray"
+        "401":
+          description: "Unauthenticated"
+          schema:
+            $ref: "#/definitions/Unauthenticated"    
         "403":
           description: "Forbidden"
+          schema:
+            $ref: "#/definitions/Forbidden"
         "404":
           description: "Not found"
+          schema:
+            $ref: "#/definitions/NotFound"
       security:
         - BasicAuth: []
   /projects/count:
@@ -1487,6 +1888,10 @@ paths:
           description: "Retrieved successfully"
           schema:
             $ref: "#/definitions/ProjectCount"
+        "401":
+          description: "Unauthenticated"
+          schema:
+            $ref: "#/definitions/Unauthenticated"    
       security:
         - BasicAuth: []
   /projects/{projectId}/designs/count:
@@ -1510,6 +1915,10 @@ paths:
           description: "Retrieved successfully"
           schema:
             $ref: "#/definitions/DesignCount"
+        "401":
+          description: "Unauthenticated"
+          schema:
+            $ref: "#/definitions/Unauthenticated"    
       security:
         - BasicAuth: []
   /projects/{projectId}/products/count:
@@ -1533,6 +1942,10 @@ paths:
           description: "Retrieved successfully"
           schema:
             $ref: "#/definitions/ProductCount"
+        "401":
+          description: "Unauthenticated"
+          schema:
+            $ref: "#/definitions/Unauthenticated"    
       security:
         - BasicAuth: []
 securityDefinitions:
@@ -1552,13 +1965,17 @@ definitions:
     properties:
       name:
         type: "string"
+        example: "printcart"
       email:
         type: "string"
         format: "email"
+        example: "printcart@gmail.com"
       password:
         type: "string"
+        example: "printcart123"
       avatar_img_url:
         type: "string"
+        example: 'https://docs.printcart.com/img/Logo-PrintCart-1.png'
     xml:
       name: "Account"
   UserResponse:
@@ -1566,32 +1983,79 @@ definitions:
     properties:
       id:
         type: "string"
+        example: "19f99961-edac-455e-b407-aa6aa80ec862"
       name:
         type: "string"
+        example: "printcart"            
       email:
         type: "string"
         format: "email"
+        example: "printcart@gmail.com"
       email_verified_at:
         type: "string"
+        example: null
       avatar_img_url:
         type: "string"
+        example: 'https://docs.printcart.com/img/Logo-PrintCart-1.png' 
       created_at:
         type: "string"
+        example: "2021-10-16 07:05:07"
       updated_at:
         type: "string"
+        example: "2021-10-17 07:05:07"
       api_token:
         type: "string"
-      message:
-        type: "string"
+        example: "1|kRtTFoeS2bhXcVPbOYHW4EwP2DXaA9BxtdEX3EfU"
     xml:
-      name: "UserToken"
-  ApiToken:
+      name: "UserResponse"
+  UserResponseShow:
+    type: "object"
+    properties:
+      data:
+        type: "object"
+        $ref: "#/definitions/UserResponse"
+      message: 
+        type: "string"
+        description: "Retrieved successfully"
+        example: "Retrieved successfully"
+    xml:
+      name: "UserResponseShow"
+  UserResponseStore:
+    type: "object"
+    properties:
+      data:
+        type: "object"
+        $ref: "#/definitions/UserResponse"
+      message: 
+        type: "string"
+        description: "Created successfully"
+        example: "Created successfully"
+    xml:
+      name: "UserResponseStore"
+  UserResponseUpdate:
+    type: "object"
+    properties:
+      data:
+        type: "object"
+        $ref: "#/definitions/UserResponse"
+      message: 
+        type: "string"
+        description: "Updated successfully"
+        example: "Updated successfully"
+    xml:
+      name: "UserResponseUpdate"
+  ApiTokenResponse:
     type: "object"
     properties:
       api_token:
         type: "string"
+        example: "2|m9RU0sw3yXCXiJqZFbNbrAPwy0Kc9vlZMgDT7vaT"
+      message:
+        type: "string"
+        description: "Created successfully"
+        example: "Created successfully"
     xml:
-      name: "ApiToken"
+      name: "ApiTokenResponse"
   Font:
     type: "object"
     required:
@@ -1599,8 +2063,10 @@ definitions:
     properties:
       name:
         type: "string"
+        example: "printcart"
       url:
         type: "string"
+        example: "printcart"
     xml:
       name: "Font"
   FontResponse:
@@ -1608,24 +2074,81 @@ definitions:
     properties:
       id:
         type: "string"
+        example: "bff22494-79c3-312b-ba7e-6d6f6d57401c"
       name:
         type: "string"
+        example: "printcart"
       url:
         type: "string"
+        example: "printcart"
       created_at:
         type: "string"
+        example: "2021-1-1 00:00:00"
       updated_at:
         type: "string"
-      message:
-        type: "string"
+        example: "2021-1-1 00:00:00"
     xml:
       name: "FontResponse"
+  FontResponseShowDataObject:
+    type: "object"
+    properties:
+      data:
+        type: "object"
+        $ref: "#/definitions/FontResponse"
+      message: 
+        type: "string"
+        description: "Retrieved successfully"
+        example: "Retrieved successfully"
+    xml:
+      name: "FontResponseShowDataObject"
+  FontResponseShowDataArray:
+    type: "object"
+    properties:
+      data:
+        type: "array"
+        items:
+          type: "object"
+          $ref: "#/definitions/FontResponse"
+      message:
+        type: "string"
+        description: "Retrieved successfully"
+        example: "Retrieved successfully"
+    xml:
+      name: "FontResponseShowDataArray"
+  FontResponseStore:
+    type: "object"
+    properties:
+      data:
+        type: "object"
+        $ref: "#/definitions/FontResponse"
+      message: 
+        type: "string"
+        description: "Created successfully"
+        example: "Created successfully"
+    xml:
+      name: "FontResponseStore"
+  FontResponseUpdate:
+    type: "object"
+    properties:
+      data:
+        type: "object"
+        $ref: "#/definitions/FontResponse"
+      message: 
+        type: "string"
+        description: "Update successfully"
+        example: "Update successfully"
+    xml:
+      name: "FontResponseUpdate"
   FontCount:
     type: "object"
     properties:
-      count:
-        type: "integer"
-        format: "int64"
+      data: 
+        type: "object"
+        properties:
+          count:
+            type: "integer"
+            format: "int64"
+            example: 10
     xml:
       name: "FontCount"
   ImageResponse:
@@ -1633,32 +2156,92 @@ definitions:
     properties:
       id:
         type: "string"
+        example: "e8304b84-a015-3bd4-a7d3-7a978f465df2"
       name:
         type: "string"
+        example: "printcart"
       url:
         type: "string"
+        example: 'https://docs.printcart.com/img/Logo-PrintCart-1.png'
       alt:
         type: "string"
+        example: "printcart"
       width:
         type: "integer"
         format: "int64"
+        example: 500
       height:
         type: "integer"
         format: "int64"
+        example: 500
       created_at:
         type: "string"
+        example: "2021-1-1 00:00:00"
       updated_at:
         type: "string"
-      message:
-        type: "string"
+        example: "2021-1-1 00:00:00"
     xml:
       name: "ImageResponse"
+  ImageResponseShowDataObject:
+    type: "object"
+    properties:
+      data:
+        type: "object"
+        $ref: "#/definitions/ImageResponse"
+      message: 
+        type: "string"
+        description: "Retrieved successfully"
+        example: "Retrieved successfully"
+    xml:
+      name: "ImageResponseShowDataObject"
+  ImageResponseShowDataArray:
+    type: "object"
+    properties:
+      data:
+        type: "array"
+        items:
+          type: "object"
+          $ref: "#/definitions/ImageResponse"
+      message: 
+        type: "string"
+        description: "Retrieved successfully"
+        example: "Retrieved successfully"
+    xml:
+      name: "ImageResponseShowDataArray"
+  ImageResponseStore:
+    type: "object"
+    properties:
+      data:
+        type: "object"
+        $ref: "#/definitions/ImageResponse"
+      message: 
+        type: "string"
+        description: "Created successfully"
+        example: "Created successfully"
+    xml:
+      name: "ImageResponseStore"
+  ImageResponseUpdate:
+    type: "object"
+    properties:
+      data:
+        type: "object"
+        $ref: "#/definitions/ImageResponse"
+      message: 
+        type: "string"
+        description: "Update successfully"
+        example: "Update successfully"
+    xml:
+      name: "ImageResponseUpdate"
   ImageCount:
     type: "object"
     properties:
-      count:
-        type: "integer"
-        format: "int64"
+      data: 
+        type: "object"
+        properties:
+          count:
+            type: "integer"
+            format: "int64"
+            example: 10
     xml:
       name: "ImageCount"
   Clipart:
@@ -1669,31 +2252,97 @@ definitions:
     properties:
       name:
         type: "string"
+        example: "printcart"
       image_id:
         type: "string"
+        example: "e8304b84-a015-3bd4-a7d3-7a978f465df2"
     xml:
       name: "Clipart"
   ClipartResponse:
     type: "object"
     properties:
+      id:
+        type: "string"
+        example: "3f2b04a2-8aa9-31a7-82b0-3e2b94c815fe"
       name:
         type: "string"
-      image:
-        $ref: "#/definitions/ImageResponse"
+        example: "printcart"
+      width:
+        type: "integer"
+        format: "int64"
+        example: 500
+      height:
+        type: "integer"
+        format: "int64"
+        example: 500
       created_at:
         type: "string"
+        example: "2021-1-1 00:00:00"
       updated_at:
         type: "string"
-      message:
-        type: "string"
+        example: "2021-1-1 00:00:00"
     xml:
       name: "ClipartResponse"
+  ClipartResponseShowDataObject:
+    type: "object"
+    properties:
+      data:
+        type: "object"
+        $ref: "#/definitions/ClipartResponse"
+      message:
+        type: "string"
+        description: "Retrieved successfully"
+        example: "Retrieved successfully"
+    xml:
+      name: "ClipartResponseShowDataObject"
+  ClipartResponseShowDataArray:
+    type: "object"
+    properties:
+      data:
+        type: "array"
+        items:
+          type: "object"
+          $ref: "#/definitions/ClipartResponse"
+      message:
+        type: "string"
+        description: "Retrieved successfully"
+        example: "Retrieved successfully"
+    xml:
+      name: "ClipartResponseShowDataArray"
+  ClipartResponseStore:
+    type: "object"
+    properties:
+      data:
+        type: "object"
+        $ref: "#/definitions/ClipartResponse"
+      message: 
+        type: "string"
+        description: "Created successfully"
+        example: "Created successfully"
+    xml:
+      name: "ClipartResponseStore"
+  ClipartResponseUpdate:
+    type: "object"
+    properties:
+      data:
+        type: "object"
+        $ref: "#/definitions/ClipartResponse"
+      message: 
+        type: "string"
+        description: "Update successfully"
+        example: "Update successfully"
+    xml:
+      name: "ClipartResponseUpdate"
   ClipartCount:
     type: "object"
     properties:
-      count:
-        type: "integer"
-        format: "int64"
+      data: 
+        type: "object"
+        properties:
+          count:
+            type: "integer"
+            format: "int64"
+            example: 10
     xml:
       name: "ClipartCount"
   Product:
@@ -1703,25 +2352,32 @@ definitions:
     properties:
       name:
         type: "string"
+        example: "printcart"
       dynamic_side:
         type: "boolean"
+        example: true
       viewport_width:
         type: "integer"
         format: "int64"
+        example: 500
       viewport_height:
         type: "integer"
         format: "int64"
+        example: 500
       scale:
         type: "integer"
         format: "int64"
+        example: 500
       dpi:
         type: "integer"
         format: "int64"
+        example: 500
       dimension_unit:
         type: "string"
         enum:
           - "inch"
           - "cm"
+        example: "inch"
       status:
         type: "string"
         enum:
@@ -1729,6 +2385,7 @@ definitions:
           - "draft"
           - "trashed"
           - "deleted"
+        example: "publish"
       allowed_file_types:
         type: "string"
         enum:
@@ -1739,12 +2396,15 @@ definitions:
           - "pdf"
           - "bmp"
           - "iddd"
+        example: "pdf"
       max_file_upload:
         type: "integer"
         format: "int64"
+        example: 500
       min_jpg_dpi:
         type: "integer"
         format: "int64"
+        example: 500
     xml:
       name: "Product"
   ProductResponse:
@@ -1752,26 +2412,43 @@ definitions:
     properties:
       id:
         type: "string"
-      name:
+        example: "962af342-a2c9-4665-bb5d-cb208258d958"
+      name: 
         type: "string"
+        example: "printcart"
       dynamic_side:
         type: "boolean"
+        example: 500
       viewport_width:
         type: "integer"
         format: "int64"
+        example: 500
       viewport_height:
         type: "integer"
         format: "int64"
+        example: 500
       scale:
         type: "integer"
         format: "int64"
+        example: 500
       dpi:
         type: "integer"
         format: "int64"
+        example: 500
       dimension_unit:
         type: "string"
+        enum: 
+          - "inch"
+          - "cm"
+        example: "inch"
       status:
         type: "string"
+        enum:
+          - "publish"
+          - "draft"
+          - "trashed"
+          - "deleted"
+        example: "publish"
       allowed_file_types:
         type: "string"
         enum:
@@ -1782,28 +2459,85 @@ definitions:
           - "pdf"
           - "bmp"
           - "iddd"
+        example: "png"
       max_file_upload:
         type: "integer"
         format: "int64"
+        example: 500
       min_jpg_dpi:
         type: "integer"
         format: "int64"
+        example: 500
       created_at:
         type: "string"
+        example: "2021-1-1 00:00:00"
       updated_at:
         type: "string"
-      message:
-        type: "string"
+        example: "2021-1-1 00:00:00"
     xml:
       name: "ProductResponse"
+  ProductResponseShowDataObject:
+    type: "object"
+    properties:
+      data:
+        type: "object"
+        $ref: "#/definitions/ProductResponse"
+      message:
+        type: "string"
+        description: "Retrieved successfully"
+        example: "Retrieved successfully"
+    xml:
+      name: "ProductResponseShowDataObject"
+  ProductResponseShowDataArray:
+    type: "object"
+    properties:
+      data:
+        type: "array"
+        items:
+          type: "object"
+          $ref: "#/definitions/ProductResponse"   
+      message:
+        type: "string"
+        description: "Retrieved successfully"
+        example: "Retrieved successfully"
+    xml:
+      name: "ProductResponseShowDataArray"
+  ProductResponseStore:
+    type: "object"
+    properties:
+      data:
+        type: "object"
+        $ref: "#/definitions/ProductResponse"
+      message:
+        type: "string"
+        description: "Created successfully"
+        example: "Created successfully"
+    xml:
+      name: "ProductResponseStore"
+  ProductResponseUpdate:
+    type: "object"
+    properties:
+      data:
+        type: "object"
+        $ref: "#/definitions/ProductResponse"
+      message:
+        type: "string"
+        description: "Updated successfully"
+        example: "Updated successfully"
+    xml:
+      name: "ProductResponseUpdate"
   ProductCount:
     type: "object"
     properties:
-      count:
-        type: "integer"
-        format: "int64"
+      data:
+        type: "object"
+        properties:
+          count:
+            type: "integer"
+            format: "int64"
+            example: 10
     xml:
-      name: "ProductResponse"
+      name: "ProductCount"
   Project:
     type: "object"
     required:
@@ -1811,6 +2545,7 @@ definitions:
     properties:
       name:
         type: "string"
+        example: "printcart"
       status:
         type: "string"
         enum:
@@ -1819,16 +2554,22 @@ definitions:
           - "accepted"
           - "trashed"
           - "deleted"
+        example: "processing"
       note:
         type: "string"
+        example: "printcart note"
     xml:
       name: "Project"
   ProjectCount:
     type: "object"
     properties:
-      count:
-        type: "integer"
-        format: "int64"
+      data:
+        type: "object"
+        properties:
+          count:
+            type: "integer"
+            format: "int64"
+            example: 10
     xml:
       name: "ProjectCount"
   ProjectResponse:
@@ -1836,8 +2577,10 @@ definitions:
     properties:
       id:
         type: "string"
+        example: "4419934f-8e1b-4cf0-b432-01ef9258a812"
       name:
         type: "string"
+        example: "printcart"
       status:
         type: "string"
         enum:
@@ -1846,16 +2589,68 @@ definitions:
           - "accepted"
           - "trashed"
           - "deleted"
+        example: "processing"
       note:
         type: "string"
+        example: "printcart note"
       created_at:
         type: "string"
+        example: "2021-1-1 00:00:00"
       updated_at:
         type: "string"
-      message:
-        type: "string"
+        example: "2021-1-1 00:00:00"
     xml:
       name: "ProjectResponse"
+  ProjectResponseShowDataObject:
+    type: "object"
+    properties:
+      data:
+        type: "object"
+        $ref: "#/definitions/ProjectResponse"
+      message:
+        type: "string"
+        description: "Retrieved successfully"
+        example: "Retrieved successfully"
+    xml: 
+      name: "ProjectResponseShowDataObject"
+  ProjectResponseShowDataArray:
+    type: "object"
+    properties:
+      data:
+        type: "array"
+        items:
+          type: "object"
+          $ref: "#/definitions/ProjectResponse"
+      message:
+        type: "string"
+        description: "Retrieved successfully"
+        example: "Retrieved successfully"
+    xml: 
+      name: "ProjectResponseShowDataArray"     
+  ProjectResponseStore:
+    type: "object"
+    properties:
+      data:
+        type: "object"
+        $ref: "#/definitions/ProjectResponse"
+      message:
+        type: "string"
+        description: "Created successfully"
+        example: "Created successfully"
+    xml: 
+      name: "ProjectResponseStore"
+  ProjectResponseUpdate:
+    type: "object"
+    properties:
+      data:
+        type: "object"
+        $ref: "#/definitions/ProjectResponse"
+      message:
+        type: "string"
+        description: "Updated successfully"
+        example: "Updated successfully"
+    xml: 
+      name: "ProjectResponseUpdate"
   Side:
     type: "object"
     required:
@@ -1865,97 +2660,132 @@ definitions:
     properties:
       product_id:
         type: "string"
+        example: "962af342-a2c9-4665-bb5d-cb208258d958"
       name:
         type: "string"
+        example: "printcart"
       bg_type:
         type: "string"
         enum:
           - "color"
           - "image"
           - "transparent"
+        example: "image"
       bg_color_value:
         type: "string"
+        example: "red"
       img_top_pos:
         type: "integer"
         format: "int64"
+        example: 50
       img_left_pos:
         type: "integer"
         format: "int64"
+        example: 50
       img_bottom_pos:
         type: "integer"
         format: "int64"
+        example: 50
       img_right_pos:
         type: "integer"
         format: "int64"
+        example: 50
       img_overlay:
         type: "string"
+        example: "printcart img"
       version:
         type: "string"
+        example: "version 1.0.0"
       ratio:
         type: "integer"
         format: "int64"
+        example: 100
       background_included:
         type: "boolean"
+        example: true
       show_overlay:
         type: "boolean"
+        example: true
       include_overlay:
         type: "boolean"
+        example: true
       product_width:
         type: "integer"
         format: "int64"
+        example: 50
       product_height:
         type: "integer"
         format: "int64"
+        example: 50
       real_width:
         type: "integer"
         format: "int64"
+        example: 50
       real_height:
         type: "integer"
         format: "int64"
+        example: 50
       real_top:
         type: "integer"
         format: "int64"
+        example: 50
       real_left:
         type: "integer"
         format: "int64"
+        example: 50
       area_design_width:
         type: "integer"
         format: "int64"
+        example: 50
       area_design_heigh:
         type: "integer"
         format: "int64"
+        example: 50
       area_design_left:
         type: "integer"
         format: "int64"
+        example: 50
       area_design_top:
         type: "integer"
         format: "int64"
+        example: 50
       show_bleed:
         type: "boolean"
+        example: true
       bleed_top_bottom:
         type: "number"
         format: "float"
+        example: 50.50
       bleed_left_right:
         type: "number"
         format: "float"
+        example: 50.50
       show_safe_zone:
         type: "boolean"
+        example: true
       margin_vertical:
         type: "integer"
         format: "int64"
+        example: 50
       margin_horizontal:
         type: "integer"
         format: "int64"
+        example: 50
       bg_img_id:
         type: "string"
+        example: "e8304b84-a015-3bd4-a7d3-7a978f465df2"
     xml:
       name: "Side"
   SideCount:
     type: "object"
     properties:
-      count:
-        type: "integer"
-        format: "int64"
+      data:
+        type: "object"
+        properties:
+          count:
+            type: "integer"
+            format: "int64"
+            example: 10
     xml:
       name: "SideCount"
   SideResponse:
@@ -1963,99 +2793,179 @@ definitions:
     properties:
       id:
         type: "string"
+        example: "c5661a1e-8147-4dc3-8600-00fdc81ed14b"
       product:
         $ref: "#/definitions/ProductResponse"
       name:
         type: "string"
+        example: "printcart"
       bg_type:
         type: "string"
         enum:
           - "color"
           - "image"
           - "transparent"
+        example: "image"
       bg_color_value:
         type: "string"
+        example: "red"
       img_top_pos:
         type: "integer"
         format: "int64"
+        example: 50
       img_left_pos:
         type: "integer"
         format: "int64"
+        example: 50
       img_bottom_pos:
         type: "integer"
         format: "int64"
+        example: 50
       img_right_pos:
         type: "integer"
         format: "int64"
+        example: 50
       img_overlay:
         type: "string"
+        example: "printcart img"
       version:
         type: "string"
+        example: "version 1.0.0"
       ratio:
         type: "integer"
         format: "int64"
+        example: 100
       background_included:
         type: "boolean"
+        example: true
       show_overlay:
         type: "boolean"
+        example: true
       include_overlay:
         type: "boolean"
+        example: true
       product_width:
         type: "integer"
         format: "int64"
+        example: 50
       product_height:
         type: "integer"
         format: "int64"
+        example: 50
       real_width:
         type: "integer"
         format: "int64"
+        example: 50
       real_height:
         type: "integer"
         format: "int64"
+        example: 50
       real_top:
         type: "integer"
         format: "int64"
+        example: 50
       real_left:
         type: "integer"
         format: "int64"
+        example: 50
       area_design_width:
         type: "integer"
         format: "int64"
+        example: 50
       area_design_heigh:
         type: "integer"
         format: "int64"
+        example: 50
       area_design_left:
         type: "integer"
         format: "int64"
+        example: 50
       area_design_top:
         type: "integer"
         format: "int64"
+        example: 50
       show_bleed:
         type: "boolean"
+        example: true
       bleed_top_bottom:
         type: "number"
         format: "float"
+        example: 50.50
       bleed_left_right:
         type: "number"
         format: "float"
+        example: 50.50
       show_safe_zone:
         type: "boolean"
+        example: true
       margin_vertical:
         type: "integer"
         format: "int64"
+        example: 50
       margin_horizontal:
         type: "integer"
         format: "int64"
+        example: 50
       image:
         $ref: "#/definitions/ImageResponse"
       created_at:
         type: "string"
+        example: "2021-1-1 00:00:00"
       updated_at:
         type: "string"
-      message:
-        type: "string"
+        example: "2021-1-1 00:00:00"
     xml:
       name: "SideResponse"
+  SideResponseShowDataObject:
+    type: "object"
+    properties:
+      data:
+        type: "object"
+        $ref: "#/definitions/SideResponse"
+      message:
+        type: "string"
+        description: "Retrieved successfully"
+        example: "Retrieved successfully"
+    xml:
+      name: "SideResponseShowDataObject"
+  SideResponseShowDataArray:
+    type: "object"
+    properties:
+      data:
+        type: "array"
+        items:
+          type: "object"
+          $ref: "#/definitions/SideResponse"   
+      message:
+        type: "string"
+        description: "Retrieved successfully"
+        example: "Retrieved successfully"
+    xml:
+      name: "SideResponseShowDataArray"
+  SideResponseStore:
+    type: "object"
+    properties:
+      data:
+        type: "object"
+        $ref: "#/definitions/SideResponse"
+      message:
+        type: "string"
+        description: "Created successfully"
+        example: "Created successfully"
+    xml:
+      name: "SideResponseStore"
+  SideResponseUpdate:
+    type: "object"
+    properties:
+      data:
+        type: "object"
+        $ref: "#/definitions/SideResponse"
+      message:
+        type: "string"
+        description: "Updated successfully"
+        example: "Updated successfully"
+    xml:
+      name: "SideResponseUpdate"
   Category:
     type: "object"
     required:
@@ -2063,16 +2973,22 @@ definitions:
     properties:
       name:
         type: "string"
+        example: "printcart"
       parent_id:
         type: "string"
+        example: null
     xml:
       name: "Category"
   CategoryCount:
     type: "object"
     properties:
-      count:
-        type: "integer"
-        format: "int64"
+      data:
+        type: "object"
+        properties:
+          count:
+            type: "integer"
+            format: "int64"
+            example: 10
     xml:
       name: "CategoryCount"
   CategoryResponse:
@@ -2080,18 +2996,71 @@ definitions:
     properties:
       id:
         type: "string"
+        example: "57eea14b-4e8d-4b7b-b864-b31cb8e6ac62"
       name:
         type: "string"
+        example: "printcart"
       parent:
-        $ref: "#/definitions/Category"
+        type: "string"
+        example: null
       created_at:
         type: "string"
+        example: "2021-1-1 00:00:00"
       updated_at:
         type: "string"
-      message:
-        type: "string"
+        example: "2021-1-1 00:00:00"
     xml:
       name: "CategoryResponse"
+  CategoryResponseShowDataObject:
+    type: "object"
+    properties:
+      data:
+        type: "object"
+        $ref: "#/definitions/CategoryResponse"
+      message:
+        type: "string"
+        description: "Retrieved successfully"
+        example: "Retrieved successfully"
+    xml:
+      name: "CategoryResponseShowDataObject"
+  CategoryResponseShowDataArray:
+    type: "object"
+    properties:
+      data:
+        type: "array"
+        items:
+          type: "object"
+          $ref: "#/definitions/CategoryResponse"
+      message:
+        type: "string"
+        description: "Retrieved successfully"
+        example: "Retrieved successfully"
+    xml:
+      name: "CategoryResponseShowDataArray"
+  CategoryResponseStore:
+    type: "object"
+    properties:
+      data:
+        type: "object"
+        $ref: "#/definitions/CategoryResponse"
+      message:
+        type: "string"
+        description: "Created successfully"
+        example: "Created successfully"
+    xml:
+      name: "CategoryResponseStore"
+  CategoryResponseUpdate:
+    type: "object"
+    properties:
+      data:
+        type: "object"
+        $ref: "#/definitions/CategoryResponse"
+      message:
+        type: "string"
+        description: "Updated successfully"
+        example: "Updated successfully"
+    xml:
+      name: "CategoryResponseUpdate"
   Design:
     type: "object"
     required:
@@ -2102,34 +3071,45 @@ definitions:
     properties:
       project_id:
         type: "string"
+        example: "4419934f-8e1b-4cf0-b432-01ef9258a812"
       side_id:
         type: "string"
+        example: "c5661a1e-8147-4dc3-8600-00fdc81ed14b"
       design_with:
         type: "integer"
         format: "int64"
+        example: 50
       design_height:
         type: "integer"
         format: "int64"
+        example: 50
       design_ratio:
         type: "number"
         format: "float"
+        example: 50.50
       design_top_pos:
         type: "integer"
         format: "int64"
+        example: 50
       design_left_pos:
         type: "integer"
         format: "int64"
+        example: 50
       pdf_url:
         type: "string"
       preview_image_id:
         type: "string"
+        example: "e8304b84-a015-3bd4-a7d3-7a978f465df2"
       design_image_id:
         type: "string"
+        example: "e8304b84-a015-3bd4-a7d3-7a978f465df2"
       quantity:
         type: "integer"
         format: "int64"
+        example: 50
       note:
         type: "string"
+        example: "printcart"
       status:
         type: "string"
         enum:
@@ -2138,14 +3118,19 @@ definitions:
           - "declined"
           - "trashed"
           - "deleted"
+        example: "accepted"
     xml:
       name: "Design"
   DesignCount:
     type: "object"
     properties:
-      count:
-        type: "integer"
-        format: "int64"
+      data:
+        type: "object"
+        properties:
+          count:
+            type: "integer"
+            format: "int64"
+            example: 10
     xml:
       name: "DesignCount"
   DesignResponse:
@@ -2153,6 +3138,7 @@ definitions:
     properties:
       id:
         type: "string"
+        example: "cce4dc71-6757-4a1c-a259-6b66a4304c14"
       project:
         $ref: "#/definitions/ProjectResponse"
       side:
@@ -2160,18 +3146,23 @@ definitions:
       design_with:
         type: "integer"
         format: "int64"
+        example: 50
       design_height:
         type: "integer"
         format: "int64"
+        example: 50
       design_ratio:
         type: "number"
         format: "float"
+        example: 50.50
       design_top_pos:
         type: "integer"
         format: "int64"
+        example: 50
       design_left_pos:
         type: "integer"
         format: "int64"
+        example: 50
       pdf_url:
         type: "string"
       preview_image:
@@ -2181,8 +3172,10 @@ definitions:
       quantity:
         type: "integer"
         format: "int64"
+        example: 50
       note:
         type: "string"
+        example: "printcart note"
       status:
         type: "string"
         enum:
@@ -2191,14 +3184,110 @@ definitions:
           - "declined"
           - "trashed"
           - "deleted"
+        example: "accepted"
       created_at:
         type: "string"
+        example: "2021-1-1 00:00:00"
       updated_at:
         type: "string"
-      message:
-        type: "string"
+        example: "2021-1-1 00:00:00"
     xml:
       name: "DesignResponse"
+  DesignResponseShowDataObject:
+    type: "object"
+    properties:
+      data:
+        type: "object"
+        $ref: "#/definitions/DesignResponse"
+      message:
+        type: "string"
+        description: "Retrieved successfully"
+        example: "Retrieved successfully"
+    xml:
+      name: "DesignResponseShowDataObject"
+  DesignResponseShowDataArray:
+    type: "object"
+    properties:
+      data:
+        type: "array"
+        items:
+          type: "object"
+          $ref: "#/definitions/DesignResponse"
+      message:
+        type: "string"
+        description: "Retrieved successfully"
+        example: "Retrieved successfully"
+    xml:
+      name: "DesignResponseShowDataArray"
+  DesignResponseStore:
+    type: "object"
+    properties:
+      data:
+        type: "object"
+        $ref: "#/definitions/DesignResponse"
+      message:
+        type: "string"
+        description: "Created successfully"
+        example: "Created successfully"
+    xml:
+      name: "DesignResponseStore"
+  DesignResponseUpdate:
+    type: "object"
+    properties:
+      data:
+        type: "object"
+        $ref: "#/definitions/DesignResponse"
+      message:
+        type: "string"
+        description: "Updated successfully"
+        example: "Updated successfully"
+    xml:
+      name: "DesignResponseUpdate"
+  Unauthenticated:
+    type: "object"
+    properties: 
+      message: 
+        type: "string"
+        description: "Unauthenticated"
+        example: "Unauthenticated"
+    xml:
+      name: "Unauthenticated"
+  InvalidInput:
+    type: "object"
+    properties: 
+      message: 
+        type: "string"
+        description: "Invalid input"
+        example: "Invalid input"
+    xml:
+      name: "InvalidInput"
+  NotFound:
+    type: "object"
+    properties: 
+      message: 
+        type: "string"
+        description: "Not found"
+        example: "Not found"
+    xml:
+      name: "NotFound"
+  Forbidden:
+    type: "object"
+    properties: 
+      message: 
+        type: "string"
+        description: "Forbidden"
+        example: "Forbidden"
+    xml:
+      name: "Forbidden"
+  Deleted:
+    type: "object"
+    properties: 
+      message: 
+        type: "string"
+        description: "Deleted successfully"
+        example: "Deleted successfully"
+    xml:
+      name: "Deleted"
 externalDocs:
   description: "Find out more about Swagger"
   url: "http://swagger.io"
