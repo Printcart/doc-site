@@ -2149,6 +2149,10 @@ definitions:
             type: "integer"
             format: "int64"
             example: 10
+      message:
+        type: "string"
+        description: "Retrieved successfully"
+        example: "Retrieved successfully"
     xml:
       name: "FontCount"
   ImageResponse:
@@ -2242,6 +2246,10 @@ definitions:
             type: "integer"
             format: "int64"
             example: 10
+      message:
+        type: "string"
+        description: "Retrieved successfully"
+        example: "Retrieved successfully"
     xml:
       name: "ImageCount"
   Clipart:
@@ -2343,6 +2351,10 @@ definitions:
             type: "integer"
             format: "int64"
             example: 10
+      message:
+        type: "string"
+        description: "Retrieved successfully"
+        example: "Retrieved successfully"
     xml:
       name: "ClipartCount"
   Product:
@@ -2536,6 +2548,10 @@ definitions:
             type: "integer"
             format: "int64"
             example: 10
+      message:
+        type: "string"
+        description: "Retrieved successfully"
+        example: "Retrieved successfully"      
     xml:
       name: "ProductCount"
   Project:
@@ -2570,6 +2586,10 @@ definitions:
             type: "integer"
             format: "int64"
             example: 10
+      message:
+        type: "string"
+        description: "Retrieved successfully"
+        example: "Retrieved successfully"      
     xml:
       name: "ProjectCount"
   ProjectResponse:
@@ -2786,6 +2806,10 @@ definitions:
             type: "integer"
             format: "int64"
             example: 10
+      message:
+        type: "string"
+        description: "Retrieved successfully"
+        example: "Retrieved successfully"      
     xml:
       name: "SideCount"
   SideResponse:
@@ -2989,6 +3013,10 @@ definitions:
             type: "integer"
             format: "int64"
             example: 10
+      message:
+        type: "string"
+        description: "Retrieved successfully"
+        example: "Retrieved successfully"      
     xml:
       name: "CategoryCount"
   CategoryResponse:
@@ -3131,6 +3159,10 @@ definitions:
             type: "integer"
             format: "int64"
             example: 10
+      message:
+        type: "string"
+        description: "Retrieved successfully"
+        example: "Retrieved successfully"      
     xml:
       name: "DesignCount"
   DesignResponse:
