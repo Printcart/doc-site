@@ -209,10 +209,6 @@ paths:
           description: "Retrieved successfully"
           schema:
             $ref: "#/definitions/ProductResponseShowDataObject"
-        "403":
-          description: "Forbidden"
-          schema:
-            $ref: "#/definitions/Forbidden"
         "404":
           description: "Not found"
           schema:
@@ -259,10 +255,6 @@ paths:
           description: "Unauthenticated"
           schema:
             $ref: "#/definitions/Unauthenticated"
-        "403":
-          description: "Forbidden"
-          schema:
-            $ref: "#/definitions/Forbidden"
         "404":
           description: "Not found"
           schema:
@@ -293,10 +285,6 @@ paths:
           description: "Unauthenticated"
           schema:
             $ref: "#/definitions/Unauthenticated"
-        "403":
-          description: "Forbidden"
-          schema:
-            $ref: "#/definitions/Forbidden"
         "404":
           description: "Not found"
           schema:
@@ -328,10 +316,6 @@ paths:
           description: "Unauthenticated"
           schema:
             $ref: "#/definitions/Unauthenticated"
-        "403":
-          description: "Forbidden"
-          schema:
-            $ref: "#/definitions/Forbidden"
         "404":
           description: "Not found"
           schema:
@@ -363,10 +347,6 @@ paths:
           description: "Unauthenticated"
           schema:
             $ref: "#/definitions/Unauthenticated"
-        "403":
-          description: "Forbidden"
-          schema:
-            $ref: "#/definitions/Forbidden"
         "404":
           description: "Not found"
           schema:
@@ -531,10 +511,6 @@ paths:
           description: "Unauthenticated"
           schema:
             $ref: "#/definitions/Unauthenticated"
-        "403":
-          description: "Forbidden"
-          schema:
-            $ref: "#/definitions/Forbidden"
         "404":
           description: "Not found"
           schema:
@@ -577,10 +553,6 @@ paths:
           description: "Unauthenticated"
           schema:
             $ref: "#/definitions/Unauthenticated"
-        "403":
-          description: "Forbidden"
-          schema:
-            $ref: "#/definitions/Forbidden"
         "404":
           description: "Not found"
           schema:
@@ -611,10 +583,6 @@ paths:
           description: "Unauthenticated"
           schema:
             $ref: "#/definitions/Unauthenticated"
-        "403":
-          description: "Forbidden"
-          schema:
-            $ref: "#/definitions/Forbidden"
         "404":
           description: "Not found"
           schema:
@@ -725,10 +693,6 @@ paths:
           description: "Unauthenticated"
           schema:
             $ref: "#/definitions/Unauthenticated"
-        "403":
-          description: "Forbidden"
-          schema:
-            $ref: "#/definitions/Forbidden"
         "404":
           description: "Not found"
           schema:
@@ -771,10 +735,6 @@ paths:
           description: "Unauthenticated"
           schema:
             $ref: "#/definitions/Unauthenticated"
-        "403":
-          description: "Forbidden"
-          schema:
-            $ref: "#/definitions/Forbidden"
         "404":
           description: "Not found"
           schema:
@@ -805,10 +765,6 @@ paths:
           description: "Unauthenticated"
           schema:
             $ref: "#/definitions/Unauthenticated"
-        "403":
-          description: "Forbidden"
-          schema:
-            $ref: "#/definitions/Forbidden"
         "404":
           description: "Not found"
           schema:
@@ -916,10 +872,6 @@ paths:
           description: "Unauthenticated"
           schema:
             $ref: "#/definitions/Unauthenticated"
-        "403":
-          description: "Forbidden"
-          schema:
-            $ref: "#/definitions/Forbidden"
         "404":
           description: "Not found"
           schema:
@@ -962,10 +914,6 @@ paths:
           description: "Unauthenticated"
           schema:
             $ref: "#/definitions/Unauthenticated"
-        "403":
-          description: "Forbidden"
-          schema:
-            $ref: "#/definitions/Forbidden"
         "404":
           description: "Not found"
           schema:
@@ -996,10 +944,6 @@ paths:
           description: "Unauthenticated"
           schema:
             $ref: "#/definitions/Unauthenticated"
-        "403":
-          description: "Forbidden"
-          schema:
-            $ref: "#/definitions/Forbidden"
         "404":
           description: "Not found"
           schema:
@@ -1107,10 +1051,6 @@ paths:
           description: "Unauthenticated"
           schema:
             $ref: "#/definitions/Unauthenticated"
-        "403":
-          description: "Forbidden"
-          schema:
-            $ref: "#/definitions/Forbidden"
         "404":
           description: "Not found"
           schema:
@@ -1141,10 +1081,6 @@ paths:
           description: "Unauthenticated"
           schema:
             $ref: "#/definitions/Unauthenticated"
-        "403":
-          description: "Forbidden"
-          schema:
-            $ref: "#/definitions/Forbidden"
         "404":
           description: "Not found"
           schema:
@@ -1255,10 +1191,6 @@ paths:
           description: "Unauthenticated"
           schema:
             $ref: "#/definitions/Unauthenticated"
-        "403":
-          description: "Forbidden"
-          schema:
-            $ref: "#/definitions/Forbidden"
         "404":
           description: "Not found"
           schema:
@@ -1300,11 +1232,7 @@ paths:
         "401":
           description: "Unauthenticated"
           schema:
-            $ref: "#/definitions/Unauthenticated"    
-        "403":
-          description: "Forbidden"
-          schema:
-            $ref: "#/definitions/Forbidden"
+            $ref: "#/definitions/Unauthenticated"
         "404":
           description: "Not found"
           schema:
@@ -1334,11 +1262,7 @@ paths:
         "401":
           description: "Unauthenticated"
           schema:
-            $ref: "#/definitions/Unauthenticated"  
-        "403":
-          description: "Forbidden"
-          schema:
-            $ref: "#/definitions/Forbidden"
+            $ref: "#/definitions/Unauthenticated"
         "404":
           description: "Not found"
           schema:
@@ -1369,11 +1293,7 @@ paths:
         "401":
           description: "Unauthenticated"
           schema:
-            $ref: "#/definitions/Unauthenticated"    
-        "403":
-          description: "Forbidden"
-          schema:
-            $ref: "#/definitions/Forbidden"
+            $ref: "#/definitions/Unauthenticated"
         "404":
           description: "Not found"
           schema:
@@ -1483,11 +1403,7 @@ paths:
         "401":
           description: "Unauthenticated"
           schema:
-            $ref: "#/definitions/Unauthenticated"    
-        "403":
-          description: "Forbidden"
-          schema:
-            $ref: "#/definitions/Forbidden"
+            $ref: "#/definitions/Unauthenticated"
         "404":
           description: "Not found"
           schema:
@@ -1529,11 +1445,7 @@ paths:
         "401":
           description: "Unauthenticated"
           schema:
-            $ref: "#/definitions/Unauthenticated"    
-        "403":
-          description: "Forbidden"
-          schema:
-            $ref: "#/definitions/Forbidden"
+            $ref: "#/definitions/Unauthenticated"
         "404":
           description: "Not found"
           schema:
@@ -1563,11 +1475,7 @@ paths:
         "401":
           description: "Unauthenticated"
           schema:
-            $ref: "#/definitions/Unauthenticated"  
-        "403":
-          description: "Forbidden"
-          schema:
-            $ref: "#/definitions/Forbidden"
+            $ref: "#/definitions/Unauthenticated"
         "404":
           description: "Not found"
           schema:
@@ -1598,11 +1506,7 @@ paths:
         "401":
           description: "Unauthenticated"
           schema:
-            $ref: "#/definitions/Unauthenticated"    
-        "403":
-          description: "Forbidden"
-          schema:
-            $ref: "#/definitions/Forbidden"
+            $ref: "#/definitions/Unauthenticated"
         "404":
           description: "Not found"
           schema:
@@ -1712,11 +1616,7 @@ paths:
         "401":
           description: "Unauthenticated"
           schema:
-            $ref: "#/definitions/Unauthenticated"    
-        "403":
-          description: "Forbidden"
-          schema:
-            $ref: "#/definitions/Forbidden"
+            $ref: "#/definitions/Unauthenticated"
         "404":
           description: "Not found"
           schema:
@@ -1758,11 +1658,7 @@ paths:
         "401":
           description: "Unauthenticated"
           schema:
-            $ref: "#/definitions/Unauthenticated"    
-        "403":
-          description: "Forbidden"
-          schema:
-            $ref: "#/definitions/Forbidden"
+            $ref: "#/definitions/Unauthenticated"
         "404":
           description: "Not found"
           schema:
@@ -1792,11 +1688,7 @@ paths:
         "401":
           description: "Unauthenticated"
           schema:
-            $ref: "#/definitions/Unauthenticated"  
-        "403":
-          description: "Forbidden"
-          schema:
-            $ref: "#/definitions/Forbidden"
+            $ref: "#/definitions/Unauthenticated"
         "404":
           description: "Not found"
           schema:
@@ -1827,11 +1719,7 @@ paths:
         "401":
           description: "Unauthenticated"
           schema:
-            $ref: "#/definitions/Unauthenticated"    
-        "403":
-          description: "Forbidden"
-          schema:
-            $ref: "#/definitions/Forbidden"
+            $ref: "#/definitions/Unauthenticated"
         "404":
           description: "Not found"
           schema:
@@ -1862,11 +1750,7 @@ paths:
         "401":
           description: "Unauthenticated"
           schema:
-            $ref: "#/definitions/Unauthenticated"    
-        "403":
-          description: "Forbidden"
-          schema:
-            $ref: "#/definitions/Forbidden"
+            $ref: "#/definitions/Unauthenticated"
         "404":
           description: "Not found"
           schema:
@@ -3000,7 +2884,7 @@ definitions:
       name:
         type: "string"
         example: "printcart"
-      parent:
+      parent_storage_id:
         type: "string"
         example: null
       created_at:
@@ -3270,15 +3154,15 @@ definitions:
         example: "Not found"
     xml:
       name: "NotFound"
-  Forbidden:
-    type: "object"
-    properties: 
-      message: 
-        type: "string"
-        description: "Forbidden"
-        example: "Forbidden"
-    xml:
-      name: "Forbidden"
+  # Forbidden:
+  #   type: "object"
+  #   properties: 
+  #     message: 
+  #       type: "string"
+  #       description: "Forbidden"
+  #       example: "Forbidden"
+  #   xml:
+  #     name: "Forbidden"
   Deleted:
     type: "object"
     properties: 
