@@ -2,19 +2,26 @@
 sidebar_position: 1
 ---
 
-# Overview
+import CardGrid from "../components/CardGrid";
 
-https://developer.zendesk.com/api-reference/ticketing/introduction/#examples
-Whether you're integrating your storefront or looking for ways to extend Printcart, the following guide will help you achieve your goals.
+# Welcome to Printcart Documentation
 
-## Authentication
+Here you'll find everything you need to start working with Printcart.
 
-## API
+## Users
 
-### Design tool
+<CardGrid home>
 
-### Rest API
+[**Dashboard Manual** Learn how to make the most of your printcart dashboard.](dashboard/index.md)
 
-### Webhook
+</CardGrid>
 
-[Webhooks](/docs/reference/webhooks)
+## Developer
+
+<CardGrid home>
+
+[**Developer's Guide** Integrate your online store with Printcart.](developer-guide/overview.md)
+
+[**API Reference** View technical documentation of our APIs and SDKs.](dashboard/index.md)
+
+</CardGrid>
