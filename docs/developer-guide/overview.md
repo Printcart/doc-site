@@ -5,8 +5,6 @@ title: Overview
 
 import CardGrid from "../../components/CardGrid"
 
-# Overview
-
 Printcart consists of multiple services and API - SDK that can be used for various web-to-print tasks.
 
 https://developer.zendesk.com/api-reference/ticketing/introduction/#examples
