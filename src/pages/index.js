@@ -14,7 +14,7 @@ const Home = () => {
       wrapperClassName={styles.home}
     >
       <div className={styles.buttons}>
-        <Link className="button button--secondary button--lg" to="/docs/intro">
+        <Link className="button button--secondary button--lg" to="/docs/welcome">
           Printcart Documentation - Click here
         </Link>
       </div>

@@ -20,10 +20,10 @@ module.exports = {
   },
   "developer": {
     "Developer's Guide": [
-      "developer-guide/overview",
-      "developer-guide/api-quickstart",
-      "developer-guide/design-tool-quickstart",
-      "developer-guide/webhooks-quickstart",
+      "api-sdk/intro",
+      "api-sdk/design-tool",
+      "api-sdk/api-overview",
+      "api-sdk/webhooks",
     ],
   },
 };

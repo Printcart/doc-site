@@ -1,8 +1,9 @@
 ---
 sidebar_position: 2
+title: Printcart API
 ---
 
-# Printcart API
+import CardGrid from "../../components/CardGrid";
 
 Printcart API is a [REST API](https://en.wikipedia.org/wiki/Representational_state_transfer) that can be used to interact with data from your Printcart account. The Printcart API uses predictable resource-oriented URLs, standard HTTP verbs and response codes, and accepts and returns JSON-encoded request and response bodies.
 
@@ -95,14 +96,24 @@ Printcart allows a maximum of 100 items per request
 
 ## Query parameters
 
-Almost all endpoints accept optional parameters which can be passed as a HTTP query string parameter, e.g. `GET /project?status=completed&sortBy=created_date`. All parameters are documented along with each endpoint.
+Almost all endpoints accept optional parameters which can be passed as an HTTP query string parameter, e.g. `GET https://api.printcart.com/project?status=completed&sortBy=created_date`. All parameters are documented along with each endpoint.
 
 ## API limit rate
 
 To ensure our platform remains stable and fair for everyone, all Printcart API endpoints are rate-limited. You can make 120 requests per minute in all of Printcart API endpoints.
 
-If you reach the rate limit, you will need to wait for at least 30 seconds to request more endpoint data. Please make sure your application is aware of this limit and make requests according to it.
+If you reach the rate limit, you will need to wait for at least 30 seconds to request more data. Please make sure your application is aware of this limit and makes requests according to it.
 
 ## API Reference
 
 Please follow [this link](/rest-api-reference) to detailed API Reference.
+
+## Learn more
+
+Now you had basic understanding about Printcart API, we recommnend you to read the following sections next:
+
+<CardGrid>
+
+[**Webhooks** Learn more about Printcart Webhooks.](api-sdk/webhooks.md)
+
+</CardGrid>

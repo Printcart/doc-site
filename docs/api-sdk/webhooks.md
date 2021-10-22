@@ -1,8 +1,7 @@
 ---
 sidebar_position: 5
+title: Printcart Webhooks
 ---
-
-# Webhooks
 
 ## How to use
 
