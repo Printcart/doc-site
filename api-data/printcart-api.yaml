@@ -51,7 +51,7 @@ paths:
         "201":
           description: "Created successfully"
           schema:
-            $ref: "#/definitions/UserResponseStore" 
+            $ref: "#/definitions/UserResponseStore"
     get:
       tags:
         - "Account"
@@ -276,6 +276,107 @@ paths:
           description: "Product ID"
           required: true
           type: "string"
+      responses:
+        "204":
+          description: "Deleted successfully"
+          schema:
+            $ref: "#/definitions/Deleted"
+        "401":
+          description: "Unauthenticated"
+          schema:
+            $ref: "#/definitions/Unauthenticated"
+        "404":
+          description: "Not found"
+          schema:
+            $ref: "#/definitions/NotFound"
+      security:
+        - BasicAuth: []
+  /products/batch:
+    post:
+      tags:
+        - "Product"
+      # description:
+      operationId: "postProductsBatch"
+      summary: "Create batch products"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - in: "body"
+          name: "body"
+          # description:
+          required: true
+          schema:
+            $ref: "#/definitions/ProductBatch"
+      responses:
+        "400":
+          description: "Invalid input"
+          schema:
+            $ref: "#/definitions/InvalidInput"
+        "201":
+          description: "Created successfully"
+          schema:
+            $ref: "#/definitions/ProductBatchResponse"
+        "401":
+          description: "Unauthenticated"
+          schema:
+            $ref: "#/definitions/Unauthenticated"
+      security:
+        - BasicAuth: []
+    put:
+      tags:
+        - "Product"
+      # description:
+      operationId: "putProductsBatch"
+      summary: "Update batch products"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - in: "body"
+          name: "body"
+          # description:
+          required: true
+          schema:
+            $ref: "#/definitions/ProductBatchUpdate"
+      responses:
+        "400":
+          description: "Invalid input"
+          schema:
+            $ref: "#/definitions/InvalidInput"
+        "200":
+          description: "Updated successfully"
+          schema:
+            $ref: "#/definitions/ProductBatchUpdateResponse"
+        "401":
+          description: "Unauthenticated"
+          schema:
+            $ref: "#/definitions/Unauthenticated"
+        "404":
+          description: "Not found"
+          schema:
+            $ref: "#/definitions/NotFound"
+      security:
+        - BasicAuth: []
+    delete:
+      tags:
+        - "Product"
+      # description:
+      operationId: "deleteProductsBatch"
+      summary: "Delete batch products"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - in: "body"
+          name: "body"
+          # description:
+          required: true
+          schema:
+            $ref: "#/definitions/ProductBatchUpdate"
       responses:
         "204":
           description: "Deleted successfully"
@@ -1269,6 +1370,107 @@ paths:
             $ref: "#/definitions/NotFound"
       security:
         - ApiKeyAuth: []
+  /designs/batch:
+    post:
+      tags:
+        - "Design"
+      # description:
+      operationId: "postDesignsBatch"
+      summary: "Create batch designs"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - in: "body"
+          name: "body"
+          # description:
+          required: true
+          schema:
+            $ref: "#/definitions/DesignBatch"
+      responses:
+        "400":
+          description: "Invalid input"
+          schema:
+            $ref: "#/definitions/InvalidInput"
+        "201":
+          description: "Created successfully"
+          schema:
+            $ref: "#/definitions/DesignBatchResponse"
+        "401":
+          description: "Unauthenticated"
+          schema:
+            $ref: "#/definitions/Unauthenticated"
+      security:
+        - ApiKeyAuth: []
+    put:
+      tags:
+        - "Design"
+      # description:
+      operationId: "putDesignsBatch"
+      summary: "Update batch designs"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - in: "body"
+          name: "body"
+          # description:
+          required: true
+          schema:
+            $ref: "#/definitions/DesignBatchUpdate"
+      responses:
+        "400":
+          description: "Invalid input"
+          schema:
+            $ref: "#/definitions/InvalidInput"
+        "200":
+          description: "Updated successfully"
+          schema:
+            $ref: "#/definitions/DesignBatchUpdateResponse"
+        "401":
+          description: "Unauthenticated"
+          schema:
+            $ref: "#/definitions/Unauthenticated"
+        "404":
+          description: "Not found"
+          schema:
+            $ref: "#/definitions/NotFound"
+      security:
+        - ApiKeyAuth: []
+    delete:
+      tags:
+        - "Design"
+      # description:
+      operationId: "deleteDesignsBatch"
+      summary: "Delete batch designs"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - in: "body"
+          name: "body"
+          # description:
+          required: true
+          schema:
+            $ref: "#/definitions/DesignBatchUpdate"
+      responses:
+        "204":
+          description: "Deleted successfully"
+          schema:
+            $ref: "#/definitions/Deleted"
+        "401":
+          description: "Unauthenticated"
+          schema:
+            $ref: "#/definitions/Unauthenticated"
+        "404":
+          description: "Not found"
+          schema:
+            $ref: "#/definitions/NotFound"
+      security:
+        - ApiKeyAuth: []
   /designs/{designId}/storages:
     get:
       tags:
@@ -1318,7 +1520,7 @@ paths:
         "401":
           description: "Unauthenticated"
           schema:
-            $ref: "#/definitions/Unauthenticated"    
+            $ref: "#/definitions/Unauthenticated"
       security:
         - ApiKeyAuth: []
   /storages:
@@ -1352,7 +1554,7 @@ paths:
         "401":
           description: "Unauthenticated"
           schema:
-            $ref: "#/definitions/Unauthenticated"    
+            $ref: "#/definitions/Unauthenticated"
       security:
         - BasicAuth: []
     get:
@@ -1372,7 +1574,7 @@ paths:
         "401":
           description: "Unauthenticated"
           schema:
-            $ref: "#/definitions/Unauthenticated"    
+            $ref: "#/definitions/Unauthenticated"
         "404":
           description: "Not found"
           schema:
@@ -1531,7 +1733,7 @@ paths:
         "401":
           description: "Unauthenticated"
           schema:
-            $ref: "#/definitions/Unauthenticated"    
+            $ref: "#/definitions/Unauthenticated"
       security:
         - BasicAuth: []
   /projects:
@@ -1565,7 +1767,7 @@ paths:
         "401":
           description: "Unauthenticated"
           schema:
-            $ref: "#/definitions/Unauthenticated"    
+            $ref: "#/definitions/Unauthenticated"
       security:
         - ApiKeyAuth: []
     get:
@@ -1585,7 +1787,7 @@ paths:
         "401":
           description: "Unauthenticated"
           schema:
-            $ref: "#/definitions/Unauthenticated"    
+            $ref: "#/definitions/Unauthenticated"
         "404":
           description: "Not found"
           schema:
@@ -1695,6 +1897,107 @@ paths:
             $ref: "#/definitions/NotFound"
       security:
         - BasicAuth: []
+  /projects/batch:
+    post:
+      tags:
+        - "Project"
+      # description:
+      operationId: "postProjectsBatch"
+      summary: "Create batch projects"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - in: "body"
+          name: "body"
+          # description:
+          required: true
+          schema:
+            $ref: "#/definitions/ProjectBatch"
+      responses:
+        "400":
+          description: "Invalid input"
+          schema:
+            $ref: "#/definitions/InvalidInput"
+        "201":
+          description: "Created successfully"
+          schema:
+            $ref: "#/definitions/ProjectBatchResponse"
+        "401":
+          description: "Unauthenticated"
+          schema:
+            $ref: "#/definitions/Unauthenticated"
+      security:
+        - ApiKeyAuth: []
+    put:
+      tags:
+        - "Project"
+      # description:
+      operationId: "putProjectsBatch"
+      summary: "Update batch projects"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - in: "body"
+          name: "body"
+          # description:
+          required: true
+          schema:
+            $ref: "#/definitions/ProjectBatchUpdate"
+      responses:
+        "400":
+          description: "Invalid input"
+          schema:
+            $ref: "#/definitions/InvalidInput"
+        "200":
+          description: "Updated successfully"
+          schema:
+            $ref: "#/definitions/ProjectBatchUpdateResponse"
+        "401":
+          description: "Unauthenticated"
+          schema:
+            $ref: "#/definitions/Unauthenticated"
+        "404":
+          description: "Not found"
+          schema:
+            $ref: "#/definitions/NotFound"
+      security:
+        - BasicAuth: []
+    delete:
+      tags:
+        - "Project"
+      # description:
+      operationId: "deleteProjectsBatch"
+      summary: "Delete batch projects"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - in: "body"
+          name: "body"
+          # description:
+          required: true
+          schema:
+            $ref: "#/definitions/ProjectBatchUpdate"
+      responses:
+        "204":
+          description: "Deleted successfully"
+          schema:
+            $ref: "#/definitions/Deleted"
+        "401":
+          description: "Unauthenticated"
+          schema:
+            $ref: "#/definitions/Unauthenticated"
+        "404":
+          description: "Not found"
+          schema:
+            $ref: "#/definitions/NotFound"
+      security:
+        - BasicAuth: []
   /projects/{projectId}/designs:
     get:
       tags:
@@ -1775,7 +2078,7 @@ paths:
         "401":
           description: "Unauthenticated"
           schema:
-            $ref: "#/definitions/Unauthenticated"    
+            $ref: "#/definitions/Unauthenticated"
       security:
         - BasicAuth: []
   /projects/{projectId}/designs/count:
@@ -1802,7 +2105,7 @@ paths:
         "401":
           description: "Unauthenticated"
           schema:
-            $ref: "#/definitions/Unauthenticated"    
+            $ref: "#/definitions/Unauthenticated"
       security:
         - BasicAuth: []
   /projects/{projectId}/products/count:
@@ -1829,7 +2132,7 @@ paths:
         "401":
           description: "Unauthenticated"
           schema:
-            $ref: "#/definitions/Unauthenticated"    
+            $ref: "#/definitions/Unauthenticated"
       security:
         - BasicAuth: []
 securityDefinitions:
@@ -1859,7 +2162,7 @@ definitions:
         example: "printcart123"
       avatar_img_url:
         type: "string"
-        example: 'https://docs.printcart.com/img/Logo-PrintCart-1.png'
+        example: "https://docs.printcart.com/img/Logo-PrintCart-1.png"
     xml:
       name: "Account"
   UserResponse:
@@ -1870,7 +2173,7 @@ definitions:
         example: "19f99961-edac-455e-b407-aa6aa80ec862"
       name:
         type: "string"
-        example: "printcart"            
+        example: "printcart"
       email:
         type: "string"
         format: "email"
@@ -1880,7 +2183,7 @@ definitions:
         example: null
       avatar_img_url:
         type: "string"
-        example: 'https://docs.printcart.com/img/Logo-PrintCart-1.png' 
+        example: "https://docs.printcart.com/img/Logo-PrintCart-1.png"
       created_at:
         type: "string"
         example: "2021-10-16 07:05:07"
@@ -1898,7 +2201,7 @@ definitions:
       data:
         type: "object"
         $ref: "#/definitions/UserResponse"
-      message: 
+      message:
         type: "string"
         description: "Retrieved successfully"
         example: "Retrieved successfully"
@@ -1910,7 +2213,7 @@ definitions:
       data:
         type: "object"
         $ref: "#/definitions/UserResponse"
-      message: 
+      message:
         type: "string"
         description: "Created successfully"
         example: "Created successfully"
@@ -1922,7 +2225,7 @@ definitions:
       data:
         type: "object"
         $ref: "#/definitions/UserResponse"
-      message: 
+      message:
         type: "string"
         description: "Updated successfully"
         example: "Updated successfully"
@@ -1979,7 +2282,7 @@ definitions:
       data:
         type: "object"
         $ref: "#/definitions/FontResponse"
-      message: 
+      message:
         type: "string"
         description: "Retrieved successfully"
         example: "Retrieved successfully"
@@ -2005,7 +2308,7 @@ definitions:
       data:
         type: "object"
         $ref: "#/definitions/FontResponse"
-      message: 
+      message:
         type: "string"
         description: "Created successfully"
         example: "Created successfully"
@@ -2017,7 +2320,7 @@ definitions:
       data:
         type: "object"
         $ref: "#/definitions/FontResponse"
-      message: 
+      message:
         type: "string"
         description: "Update successfully"
         example: "Update successfully"
@@ -2026,7 +2329,7 @@ definitions:
   FontCount:
     type: "object"
     properties:
-      data: 
+      data:
         type: "object"
         properties:
           count:
@@ -2050,7 +2353,7 @@ definitions:
         example: "printcart"
       url:
         type: "string"
-        example: 'https://docs.printcart.com/img/Logo-PrintCart-1.png'
+        example: "https://docs.printcart.com/img/Logo-PrintCart-1.png"
       alt:
         type: "string"
         example: "printcart"
@@ -2076,7 +2379,7 @@ definitions:
       data:
         type: "object"
         $ref: "#/definitions/ImageResponse"
-      message: 
+      message:
         type: "string"
         description: "Retrieved successfully"
         example: "Retrieved successfully"
@@ -2090,7 +2393,7 @@ definitions:
         items:
           type: "object"
           $ref: "#/definitions/ImageResponse"
-      message: 
+      message:
         type: "string"
         description: "Retrieved successfully"
         example: "Retrieved successfully"
@@ -2102,7 +2405,7 @@ definitions:
       data:
         type: "object"
         $ref: "#/definitions/ImageResponse"
-      message: 
+      message:
         type: "string"
         description: "Created successfully"
         example: "Created successfully"
@@ -2114,7 +2417,7 @@ definitions:
       data:
         type: "object"
         $ref: "#/definitions/ImageResponse"
-      message: 
+      message:
         type: "string"
         description: "Update successfully"
         example: "Update successfully"
@@ -2123,7 +2426,7 @@ definitions:
   ImageCount:
     type: "object"
     properties:
-      data: 
+      data:
         type: "object"
         properties:
           count:
@@ -2207,7 +2510,7 @@ definitions:
       data:
         type: "object"
         $ref: "#/definitions/ClipartResponse"
-      message: 
+      message:
         type: "string"
         description: "Created successfully"
         example: "Created successfully"
@@ -2219,7 +2522,7 @@ definitions:
       data:
         type: "object"
         $ref: "#/definitions/ClipartResponse"
-      message: 
+      message:
         type: "string"
         description: "Update successfully"
         example: "Update successfully"
@@ -2228,7 +2531,7 @@ definitions:
   ClipartCount:
     type: "object"
     properties:
-      data: 
+      data:
         type: "object"
         properties:
           count:
@@ -2303,13 +2606,95 @@ definitions:
         example: 500
     xml:
       name: "Product"
+  ProductBatch:
+    type: "object"
+    required:
+      - "name"
+    properties:
+      products:
+        type: "array"
+        items:
+          type: "array"
+          $ref: "#/definitions/Product"
+    xml:
+      name: "ProductBatch"
+  ProductBatchUpdate:
+    type: "object"
+    required:
+      - "name"
+    properties:
+      products:
+        type: "array"
+        items: 
+          type: "object"
+          properties:
+            id:
+              type: "string"
+              example: "962af342-a2c9-4665-bb5d-cb208258d958"
+            name:
+              type: "string"
+              example: "printcart"
+            dynamic_side:
+              type: "boolean"
+              example: true
+            viewport_width:
+              type: "integer"
+              format: "int64"
+              example: 500
+            viewport_height:
+              type: "integer"
+              format: "int64"
+              example: 500
+            scale:
+              type: "integer"
+              format: "int64"
+              example: 500
+            dpi:
+              type: "integer"
+              format: "int64"
+              example: 500
+            dimension_unit:
+              type: "string"
+              enum:
+                - "inch"
+                - "cm"
+              example: "inch"
+            status:
+              type: "string"
+              enum:
+                - "publish"
+                - "draft"
+                - "trashed"
+                - "deleted"
+              example: "publish"
+            allowed_file_types:
+              type: "string"
+              enum:
+                - "jpg"
+                - "png"
+                - "ai"
+                - "ps"
+                - "pdf"
+                - "bmp"
+                - "iddd"
+              example: "pdf"
+            max_file_upload:
+              type: "integer"
+              format: "int64"
+              example: 500
+            min_jpg_dpi:
+              type: "integer"
+              format: "int64"
+              example: 500
+    xml:
+      name: "ProductBatchUpdate"
   ProductResponse:
     type: "object"
     properties:
       id:
         type: "string"
         example: "962af342-a2c9-4665-bb5d-cb208258d958"
-      name: 
+      name:
         type: "string"
         example: "printcart"
       dynamic_side:
@@ -2333,7 +2718,7 @@ definitions:
         example: 500
       dimension_unit:
         type: "string"
-        enum: 
+        enum:
           - "inch"
           - "cm"
         example: "inch"
@@ -2391,7 +2776,7 @@ definitions:
         type: "array"
         items:
           type: "object"
-          $ref: "#/definitions/ProductResponse"   
+          $ref: "#/definitions/ProductResponse"
       message:
         type: "string"
         description: "Retrieved successfully"
@@ -2422,6 +2807,98 @@ definitions:
         example: "Updated successfully"
     xml:
       name: "ProductResponseUpdate"
+  ProductBatchResponse:
+    type: "object"
+    properties:
+      data:
+        type: "array"
+        items:
+          type: "object"
+          $ref: "#/definitions/ProductResponse"
+      message:
+        type: "string"
+        description: "Created successfully"
+        example: "Created successfully"
+    xml:
+      name: "ProductBatchResponse"
+  ProductBatchUpdateResponse:
+    type: "object"
+    properties:
+      data:
+        type: "array"
+        items:
+          type: "object"
+          properties:
+            id:
+              type: "string"
+              example: "962af342-a2c9-4665-bb5d-cb208258d958"
+            name:
+              type: "string"
+              example: "printcart"
+            dynamic_side:
+              type: "boolean"
+              example: true
+            viewport_width:
+              type: "integer"
+              format: "int64"
+              example: 500
+            viewport_height:
+              type: "integer"
+              format: "int64"
+              example: 500
+            scale:
+              type: "integer"
+              format: "int64"
+              example: 500
+            dpi:
+              type: "integer"
+              format: "int64"
+              example: 500
+            dimension_unit:
+              type: "string"
+              enum:
+                - "inch"
+                - "cm"
+              example: "inch"
+            status:
+              type: "string"
+              enum:
+                - "publish"
+                - "draft"
+                - "trashed"
+                - "deleted"
+              example: "publish"
+            allowed_file_types:
+              type: "string"
+              enum:
+                - "jpg"
+                - "png"
+                - "ai"
+                - "ps"
+                - "pdf"
+                - "bmp"
+                - "iddd"
+              example: "pdf"
+            max_file_upload:
+              type: "integer"
+              format: "int64"
+              example: 500
+            min_jpg_dpi:
+              type: "integer"
+              format: "int64"
+              example: 500
+            created_at:
+              type: "string"
+              example: "2021-1-1 00:00:00"
+            updated_at:
+              type: "string"
+              example: "2021-1-1 00:00:00"
+      message:
+        type: "string"
+        description: "Retrieved successfully"
+        example: "Retrieved successfully"
+    xml:
+      name: "ProductBatchUpdateResponse"
   ProductCount:
     type: "object"
     properties:
@@ -2435,7 +2912,7 @@ definitions:
       message:
         type: "string"
         description: "Retrieved successfully"
-        example: "Retrieved successfully"      
+        example: "Retrieved successfully"
     xml:
       name: "ProductCount"
   Project:
@@ -2460,6 +2937,48 @@ definitions:
         example: "printcart note"
     xml:
       name: "Project"
+  ProjectBatch:
+    type: "object"
+    required:
+      - "name"
+    properties:
+      projects:
+        type: "array"
+        items:
+          type: "array"
+          $ref: "#/definitions/Project"
+    xml:
+      name: "ProjectBatch"
+  ProjectBatchUpdate:
+    type: "object"
+    required:
+      - "name"
+    properties:
+      projects:
+        type: "array"
+        items: 
+          type: "object"
+          properties:
+            id:
+              type: "string"
+              example: "4419934f-8e1b-4cf0-b432-01ef9258a812"
+            name:
+              type: "string"
+              example: "printcart"
+            status:
+              type: "string"
+              enum:
+                - "processing"
+                - "reviewing"
+                - "accepted"
+                - "trashed"
+                - "deleted"
+              example: "processing"
+            note:
+              type: "string"
+              example: "printcart note"
+    xml:
+      name: "ProjectBatchUpdate"
   ProjectCount:
     type: "object"
     properties:
@@ -2473,7 +2992,7 @@ definitions:
       message:
         type: "string"
         description: "Retrieved successfully"
-        example: "Retrieved successfully"      
+        example: "Retrieved successfully"
     xml:
       name: "ProjectCount"
   ProjectResponse:
@@ -2515,7 +3034,7 @@ definitions:
         type: "string"
         description: "Retrieved successfully"
         example: "Retrieved successfully"
-    xml: 
+    xml:
       name: "ProjectResponseShowDataObject"
   ProjectResponseShowDataArray:
     type: "object"
@@ -2529,8 +3048,8 @@ definitions:
         type: "string"
         description: "Retrieved successfully"
         example: "Retrieved successfully"
-    xml: 
-      name: "ProjectResponseShowDataArray"     
+    xml:
+      name: "ProjectResponseShowDataArray"
   ProjectResponseStore:
     type: "object"
     properties:
@@ -2541,8 +3060,60 @@ definitions:
         type: "string"
         description: "Created successfully"
         example: "Created successfully"
-    xml: 
+    xml:
       name: "ProjectResponseStore"
+  ProjectBatchResponse:
+    type: "object"
+    properties:
+      data:
+        type: "array"
+        items:
+          type: "object"
+          $ref: "#/definitions/ProjectResponse"
+      message:
+        type: "string"
+        description: "Created successfully"
+        example: "Created successfully"
+    xml:
+      name: "ProjectBatchResponse"
+  ProjectBatchUpdateResponse:
+    type: "object"
+    properties:
+      data:
+        type: "array"
+        items:
+          type: "object"
+          properties:
+            id:
+              type: "string"
+              example: "4419934f-8e1b-4cf0-b432-01ef9258a812"
+            name:
+              type: "string"
+              example: "printcart"
+            status:
+              type: "string"
+              enum:
+                - "processing"
+                - "reviewing"
+                - "accepted"
+                - "trashed"
+                - "deleted"
+              example: "processing"
+            note:
+              type: "string"
+              example: "printcart note"
+            created_at:
+              type: "string"
+              example: "2021-1-1 00:00:00"
+            updated_at:
+              type: "string"
+              example: "2021-1-1 00:00:00"
+      message:
+        type: "string"
+        description: "Retrieved successfully"
+        example: "Retrieved successfully"
+    xml:
+      name: "ProjectBatchUpdateResponse"
   ProjectResponseUpdate:
     type: "object"
     properties:
@@ -2553,7 +3124,7 @@ definitions:
         type: "string"
         description: "Updated successfully"
         example: "Updated successfully"
-    xml: 
+    xml:
       name: "ProjectResponseUpdate"
   Side:
     type: "object"
@@ -2693,7 +3264,7 @@ definitions:
       message:
         type: "string"
         description: "Retrieved successfully"
-        example: "Retrieved successfully"      
+        example: "Retrieved successfully"
     xml:
       name: "SideCount"
   SideResponse:
@@ -2843,7 +3414,7 @@ definitions:
         type: "array"
         items:
           type: "object"
-          $ref: "#/definitions/SideResponse"   
+          $ref: "#/definitions/SideResponse"
       message:
         type: "string"
         description: "Retrieved successfully"
@@ -2900,7 +3471,7 @@ definitions:
       message:
         type: "string"
         description: "Retrieved successfully"
-        example: "Retrieved successfully"      
+        example: "Retrieved successfully"
     xml:
       name: "CategoryCount"
   CategoryResponse:
@@ -3033,6 +3604,172 @@ definitions:
         example: "accepted"
     xml:
       name: "Design"
+  DesignBatch:
+    type: "object"
+    required:
+      - "project_id"
+      - "side_id"
+      - "preview_image_id"
+      - "design_image_id"
+    properties:
+      designs:
+        type: "array"
+        items:
+          type: "array"
+          $ref: "#/definitions/Design"
+    xml:
+      name: "DesignBatch"
+  DesignBatchResponse:
+    type: "object"
+    properties:
+      data:
+        type: "array"
+        items:
+          type: "object"
+          $ref: "#/definitions/DesignResponse"
+      message:
+        type: "string"
+        description: "Created successfully"
+        example: "Created successfully"
+    xml:
+      name: "DesignBatchResponse"
+  DesignBatchUpdate:
+    type: "object"
+    required:
+      - "project_id"
+      - "side_id"
+      - "preview_image_id"
+      - "design_image_id"
+    properties:
+      designs:
+        type: "array"
+        items: 
+          type: "object"
+          properties:
+            id:
+              type: "string"
+              example: "cce4dc71-6757-4a1c-a259-6b66a4304c14"
+            project_id:
+              type: "string"
+              example: "4419934f-8e1b-4cf0-b432-01ef9258a812"
+            side_id:
+              type: "string"
+              example: "c5661a1e-8147-4dc3-8600-00fdc81ed14b"
+            design_with:
+              type: "integer"
+              format: "int64"
+              example: 50
+            design_height:
+              type: "integer"
+              format: "int64"
+              example: 50
+            design_ratio:
+              type: "number"
+              format: "float"
+              example: 50.50
+            design_top_pos:
+              type: "integer"
+              format: "int64"
+              example: 50
+            design_left_pos:
+              type: "integer"
+              format: "int64"
+              example: 50
+            pdf_url:
+              type: "string"
+            preview_image_id:
+              type: "string"
+              example: "e8304b84-a015-3bd4-a7d3-7a978f465df2"
+            design_image_id:
+              type: "string"
+              example: "e8304b84-a015-3bd4-a7d3-7a978f465df2"
+            quantity:
+              type: "integer"
+              format: "int64"
+              example: 50
+            note:
+              type: "string"
+              example: "printcart"
+            status:
+              type: "string"
+              enum:
+                - "accepted"
+                - "processing"
+                - "declined"
+                - "trashed"
+                - "deleted"
+              example: "accepted"
+    xml:
+      name: "DesignBatchUpdate"
+  DesignBatchUpdateResponse:
+    type: "object"
+    properties:
+      data:
+        type: "array"
+        items:
+          type: "object"
+          properties:
+            id:
+              type: "string"
+              example: "cce4dc71-6757-4a1c-a259-6b66a4304c14"
+            project:
+              $ref: "#/definitions/ProjectResponse"
+            side:
+              $ref: "#/definitions/SideResponse"
+            design_with:
+              type: "integer"
+              format: "int64"
+              example: 50
+            design_height:
+              type: "integer"
+              format: "int64"
+              example: 50
+            design_ratio:
+              type: "number"
+              format: "float"
+              example: 50.50
+            design_top_pos:
+              type: "integer"
+              format: "int64"
+              example: 50
+            design_left_pos:
+              type: "integer"
+              format: "int64"
+              example: 50
+            pdf_url:
+              type: "string"
+            preview_image:
+              $ref: "#/definitions/ImageResponse"
+            design_image:
+              $ref: "#/definitions/ImageResponse"
+            quantity:
+              type: "integer"
+              format: "int64"
+              example: 50
+            note:
+              type: "string"
+              example: "printcart note"
+            status:
+              type: "string"
+              enum:
+                - "accepted"
+                - "processing"
+                - "declined"
+                - "trashed"
+                - "deleted"
+              example: "accepted"
+            created_at:
+              type: "string"
+              example: "2021-1-1 00:00:00"
+            updated_at:
+              type: "string"
+              example: "2021-1-1 00:00:00"
+      message:
+        type: "string"
+        description: "Retrieved successfully"
+        example: "Retrieved successfully"
+    xml:
+      name: "DesignBatchUpdateResponse"
   DesignCount:
     type: "object"
     properties:
@@ -3046,7 +3783,7 @@ definitions:
       message:
         type: "string"
         description: "Retrieved successfully"
-        example: "Retrieved successfully"      
+        example: "Retrieved successfully"
     xml:
       name: "DesignCount"
   DesignResponse:
@@ -3161,8 +3898,8 @@ definitions:
       name: "DesignResponseUpdate"
   Unauthenticated:
     type: "object"
-    properties: 
-      message: 
+    properties:
+      message:
         type: "string"
         description: "Unauthenticated"
         example: "Unauthenticated"
@@ -3170,8 +3907,8 @@ definitions:
       name: "Unauthenticated"
   InvalidInput:
     type: "object"
-    properties: 
-      message: 
+    properties:
+      message:
         type: "string"
         description: "Invalid input"
         example: "Invalid input"
@@ -3179,8 +3916,8 @@ definitions:
       name: "InvalidInput"
   NotFound:
     type: "object"
-    properties: 
-      message: 
+    properties:
+      message:
         type: "string"
         description: "Not found"
         example: "Not found"
@@ -3188,8 +3925,8 @@ definitions:
       name: "NotFound"
   # Forbidden:
   #   type: "object"
-  #   properties: 
-  #     message: 
+  #   properties:
+  #     message:
   #       type: "string"
   #       description: "Forbidden"
   #       example: "Forbidden"
@@ -3197,8 +3934,8 @@ definitions:
   #     name: "Forbidden"
   Deleted:
     type: "object"
-    properties: 
-      message: 
+    properties:
+      message:
         type: "string"
         description: "Deleted successfully"
         example: "Deleted successfully"
