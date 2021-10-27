@@ -322,6 +322,16 @@ paths:
           description: "Unauthenticated"
           schema:
             $ref: "#/definitions/Unauthenticated"
+        "500":
+          description: "Something went wrong while create products"
+          type: "object"
+          schema:
+            type: "object"
+            properties: 
+              error:
+                type: "string"
+                description: "Something went wrong while create products"
+                example: "Something went wrong while create products"
       security:
         - BasicAuth: []
     put:
@@ -355,9 +365,25 @@ paths:
           schema:
             $ref: "#/definitions/Unauthenticated"
         "404":
-          description: "Not found"
+          description: "Can't find product with id"
+          type: "object"
           schema:
-            $ref: "#/definitions/NotFound"
+            type: "object"
+            properties:
+              error:
+                type: "string"
+                description: "Can't find product with id"
+                example: "Can't find product with id: 962af342-a2c9-4665-bb5d-cb208258d958"
+        "500":
+          description: "Something went wrong while update products"
+          type: "object"
+          schema:
+            type: "object"
+            properties: 
+              error:
+                type: "string"
+                description: "Something went wrong while update products"
+                example: "Something went wrong while update products"
       security:
         - BasicAuth: []
     delete:
@@ -387,9 +413,15 @@ paths:
           schema:
             $ref: "#/definitions/Unauthenticated"
         "404":
-          description: "Not found"
+          description: "Can't find product with id"
+          type: "object"
           schema:
-            $ref: "#/definitions/NotFound"
+            type: "object"
+            properties:
+              error:
+                type: "string"
+                description: "Can't find product with id"
+                example: "Can't find product with id: 962af342-a2c9-4665-bb5d-cb208258d958"
       security:
         - BasicAuth: []
   /products/{productId}/designs:
@@ -1401,6 +1433,16 @@ paths:
           description: "Unauthenticated"
           schema:
             $ref: "#/definitions/Unauthenticated"
+        "500":
+          description: "Something went wrong while create designs"
+          type: "object"
+          schema:
+            type: "object"
+            properties: 
+              error:
+                type: "string"
+                description: "Something went wrong while create designs"
+                example: "Something went wrong while create designs"
       security:
         - ApiKeyAuth: []
     put:
@@ -1434,9 +1476,25 @@ paths:
           schema:
             $ref: "#/definitions/Unauthenticated"
         "404":
-          description: "Not found"
+          description: "Can't find design with id"
+          type: "object"
           schema:
-            $ref: "#/definitions/NotFound"
+            type: "object"
+            properties:
+              error:
+                type: "string"
+                description: "Can't find design with id"
+                example: "Can't find design with id: cce4dc71-6757-4a1c-a259-6b66a4304c14"
+        "500":
+          description: "Something went wrong while update designs"
+          type: "object"
+          schema:
+            type: "object"
+            properties: 
+              error:
+                type: "string"
+                description: "Something went wrong while update designs"
+                example: "Something went wrong while update designs"
       security:
         - ApiKeyAuth: []
     delete:
@@ -1466,9 +1524,15 @@ paths:
           schema:
             $ref: "#/definitions/Unauthenticated"
         "404":
-          description: "Not found"
+          description: "Can't find design with id"
+          type: "object"
           schema:
-            $ref: "#/definitions/NotFound"
+            type: "object"
+            properties:
+              error:
+                type: "string"
+                description: "Can't find design with id"
+                example: "Can't find design with id: cce4dc71-6757-4a1c-a259-6b66a4304c14"
       security:
         - ApiKeyAuth: []
   /designs/{designId}/storages:
@@ -1928,6 +1992,16 @@ paths:
           description: "Unauthenticated"
           schema:
             $ref: "#/definitions/Unauthenticated"
+        "500":
+          description: "Something went wrong while create projects"
+          type: "object"
+          schema:
+            type: "object"
+            properties: 
+              error:
+                type: "string"
+                description: "Something went wrong while create projects"
+                example: "Something went wrong while create projects"
       security:
         - ApiKeyAuth: []
     put:
@@ -1961,9 +2035,25 @@ paths:
           schema:
             $ref: "#/definitions/Unauthenticated"
         "404":
-          description: "Not found"
+          description: "Can't find project with id"
+          type: "object"
           schema:
-            $ref: "#/definitions/NotFound"
+            type: "object"
+            properties:
+              error:
+                type: "string"
+                description: "Can't find project with id"
+                example: "Can't find project with id: 4419934f-8e1b-4cf0-b432-01ef9258a812"
+        "500":
+          description: "Something went wrong while update projects"
+          type: "object"
+          schema:
+            type: "object"
+            properties: 
+              error:
+                type: "string"
+                description: "Something went wrong while update projects"
+                example: "Something went wrong while update projects"
       security:
         - BasicAuth: []
     delete:
@@ -1993,9 +2083,15 @@ paths:
           schema:
             $ref: "#/definitions/Unauthenticated"
         "404":
-          description: "Not found"
+          description: "Can't find project with id"
+          type: "object"
           schema:
-            $ref: "#/definitions/NotFound"
+            type: "object"
+            properties:
+              error:
+                type: "string"
+                description: "Can't find project with id"
+                example: "Can't find project with id: 4419934f-8e1b-4cf0-b432-01ef9258a812"
       security:
         - BasicAuth: []
   /projects/{projectId}/designs:
