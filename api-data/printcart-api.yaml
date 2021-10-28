@@ -1835,7 +1835,7 @@ paths:
           schema:
             $ref: "#/definitions/NotFound"
       security:
-        - BasicAuth: []
+        - ApiKeyAuth: []
   /designs/count:
     get:
       tags:
@@ -2127,7 +2127,7 @@ paths:
           schema:
             $ref: "#/definitions/NotFound"
       security:
-        - BasicAuth: []
+        - ApiKeyAuth: []
   /projects/{projectId}:
     get:
       tags:
@@ -2158,7 +2158,7 @@ paths:
           schema:
             $ref: "#/definitions/NotFound"
       security:
-        - BasicAuth: []
+        - ApiKeyAuth: []
     put:
       tags:
         - "Project"
@@ -2394,7 +2394,7 @@ paths:
           schema:
             $ref: "#/definitions/NotFound"
       security:
-        - BasicAuth: []
+        - ApiKeyAuth: []
   /projects/{projectId}/products:
     get:
       tags:
@@ -2425,7 +2425,7 @@ paths:
           schema:
             $ref: "#/definitions/NotFound"
       security:
-        - BasicAuth: []
+        - ApiKeyAuth: []
   /projects/count:
     get:
       tags:
@@ -2446,7 +2446,7 @@ paths:
           schema:
             $ref: "#/definitions/Unauthenticated"
       security:
-        - BasicAuth: []
+        - ApiKeyAuth: []
   /projects/{projectId}/designs/count:
     get:
       tags:
@@ -2473,7 +2473,7 @@ paths:
           schema:
             $ref: "#/definitions/Unauthenticated"
       security:
-        - BasicAuth: []
+        - ApiKeyAuth: []
   /projects/{projectId}/products/count:
     get:
       tags:
@@ -2500,7 +2500,7 @@ paths:
           schema:
             $ref: "#/definitions/Unauthenticated"
       security:
-        - BasicAuth: []
+        - ApiKeyAuth: []
 securityDefinitions:
   ApiKeyAuth:
     type: "apiKey"
