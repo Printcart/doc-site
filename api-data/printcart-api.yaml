@@ -4546,6 +4546,8 @@ definitions:
               example: 50
             pdf_url:
               type: "string"
+            product:
+              $ref: "#/definitions/ProductResponse"
             preview_image:
               $ref: "#/definitions/ImageResponse"
             design_image:
@@ -4626,6 +4628,8 @@ definitions:
         example: 50
       pdf_url:
         type: "string"
+      product:
+        $ref: "#/definitions/ProductResponse"
       preview_image:
         $ref: "#/definitions/ImageResponse"
       design_image:
