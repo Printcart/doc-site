@@ -2613,13 +2613,18 @@ definitions:
     type: "object"
     required:
       - "name"
+      - "display_name"
+      - "url"
     properties:
       name:
         type: "string"
         example: "printcart"
-      url:
+      display_name:
         type: "string"
         example: "printcart"
+      url:
+        type: "string"
+        example: "https//:printcart.com/printcart"
     xml:
       name: "Font"
   FontResponse:
@@ -2631,9 +2636,12 @@ definitions:
       name:
         type: "string"
         example: "printcart"
-      url:
+      display_name:
         type: "string"
         example: "printcart"
+      url:
+        type: "string"
+        example: "https//:printcart.com/printcart"
       created_at:
         type: "string"
         example: "2021-1-1 00:00:00"
