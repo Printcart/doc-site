@@ -1174,6 +1174,31 @@ paths:
                 example: "Can't find clipart with id: 3f2b04a2-8aa9-31a7-82b0-3e2b94c815fe"
       security:
         - BasicAuth: []
+  /cliparts-storages: 
+    get:
+      tags:
+        - "Clipart"
+      # summary: "..."
+      # description: "..."
+      operationId: "getCategory"
+      summary: "Get a list of clipart storages"
+      produces:
+        - "application/json"
+      responses:
+        "200":
+          description: "Retrieved successfully"
+          schema:
+            $ref: "#/definitions/CategoryResponseShowDataArray"
+        "401":
+          description: "Unauthenticated"
+          schema:
+            $ref: "#/definitions/Unauthenticated"
+        "404":
+          description: "Not found"
+          schema:
+            $ref: "#/definitions/NotFound"
+      security:
+        - ApiKeyAuth: []
   /cliparts/count:
     get:
       tags:
@@ -2039,6 +2064,37 @@ paths:
           description: "Retrieved successfully"
           schema:
             $ref: "#/definitions/DesignResponseShowDataArray"
+        "401":
+          description: "Unauthenticated"
+          schema:
+            $ref: "#/definitions/Unauthenticated"
+        "404":
+          description: "Not found"
+          schema:
+            $ref: "#/definitions/NotFound"
+      security:
+        - ApiKeyAuth: []
+  /cliparts-storages/{storageId}:
+    get:
+      tags:
+        - "Storage"
+      # summary: "Find pet by ID"
+      # description: "Returns a single pet"
+      operationId: "getClipartsByStorage"
+      summary: "Get a list of cliparts by storage"
+      produces:
+        - "application/json"
+      parameters:
+        - name: "storageId"
+          in: "path"
+          description: "Storage ID"
+          required: true
+          type: "string"
+      responses:
+        "200":
+          description: "Retrieved successfully"
+          schema:
+            $ref: "#/definitions/ClipartResponseShowDataArray"
         "401":
           description: "Unauthenticated"
           schema:
