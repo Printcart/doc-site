@@ -2074,7 +2074,7 @@ paths:
             $ref: "#/definitions/NotFound"
       security:
         - BasicAuth: []
-  /storages/{storageId}/designs:
+  /designs-storages/{storageId}:
     get:
       tags:
         - "Storage"
@@ -2969,6 +2969,9 @@ definitions:
       name:
         type: "string"
         example: "printcart"
+      url:
+        type: "url"
+        example: "https://docs.printcart.com/img/Logo-PrintCart-1.png"
       width:
         type: "integer"
         format: "int64"
@@ -3063,6 +3066,9 @@ definitions:
             name:
               type: "string"
               example: "printcart"
+            url:
+              type: "url"
+              example: "https://docs.printcart.com/img/Logo-PrintCart-1.png"
             width:
               type: "integer"
               format: "int64"
