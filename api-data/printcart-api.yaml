@@ -4624,7 +4624,129 @@ definitions:
             project:
               $ref: "#/definitions/ProjectResponse"
             side:
-              $ref: "#/definitions/SideResponse"
+              type: "object"
+              properties:
+                id:
+                  type: "string"
+                  example: "c5661a1e-8147-4dc3-8600-00fdc81ed14b"
+                name:
+                  type: "string"
+                  example: "printcart"
+                bg_type:
+                  type: "string"
+                  enum:
+                    - "color"
+                    - "image"
+                    - "transparent"
+                  example: "image"
+                bg_color_value:
+                  type: "string"
+                  example: "red"
+                img_top_pos:
+                  type: "integer"
+                  format: "int64"
+                  example: 50
+                img_left_pos:
+                  type: "integer"
+                  format: "int64"
+                  example: 50
+                img_bottom_pos:
+                  type: "integer"
+                  format: "int64"
+                  example: 50
+                img_right_pos:
+                  type: "integer"
+                  format: "int64"
+                  example: 50
+                img_overlay:
+                  type: "string"
+                  example: "printcart img"
+                version:
+                  type: "string"
+                  example: "version 1.0.0"
+                ratio:
+                  type: "integer"
+                  format: "int64"
+                  example: 100
+                background_included:
+                  type: "boolean"
+                  example: true
+                show_overlay:
+                  type: "boolean"
+                  example: true
+                include_overlay:
+                  type: "boolean"
+                  example: true
+                product_width:
+                  type: "integer"
+                  format: "int64"
+                  example: 50
+                product_height:
+                  type: "integer"
+                  format: "int64"
+                  example: 50
+                real_width:
+                  type: "integer"
+                  format: "int64"
+                  example: 50
+                real_height:
+                  type: "integer"
+                  format: "int64"
+                  example: 50
+                real_top:
+                  type: "integer"
+                  format: "int64"
+                  example: 50
+                real_left:
+                  type: "integer"
+                  format: "int64"
+                  example: 50
+                area_design_width:
+                  type: "integer"
+                  format: "int64"
+                  example: 50
+                area_design_heigh:
+                  type: "integer"
+                  format: "int64"
+                  example: 50
+                area_design_left:
+                  type: "integer"
+                  format: "int64"
+                  example: 50
+                area_design_top:
+                  type: "integer"
+                  format: "int64"
+                  example: 50
+                show_bleed:
+                  type: "boolean"
+                  example: true
+                bleed_top_bottom:
+                  type: "number"
+                  format: "float"
+                  example: 50.50
+                bleed_left_right:
+                  type: "number"
+                  format: "float"
+                  example: 50.50
+                show_safe_zone:
+                  type: "boolean"
+                  example: true
+                margin_vertical:
+                  type: "integer"
+                  format: "int64"
+                  example: 50
+                margin_horizontal:
+                  type: "integer"
+                  format: "int64"
+                  example: 50
+                image:
+                  $ref: "#/definitions/ImageResponse"
+                created_at:
+                  type: "string"
+                  example: "2021-1-1 00:00:00"
+                updated_at:
+                  type: "string"
+                  example: "2021-1-1 00:00:00"
             design_with:
               type: "integer"
               format: "int64"
@@ -4706,7 +4828,129 @@ definitions:
       project:
         $ref: "#/definitions/ProjectResponse"
       side:
-        $ref: "#/definitions/SideResponse"
+        type: "object"
+        properties:
+          id:
+            type: "string"
+            example: "c5661a1e-8147-4dc3-8600-00fdc81ed14b"
+          name:
+            type: "string"
+            example: "printcart"
+          bg_type:
+            type: "string"
+            enum:
+              - "color"
+              - "image"
+              - "transparent"
+            example: "image"
+          bg_color_value:
+            type: "string"
+            example: "red"
+          img_top_pos:
+            type: "integer"
+            format: "int64"
+            example: 50
+          img_left_pos:
+            type: "integer"
+            format: "int64"
+            example: 50
+          img_bottom_pos:
+            type: "integer"
+            format: "int64"
+            example: 50
+          img_right_pos:
+            type: "integer"
+            format: "int64"
+            example: 50
+          img_overlay:
+            type: "string"
+            example: "printcart img"
+          version:
+            type: "string"
+            example: "version 1.0.0"
+          ratio:
+            type: "integer"
+            format: "int64"
+            example: 100
+          background_included:
+            type: "boolean"
+            example: true
+          show_overlay:
+            type: "boolean"
+            example: true
+          include_overlay:
+            type: "boolean"
+            example: true
+          product_width:
+            type: "integer"
+            format: "int64"
+            example: 50
+          product_height:
+            type: "integer"
+            format: "int64"
+            example: 50
+          real_width:
+            type: "integer"
+            format: "int64"
+            example: 50
+          real_height:
+            type: "integer"
+            format: "int64"
+            example: 50
+          real_top:
+            type: "integer"
+            format: "int64"
+            example: 50
+          real_left:
+            type: "integer"
+            format: "int64"
+            example: 50
+          area_design_width:
+            type: "integer"
+            format: "int64"
+            example: 50
+          area_design_heigh:
+            type: "integer"
+            format: "int64"
+            example: 50
+          area_design_left:
+            type: "integer"
+            format: "int64"
+            example: 50
+          area_design_top:
+            type: "integer"
+            format: "int64"
+            example: 50
+          show_bleed:
+            type: "boolean"
+            example: true
+          bleed_top_bottom:
+            type: "number"
+            format: "float"
+            example: 50.50
+          bleed_left_right:
+            type: "number"
+            format: "float"
+            example: 50.50
+          show_safe_zone:
+            type: "boolean"
+            example: true
+          margin_vertical:
+            type: "integer"
+            format: "int64"
+            example: 50
+          margin_horizontal:
+            type: "integer"
+            format: "int64"
+            example: 50
+          image:
+            $ref: "#/definitions/ImageResponse"
+          created_at:
+            type: "string"
+            example: "2021-1-1 00:00:00"
+          updated_at:
+            type: "string"
+            example: "2021-1-1 00:00:00"
       design_with:
         type: "integer"
         format: "int64"
