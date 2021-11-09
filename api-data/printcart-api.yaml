@@ -1174,7 +1174,7 @@ paths:
                 example: "Can't find clipart with id: 3f2b04a2-8aa9-31a7-82b0-3e2b94c815fe"
       security:
         - BasicAuth: []
-  /cliparts-storages: 
+  /cliparts-storages:
     get:
       tags:
         - "Clipart"
@@ -1584,6 +1584,37 @@ paths:
           description: "Retrieved successfully"
           schema:
             $ref: "#/definitions/DesignResponseShowDataArray"
+        "401":
+          description: "Unauthenticated"
+          schema:
+            $ref: "#/definitions/Unauthenticated"
+        "404":
+          description: "Not found"
+          schema:
+            $ref: "#/definitions/NotFound"
+      security:
+        - ApiKeyAuth: []
+  /designs/{designId}/layer:
+    get:
+      tags:
+        - "Design"
+      # summary: "Find pet by ID"
+      # description: "Returns a single pet"
+      operationId: "getLayerDesignById"
+      summary: "Get list layer by design"
+      produces:
+        - "application/json"
+      parameters:
+        - name: "designId"
+          in: "path"
+          description: "Design ID"
+          required: true
+          type: "string"
+      responses:
+        "200":
+          description: "Retrieved successfully"
+          schema:
+            $ref: "#/definitions/DesignLayer"
         "401":
           description: "Unauthenticated"
           schema:
@@ -4772,6 +4803,35 @@ definitions:
         example: "Updated successfully"
     xml:
       name: "DesignResponseUpdate"
+  DesignLayer:
+    type: "object"
+    properties:
+      data:
+        type: "array"
+        items:
+          type: "object"
+          properties:
+            layers:
+              type: "object"
+              properties:
+                objects:
+                  type: "array"
+                  example: ["type", "version", "originX", "originY", "left"]
+                version:
+                  type: "string"
+                  example: "1.0.0"
+                centeredScaling:
+                  type: "boolean"
+                  example: false
+                perPixelTargetFind:
+                  type: "boolean"
+                  example: false
+      message:
+        type: "string"
+        description: "Retrieved successfully"
+        example: "Retrieved successfully"
+    xml:
+      name: "DesignLayer"
   Unauthenticated:
     type: "object"
     properties:
