@@ -1428,6 +1428,14 @@ paths:
             $ref: "#/definitions/Unauthenticated"
         "405":
           description: "File upload missing"
+          type: "object"
+          schema:
+            type: "object"
+            properties:
+              message:
+                type: "string"
+                description: "File upload missing"
+                example: "File upload missing"
       security:
         - BasicAuth: []
     get:
