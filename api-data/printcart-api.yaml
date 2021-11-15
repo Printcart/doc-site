@@ -2616,6 +2616,9 @@ definitions:
       avatar_img_url:
         type: "string"
         example: "https://docs.printcart.com/img/Logo-PrintCart-1.png"
+      google_font_api:
+        type: "string"
+        example: "AIzaSyBtoM...L3iAPUPrpQ"
     xml:
       name: "Account"
   UserResponse:
@@ -2634,6 +2637,9 @@ definitions:
       email_verified_at:
         type: "string"
         example: null
+      google_font_api:
+        type: "string"
+        example: "AIzaSyBtoM...L3iAPUPrpQ"
       avatar_img_url:
         type: "string"
         example: "https://docs.printcart.com/img/Logo-PrintCart-1.png"
@@ -2700,18 +2706,24 @@ definitions:
     type: "object"
     required:
       - "name"
-      - "display_name"
+      - "alias"
       - "url"
     properties:
       name:
         type: "string"
         example: "printcart"
-      display_name:
+      alias:
         type: "string"
         example: "printcart"
       url:
         type: "string"
         example: "https//:printcart.com/printcart"
+      type:
+        type: "string"
+        example: "printcart"
+      subset:
+        type: "string"
+        example: "printcart"
     xml:
       name: "Font"
   FontResponse:
@@ -2723,12 +2735,18 @@ definitions:
       name:
         type: "string"
         example: "printcart"
-      display_name:
+      alias:
         type: "string"
         example: "printcart"
       url:
         type: "string"
         example: "https//:printcart.com/printcart"
+      type:
+        type: "string"
+        example: "printcart"
+      subset:
+        type: "string"
+        example: "printcart"
       created_at:
         type: "string"
         example: "2021-1-1 00:00:00"
@@ -2812,6 +2830,10 @@ definitions:
       name:
         type: "string"
         example: "printcart"
+      size:
+        type: "integer"
+        format: "int64"
+        example: 20000
       url:
         type: "string"
         example: "https://docs.printcart.com/img/Logo-PrintCart-1.png"
@@ -3109,6 +3131,7 @@ definitions:
     type: "object"
     required:
       - "name"
+      - "product_image"
     properties:
       name:
         type: "string"
@@ -3147,16 +3170,18 @@ definitions:
           - "deleted"
         example: "publish"
       allowed_file_types:
-        type: "string"
-        enum:
-          - "jpg"
-          - "png"
-          - "ai"
-          - "ps"
-          - "pdf"
-          - "bmp"
-          - "iddd"
-        example: "pdf"
+        type: "array"
+        items:
+          type: "string"
+          enum:
+            - "jpg"
+            - "png"
+            - "ai"
+            - "ps"
+            - "pdf"
+            - "bmp"
+            - "iddd"
+        example: ["jpg", "png", "ai", "ps", "pdf", "bmp", "iddd"]
       max_file_upload:
         type: "integer"
         format: "int64"
@@ -3165,6 +3190,12 @@ definitions:
         type: "integer"
         format: "int64"
         example: 500
+      enable_design:
+        type: "boolean"
+        example: false
+      product_image:
+        type: "string"
+        example: "e8304b84-a015-3bd4-a7d3-7a978f465df2"
     xml:
       name: "Product"
   ProductBatch:
@@ -3229,16 +3260,18 @@ definitions:
                 - "deleted"
               example: "publish"
             allowed_file_types:
-              type: "string"
-              enum:
-                - "jpg"
-                - "png"
-                - "ai"
-                - "ps"
-                - "pdf"
-                - "bmp"
-                - "iddd"
-              example: "pdf"
+              type: "array"
+              items:
+                type: "string"
+                enum:
+                  - "jpg"
+                  - "png"
+                  - "ai"
+                  - "ps"
+                  - "pdf"
+                  - "bmp"
+                  - "iddd"
+              example: ["jpg", "png", "ai", "ps", "pdf", "bmp", "iddd"]
             max_file_upload:
               type: "integer"
               format: "int64"
@@ -3247,6 +3280,12 @@ definitions:
               type: "integer"
               format: "int64"
               example: 500
+            enable_design:
+              type: "boolean"
+              example: false
+            product_image:
+              type: "string"
+              example: "e8304b84-a015-3bd4-a7d3-7a978f465df2"
     xml:
       name: "ProductBatchUpdate"
   ProductBatchDelete:
@@ -3305,16 +3344,18 @@ definitions:
           - "deleted"
         example: "publish"
       allowed_file_types:
-        type: "string"
-        enum:
-          - "jpg"
-          - "png"
-          - "ai"
-          - "ps"
-          - "pdf"
-          - "bmp"
-          - "iddd"
-        example: "png"
+        type: "array"
+        items:
+          type: "string"
+          enum:
+            - "jpg"
+            - "png"
+            - "ai"
+            - "ps"
+            - "pdf"
+            - "bmp"
+            - "iddd"
+        example: ["jpg", "png", "ai", "ps", "pdf", "bmp", "iddd"]
       max_file_upload:
         type: "integer"
         format: "int64"
@@ -3323,6 +3364,11 @@ definitions:
         type: "integer"
         format: "int64"
         example: 500
+      enable_design:
+        type: "boolean"
+        example: false
+      product_image:
+        $ref: "#/definitions/ImageResponse"
       created_at:
         type: "string"
         example: "2021-1-1 00:00:00"
@@ -3443,16 +3489,18 @@ definitions:
                 - "deleted"
               example: "publish"
             allowed_file_types:
-              type: "string"
-              enum:
-                - "jpg"
-                - "png"
-                - "ai"
-                - "ps"
-                - "pdf"
-                - "bmp"
-                - "iddd"
-              example: "pdf"
+              type: "array"
+              items:
+                type: "string"
+                enum:
+                  - "jpg"
+                  - "png"
+                  - "ai"
+                  - "ps"
+                  - "pdf"
+                  - "bmp"
+                  - "iddd"
+              example: ["jpg", "png", "ai", "ps", "pdf", "bmp", "iddd"]
             max_file_upload:
               type: "integer"
               format: "int64"
@@ -3461,6 +3509,11 @@ definitions:
               type: "integer"
               format: "int64"
               example: 500
+            enable_design:
+              type: "boolean"
+              example: false
+            product_image:
+              $ref: "#/definitions/ImageResponse"
             created_at:
               type: "string"
               example: "2021-1-1 00:00:00"
@@ -4489,6 +4542,10 @@ definitions:
       note:
         type: "string"
         example: "printcart"
+      layers:
+        type: "array"
+        description: "Lorem ipsum..."
+        example: ["type", "version", "originX", "originY", "left"]
       status:
         type: "string"
         enum:
@@ -4586,6 +4643,10 @@ definitions:
             note:
               type: "string"
               example: "printcart"
+            layers:
+              type: "array"
+              description: "Lorem ipsum..."
+              example: ["type", "version", "originX", "originY", "left"]
             status:
               type: "string"
               enum:
@@ -5055,6 +5116,7 @@ definitions:
       name: "DesignResponseUpdate"
   DesignLayer:
     type: "object"
+    description: "Lorem ipsum..."
     properties:
       data:
         type: "array"
