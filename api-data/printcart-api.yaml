@@ -1412,7 +1412,7 @@ paths:
       produces:
         - "application/json"
       parameters:
-        - name: "imageFile"
+        - name: "file"
           in: "formData"
           description: "Image to upload"
           required: true
