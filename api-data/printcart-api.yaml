@@ -1960,7 +1960,7 @@ paths:
         - "Storage"
       # summary: "..."
       # description: "..."
-      operationId: "getCategory"
+      operationId: "getDesignCategory"
       summary: "Get a list of design storages"
       produces:
         - "application/json"
@@ -2653,10 +2653,10 @@ definitions:
         example: "https://docs.printcart.com/img/Logo-PrintCart-1.png"
       created_at:
         type: "string"
-        example: "2021-10-16 07:05:07"
+        example: "2021-11-16T08:26:30.000000Z"
       updated_at:
         type: "string"
-        example: "2021-10-17 07:05:07"
+        example: "2021-11-16T08:26:30.000000Z"
       api_token:
         type: "string"
         example: "1|kRtTFoeS2bhXcVPbOYHW4EwP2DXaA9BxtdEX3EfU"
@@ -2757,10 +2757,10 @@ definitions:
         example: "printcart"
       created_at:
         type: "string"
-        example: "2021-1-1 00:00:00"
+        example: "2021-11-16T08:26:30.000000Z"
       updated_at:
         type: "string"
-        example: "2021-1-1 00:00:00"
+        example: "2021-11-16T08:26:30.000000Z"
     xml:
       name: "FontResponse"
   FontResponseShowDataObject:
@@ -2858,10 +2858,10 @@ definitions:
         example: 500
       created_at:
         type: "string"
-        example: "2021-1-1 00:00:00"
+        example: "2021-11-16T08:26:30.000000Z"
       updated_at:
         type: "string"
-        example: "2021-1-1 00:00:00"
+        example: "2021-11-16T08:26:30.000000Z"
     xml:
       name: "ImageResponse"
   ImageResponseShowDataObject:
@@ -3012,10 +3012,10 @@ definitions:
         example: 500
       created_at:
         type: "string"
-        example: "2021-1-1 00:00:00"
+        example: "2021-11-16T08:26:30.000000Z"
       updated_at:
         type: "string"
-        example: "2021-1-1 00:00:00"
+        example: "2021-11-16T08:26:30.000000Z"
     xml:
       name: "ClipartResponse"
   ClipartResponseShowDataObject:
@@ -3109,10 +3109,10 @@ definitions:
               example: 500
             created_at:
               type: "string"
-              example: "2021-1-1 00:00:00"
+              example: "2021-11-16T08:26:30.000000Z"
             updated_at:
               type: "string"
-              example: "2021-1-1 00:00:00"
+              example: "2021-11-16T08:26:30.000000Z"
       message:
         type: "string"
         description: "Retrieved successfully"
@@ -3379,10 +3379,10 @@ definitions:
         $ref: "#/definitions/ImageResponse"
       created_at:
         type: "string"
-        example: "2021-1-1 00:00:00"
+        example: "2021-11-16T08:26:30.000000Z"
       updated_at:
         type: "string"
-        example: "2021-1-1 00:00:00"
+        example: "2021-11-16T08:26:30.000000Z"
     xml:
       name: "ProductResponse"
   ProductResponseShowDataObject:
@@ -3524,10 +3524,10 @@ definitions:
               $ref: "#/definitions/ImageResponse"
             created_at:
               type: "string"
-              example: "2021-1-1 00:00:00"
+              example: "2021-11-16T08:26:30.000000Z"
             updated_at:
               type: "string"
-              example: "2021-1-1 00:00:00"
+              example: "2021-11-16T08:26:30.000000Z"
       message:
         type: "string"
         description: "Retrieved successfully"
@@ -3666,10 +3666,10 @@ definitions:
         example: "printcart note"
       created_at:
         type: "string"
-        example: "2021-1-1 00:00:00"
+        example: "2021-11-16T08:26:30.000000Z"
       updated_at:
         type: "string"
-        example: "2021-1-1 00:00:00"
+        example: "2021-11-16T08:26:30.000000Z"
     xml:
       name: "ProjectResponse"
   ProjectResponseShowDataObject:
@@ -3752,10 +3752,10 @@ definitions:
               example: "printcart note"
             created_at:
               type: "string"
-              example: "2021-1-1 00:00:00"
+              example: "2021-11-16T08:26:30.000000Z"
             updated_at:
               type: "string"
-              example: "2021-1-1 00:00:00"
+              example: "2021-11-16T08:26:30.000000Z"
       message:
         type: "string"
         description: "Retrieved successfully"
@@ -4195,10 +4195,10 @@ definitions:
         $ref: "#/definitions/ImageResponse"
       created_at:
         type: "string"
-        example: "2021-1-1 00:00:00"
+        example: "2021-11-16T08:26:30.000000Z"
       updated_at:
         type: "string"
-        example: "2021-1-1 00:00:00"
+        example: "2021-11-16T08:26:30.000000Z"
     xml:
       name: "SideResponse"
   SideResponseShowDataObject:
@@ -4392,10 +4392,10 @@ definitions:
               $ref: "#/definitions/ImageResponse"
             created_at:
               type: "string"
-              example: "2021-1-1 00:00:00"
+              example: "2021-11-16T08:26:30.000000Z"
             updated_at:
               type: "string"
-              example: "2021-1-1 00:00:00"
+              example: "2021-11-16T08:26:30.000000Z"
       message:
         type: "string"
         description: "Retrieved successfully"
@@ -4445,10 +4445,10 @@ definitions:
         example: null
       created_at:
         type: "string"
-        example: "2021-1-1 00:00:00"
+        example: "2021-11-16T08:26:30.000000Z"
       updated_at:
         type: "string"
-        example: "2021-1-1 00:00:00"
+        example: "2021-11-16T08:26:30.000000Z"
     xml:
       name: "CategoryResponse"
   CategoryResponseShowDataObject:
@@ -4812,10 +4812,10 @@ definitions:
                   $ref: "#/definitions/ImageResponse"
                 created_at:
                   type: "string"
-                  example: "2021-1-1 00:00:00"
+                  example: "2021-11-16T08:26:30.000000Z"
                 updated_at:
                   type: "string"
-                  example: "2021-1-1 00:00:00"
+                  example: "2021-11-16T08:26:30.000000Z"
             design_with:
               type: "integer"
               format: "int64"
@@ -4862,10 +4862,10 @@ definitions:
               example: "accepted"
             created_at:
               type: "string"
-              example: "2021-1-1 00:00:00"
+              example: "2021-11-16T08:26:30.000000Z"
             updated_at:
               type: "string"
-              example: "2021-1-1 00:00:00"
+              example: "2021-11-16T08:26:30.000000Z"
       message:
         type: "string"
         description: "Retrieved successfully"
@@ -5016,10 +5016,10 @@ definitions:
             $ref: "#/definitions/ImageResponse"
           created_at:
             type: "string"
-            example: "2021-1-1 00:00:00"
+            example: "2021-11-16T08:26:30.000000Z"
           updated_at:
             type: "string"
-            example: "2021-1-1 00:00:00"
+            example: "2021-11-16T08:26:30.000000Z"
       design_with:
         type: "integer"
         format: "int64"
@@ -5066,10 +5066,10 @@ definitions:
         example: "accepted"
       created_at:
         type: "string"
-        example: "2021-1-1 00:00:00"
+        example: "2021-11-16T08:26:30.000000Z"
       updated_at:
         type: "string"
-        example: "2021-1-1 00:00:00"
+        example: "2021-11-16T08:26:30.000000Z"
     xml:
       name: "DesignResponse"
   DesignResponseShowDataObject:
