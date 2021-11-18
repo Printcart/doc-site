@@ -3780,6 +3780,7 @@ definitions:
       - "product_id"
       - "name"
       - "bg_img_id"
+      - "img_overlay"
     properties:
       product_id:
         type: "string"
@@ -3815,7 +3816,7 @@ definitions:
         example: 50
       img_overlay:
         type: "string"
-        example: "printcart img"
+        example: "e8304b84-a015-3bd4-a7d3-7a978f465df2"
       version:
         type: "string"
         example: "version 1.0.0"
@@ -3933,6 +3934,7 @@ definitions:
       - "product_id"
       - "name"
       - "bg_img_id"
+      - "img_overlay"
     properties:
       sides:
         type: "array"
@@ -3976,7 +3978,7 @@ definitions:
               example: 50
             img_overlay:
               type: "string"
-              example: "printcart img"
+              example: "e8304b84-a015-3bd4-a7d3-7a978f465df2"
             version:
               type: "string"
               example: "version 1.0.0"
@@ -4063,7 +4065,7 @@ definitions:
   SideBatchDelete:
     type: "object"
     properties:
-      projects:
+      sides:
         type: "array"
         items:
           type: "object"
@@ -4111,8 +4113,7 @@ definitions:
         format: "int64"
         example: 50
       img_overlay:
-        type: "string"
-        example: "printcart img"
+        $ref: "#/definitions/ImageResponse"
       version:
         type: "string"
         example: "version 1.0.0"
@@ -4191,7 +4192,7 @@ definitions:
         type: "integer"
         format: "int64"
         example: 50
-      image:
+      background_img:
         $ref: "#/definitions/ImageResponse"
       created_at:
         type: "string"
@@ -4308,8 +4309,7 @@ definitions:
               format: "int64"
               example: 50
             img_overlay:
-              type: "string"
-              example: "printcart img"
+              $ref: "#/definitions/ImageResponse"
             version:
               type: "string"
               example: "version 1.0.0"
@@ -4388,7 +4388,7 @@ definitions:
               type: "integer"
               format: "int64"
               example: 50
-            image:
+            background_img:
               $ref: "#/definitions/ImageResponse"
             created_at:
               type: "string"
