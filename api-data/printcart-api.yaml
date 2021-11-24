@@ -51,7 +51,7 @@ paths:
         "201":
           description: "Created successfully"
           schema:
-            $ref: "#/definitions/UserResponseStore" 
+            $ref: "#/definitions/UserResponseStore"
     get:
       tags:
         - "Account"
@@ -69,6 +69,7 @@ paths:
           schema:
             $ref: "#/definitions/Unauthenticated"
       security:
+        - BasicAuth: []
         - ApiKeyAuth: []
     put:
       tags:
@@ -102,9 +103,7 @@ paths:
           schema:
             $ref: "#/definitions/Unauthenticated"
       security:
-        - ApiKeyAuth:
-            - "write:pets"
-            - "read:pets"
+        - BasicAuth: []
   /account/token_revoke:
     put:
       tags:
@@ -187,6 +186,7 @@ paths:
           schema:
             $ref: "#/definitions/Unauthenticated"
       security:
+        - BasicAuth: []
         - ApiKeyAuth: []
   /products/{productId}:
     get:
@@ -218,6 +218,7 @@ paths:
           schema:
             $ref: "#/definitions/Unauthenticated"
       security:
+        - BasicAuth: []
         - ApiKeyAuth: []
     put:
       tags:
@@ -291,6 +292,139 @@ paths:
             $ref: "#/definitions/NotFound"
       security:
         - BasicAuth: []
+  /products/batch:
+    post:
+      tags:
+        - "Product"
+      # description:
+      operationId: "postProductsBatch"
+      summary: "Create batch products"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - in: "body"
+          name: "body"
+          # description:
+          required: true
+          schema:
+            $ref: "#/definitions/ProductBatch"
+      responses:
+        "400":
+          description: "Invalid input"
+          schema:
+            $ref: "#/definitions/InvalidInput"
+        "201":
+          description: "Created successfully"
+          schema:
+            $ref: "#/definitions/ProductBatchResponse"
+        "401":
+          description: "Unauthenticated"
+          schema:
+            $ref: "#/definitions/Unauthenticated"
+        "500":
+          description: "Something went wrong while create products"
+          type: "object"
+          schema:
+            type: "object"
+            properties:
+              error:
+                type: "string"
+                description: "Something went wrong while create products"
+                example: "Something went wrong while create products"
+      security:
+        - BasicAuth: []
+    put:
+      tags:
+        - "Product"
+      # description:
+      operationId: "putProductsBatch"
+      summary: "Update batch products"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - in: "body"
+          name: "body"
+          # description:
+          required: true
+          schema:
+            $ref: "#/definitions/ProductBatchUpdate"
+      responses:
+        "400":
+          description: "Invalid input"
+          schema:
+            $ref: "#/definitions/InvalidInput"
+        "200":
+          description: "Updated successfully"
+          schema:
+            $ref: "#/definitions/ProductBatchUpdateResponse"
+        "401":
+          description: "Unauthenticated"
+          schema:
+            $ref: "#/definitions/Unauthenticated"
+        "404":
+          description: "Can't find product with id"
+          type: "object"
+          schema:
+            type: "object"
+            properties:
+              error:
+                type: "string"
+                description: "Can't find product with id"
+                example: "Can't find product with id: 962af342-a2c9-4665-bb5d-cb208258d958"
+        "500":
+          description: "Something went wrong while update products"
+          type: "object"
+          schema:
+            type: "object"
+            properties:
+              error:
+                type: "string"
+                description: "Something went wrong while update products"
+                example: "Something went wrong while update products"
+      security:
+        - BasicAuth: []
+    delete:
+      tags:
+        - "Product"
+      # description:
+      operationId: "deleteProductsBatch"
+      summary: "Delete batch products"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - in: "body"
+          name: "body"
+          # description:
+          required: true
+          schema:
+            $ref: "#/definitions/ProductBatchDelete"
+      responses:
+        "204":
+          description: "Deleted successfully"
+          schema:
+            $ref: "#/definitions/Deleted"
+        "401":
+          description: "Unauthenticated"
+          schema:
+            $ref: "#/definitions/Unauthenticated"
+        "404":
+          description: "Can't find product with id"
+          type: "object"
+          schema:
+            type: "object"
+            properties:
+              error:
+                type: "string"
+                description: "Can't find product with id"
+                example: "Can't find product with id: 962af342-a2c9-4665-bb5d-cb208258d958"
+      security:
+        - BasicAuth: []
   /products/{productId}/designs:
     get:
       tags:
@@ -321,6 +455,7 @@ paths:
           schema:
             $ref: "#/definitions/NotFound"
       security:
+        - BasicAuth: []
         - ApiKeyAuth: []
   /products/{productId}/sides:
     get:
@@ -352,6 +487,7 @@ paths:
           schema:
             $ref: "#/definitions/NotFound"
       security:
+        - BasicAuth: []
         - ApiKeyAuth: []
   /products/{productId}/designs/count:
     get:
@@ -379,6 +515,7 @@ paths:
           schema:
             $ref: "#/definitions/Unauthenticated"
       security:
+        - BasicAuth: []
         - ApiKeyAuth: []
   /products/{productId}/sides/count:
     get:
@@ -406,6 +543,7 @@ paths:
           schema:
             $ref: "#/definitions/Unauthenticated"
       security:
+        - BasicAuth: []
         - ApiKeyAuth: []
   /products/count:
     get:
@@ -427,6 +565,7 @@ paths:
           schema:
             $ref: "#/definitions/Unauthenticated"
       security:
+        - BasicAuth: []
         - ApiKeyAuth: []
   /sides:
     post:
@@ -485,6 +624,7 @@ paths:
           schema:
             $ref: "#/definitions/NotFound"
       security:
+        - BasicAuth: []
         - ApiKeyAuth: []
   /sides/{sideId}:
     get:
@@ -516,6 +656,7 @@ paths:
           schema:
             $ref: "#/definitions/NotFound"
       security:
+        - BasicAuth: []
         - ApiKeyAuth: []
     put:
       tags:
@@ -589,6 +730,141 @@ paths:
             $ref: "#/definitions/NotFound"
       security:
         - BasicAuth: []
+  /sides/batch:
+    post:
+      tags:
+        - "Side"
+      # summary:
+      # description:
+      operationId: "postSidesBatch"
+      summary: "Create batch sides"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - in: "body"
+          name: "body"
+          # description: "Pet object that needs to be added to the store"
+          required: true
+          schema:
+            $ref: "#/definitions/SideBatch"
+      responses:
+        "400":
+          description: "Invalid input"
+          schema:
+            $ref: "#/definitions/InvalidInput"
+        "201":
+          description: "Created successfully"
+          schema:
+            $ref: "#/definitions/SideBatchResponse"
+        "401":
+          description: "Unauthenticated"
+          schema:
+            $ref: "#/definitions/Unauthenticated"
+        "500":
+          description: "Something went wrong while create sides"
+          type: "object"
+          schema:
+            type: "object"
+            properties:
+              error:
+                type: "string"
+                description: "Something went wrong while create sides"
+                example: "Something went wrong while create sides"
+      security:
+        - BasicAuth: []
+    put:
+      tags:
+        - "Side"
+      # summary:
+      # description:
+      operationId: "putSidesBatch"
+      summary: "Update batch sides"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - in: "body"
+          name: "body"
+          # description: "Pet object that needs to be added to the store"
+          required: true
+          schema:
+            $ref: "#/definitions/SideBatchUpdate"
+      responses:
+        "400":
+          description: "Invalid input"
+          schema:
+            $ref: "#/definitions/InvalidInput"
+        "201":
+          description: "Created successfully"
+          schema:
+            $ref: "#/definitions/SideBatchUpdateResponse"
+        "401":
+          description: "Unauthenticated"
+          schema:
+            $ref: "#/definitions/Unauthenticated"
+        "404":
+          description: "Can't find side with id"
+          type: "object"
+          schema:
+            type: "object"
+            properties:
+              error:
+                type: "string"
+                description: "Can't find side with id"
+                example: "Can't find side with id: c5661a1e-8147-4dc3-8600-00fdc81ed14b"
+        "500":
+          description: "Something went wrong while update sides"
+          type: "object"
+          schema:
+            type: "object"
+            properties:
+              error:
+                type: "string"
+                description: "Something went wrong while update sides"
+                example: "Something went wrong while update sides"
+      security:
+        - BasicAuth: []
+    delete:
+      tags:
+        - "Side"
+      # description:
+      operationId: "deleteSidesBatch"
+      summary: "Delete batch sides"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - in: "body"
+          name: "body"
+          # description:
+          required: true
+          schema:
+            $ref: "#/definitions/SideBatchDelete"
+      responses:
+        "204":
+          description: "Deleted successfully"
+          schema:
+            $ref: "#/definitions/Deleted"
+        "401":
+          description: "Unauthenticated"
+          schema:
+            $ref: "#/definitions/Unauthenticated"
+        "404":
+          description: "Can't find side with id"
+          type: "object"
+          schema:
+            type: "object"
+            properties:
+              error:
+                type: "string"
+                description: "Can't find side with id"
+                example: "Can't find side with id: c5661a1e-8147-4dc3-8600-00fdc81ed14b"
+      security:
+        - BasicAuth: []
   /sides/count:
     get:
       tags:
@@ -609,6 +885,7 @@ paths:
           schema:
             $ref: "#/definitions/Unauthenticated"
       security:
+        - BasicAuth: []
         - ApiKeyAuth: []
   /cliparts:
     post:
@@ -667,6 +944,7 @@ paths:
           schema:
             $ref: "#/definitions/NotFound"
       security:
+        - BasicAuth: []
         - ApiKeyAuth: []
   /cliparts/{clipartId}:
     get:
@@ -698,6 +976,7 @@ paths:
           schema:
             $ref: "#/definitions/NotFound"
       security:
+        - BasicAuth: []
         - ApiKeyAuth: []
     put:
       tags:
@@ -771,6 +1050,167 @@ paths:
             $ref: "#/definitions/NotFound"
       security:
         - BasicAuth: []
+  /cliparts/batch:
+    post:
+      tags:
+        - "Clipart"
+      # summary:
+      # description:
+      operationId: "postClipartsBatch"
+      summary: "Create batch cliparts"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - in: "body"
+          name: "body"
+          # description: "Pet object that needs to be added to the store"
+          required: true
+          schema:
+            $ref: "#/definitions/ClipartBatch"
+      responses:
+        "400":
+          description: "Invalid input"
+          schema:
+            $ref: "#/definitions/InvalidInput"
+        "201":
+          description: "Created successfully"
+          schema:
+            $ref: "#/definitions/ClipartBatchResponse"
+        "401":
+          description: "Unauthenticated"
+          schema:
+            $ref: "#/definitions/Unauthenticated"
+        "500":
+          description: "Something went wrong while create cliparts"
+          type: "object"
+          schema:
+            type: "object"
+            properties:
+              error:
+                type: "string"
+                description: "Something went wrong while create cliparts"
+                example: "Something went wrong while create cliparts"
+      security:
+        - BasicAuth: []
+    put:
+      tags:
+        - "Clipart"
+      # summary:
+      # description:
+      operationId: "putClipartsBatch"
+      summary: "Update batch cliparts"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - in: "body"
+          name: "body"
+          # description: "Pet object that needs to be added to the store"
+          required: true
+          schema:
+            $ref: "#/definitions/ClipartBatchUpdate"
+      responses:
+        "400":
+          description: "Invalid input"
+          schema:
+            $ref: "#/definitions/InvalidInput"
+        "201":
+          description: "Created successfully"
+          schema:
+            $ref: "#/definitions/ClipartBatchUpdateResponse"
+        "401":
+          description: "Unauthenticated"
+          schema:
+            $ref: "#/definitions/Unauthenticated"
+        "404":
+          description: "Can't find clipart with id"
+          type: "object"
+          schema:
+            type: "object"
+            properties:
+              error:
+                type: "string"
+                description: "Can't find clipart with id"
+                example: "Can't find clipart with id: 3f2b04a2-8aa9-31a7-82b0-3e2b94c815fe"
+        "500":
+          description: "Something went wrong while update cliparts"
+          type: "object"
+          schema:
+            type: "object"
+            properties:
+              error:
+                type: "string"
+                description: "Something went wrong while update cliparts"
+                example: "Something went wrong while update cliparts"
+      security:
+        - BasicAuth: []
+    delete:
+      tags:
+        - "Clipart"
+      # description:
+      operationId: "deleteClipartsBatch"
+      summary: "Delete batch cliparts"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - in: "body"
+          name: "body"
+          # description:
+          required: true
+          schema:
+            $ref: "#/definitions/ClipartBatchDelete"
+      responses:
+        "204":
+          description: "Deleted successfully"
+          schema:
+            $ref: "#/definitions/Deleted"
+        "401":
+          description: "Unauthenticated"
+          schema:
+            $ref: "#/definitions/Unauthenticated"
+        "404":
+          description: "Can't find clipart with id"
+          type: "object"
+          schema:
+            type: "object"
+            properties:
+              error:
+                type: "string"
+                description: "Can't find clipart with id"
+                example: "Can't find clipart with id: 3f2b04a2-8aa9-31a7-82b0-3e2b94c815fe"
+      security:
+        - BasicAuth: []
+  /cliparts-storages:
+    get:
+      tags:
+        - "Clipart"
+      # summary: "..."
+      # description: "..."
+      operationId: "getCategory"
+      summary: "Get a list of clipart storages"
+      produces:
+        - "application/json"
+      responses:
+        "200":
+          description: "Retrieved successfully"
+          schema:
+            $ref: "#/definitions/CategoryResponseShowDataArray"
+        "401":
+          description: "Unauthenticated"
+          schema:
+            $ref: "#/definitions/Unauthenticated"
+        "404":
+          description: "Not found"
+          schema:
+            $ref: "#/definitions/NotFound"
+      security:
+        - BasicAuth: []
+        - ApiKeyAuth: []
   /cliparts/count:
     get:
       tags:
@@ -791,6 +1231,7 @@ paths:
           schema:
             $ref: "#/definitions/Unauthenticated"
       security:
+        - BasicAuth: []
         - ApiKeyAuth: []
   /fonts:
     post:
@@ -849,6 +1290,7 @@ paths:
           schema:
             $ref: "#/definitions/NotFound"
       security:
+        - BasicAuth: []
         - ApiKeyAuth: []
   /fonts/{fontId}:
     get:
@@ -877,6 +1319,7 @@ paths:
           schema:
             $ref: "#/definitions/NotFound"
       security:
+        - BasicAuth: []
         - ApiKeyAuth: []
     put:
       tags:
@@ -970,6 +1413,7 @@ paths:
           schema:
             $ref: "#/definitions/Unauthenticated"
       security:
+        - BasicAuth: []
         - ApiKeyAuth: []
   /images:
     post:
@@ -984,7 +1428,7 @@ paths:
       produces:
         - "application/json"
       parameters:
-        - name: "imageFile"
+        - name: "file"
           in: "formData"
           description: "Image to upload"
           required: true
@@ -1000,6 +1444,14 @@ paths:
             $ref: "#/definitions/Unauthenticated"
         "405":
           description: "File upload missing"
+          type: "object"
+          schema:
+            type: "object"
+            properties:
+              message:
+                type: "string"
+                description: "File upload missing"
+                example: "File upload missing"
       security:
         - BasicAuth: []
     get:
@@ -1025,6 +1477,7 @@ paths:
           schema:
             $ref: "#/definitions/NotFound"
       security:
+        - BasicAuth: []
         - ApiKeyAuth: []
   /images/{imageId}:
     get:
@@ -1056,6 +1509,7 @@ paths:
           schema:
             $ref: "#/definitions/NotFound"
       security:
+        - BasicAuth: []
         - ApiKeyAuth: []
     delete:
       tags:
@@ -1107,6 +1561,7 @@ paths:
           schema:
             $ref: "#/definitions/Unauthenticated"
       security:
+        - BasicAuth: []
         - ApiKeyAuth: []
   /designs:
     post:
@@ -1141,7 +1596,7 @@ paths:
           schema:
             $ref: "#/definitions/DesignResponseStore"
       security:
-        - ApiKeyAuth: []
+        - BasicAuth: []
     get:
       tags:
         - "Design"
@@ -1165,6 +1620,39 @@ paths:
           schema:
             $ref: "#/definitions/NotFound"
       security:
+        - BasicAuth: []
+        - ApiKeyAuth: []
+  /designs/{designId}/layer:
+    get:
+      tags:
+        - "Design"
+      # summary: "Find pet by ID"
+      # description: "Returns a single pet"
+      operationId: "getLayerDesignById"
+      summary: "Get list layer by design"
+      produces:
+        - "application/json"
+      parameters:
+        - name: "designId"
+          in: "path"
+          description: "Design ID"
+          required: true
+          type: "string"
+      responses:
+        "200":
+          description: "Retrieved successfully"
+          schema:
+            $ref: "#/definitions/DesignLayer"
+        "401":
+          description: "Unauthenticated"
+          schema:
+            $ref: "#/definitions/Unauthenticated"
+        "404":
+          description: "Not found"
+          schema:
+            $ref: "#/definitions/NotFound"
+      security:
+        - BasicAuth: []
         - ApiKeyAuth: []
   /designs/{designId}:
     get:
@@ -1196,6 +1684,7 @@ paths:
           schema:
             $ref: "#/definitions/NotFound"
       security:
+        - BasicAuth: []
         - ApiKeyAuth: []
     put:
       tags:
@@ -1238,7 +1727,7 @@ paths:
           schema:
             $ref: "#/definitions/NotFound"
       security:
-        - ApiKeyAuth: []
+        - BasicAuth: []
     delete:
       tags:
         - "Design"
@@ -1268,7 +1757,140 @@ paths:
           schema:
             $ref: "#/definitions/NotFound"
       security:
-        - ApiKeyAuth: []
+        - BasicAuth: []
+  /designs/batch:
+    post:
+      tags:
+        - "Design"
+      # description:
+      operationId: "postDesignsBatch"
+      summary: "Create batch designs"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - in: "body"
+          name: "body"
+          # description:
+          required: true
+          schema:
+            $ref: "#/definitions/DesignBatch"
+      responses:
+        "400":
+          description: "Invalid input"
+          schema:
+            $ref: "#/definitions/InvalidInput"
+        "201":
+          description: "Created successfully"
+          schema:
+            $ref: "#/definitions/DesignBatchResponse"
+        "401":
+          description: "Unauthenticated"
+          schema:
+            $ref: "#/definitions/Unauthenticated"
+        "500":
+          description: "Something went wrong while create designs"
+          type: "object"
+          schema:
+            type: "object"
+            properties:
+              error:
+                type: "string"
+                description: "Something went wrong while create designs"
+                example: "Something went wrong while create designs"
+      security:
+        - BasicAuth: []
+    put:
+      tags:
+        - "Design"
+      # description:
+      operationId: "putDesignsBatch"
+      summary: "Update batch designs"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - in: "body"
+          name: "body"
+          # description:
+          required: true
+          schema:
+            $ref: "#/definitions/DesignBatchUpdate"
+      responses:
+        "400":
+          description: "Invalid input"
+          schema:
+            $ref: "#/definitions/InvalidInput"
+        "200":
+          description: "Updated successfully"
+          schema:
+            $ref: "#/definitions/DesignBatchUpdateResponse"
+        "401":
+          description: "Unauthenticated"
+          schema:
+            $ref: "#/definitions/Unauthenticated"
+        "404":
+          description: "Can't find design with id"
+          type: "object"
+          schema:
+            type: "object"
+            properties:
+              error:
+                type: "string"
+                description: "Can't find design with id"
+                example: "Can't find design with id: cce4dc71-6757-4a1c-a259-6b66a4304c14"
+        "500":
+          description: "Something went wrong while update designs"
+          type: "object"
+          schema:
+            type: "object"
+            properties:
+              error:
+                type: "string"
+                description: "Something went wrong while update designs"
+                example: "Something went wrong while update designs"
+      security:
+        - BasicAuth: []
+    delete:
+      tags:
+        - "Design"
+      # description:
+      operationId: "deleteDesignsBatch"
+      summary: "Delete batch designs"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - in: "body"
+          name: "body"
+          # description:
+          required: true
+          schema:
+            $ref: "#/definitions/DesignBatchDelete"
+      responses:
+        "204":
+          description: "Deleted successfully"
+          schema:
+            $ref: "#/definitions/Deleted"
+        "401":
+          description: "Unauthenticated"
+          schema:
+            $ref: "#/definitions/Unauthenticated"
+        "404":
+          description: "Can't find design with id"
+          type: "object"
+          schema:
+            type: "object"
+            properties:
+              error:
+                type: "string"
+                description: "Can't find design with id"
+                example: "Can't find design with id: cce4dc71-6757-4a1c-a259-6b66a4304c14"
+      security:
+        - BasicAuth: []
   /designs/{designId}/storages:
     get:
       tags:
@@ -1300,6 +1922,7 @@ paths:
             $ref: "#/definitions/NotFound"
       security:
         - BasicAuth: []
+        - ApiKeyAuth: []
   /designs/count:
     get:
       tags:
@@ -1318,8 +1941,9 @@ paths:
         "401":
           description: "Unauthenticated"
           schema:
-            $ref: "#/definitions/Unauthenticated"    
+            $ref: "#/definitions/Unauthenticated"
       security:
+        - BasicAuth: []
         - ApiKeyAuth: []
   /storages:
     post:
@@ -1352,7 +1976,7 @@ paths:
         "401":
           description: "Unauthenticated"
           schema:
-            $ref: "#/definitions/Unauthenticated"    
+            $ref: "#/definitions/Unauthenticated"
       security:
         - BasicAuth: []
     get:
@@ -1360,7 +1984,7 @@ paths:
         - "Storage"
       # summary: "..."
       # description: "..."
-      operationId: "getCategory"
+      operationId: "getDesignCategory"
       summary: "Get a list of design storages"
       produces:
         - "application/json"
@@ -1372,13 +1996,14 @@ paths:
         "401":
           description: "Unauthenticated"
           schema:
-            $ref: "#/definitions/Unauthenticated"    
+            $ref: "#/definitions/Unauthenticated"
         "404":
           description: "Not found"
           schema:
             $ref: "#/definitions/NotFound"
       security:
         - BasicAuth: []
+        - ApiKeyAuth: []
   /storages/{storageId}:
     get:
       tags:
@@ -1410,6 +2035,7 @@ paths:
             $ref: "#/definitions/NotFound"
       security:
         - BasicAuth: []
+        - ApiKeyAuth: []
     put:
       tags:
         - "Storage"
@@ -1482,7 +2108,7 @@ paths:
             $ref: "#/definitions/NotFound"
       security:
         - BasicAuth: []
-  /storages/{storageId}/designs:
+  /designs-storages/{storageId}:
     get:
       tags:
         - "Storage"
@@ -1512,6 +2138,39 @@ paths:
           schema:
             $ref: "#/definitions/NotFound"
       security:
+        - BasicAuth: []
+        - ApiKeyAuth: []
+  /cliparts-storages/{storageId}:
+    get:
+      tags:
+        - "Storage"
+      # summary: "Find pet by ID"
+      # description: "Returns a single pet"
+      operationId: "getClipartsByStorage"
+      summary: "Get a list of cliparts by storage"
+      produces:
+        - "application/json"
+      parameters:
+        - name: "storageId"
+          in: "path"
+          description: "Storage ID"
+          required: true
+          type: "string"
+      responses:
+        "200":
+          description: "Retrieved successfully"
+          schema:
+            $ref: "#/definitions/ClipartResponseShowDataArray"
+        "401":
+          description: "Unauthenticated"
+          schema:
+            $ref: "#/definitions/Unauthenticated"
+        "404":
+          description: "Not found"
+          schema:
+            $ref: "#/definitions/NotFound"
+      security:
+        - BasicAuth: []
         - ApiKeyAuth: []
   /storages/count:
     get:
@@ -1531,9 +2190,10 @@ paths:
         "401":
           description: "Unauthenticated"
           schema:
-            $ref: "#/definitions/Unauthenticated"    
+            $ref: "#/definitions/Unauthenticated"
       security:
         - BasicAuth: []
+        - ApiKeyAuth: []
   /projects:
     post:
       tags:
@@ -1565,9 +2225,9 @@ paths:
         "401":
           description: "Unauthenticated"
           schema:
-            $ref: "#/definitions/Unauthenticated"    
+            $ref: "#/definitions/Unauthenticated"
       security:
-        - ApiKeyAuth: []
+        - BasicAuth: []
     get:
       tags:
         - "Project"
@@ -1585,13 +2245,14 @@ paths:
         "401":
           description: "Unauthenticated"
           schema:
-            $ref: "#/definitions/Unauthenticated"    
+            $ref: "#/definitions/Unauthenticated"
         "404":
           description: "Not found"
           schema:
             $ref: "#/definitions/NotFound"
       security:
         - BasicAuth: []
+        - ApiKeyAuth: []
   /projects/{projectId}:
     get:
       tags:
@@ -1623,6 +2284,7 @@ paths:
             $ref: "#/definitions/NotFound"
       security:
         - BasicAuth: []
+        - ApiKeyAuth: []
     put:
       tags:
         - "Project"
@@ -1695,6 +2357,139 @@ paths:
             $ref: "#/definitions/NotFound"
       security:
         - BasicAuth: []
+  /projects/batch:
+    post:
+      tags:
+        - "Project"
+      # description:
+      operationId: "postProjectsBatch"
+      summary: "Create batch projects"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - in: "body"
+          name: "body"
+          # description:
+          required: true
+          schema:
+            $ref: "#/definitions/ProjectBatch"
+      responses:
+        "400":
+          description: "Invalid input"
+          schema:
+            $ref: "#/definitions/InvalidInput"
+        "201":
+          description: "Created successfully"
+          schema:
+            $ref: "#/definitions/ProjectBatchResponse"
+        "401":
+          description: "Unauthenticated"
+          schema:
+            $ref: "#/definitions/Unauthenticated"
+        "500":
+          description: "Something went wrong while create projects"
+          type: "object"
+          schema:
+            type: "object"
+            properties:
+              error:
+                type: "string"
+                description: "Something went wrong while create projects"
+                example: "Something went wrong while create projects"
+      security:
+        - BasicAuth: []
+    put:
+      tags:
+        - "Project"
+      # description:
+      operationId: "putProjectsBatch"
+      summary: "Update batch projects"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - in: "body"
+          name: "body"
+          # description:
+          required: true
+          schema:
+            $ref: "#/definitions/ProjectBatchUpdate"
+      responses:
+        "400":
+          description: "Invalid input"
+          schema:
+            $ref: "#/definitions/InvalidInput"
+        "200":
+          description: "Updated successfully"
+          schema:
+            $ref: "#/definitions/ProjectBatchUpdateResponse"
+        "401":
+          description: "Unauthenticated"
+          schema:
+            $ref: "#/definitions/Unauthenticated"
+        "404":
+          description: "Can't find project with id"
+          type: "object"
+          schema:
+            type: "object"
+            properties:
+              error:
+                type: "string"
+                description: "Can't find project with id"
+                example: "Can't find project with id: 4419934f-8e1b-4cf0-b432-01ef9258a812"
+        "500":
+          description: "Something went wrong while update projects"
+          type: "object"
+          schema:
+            type: "object"
+            properties:
+              error:
+                type: "string"
+                description: "Something went wrong while update projects"
+                example: "Something went wrong while update projects"
+      security:
+        - BasicAuth: []
+    delete:
+      tags:
+        - "Project"
+      # description:
+      operationId: "deleteProjectsBatch"
+      summary: "Delete batch projects"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - in: "body"
+          name: "body"
+          # description:
+          required: true
+          schema:
+            $ref: "#/definitions/ProjectBatchDelete"
+      responses:
+        "204":
+          description: "Deleted successfully"
+          schema:
+            $ref: "#/definitions/Deleted"
+        "401":
+          description: "Unauthenticated"
+          schema:
+            $ref: "#/definitions/Unauthenticated"
+        "404":
+          description: "Can't find project with id"
+          type: "object"
+          schema:
+            type: "object"
+            properties:
+              error:
+                type: "string"
+                description: "Can't find project with id"
+                example: "Can't find project with id: 4419934f-8e1b-4cf0-b432-01ef9258a812"
+      security:
+        - BasicAuth: []
   /projects/{projectId}/designs:
     get:
       tags:
@@ -1726,6 +2521,7 @@ paths:
             $ref: "#/definitions/NotFound"
       security:
         - BasicAuth: []
+        - ApiKeyAuth: []
   /projects/{projectId}/products:
     get:
       tags:
@@ -1757,6 +2553,7 @@ paths:
             $ref: "#/definitions/NotFound"
       security:
         - BasicAuth: []
+        - ApiKeyAuth: []
   /projects/count:
     get:
       tags:
@@ -1775,9 +2572,10 @@ paths:
         "401":
           description: "Unauthenticated"
           schema:
-            $ref: "#/definitions/Unauthenticated"    
+            $ref: "#/definitions/Unauthenticated"
       security:
         - BasicAuth: []
+        - ApiKeyAuth: []
   /projects/{projectId}/designs/count:
     get:
       tags:
@@ -1802,9 +2600,10 @@ paths:
         "401":
           description: "Unauthenticated"
           schema:
-            $ref: "#/definitions/Unauthenticated"    
+            $ref: "#/definitions/Unauthenticated"
       security:
         - BasicAuth: []
+        - ApiKeyAuth: []
   /projects/{projectId}/products/count:
     get:
       tags:
@@ -1829,9 +2628,10 @@ paths:
         "401":
           description: "Unauthenticated"
           schema:
-            $ref: "#/definitions/Unauthenticated"    
+            $ref: "#/definitions/Unauthenticated"
       security:
         - BasicAuth: []
+        - ApiKeyAuth: []
 securityDefinitions:
   ApiKeyAuth:
     type: "apiKey"
@@ -1859,7 +2659,10 @@ definitions:
         example: "printcart123"
       avatar_img_url:
         type: "string"
-        example: 'https://docs.printcart.com/img/Logo-PrintCart-1.png'
+        example: "https://docs.printcart.com/img/Logo-PrintCart-1.png"
+      google_font_api:
+        type: "string"
+        example: "AIzaSyBtoM...L3iAPUPrpQ"
     xml:
       name: "Account"
   UserResponse:
@@ -1870,7 +2673,7 @@ definitions:
         example: "19f99961-edac-455e-b407-aa6aa80ec862"
       name:
         type: "string"
-        example: "printcart"            
+        example: "printcart"
       email:
         type: "string"
         format: "email"
@@ -1878,15 +2681,18 @@ definitions:
       email_verified_at:
         type: "string"
         example: null
+      google_font_api:
+        type: "string"
+        example: "AIzaSyBtoM...L3iAPUPrpQ"
       avatar_img_url:
         type: "string"
-        example: 'https://docs.printcart.com/img/Logo-PrintCart-1.png' 
+        example: "https://docs.printcart.com/img/Logo-PrintCart-1.png"
       created_at:
         type: "string"
-        example: "2021-10-16 07:05:07"
+        example: "2021-11-16T08:26:30.000000Z"
       updated_at:
         type: "string"
-        example: "2021-10-17 07:05:07"
+        example: "2021-11-16T08:26:30.000000Z"
       api_token:
         type: "string"
         example: "1|kRtTFoeS2bhXcVPbOYHW4EwP2DXaA9BxtdEX3EfU"
@@ -1898,7 +2704,7 @@ definitions:
       data:
         type: "object"
         $ref: "#/definitions/UserResponse"
-      message: 
+      message:
         type: "string"
         description: "Retrieved successfully"
         example: "Retrieved successfully"
@@ -1910,7 +2716,7 @@ definitions:
       data:
         type: "object"
         $ref: "#/definitions/UserResponse"
-      message: 
+      message:
         type: "string"
         description: "Created successfully"
         example: "Created successfully"
@@ -1922,7 +2728,7 @@ definitions:
       data:
         type: "object"
         $ref: "#/definitions/UserResponse"
-      message: 
+      message:
         type: "string"
         description: "Updated successfully"
         example: "Updated successfully"
@@ -1944,11 +2750,22 @@ definitions:
     type: "object"
     required:
       - "name"
+      - "alias"
+      - "url"
     properties:
       name:
         type: "string"
         example: "printcart"
+      alias:
+        type: "string"
+        example: "printcart"
       url:
+        type: "string"
+        example: "https//:printcart.com/printcart"
+      type:
+        type: "string"
+        example: "printcart"
+      subset:
         type: "string"
         example: "printcart"
     xml:
@@ -1962,15 +2779,24 @@ definitions:
       name:
         type: "string"
         example: "printcart"
+      alias:
+        type: "string"
+        example: "printcart"
       url:
+        type: "string"
+        example: "https//:printcart.com/printcart"
+      type:
+        type: "string"
+        example: "printcart"
+      subset:
         type: "string"
         example: "printcart"
       created_at:
         type: "string"
-        example: "2021-1-1 00:00:00"
+        example: "2021-11-16T08:26:30.000000Z"
       updated_at:
         type: "string"
-        example: "2021-1-1 00:00:00"
+        example: "2021-11-16T08:26:30.000000Z"
     xml:
       name: "FontResponse"
   FontResponseShowDataObject:
@@ -1979,7 +2805,7 @@ definitions:
       data:
         type: "object"
         $ref: "#/definitions/FontResponse"
-      message: 
+      message:
         type: "string"
         description: "Retrieved successfully"
         example: "Retrieved successfully"
@@ -2005,7 +2831,7 @@ definitions:
       data:
         type: "object"
         $ref: "#/definitions/FontResponse"
-      message: 
+      message:
         type: "string"
         description: "Created successfully"
         example: "Created successfully"
@@ -2017,7 +2843,7 @@ definitions:
       data:
         type: "object"
         $ref: "#/definitions/FontResponse"
-      message: 
+      message:
         type: "string"
         description: "Update successfully"
         example: "Update successfully"
@@ -2026,7 +2852,7 @@ definitions:
   FontCount:
     type: "object"
     properties:
-      data: 
+      data:
         type: "object"
         properties:
           count:
@@ -2048,9 +2874,13 @@ definitions:
       name:
         type: "string"
         example: "printcart"
+      size:
+        type: "integer"
+        format: "int64"
+        example: 20000
       url:
         type: "string"
-        example: 'https://docs.printcart.com/img/Logo-PrintCart-1.png'
+        example: "https://docs.printcart.com/img/Logo-PrintCart-1.png"
       alt:
         type: "string"
         example: "printcart"
@@ -2064,10 +2894,10 @@ definitions:
         example: 500
       created_at:
         type: "string"
-        example: "2021-1-1 00:00:00"
+        example: "2021-11-16T08:26:30.000000Z"
       updated_at:
         type: "string"
-        example: "2021-1-1 00:00:00"
+        example: "2021-11-16T08:26:30.000000Z"
     xml:
       name: "ImageResponse"
   ImageResponseShowDataObject:
@@ -2076,7 +2906,7 @@ definitions:
       data:
         type: "object"
         $ref: "#/definitions/ImageResponse"
-      message: 
+      message:
         type: "string"
         description: "Retrieved successfully"
         example: "Retrieved successfully"
@@ -2090,7 +2920,7 @@ definitions:
         items:
           type: "object"
           $ref: "#/definitions/ImageResponse"
-      message: 
+      message:
         type: "string"
         description: "Retrieved successfully"
         example: "Retrieved successfully"
@@ -2102,7 +2932,7 @@ definitions:
       data:
         type: "object"
         $ref: "#/definitions/ImageResponse"
-      message: 
+      message:
         type: "string"
         description: "Created successfully"
         example: "Created successfully"
@@ -2114,7 +2944,7 @@ definitions:
       data:
         type: "object"
         $ref: "#/definitions/ImageResponse"
-      message: 
+      message:
         type: "string"
         description: "Update successfully"
         example: "Update successfully"
@@ -2123,7 +2953,7 @@ definitions:
   ImageCount:
     type: "object"
     properties:
-      data: 
+      data:
         type: "object"
         properties:
           count:
@@ -2150,6 +2980,52 @@ definitions:
         example: "e8304b84-a015-3bd4-a7d3-7a978f465df2"
     xml:
       name: "Clipart"
+  ClipartBatch:
+    type: "object"
+    required:
+      - "name"
+    properties:
+      cliparts:
+        type: "array"
+        items:
+          type: "array"
+          $ref: "#/definitions/Clipart"
+    xml:
+      name: "ClipartBatch"
+  ClipartBatchUpdate:
+    type: "object"
+    required:
+      - "name"
+    properties:
+      cliparts:
+        type: "array"
+        items:
+          type: "object"
+          properties:
+            id:
+              type: "string"
+              example: "3f2b04a2-8aa9-31a7-82b0-3e2b94c815fe"
+            name:
+              type: "string"
+              example: "printcart"
+            image_id:
+              type: "string"
+              example: "e8304b84-a015-3bd4-a7d3-7a978f465df2"
+    xml:
+      name: "ClipartBatchUpdate"
+  ClipartBatchDelete:
+    type: "object"
+    properties:
+      cliparts:
+        type: "array"
+        items:
+          type: "object"
+          properties:
+            id:
+              type: "string"
+              example: "3f2b04a2-8aa9-31a7-82b0-3e2b94c815fe"
+    xml:
+      name: "ClipartBatchDelete"
   ClipartResponse:
     type: "object"
     properties:
@@ -2159,6 +3035,9 @@ definitions:
       name:
         type: "string"
         example: "printcart"
+      url:
+        type: "url"
+        example: "https://docs.printcart.com/img/Logo-PrintCart-1.png"
       width:
         type: "integer"
         format: "int64"
@@ -2169,10 +3048,10 @@ definitions:
         example: 500
       created_at:
         type: "string"
-        example: "2021-1-1 00:00:00"
+        example: "2021-11-16T08:26:30.000000Z"
       updated_at:
         type: "string"
-        example: "2021-1-1 00:00:00"
+        example: "2021-11-16T08:26:30.000000Z"
     xml:
       name: "ClipartResponse"
   ClipartResponseShowDataObject:
@@ -2207,7 +3086,7 @@ definitions:
       data:
         type: "object"
         $ref: "#/definitions/ClipartResponse"
-      message: 
+      message:
         type: "string"
         description: "Created successfully"
         example: "Created successfully"
@@ -2219,16 +3098,67 @@ definitions:
       data:
         type: "object"
         $ref: "#/definitions/ClipartResponse"
-      message: 
+      message:
         type: "string"
         description: "Update successfully"
         example: "Update successfully"
     xml:
       name: "ClipartResponseUpdate"
+  ClipartBatchResponse:
+    type: "object"
+    properties:
+      data:
+        type: "array"
+        items:
+          type: "object"
+          $ref: "#/definitions/ClipartResponse"
+      message:
+        type: "string"
+        description: "Created successfully"
+        example: "Created successfully"
+    xml:
+      name: "ClipartBatchResponse"
+  ClipartBatchUpdateResponse:
+    type: "object"
+    properties:
+      data:
+        type: "array"
+        items:
+          type: "object"
+          properties:
+            id:
+              type: "string"
+              example: "3f2b04a2-8aa9-31a7-82b0-3e2b94c815fe"
+            name:
+              type: "string"
+              example: "printcart"
+            url:
+              type: "url"
+              example: "https://docs.printcart.com/img/Logo-PrintCart-1.png"
+            width:
+              type: "integer"
+              format: "int64"
+              example: 500
+            height:
+              type: "integer"
+              format: "int64"
+              example: 500
+            created_at:
+              type: "string"
+              example: "2021-11-16T08:26:30.000000Z"
+            updated_at:
+              type: "string"
+              example: "2021-11-16T08:26:30.000000Z"
+      message:
+        type: "string"
+        description: "Retrieved successfully"
+        example: "Retrieved successfully"
+    xml:
+      name: "ClipartBatchUpdateResponse"
   ClipartCount:
     type: "object"
     properties:
-      data: 
+      data:
         type: "object"
         properties:
           count:
@@ -2245,6 +3175,7 @@ definitions:
     type: "object"
     required:
       - "name"
+      - "product_image"
     properties:
       name:
         type: "string"
@@ -2283,16 +3214,18 @@ definitions:
           - "deleted"
         example: "publish"
       allowed_file_types:
-        type: "string"
-        enum:
-          - "jpg"
-          - "png"
-          - "ai"
-          - "ps"
-          - "pdf"
-          - "bmp"
-          - "iddd"
-        example: "pdf"
+        type: "array"
+        items:
+          type: "string"
+          enum:
+            - "jpg"
+            - "png"
+            - "ai"
+            - "ps"
+            - "pdf"
+            - "bmp"
+            - "iddd"
+        example: ["jpg", "png", "ai", "ps", "pdf", "bmp", "iddd"]
       max_file_upload:
         type: "integer"
         format: "int64"
@@ -2301,15 +3234,124 @@ definitions:
         type: "integer"
         format: "int64"
         example: 500
+      enable_design:
+        type: "boolean"
+        example: false
+      product_image:
+        type: "string"
+        example: "e8304b84-a015-3bd4-a7d3-7a978f465df2"
     xml:
       name: "Product"
+  ProductBatch:
+    type: "object"
+    required:
+      - "name"
+    properties:
+      products:
+        type: "array"
+        items:
+          type: "array"
+          $ref: "#/definitions/Product"
+    xml:
+      name: "ProductBatch"
+  ProductBatchUpdate:
+    type: "object"
+    required:
+      - "name"
+    properties:
+      products:
+        type: "array"
+        items:
+          type: "object"
+          properties:
+            id:
+              type: "string"
+              example: "962af342-a2c9-4665-bb5d-cb208258d958"
+            name:
+              type: "string"
+              example: "printcart"
+            dynamic_side:
+              type: "boolean"
+              example: true
+            viewport_width:
+              type: "integer"
+              format: "int64"
+              example: 500
+            viewport_height:
+              type: "integer"
+              format: "int64"
+              example: 500
+            scale:
+              type: "integer"
+              format: "int64"
+              example: 500
+            dpi:
+              type: "integer"
+              format: "int64"
+              example: 500
+            dimension_unit:
+              type: "string"
+              enum:
+                - "inch"
+                - "cm"
+              example: "inch"
+            status:
+              type: "string"
+              enum:
+                - "publish"
+                - "draft"
+                - "trashed"
+                - "deleted"
+              example: "publish"
+            allowed_file_types:
+              type: "array"
+              items:
+                type: "string"
+                enum:
+                  - "jpg"
+                  - "png"
+                  - "ai"
+                  - "ps"
+                  - "pdf"
+                  - "bmp"
+                  - "iddd"
+              example: ["jpg", "png", "ai", "ps", "pdf", "bmp", "iddd"]
+            max_file_upload:
+              type: "integer"
+              format: "int64"
+              example: 500
+            min_jpg_dpi:
+              type: "integer"
+              format: "int64"
+              example: 500
+            enable_design:
+              type: "boolean"
+              example: false
+            product_image:
+              type: "string"
+              example: "e8304b84-a015-3bd4-a7d3-7a978f465df2"
+    xml:
+      name: "ProductBatchUpdate"
+  ProductBatchDelete:
+    type: "object"
+    properties:
+      products:
+        type: "array"
+        items:
+          type: "object"
+          properties:
+            id:
+              type: "string"
+              example: "962af342-a2c9-4665-bb5d-cb208258d958"
+    xml:
+      name: "ProductBatchDelete"
   ProductResponse:
     type: "object"
     properties:
       id:
         type: "string"
         example: "962af342-a2c9-4665-bb5d-cb208258d958"
-      name: 
+      name:
         type: "string"
         example: "printcart"
       dynamic_side:
@@ -2333,7 +3375,7 @@ definitions:
         example: 500
       dimension_unit:
         type: "string"
-        enum: 
+        enum:
           - "inch"
           - "cm"
         example: "inch"
@@ -2346,16 +3388,18 @@ definitions:
           - "deleted"
         example: "publish"
       allowed_file_types:
-        type: "string"
-        enum:
-          - "jpg"
-          - "png"
-          - "ai"
-          - "ps"
-          - "pdf"
-          - "bmp"
-          - "iddd"
-        example: "png"
+        type: "array"
+        items:
+          type: "string"
+          enum:
+            - "jpg"
+            - "png"
+            - "ai"
+            - "ps"
+            - "pdf"
+            - "bmp"
+            - "iddd"
+        example: ["jpg", "png", "ai", "ps", "pdf", "bmp", "iddd"]
       max_file_upload:
         type: "integer"
         format: "int64"
@@ -2364,12 +3408,17 @@ definitions:
         type: "integer"
         format: "int64"
         example: 500
+      enable_design:
+        type: "boolean"
+        example: false
+      product_image:
+        $ref: "#/definitions/ImageResponse"
       created_at:
         type: "string"
-        example: "2021-1-1 00:00:00"
+        example: "2021-11-16T08:26:30.000000Z"
       updated_at:
         type: "string"
-        example: "2021-1-1 00:00:00"
+        example: "2021-11-16T08:26:30.000000Z"
     xml:
       name: "ProductResponse"
   ProductResponseShowDataObject:
@@ -2391,7 +3440,7 @@ definitions:
         type: "array"
         items:
           type: "object"
-          $ref: "#/definitions/ProductResponse"   
+          $ref: "#/definitions/ProductResponse"
       message:
         type: "string"
         description: "Retrieved successfully"
@@ -2422,6 +3471,105 @@ definitions:
         example: "Updated successfully"
     xml:
       name: "ProductResponseUpdate"
+  ProductBatchResponse:
+    type: "object"
+    properties:
+      data:
+        type: "array"
+        items:
+          type: "object"
+          $ref: "#/definitions/ProductResponse"
+      message:
+        type: "string"
+        description: "Created successfully"
+        example: "Created successfully"
+    xml:
+      name: "ProductBatchResponse"
+  ProductBatchUpdateResponse:
+    type: "object"
+    properties:
+      data:
+        type: "array"
+        items:
+          type: "object"
+          properties:
+            id:
+              type: "string"
+              example: "962af342-a2c9-4665-bb5d-cb208258d958"
+            name:
+              type: "string"
+              example: "printcart"
+            dynamic_side:
+              type: "boolean"
+              example: true
+            viewport_width:
+              type: "integer"
+              format: "int64"
+              example: 500
+            viewport_height:
+              type: "integer"
+              format: "int64"
+              example: 500
+            scale:
+              type: "integer"
+              format: "int64"
+              example: 500
+            dpi:
+              type: "integer"
+              format: "int64"
+              example: 500
+            dimension_unit:
+              type: "string"
+              enum:
+                - "inch"
+                - "cm"
+              example: "inch"
+            status:
+              type: "string"
+              enum:
+                - "publish"
+                - "draft"
+                - "trashed"
+                - "deleted"
+              example: "publish"
+            allowed_file_types:
+              type: "array"
+              items:
+                type: "string"
+                enum:
+                  - "jpg"
+                  - "png"
+                  - "ai"
+                  - "ps"
+                  - "pdf"
+                  - "bmp"
+                  - "iddd"
+              example: ["jpg", "png", "ai", "ps", "pdf", "bmp", "iddd"]
+            max_file_upload:
+              type: "integer"
+              format: "int64"
+              example: 500
+            min_jpg_dpi:
+              type: "integer"
+              format: "int64"
+              example: 500
+            enable_design:
+              type: "boolean"
+              example: false
+            product_image:
+              $ref: "#/definitions/ImageResponse"
+            created_at:
+              type: "string"
+              example: "2021-11-16T08:26:30.000000Z"
+            updated_at:
+              type: "string"
+              example: "2021-11-16T08:26:30.000000Z"
+      message:
+        type: "string"
+        description: "Retrieved successfully"
+        example: "Retrieved successfully"
+    xml:
+      name: "ProductBatchUpdateResponse"
   ProductCount:
     type: "object"
     properties:
@@ -2435,7 +3583,7 @@ definitions:
       message:
         type: "string"
         description: "Retrieved successfully"
-        example: "Retrieved successfully"      
+        example: "Retrieved successfully"
     xml:
       name: "ProductCount"
   Project:
@@ -2460,6 +3608,61 @@ definitions:
         example: "printcart note"
     xml:
       name: "Project"
+  ProjectBatch:
+    type: "object"
+    required:
+      - "name"
+    properties:
+      projects:
+        type: "array"
+        items:
+          type: "array"
+          $ref: "#/definitions/Project"
+    xml:
+      name: "ProjectBatch"
+  ProjectBatchUpdate:
+    type: "object"
+    required:
+      - "name"
+    properties:
+      projects:
+        type: "array"
+        items:
+          type: "object"
+          properties:
+            id:
+              type: "string"
+              example: "4419934f-8e1b-4cf0-b432-01ef9258a812"
+            name:
+              type: "string"
+              example: "printcart"
+            status:
+              type: "string"
+              enum:
+                - "processing"
+                - "reviewing"
+                - "accepted"
+                - "trashed"
+                - "deleted"
+              example: "processing"
+            note:
+              type: "string"
+              example: "printcart note"
+    xml:
+      name: "ProjectBatchUpdate"
+  ProjectBatchDelete:
+    type: "object"
+    properties:
+      projects:
+        type: "array"
+        items:
+          type: "object"
+          properties:
+            id:
+              type: "string"
+              example: "4419934f-8e1b-4cf0-b432-01ef9258a812"
+    xml:
+      name: "ProjectBatchDelete"
   ProjectCount:
     type: "object"
     properties:
@@ -2473,7 +3676,7 @@ definitions:
       message:
         type: "string"
         description: "Retrieved successfully"
-        example: "Retrieved successfully"      
+        example: "Retrieved successfully"
     xml:
       name: "ProjectCount"
   ProjectResponse:
@@ -2499,10 +3702,10 @@ definitions:
         example: "printcart note"
       created_at:
         type: "string"
-        example: "2021-1-1 00:00:00"
+        example: "2021-11-16T08:26:30.000000Z"
       updated_at:
         type: "string"
-        example: "2021-1-1 00:00:00"
+        example: "2021-11-16T08:26:30.000000Z"
     xml:
       name: "ProjectResponse"
   ProjectResponseShowDataObject:
@@ -2515,7 +3718,7 @@ definitions:
         type: "string"
         description: "Retrieved successfully"
         example: "Retrieved successfully"
-    xml: 
+    xml:
       name: "ProjectResponseShowDataObject"
   ProjectResponseShowDataArray:
     type: "object"
@@ -2529,8 +3732,8 @@ definitions:
         type: "string"
         description: "Retrieved successfully"
         example: "Retrieved successfully"
-    xml: 
-      name: "ProjectResponseShowDataArray"     
+    xml:
+      name: "ProjectResponseShowDataArray"
   ProjectResponseStore:
     type: "object"
     properties:
@@ -2541,8 +3744,60 @@ definitions:
         type: "string"
         description: "Created successfully"
         example: "Created successfully"
-    xml: 
+    xml:
       name: "ProjectResponseStore"
+  ProjectBatchResponse:
+    type: "object"
+    properties:
+      data:
+        type: "array"
+        items:
+          type: "object"
+          $ref: "#/definitions/ProjectResponse"
+      message:
+        type: "string"
+        description: "Created successfully"
+        example: "Created successfully"
+    xml:
+      name: "ProjectBatchResponse"
+  ProjectBatchUpdateResponse:
+    type: "object"
+    properties:
+      data:
+        type: "array"
+        items:
+          type: "object"
+          properties:
+            id:
+              type: "string"
+              example: "4419934f-8e1b-4cf0-b432-01ef9258a812"
+            name:
+              type: "string"
+              example: "printcart"
+            status:
+              type: "string"
+              enum:
+                - "processing"
+                - "reviewing"
+                - "accepted"
+                - "trashed"
+                - "deleted"
+              example: "processing"
+            note:
+              type: "string"
+              example: "printcart note"
+            created_at:
+              type: "string"
+              example: "2021-11-16T08:26:30.000000Z"
+            updated_at:
+              type: "string"
+              example: "2021-11-16T08:26:30.000000Z"
+      message:
+        type: "string"
+        description: "Retrieved successfully"
+        example: "Retrieved successfully"
+    xml:
+      name: "ProjectBatchUpdateResponse"
   ProjectResponseUpdate:
     type: "object"
     properties:
@@ -2553,7 +3808,7 @@ definitions:
         type: "string"
         description: "Updated successfully"
         example: "Updated successfully"
-    xml: 
+    xml:
       name: "ProjectResponseUpdate"
   Side:
     type: "object"
@@ -2561,6 +3816,7 @@ definitions:
       - "product_id"
       - "name"
       - "bg_img_id"
+      - "img_overlay"
     properties:
       product_id:
         type: "string"
@@ -2596,7 +3852,7 @@ definitions:
         example: 50
       img_overlay:
         type: "string"
-        example: "printcart img"
+        example: "e8304b84-a015-3bd4-a7d3-7a978f465df2"
       version:
         type: "string"
         example: "version 1.0.0"
@@ -2641,7 +3897,7 @@ definitions:
         type: "integer"
         format: "int64"
         example: 50
-      area_design_heigh:
+      area_design_height:
         type: "integer"
         format: "int64"
         example: 50
@@ -2693,9 +3949,168 @@ definitions:
       message:
         type: "string"
         description: "Retrieved successfully"
-        example: "Retrieved successfully"      
+        example: "Retrieved successfully"
     xml:
       name: "SideCount"
+  SideBatch:
+    type: "object"
+    required:
+      - "name"
+    properties:
+      sides:
+        type: "array"
+        items:
+          type: "array"
+          $ref: "#/definitions/Side"
+    xml:
+      name: "SideBatch"
+  SideBatchUpdate:
+    type: "object"
+    required:
+      - "product_id"
+      - "name"
+      - "bg_img_id"
+      - "img_overlay"
+    properties:
+      sides:
+        type: "array"
+        items:
+          type: "object"
+          properties:
+            id:
+              type: "string"
+              example: "c5661a1e-8147-4dc3-8600-00fdc81ed14b"
+            product_id:
+              type: "string"
+              example: "962af342-a2c9-4665-bb5d-cb208258d958"
+            name:
+              type: "string"
+              example: "printcart"
+            bg_type:
+              type: "string"
+              enum:
+                - "color"
+                - "image"
+                - "transparent"
+              example: "image"
+            bg_color_value:
+              type: "string"
+              example: "red"
+            img_top_pos:
+              type: "integer"
+              format: "int64"
+              example: 50
+            img_left_pos:
+              type: "integer"
+              format: "int64"
+              example: 50
+            img_bottom_pos:
+              type: "integer"
+              format: "int64"
+              example: 50
+            img_right_pos:
+              type: "integer"
+              format: "int64"
+              example: 50
+            img_overlay:
+              type: "string"
+              example: "e8304b84-a015-3bd4-a7d3-7a978f465df2"
+            version:
+              type: "string"
+              example: "version 1.0.0"
+            ratio:
+              type: "integer"
+              format: "int64"
+              example: 100
+            background_included:
+              type: "boolean"
+              example: true
+            show_overlay:
+              type: "boolean"
+              example: true
+            include_overlay:
+              type: "boolean"
+              example: true
+            product_width:
+              type: "integer"
+              format: "int64"
+              example: 50
+            product_height:
+              type: "integer"
+              format: "int64"
+              example: 50
+            real_width:
+              type: "integer"
+              format: "int64"
+              example: 50
+            real_height:
+              type: "integer"
+              format: "int64"
+              example: 50
+            real_top:
+              type: "integer"
+              format: "int64"
+              example: 50
+            real_left:
+              type: "integer"
+              format: "int64"
+              example: 50
+            area_design_width:
+              type: "integer"
+              format: "int64"
+              example: 50
+            area_design_height:
+              type: "integer"
+              format: "int64"
+              example: 50
+            area_design_left:
+              type: "integer"
+              format: "int64"
+              example: 50
+            area_design_top:
+              type: "integer"
+              format: "int64"
+              example: 50
+            show_bleed:
+              type: "boolean"
+              example: true
+            bleed_top_bottom:
+              type: "number"
+              format: "float"
+              example: 50.50
+            bleed_left_right:
+              type: "number"
+              format: "float"
+              example: 50.50
+            show_safe_zone:
+              type: "boolean"
+              example: true
+            margin_vertical:
+              type: "integer"
+              format: "int64"
+              example: 50
+            margin_horizontal:
+              type: "integer"
+              format: "int64"
+              example: 50
+            bg_img_id:
+              type: "string"
+              example: "e8304b84-a015-3bd4-a7d3-7a978f465df2"
+    xml:
+      name: "SideBatchUpdate"
+  SideBatchDelete:
+    type: "object"
+    properties:
+      sides:
+        type: "array"
+        items:
+          type: "object"
+          properties:
+            id:
+              type: "string"
+              example: "c5661a1e-8147-4dc3-8600-00fdc81ed14b"
+    xml:
+      name: "SideBatchDelete"
   SideResponse:
     type: "object"
     properties:
@@ -2734,8 +4149,7 @@ definitions:
         format: "int64"
         example: 50
       img_overlay:
-        type: "string"
-        example: "printcart img"
+        $ref: "#/definitions/ImageResponse"
       version:
         type: "string"
         example: "version 1.0.0"
@@ -2780,7 +4194,7 @@ definitions:
         type: "integer"
         format: "int64"
         example: 50
-      area_design_heigh:
+      area_design_height:
         type: "integer"
         format: "int64"
         example: 50
@@ -2814,14 +4228,14 @@ definitions:
         type: "integer"
         format: "int64"
         example: 50
-      image:
+      background_img:
         $ref: "#/definitions/ImageResponse"
       created_at:
         type: "string"
-        example: "2021-1-1 00:00:00"
+        example: "2021-11-16T08:26:30.000000Z"
       updated_at:
         type: "string"
-        example: "2021-1-1 00:00:00"
+        example: "2021-11-16T08:26:30.000000Z"
     xml:
       name: "SideResponse"
   SideResponseShowDataObject:
@@ -2843,7 +4257,7 @@ definitions:
         type: "array"
         items:
           type: "object"
-          $ref: "#/definitions/SideResponse"   
+          $ref: "#/definitions/SideResponse"
       message:
         type: "string"
         description: "Retrieved successfully"
@@ -2874,6 +4288,156 @@ definitions:
         example: "Updated successfully"
     xml:
       name: "SideResponseUpdate"
+  SideBatchResponse:
+    type: "object"
+    properties:
+      data:
+        type: "array"
+        items:
+          type: "object"
+          $ref: "#/definitions/SideResponse"
+      message:
+        type: "string"
+        description: "Created successfully"
+        example: "Created successfully"
+    xml:
+      name: "SideBatchResponse"
+  SideBatchUpdateResponse:
+    type: "object"
+    properties:
+      data:
+        type: "array"
+        items:
+          type: "object"
+          properties:
+            id:
+              type: "string"
+              example: "c5661a1e-8147-4dc3-8600-00fdc81ed14b"
+            product:
+              $ref: "#/definitions/ProductResponse"
+            name:
+              type: "string"
+              example: "printcart"
+            bg_type:
+              type: "string"
+              enum:
+                - "color"
+                - "image"
+                - "transparent"
+              example: "image"
+            bg_color_value:
+              type: "string"
+              example: "red"
+            img_top_pos:
+              type: "integer"
+              format: "int64"
+              example: 50
+            img_left_pos:
+              type: "integer"
+              format: "int64"
+              example: 50
+            img_bottom_pos:
+              type: "integer"
+              format: "int64"
+              example: 50
+            img_right_pos:
+              type: "integer"
+              format: "int64"
+              example: 50
+            img_overlay:
+              $ref: "#/definitions/ImageResponse"
+            version:
+              type: "string"
+              example: "version 1.0.0"
+            ratio:
+              type: "integer"
+              format: "int64"
+              example: 100
+            background_included:
+              type: "boolean"
+              example: true
+            show_overlay:
+              type: "boolean"
+              example: true
+            include_overlay:
+              type: "boolean"
+              example: true
+            product_width:
+              type: "integer"
+              format: "int64"
+              example: 50
+            product_height:
+              type: "integer"
+              format: "int64"
+              example: 50
+            real_width:
+              type: "integer"
+              format: "int64"
+              example: 50
+            real_height:
+              type: "integer"
+              format: "int64"
+              example: 50
+            real_top:
+              type: "integer"
+              format: "int64"
+              example: 50
+            real_left:
+              type: "integer"
+              format: "int64"
+              example: 50
+            area_design_width:
+              type: "integer"
+              format: "int64"
+              example: 50
+            area_design_height:
+              type: "integer"
+              format: "int64"
+              example: 50
+            area_design_left:
+              type: "integer"
+              format: "int64"
+              example: 50
+            area_design_top:
+              type: "integer"
+              format: "int64"
+              example: 50
+            show_bleed:
+              type: "boolean"
+              example: true
+            bleed_top_bottom:
+              type: "number"
+              format: "float"
+              example: 50.50
+            bleed_left_right:
+              type: "number"
+              format: "float"
+              example: 50.50
+            show_safe_zone:
+              type: "boolean"
+              example: true
+            margin_vertical:
+              type: "integer"
+              format: "int64"
+              example: 50
+            margin_horizontal:
+              type: "integer"
+              format: "int64"
+              example: 50
+            background_img:
+              $ref: "#/definitions/ImageResponse"
+            created_at:
+              type: "string"
+              example: "2021-11-16T08:26:30.000000Z"
+            updated_at:
+              type: "string"
+              example: "2021-11-16T08:26:30.000000Z"
+      message:
+        type: "string"
+        description: "Retrieved successfully"
+        example: "Retrieved successfully"
+    xml:
+      name: "SideBatchUpdateResponse"
   Category:
     type: "object"
     required:
@@ -2900,7 +4464,7 @@ definitions:
       message:
         type: "string"
         description: "Retrieved successfully"
-        example: "Retrieved successfully"      
+        example: "Retrieved successfully"
     xml:
       name: "CategoryCount"
   CategoryResponse:
@@ -2917,10 +4481,10 @@ definitions:
         example: null
       created_at:
         type: "string"
-        example: "2021-1-1 00:00:00"
+        example: "2021-11-16T08:26:30.000000Z"
       updated_at:
         type: "string"
-        example: "2021-1-1 00:00:00"
+        example: "2021-11-16T08:26:30.000000Z"
     xml:
       name: "CategoryResponse"
   CategoryResponseShowDataObject:
@@ -3022,6 +4586,10 @@ definitions:
       note:
         type: "string"
         example: "printcart"
+      layers:
+        type: "array"
+        description: "Lorem ipsum..."
+        example: ["type", "version", "originX", "originY", "left"]
       status:
         type: "string"
         enum:
@@ -3033,6 +4601,313 @@ definitions:
         example: "accepted"
     xml:
       name: "Design"
+  DesignBatch:
+    type: "object"
+    required:
+      - "project_id"
+      - "side_id"
+      - "preview_image_id"
+      - "design_image_id"
+    properties:
+      designs:
+        type: "array"
+        items:
+          type: "array"
+          $ref: "#/definitions/Design"
+    xml:
+      name: "DesignBatch"
+  DesignBatchResponse:
+    type: "object"
+    properties:
+      data:
+        type: "array"
+        items:
+          type: "object"
+          $ref: "#/definitions/DesignResponse"
+      message:
+        type: "string"
+        description: "Created successfully"
+        example: "Created successfully"
+    xml:
+      name: "DesignBatchResponse"
+  DesignBatchUpdate:
+    type: "object"
+    required:
+      - "project_id"
+      - "side_id"
+      - "preview_image_id"
+      - "design_image_id"
+    properties:
+      designs:
+        type: "array"
+        items:
+          type: "object"
+          properties:
+            id:
+              type: "string"
+              example: "cce4dc71-6757-4a1c-a259-6b66a4304c14"
+            project_id:
+              type: "string"
+              example: "4419934f-8e1b-4cf0-b432-01ef9258a812"
+            side_id:
+              type: "string"
+              example: "c5661a1e-8147-4dc3-8600-00fdc81ed14b"
+            design_with:
+              type: "integer"
+              format: "int64"
+              example: 50
+            design_height:
+              type: "integer"
+              format: "int64"
+              example: 50
+            design_ratio:
+              type: "number"
+              format: "float"
+              example: 50.50
+            design_top_pos:
+              type: "integer"
+              format: "int64"
+              example: 50
+            design_left_pos:
+              type: "integer"
+              format: "int64"
+              example: 50
+            pdf_url:
+              type: "string"
+            preview_image_id:
+              type: "string"
+              example: "e8304b84-a015-3bd4-a7d3-7a978f465df2"
+            design_image_id:
+              type: "string"
+              example: "e8304b84-a015-3bd4-a7d3-7a978f465df2"
+            quantity:
+              type: "integer"
+              format: "int64"
+              example: 50
+            note:
+              type: "string"
+              example: "printcart"
+            layers:
+              type: "array"
+              description: "Lorem ipsum..."
+              example: ["type", "version", "originX", "originY", "left"]
+            status:
+              type: "string"
+              enum:
+                - "accepted"
+                - "processing"
+                - "declined"
+                - "trashed"
+                - "deleted"
+              example: "accepted"
+    xml:
+      name: "DesignBatchUpdate"
+  DesignBatchDelete:
+    type: "object"
+    properties:
+      designs:
+        type: "array"
+        items:
+          type: "object"
+          properties:
+            id:
+              type: "string"
+              example: "cce4dc71-6757-4a1c-a259-6b66a4304c14"
+    xml:
+      name: "DesignBatchDelete"
+  DesignBatchUpdateResponse:
+    type: "object"
+    properties:
+      data:
+        type: "array"
+        items:
+          type: "object"
+          properties:
+            id:
+              type: "string"
+              example: "cce4dc71-6757-4a1c-a259-6b66a4304c14"
+            project:
+              $ref: "#/definitions/ProjectResponse"
+            side:
+              type: "object"
+              properties:
+                id:
+                  type: "string"
+                  example: "c5661a1e-8147-4dc3-8600-00fdc81ed14b"
+                name:
+                  type: "string"
+                  example: "printcart"
+                bg_type:
+                  type: "string"
+                  enum:
+                    - "color"
+                    - "image"
+                    - "transparent"
+                  example: "image"
+                bg_color_value:
+                  type: "string"
+                  example: "red"
+                img_top_pos:
+                  type: "integer"
+                  format: "int64"
+                  example: 50
+                img_left_pos:
+                  type: "integer"
+                  format: "int64"
+                  example: 50
+                img_bottom_pos:
+                  type: "integer"
+                  format: "int64"
+                  example: 50
+                img_right_pos:
+                  type: "integer"
+                  format: "int64"
+                  example: 50
+                img_overlay:
+                  type: "string"
+                  example: "printcart img"
+                version:
+                  type: "string"
+                  example: "version 1.0.0"
+                ratio:
+                  type: "integer"
+                  format: "int64"
+                  example: 100
+                background_included:
+                  type: "boolean"
+                  example: true
+                show_overlay:
+                  type: "boolean"
+                  example: true
+                include_overlay:
+                  type: "boolean"
+                  example: true
+                product_width:
+                  type: "integer"
+                  format: "int64"
+                  example: 50
+                product_height:
+                  type: "integer"
+                  format: "int64"
+                  example: 50
+                real_width:
+                  type: "integer"
+                  format: "int64"
+                  example: 50
+                real_height:
+                  type: "integer"
+                  format: "int64"
+                  example: 50
+                real_top:
+                  type: "integer"
+                  format: "int64"
+                  example: 50
+                real_left:
+                  type: "integer"
+                  format: "int64"
+                  example: 50
+                area_design_width:
+                  type: "integer"
+                  format: "int64"
+                  example: 50
+                area_design_height:
+                  type: "integer"
+                  format: "int64"
+                  example: 50
+                area_design_left:
+                  type: "integer"
+                  format: "int64"
+                  example: 50
+                area_design_top:
+                  type: "integer"
+                  format: "int64"
+                  example: 50
+                show_bleed:
+                  type: "boolean"
+                  example: true
+                bleed_top_bottom:
+                  type: "number"
+                  format: "float"
+                  example: 50.50
+                bleed_left_right:
+                  type: "number"
+                  format: "float"
+                  example: 50.50
+                show_safe_zone:
+                  type: "boolean"
+                  example: true
+                margin_vertical:
+                  type: "integer"
+                  format: "int64"
+                  example: 50
+                margin_horizontal:
+                  type: "integer"
+                  format: "int64"
+                  example: 50
+                image:
+                  $ref: "#/definitions/ImageResponse"
+                created_at:
+                  type: "string"
+                  example: "2021-11-16T08:26:30.000000Z"
+                updated_at:
+                  type: "string"
+                  example: "2021-11-16T08:26:30.000000Z"
+            design_with:
+              type: "integer"
+              format: "int64"
+              example: 50
+            design_height:
+              type: "integer"
+              format: "int64"
+              example: 50
+            design_ratio:
+              type: "number"
+              format: "float"
+              example: 50.50
+            design_top_pos:
+              type: "integer"
+              format: "int64"
+              example: 50
+            design_left_pos:
+              type: "integer"
+              format: "int64"
+              example: 50
+            pdf_url:
+              type: "string"
+            product:
+              $ref: "#/definitions/ProductResponse"
+            preview_image:
+              $ref: "#/definitions/ImageResponse"
+            design_image:
+              $ref: "#/definitions/ImageResponse"
+            quantity:
+              type: "integer"
+              format: "int64"
+              example: 50
+            note:
+              type: "string"
+              example: "printcart note"
+            status:
+              type: "string"
+              enum:
+                - "accepted"
+                - "processing"
+                - "declined"
+                - "trashed"
+                - "deleted"
+              example: "accepted"
+            created_at:
+              type: "string"
+              example: "2021-11-16T08:26:30.000000Z"
+            updated_at:
+              type: "string"
+              example: "2021-11-16T08:26:30.000000Z"
+      message:
+        type: "string"
+        description: "Retrieved successfully"
+        example: "Retrieved successfully"
+    xml:
+      name: "DesignBatchUpdateResponse"
   DesignCount:
     type: "object"
     properties:
@@ -3046,7 +4921,7 @@ definitions:
       message:
         type: "string"
         description: "Retrieved successfully"
-        example: "Retrieved successfully"      
+        example: "Retrieved successfully"
     xml:
       name: "DesignCount"
   DesignResponse:
@@ -3058,7 +4933,129 @@ definitions:
       project:
         $ref: "#/definitions/ProjectResponse"
       side:
-        $ref: "#/definitions/SideResponse"
+        type: "object"
+        properties:
+          id:
+            type: "string"
+            example: "c5661a1e-8147-4dc3-8600-00fdc81ed14b"
+          name:
+            type: "string"
+            example: "printcart"
+          bg_type:
+            type: "string"
+            enum:
+              - "color"
+              - "image"
+              - "transparent"
+            example: "image"
+          bg_color_value:
+            type: "string"
+            example: "red"
+          img_top_pos:
+            type: "integer"
+            format: "int64"
+            example: 50
+          img_left_pos:
+            type: "integer"
+            format: "int64"
+            example: 50
+          img_bottom_pos:
+            type: "integer"
+            format: "int64"
+            example: 50
+          img_right_pos:
+            type: "integer"
+            format: "int64"
+            example: 50
+          img_overlay:
+            type: "string"
+            example: "printcart img"
+          version:
+            type: "string"
+            example: "version 1.0.0"
+          ratio:
+            type: "integer"
+            format: "int64"
+            example: 100
+          background_included:
+            type: "boolean"
+            example: true
+          show_overlay:
+            type: "boolean"
+            example: true
+          include_overlay:
+            type: "boolean"
+            example: true
+          product_width:
+            type: "integer"
+            format: "int64"
+            example: 50
+          product_height:
+            type: "integer"
+            format: "int64"
+            example: 50
+          real_width:
+            type: "integer"
+            format: "int64"
+            example: 50
+          real_height:
+            type: "integer"
+            format: "int64"
+            example: 50
+          real_top:
+            type: "integer"
+            format: "int64"
+            example: 50
+          real_left:
+            type: "integer"
+            format: "int64"
+            example: 50
+          area_design_width:
+            type: "integer"
+            format: "int64"
+            example: 50
+          area_design_height:
+            type: "integer"
+            format: "int64"
+            example: 50
+          area_design_left:
+            type: "integer"
+            format: "int64"
+            example: 50
+          area_design_top:
+            type: "integer"
+            format: "int64"
+            example: 50
+          show_bleed:
+            type: "boolean"
+            example: true
+          bleed_top_bottom:
+            type: "number"
+            format: "float"
+            example: 50.50
+          bleed_left_right:
+            type: "number"
+            format: "float"
+            example: 50.50
+          show_safe_zone:
+            type: "boolean"
+            example: true
+          margin_vertical:
+            type: "integer"
+            format: "int64"
+            example: 50
+          margin_horizontal:
+            type: "integer"
+            format: "int64"
+            example: 50
+          image:
+            $ref: "#/definitions/ImageResponse"
+          created_at:
+            type: "string"
+            example: "2021-11-16T08:26:30.000000Z"
+          updated_at:
+            type: "string"
+            example: "2021-11-16T08:26:30.000000Z"
       design_with:
         type: "integer"
         format: "int64"
@@ -3081,6 +5078,8 @@ definitions:
         example: 50
       pdf_url:
         type: "string"
+      product:
+        $ref: "#/definitions/ProductResponse"
       preview_image:
         $ref: "#/definitions/ImageResponse"
       design_image:
@@ -3103,10 +5102,10 @@ definitions:
         example: "accepted"
       created_at:
         type: "string"
-        example: "2021-1-1 00:00:00"
+        example: "2021-11-16T08:26:30.000000Z"
       updated_at:
         type: "string"
-        example: "2021-1-1 00:00:00"
+        example: "2021-11-16T08:26:30.000000Z"
     xml:
       name: "DesignResponse"
   DesignResponseShowDataObject:
@@ -3159,10 +5158,40 @@ definitions:
         example: "Updated successfully"
     xml:
       name: "DesignResponseUpdate"
+  DesignLayer:
+    type: "object"
+    description: "Lorem ipsum..."
+    properties:
+      data:
+        type: "array"
+        items:
+          type: "object"
+          properties:
+            layers:
+              type: "object"
+              properties:
+                objects:
+                  type: "array"
+                  example: ["type", "version", "originX", "originY", "left"]
+                version:
+                  type: "string"
+                  example: "1.0.0"
+                centeredScaling:
+                  type: "boolean"
+                  example: false
+                perPixelTargetFind:
+                  type: "boolean"
+                  example: false
+      message:
+        type: "string"
+        description: "Retrieved successfully"
+        example: "Retrieved successfully"
+    xml:
+      name: "DesignLayer"
   Unauthenticated:
     type: "object"
-    properties: 
-      message: 
+    properties:
+      message:
         type: "string"
         description: "Unauthenticated"
         example: "Unauthenticated"
@@ -3170,8 +5199,8 @@ definitions:
       name: "Unauthenticated"
   InvalidInput:
     type: "object"
-    properties: 
-      message: 
+    properties:
+      message:
         type: "string"
         description: "Invalid input"
         example: "Invalid input"
@@ -3179,8 +5208,8 @@ definitions:
       name: "InvalidInput"
   NotFound:
     type: "object"
-    properties: 
-      message: 
+    properties:
+      message:
         type: "string"
         description: "Not found"
         example: "Not found"
@@ -3188,8 +5217,8 @@ definitions:
       name: "NotFound"
   # Forbidden:
   #   type: "object"
-  #   properties: 
-  #     message: 
+  #   properties:
+  #     message:
   #       type: "string"
   #       description: "Forbidden"
   #       example: "Forbidden"
@@ -3197,8 +5226,8 @@ definitions:
   #     name: "Forbidden"
   Deleted:
     type: "object"
-    properties: 
-      message: 
+    properties:
+      message:
         type: "string"
         description: "Deleted successfully"
         example: "Deleted successfully"
