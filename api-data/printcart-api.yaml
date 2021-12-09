@@ -1820,6 +1820,7 @@ paths:
             $ref: "#/definitions/NotFound"
       security:
         - BasicAuth: []
+        - ApiKeyAuth: []
     get:
       tags:
         - "Design"
@@ -1844,7 +1845,6 @@ paths:
             $ref: "#/definitions/NotFound"
       security:
         - BasicAuth: []
-        - ApiKeyAuth: []
   /designs/{designId}:
     get:
       tags:
@@ -1876,7 +1876,6 @@ paths:
             $ref: "#/definitions/NotFound"
       security:
         - BasicAuth: []
-        - ApiKeyAuth: []
     put:
       tags:
         - "Design"
@@ -2040,6 +2039,7 @@ paths:
                 example: "Something went wrong while create designs"
       security:
         - BasicAuth: []
+        - ApiKeyAuth: []
     put:
       tags:
         - "Design"
@@ -2193,7 +2193,6 @@ paths:
             $ref: "#/definitions/NotFound"
       security:
         - BasicAuth: []
-        - ApiKeyAuth: []
   /designs/{design}/fonts:
     get:
       tags:
@@ -2225,7 +2224,6 @@ paths:
             $ref: "#/definitions/NotFound"
       security:
         - BasicAuth: []
-        - ApiKeyAuth: []
   /designs/{designId}/storages:
     get:
       tags:
@@ -2447,7 +2445,7 @@ paths:
             $ref: "#/definitions/NotFound"
       security:
         - BasicAuth: []
-  /designs-storages/{storageId}:
+  /designs-storages/{storageId}/designs:
     get:
       tags:
         - "Storage"
@@ -2478,7 +2476,6 @@ paths:
             $ref: "#/definitions/NotFound"
       security:
         - BasicAuth: []
-        - ApiKeyAuth: []
   /cliparts-storages/{storageId}:
     get:
       tags:
