@@ -18,6 +18,7 @@ tags:
   - name: "Image"
   - name: "Font"
   - name: "Design"
+  - name: "Template"
   - name: "Storage"
   - name: "Project"
   - name: "Account"
@@ -2264,6 +2265,428 @@ paths:
       # description: "..."
       operationId: "getCountDesign"
       summary: "Get a count of designs"
+      produces:
+        - "application/json"
+      responses:
+        "200":
+          description: "Retrieved successfully"
+          schema:
+            $ref: "#/definitions/DesignCount"
+        "401":
+          description: "Unauthenticated"
+          schema:
+            $ref: "#/definitions/Unauthenticated"
+      security:
+        - BasicAuth: []
+        - ApiKeyAuth: []
+  /templates:
+    post:
+      tags:
+        - "Template"
+      # summary:
+      # description:
+      operationId: "postTemplate"
+      summary: "Create new template"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - in: "body"
+          name: "body"
+          # description: "Pet object that needs to be added to the store"
+          required: true
+          schema:
+            $ref: "#/definitions/Template"
+      responses:
+        "201":
+          description: "Created successfully"
+          schema:
+            $ref: "#/definitions/DesignResponseStore"
+        "400":
+          description:
+            - "Invalid input"
+            - " Invalid template file"
+            - " Missing template file"
+            - " Can not upload template file with your Content Type"
+          schema:
+            anyOf:
+              - $ref: "#/definitions/InvalidInput"
+              - $ref: "#/definitions/InvalidDesignFile"
+              - $ref: "#/definitions/MissingDesignFile"
+              - $ref: "#/definitions/MultipartFormData"
+        # "400":
+        #   description: "Invalid design file"
+        #   schema:
+        #     $ref: "#/definitions/InvalidDesignFile"
+        # "400":
+        #   description: "Missing design file"
+        #   schema:
+        #     $ref: "#/definitions/MissingDesignFile"
+        # "400":
+        #   description: "Can not upload design file with your Content Type"
+        #   schema:
+        #     $ref: "#/definitions/MultipartFormData"
+        "401":
+          description: "Unauthenticated"
+          schema:
+            $ref: "#/definitions/Unauthenticated"
+        "404":
+          description: "Not found"
+          schema:
+            $ref: "#/definitions/NotFound"
+      security:
+        - BasicAuth: []
+        - ApiKeyAuth: []
+    get:
+      tags:
+        - "Template"
+      # summary: "..."
+      # description: "..."
+      operationId: "getTemplate"
+      summary: "Get a list of templates"
+      produces:
+        - "application/json"
+      responses:
+        "200":
+          description: "Retrieved successfully"
+          schema:
+            $ref: "#/definitions/DesignResponseShowDataArray"
+        "401":
+          description: "Unauthenticated"
+          schema:
+            $ref: "#/definitions/Unauthenticated"
+        "404":
+          description: "Not found"
+          schema:
+            $ref: "#/definitions/NotFound"
+      security:
+        - BasicAuth: []
+  /templates/{templateId}:
+    get:
+      tags:
+        - "Template"
+      # summary: "Find pet by ID"
+      # description: "Returns a single pet"
+      operationId: "getTemplateById"
+      summary: "Get template details"
+      produces:
+        - "application/json"
+      parameters:
+        - name: "templateId"
+          in: "path"
+          description: "Template ID"
+          required: true
+          type: "string"
+      responses:
+        "200":
+          description: "Retrieved successfully"
+          schema:
+            $ref: "#/definitions/DesignResponseShowDataObject"
+        "401":
+          description: "Unauthenticated"
+          schema:
+            $ref: "#/definitions/Unauthenticated"
+        "404":
+          description: "Not found"
+          schema:
+            $ref: "#/definitions/NotFound"
+      security:
+        - BasicAuth: []
+    put:
+      tags:
+        - "Template"
+      # summary:
+      # description:
+      operationId: "updateTemplate"
+      summary: "Update template details"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - name: "templateId"
+          in: "path"
+          description: "Template ID"
+          required: true
+          type: "string"
+        - in: "body"
+          name: "body"
+          # description: "Pet object that needs to be added to the store"
+          required: true
+          schema:
+            $ref: "#/definitions/Design"
+      responses:
+        "200":
+          description: "Updated successfully"
+          schema:
+            $ref: "#/definitions/DesignResponseUpdate"
+        "400":
+          description:
+            - "Invalid input"
+            - " Invalid template file"
+            - " Can not upload template file with your Content Type"
+          schema:
+            anyOf:
+              - $ref: "#/definitions/InvalidInput"
+              - $ref: "#/definitions/InvalidDesignFile"
+              - $ref: "#/definitions/MultipartFormData"
+        # "400":
+        #   description: "Invalid design file"
+        #   schema:
+        #     $ref: "#/definitions/InvalidDesignFile"
+        # "400":
+        #   description: "Can not upload design file with your Content Type"
+        #   schema:
+        #     $ref: "#/definitions/MultipartFormData"
+        "401":
+          description: "Unauthenticated"
+          schema:
+            $ref: "#/definitions/Unauthenticated"
+        "404":
+          description: "Not found"
+          schema:
+            $ref: "#/definitions/NotFound"
+      security:
+        - BasicAuth: []
+    delete:
+      tags:
+        - "Template"
+      # summary:
+      # description:
+      operationId: "deleteTemplate"
+      summary: "Delete a template"
+      produces:
+        - "application/json"
+      parameters:
+        - name: "templateId"
+          in: "path"
+          description: "Template ID"
+          required: true
+          type: "string"
+      responses:
+        "204":
+          description: "Deleted successfully"
+          schema:
+            $ref: "#/definitions/Deleted"
+        "401":
+          description: "Unauthenticated"
+          schema:
+            $ref: "#/definitions/Unauthenticated"
+        "404":
+          description: "Not found"
+          schema:
+            $ref: "#/definitions/NotFound"
+      security:
+        - BasicAuth: []
+  /templates/batch:
+    post:
+      tags:
+        - "Template"
+      # description:
+      operationId: "postTemplatesBatch"
+      summary: "Create batch templates"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - in: "body"
+          name: "body"
+          # description:
+          required: true
+          schema:
+            $ref: "#/definitions/TemplateBatch"
+      responses:
+        "201":
+          description: "Created successfully"
+          schema:
+            $ref: "#/definitions/TemplateBatchResponse"
+        "400":
+          description:
+            - "Invalid input"
+            - " Invalid template file"
+            - " Missing template file"
+            - " Can not upload template file with your Content Type"
+          schema:
+            anyOf:
+              - $ref: "#/definitions/InvalidInput"
+              - $ref: "#/definitions/InvalidDesignFile"
+              - $ref: "#/definitions/MissingDesignFile"
+              - $ref: "#/definitions/MultipartFormData"
+        # "400":
+        #   description: "Invalid design file"
+        #   schema:
+        #     $ref: "#/definitions/InvalidDesignFile"
+        # "400":
+        #   description: "Missing design file"
+        #   schema:
+        #     $ref: "#/definitions/MissingDesignFile"
+        # "400":
+        #   description: "Can not upload design file with your Content Type"
+        #   schema:
+        #     $ref: "#/definitions/MultipartFormData"
+        "401":
+          description: "Unauthenticated"
+          schema:
+            $ref: "#/definitions/Unauthenticated"
+        "404":
+          description: "Not found"
+          schema:
+            $ref: "#/definitions/NotFound"
+        "413":
+          description: "Too many templates"
+          type: "object"
+          schema:
+            type: "object"
+            properties:
+              error:
+                type: "string"
+                description: "Too many templates"
+                example: "Too many templates"
+        "500":
+          description: "Something went wrong while create templates"
+          type: "object"
+          schema:
+            type: "object"
+            properties:
+              error:
+                type: "string"
+                description: "Something went wrong while create templates"
+                example: "Something went wrong while create templates"
+      security:
+        - BasicAuth: []
+        - ApiKeyAuth: []
+    put:
+      tags:
+        - "Template"
+      # description:
+      operationId: "putTemplatesBatch"
+      summary: "Update batch templates"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - in: "body"
+          name: "body"
+          # description:
+          required: true
+          schema:
+            $ref: "#/definitions/TemplateBatchUpdate"
+      responses:
+        "200":
+          description: "Updated successfully"
+          schema:
+            $ref: "#/definitions/TemplateBatchUpdateResponse"
+        "400":
+          description:
+            - "Invalid input"
+            - " Invalid template file"
+            - " Can not upload template file with your Content Type"
+          schema:
+            anyOf:
+              - $ref: "#/definitions/InvalidInput"
+              - $ref: "#/definitions/InvalidDesignFile"
+              - $ref: "#/definitions/MultipartFormData"
+        # "400":
+        #   description: "Invalid design file"
+        #   schema:
+        #     $ref: "#/definitions/InvalidDesignFile"
+        # "400":
+        #   description: "Can not upload design file with your Content Type"
+        #   schema:
+        #     $ref: "#/definitions/MultipartFormData"
+        "401":
+          description: "Unauthenticated"
+          schema:
+            $ref: "#/definitions/Unauthenticated"
+        # "404":
+        #   description: "Can't find design with id"
+        #   type: "object"
+        #   schema:
+        #     type: "object"
+        #     properties:
+        #       error:
+        #         type: "string"
+        #         description: "Can't find design with id"
+        #         example: "Can't find design with id: cce4dc71-6757-4a1c-a259-6b66a4304c14"
+        "404":
+          description:
+            - "Not found"
+            - " Can't find template with id"
+          schema:
+            anyOf:
+              - $ref: "#/definitions/NotFound"
+              - $ref: "#/definitions/DesignError"
+        "413":
+          description: "Too many templates"
+          type: "object"
+          schema:
+            type: "object"
+            properties:
+              error:
+                type: "string"
+                description: "Too many templates"
+                example: "Too many templates"
+        "500":
+          description: "Something went wrong while update templates"
+          type: "object"
+          schema:
+            type: "object"
+            properties:
+              error:
+                type: "string"
+                description: "Something went wrong while update templates"
+                example: "Something went wrong while update templates"
+      security:
+        - BasicAuth: []
+    delete:
+      tags:
+        - "Template"
+      # description:
+      operationId: "deleteTemplatesBatch"
+      summary: "Delete batch templates"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - in: "body"
+          name: "body"
+          # description:
+          required: true
+          schema:
+            $ref: "#/definitions/TemplateBatchDelete"
+      responses:
+        "204":
+          description: "Deleted successfully"
+          schema:
+            $ref: "#/definitions/Deleted"
+        "401":
+          description: "Unauthenticated"
+          schema:
+            $ref: "#/definitions/Unauthenticated"
+        "404":
+          description: "Can't find template with id"
+          type: "object"
+          schema:
+            type: "object"
+            properties:
+              error:
+                type: "string"
+                description: "Can't find template with id"
+                example: "Can't find template with id: cce4dc71-6757-4a1c-a259-6b66a4304c14"
+      security:
+        - BasicAuth: []
+  /templates/count:
+    get:
+      tags:
+        - "Template"
+      # summary: "..."
+      # description: "..."
+      operationId: "getCountTemplate"
+      summary: "Get a count of templates"
       produces:
         - "application/json"
       responses:
@@ -4669,7 +5092,6 @@ definitions:
     type: "object"
     required:
       - "side_id"
-      - "design_image_id"
     properties:
       designs:
         type: "array"
@@ -5543,6 +5965,495 @@ definitions:
         example: "Retrieved successfully"
     xml:
       name: "DesignFont"
+  Template:
+    type: "object"
+    required:
+      - "side_id"
+    properties:
+      project_id:
+        type: "string"
+        example: "4419934f-8e1b-4cf0-b432-01ef9258a812"
+      side_id:
+        type: "string"
+        example: "c5661a1e-8147-4dc3-8600-00fdc81ed14b"
+      design_ratio:
+        type: "number"
+        format: "float"
+        example: 50.50
+      pdf_url:
+        type: "string"
+      preview_image_id:
+        type: "string"
+        example: "e8304b84-a015-3bd4-a7d3-7a978f465df2"
+      design_image_id:
+        type: "string"
+        example: "e8304b84-a015-3bd4-a7d3-7a978f465df2"
+      design_file:
+        type: "file"
+        description: "Lorem ipsum..."
+      quantity:
+        type: "integer"
+        format: "int64"
+        example: 50
+      note:
+        type: "string"
+        example: "printcart"
+      layers:
+        type: "json"
+        description: "Lorem ipsum..."
+        example:
+          [
+            {
+              "top": 183.5025,
+              "left": 195.79,
+              "text": "Blackbird",
+              "width": 68.33984375,
+              "height": 22.6,
+              "originX": "left",
+              "originY": "top",
+              "fontSize": 20,
+              "fontStyle": "normal",
+              "textAlign": "left",
+              "fontFamily": "Yellowtail",
+              "fontWeight": "normal",
+            },
+          ]
+      status:
+        type: "string"
+        enum:
+          - "accepted"
+          - "processing"
+          - "declined"
+          - "trashed"
+          - "deleted"
+        example: "accepted"
+    xml:
+      name: "Template"
+  TemplateBatch:
+    type: "object"
+    required:
+      - "side_id"
+    properties:
+      templates:
+        type: "array"
+        items:
+          type: "array"
+          $ref: "#/definitions/Design"
+    xml:
+      name: "TemplateBatch"
+  TemplateBatchUpdate:
+    type: "object"
+    properties:
+      templates:
+        type: "array"
+        items:
+          type: "object"
+          properties:
+            id:
+              type: "string"
+              example: "cce4dc71-6757-4a1c-a259-6b66a4304c14"
+            project_id:
+              type: "string"
+              example: "4419934f-8e1b-4cf0-b432-01ef9258a812"
+            side_id:
+              type: "string"
+              example: "c5661a1e-8147-4dc3-8600-00fdc81ed14b"
+            design_ratio:
+              type: "number"
+              format: "float"
+              example: 50.50
+            pdf_url:
+              type: "string"
+            preview_image_id:
+              type: "string"
+              example: "e8304b84-a015-3bd4-a7d3-7a978f465df2"
+            design_image_id:
+              type: "string"
+              example: "e8304b84-a015-3bd4-a7d3-7a978f465df2"
+            design_file:
+              type: "file"
+              description: "Lorem ipsum..."
+            quantity:
+              type: "integer"
+              format: "int64"
+              example: 50
+            note:
+              type: "string"
+              example: "printcart"
+            layers:
+              type: "application/json"
+              description: "Lorem ipsum..."
+              example:
+                [
+                  {
+                    "top": 183.5025,
+                    "left": 195.79,
+                    "text": "Blackbird",
+                    "width": 68.33984375,
+                    "height": 22.6,
+                    "originX": "left",
+                    "originY": "top",
+                    "fontSize": 20,
+                    "fontStyle": "normal",
+                    "textAlign": "left",
+                    "fontFamily": "Yellowtail",
+                    "fontWeight": "normal",
+                  },
+                ]
+            status:
+              type: "string"
+              enum:
+                - "accepted"
+                - "processing"
+                - "declined"
+                - "trashed"
+                - "deleted"
+              example: "accepted"
+    xml:
+      name: "TemplateBatchUpdate"
+  TemplateBatchResponse:
+    type: "object"
+    properties:
+      data:
+        type: "array"
+        items:
+          type: "object"
+          $ref: "#/definitions/DesignResponse"
+      message:
+        type: "string"
+        description: "Created successfully"
+        example: "Created successfully"
+    xml:
+      name: "TemplateBatchResponse"
+  TemplateBatchUpdateResponse:
+    type: "object"
+    properties:
+      data:
+        type: "array"
+        items:
+          type: "object"
+          properties:
+            id:
+              type: "string"
+              example: "cce4dc71-6757-4a1c-a259-6b66a4304c14"
+            project:
+              $ref: "#/definitions/ProjectResponse"
+            side:
+              type: "object"
+              properties:
+                id:
+                  type: "string"
+                  example: "c5661a1e-8147-4dc3-8600-00fdc81ed14b"
+                product:
+                  $ref: "#/definitions/ProductResponse"
+                name:
+                  type: "string"
+                  example: "printcart"
+                bg_type:
+                  type: "string"
+                  enum:
+                    - "color"
+                    - "image"
+                    - "transparent"
+                  example: "image"
+                bg_color_value:
+                  type: "string"
+                  example: "red"
+                img_top_pos:
+                  type: "float"
+                  format: "float"
+                  example: 50.5
+                img_left_pos:
+                  type: "float"
+                  format: "float"
+                  example: 50.5
+                img_bottom_pos:
+                  type: "float"
+                  format: "float"
+                  example: 50.5
+                img_right_pos:
+                  type: "float"
+                  format: "float"
+                  example: 50.5
+                img_overlay:
+                  $ref: "#/definitions/ImageResponse"
+                version:
+                  type: "string"
+                  example: "version 1.0.0"
+                ratio:
+                  type: "integer"
+                  format: "int64"
+                  example: 100
+                background_included:
+                  type: "boolean"
+                  example: true
+                show_overlay:
+                  type: "boolean"
+                  example: true
+                include_overlay:
+                  type: "boolean"
+                  example: true
+                product_width:
+                  type: "float"
+                  format: "float"
+                  example: 50
+                product_height:
+                  type: "float"
+                  format: "float"
+                  example: 50
+                real_width:
+                  type: "float"
+                  format: "float"
+                  example: 50
+                real_height:
+                  type: "float"
+                  format: "float"
+                  example: 50
+                real_top:
+                  type: "float"
+                  format: "float"
+                  example: 50
+                real_left:
+                  type: "float"
+                  format: "float"
+                  example: 50
+                area_design_width:
+                  type: "float"
+                  format: "float"
+                  example: 50
+                area_design_height:
+                  type: "float"
+                  format: "float"
+                  example: 50
+                area_design_left:
+                  type: "float"
+                  format: "float"
+                  example: 50
+                area_design_top:
+                  type: "float"
+                  format: "float"
+                  example: 50
+                show_bleed:
+                  type: "boolean"
+                  example: true
+                bleed_top_bottom:
+                  type: "float"
+                  format: "float"
+                  example: 50.50
+                bleed_left_right:
+                  type: "float"
+                  format: "float"
+                  example: 50.50
+                show_safe_zone:
+                  type: "boolean"
+                  example: true
+                margin_vertical:
+                  type: "float"
+                  format: "float"
+                  example: 50
+                margin_horizontal:
+                  type: "float"
+                  format: "float"
+                  example: 50
+                background_img:
+                  $ref: "#/definitions/ImageResponse"
+                created_at:
+                  type: "string"
+                  example: "2021-11-16T08:26:30.000000Z"
+                updated_at:
+                  type: "string"
+                  example: "2021-11-16T08:26:30.000000Z"
+            design_ratio:
+              type: "number"
+              format: "float"
+              example: 50.50
+            pdf_url:
+              type: "string"
+            product:
+              $ref: "#/definitions/ProductResponse"
+            preview_image:
+              $ref: "#/definitions/ImageResponse"
+            design_image:
+              $ref: "#/definitions/ImageResponse"
+            quantity:
+              type: "integer"
+              format: "int64"
+              example: 50
+            note:
+              type: "string"
+              example: "printcart note"
+            status:
+              type: "string"
+              enum:
+                - "accepted"
+                - "processing"
+                - "declined"
+                - "trashed"
+                - "deleted"
+              example: "accepted"
+            original_output_options:
+              type: "object"
+              properties:
+                dpi:
+                  type: "integer"
+                  format: "int64"
+                  example: 500
+                dimension_unit:
+                  type: "string"
+                  enum:
+                    - "inch"
+                    - "cm"
+                  example: "inch"
+            original_side:
+              type: "object"
+              properties:
+                id:
+                  type: "string"
+                  example: "c5661a1e-8147-4dc3-8600-00fdc81ed14b"
+                product:
+                  $ref: "#/definitions/ProductResponse"
+                name:
+                  type: "string"
+                  example: "printcart"
+                bg_type:
+                  type: "string"
+                  enum:
+                    - "color"
+                    - "image"
+                    - "transparent"
+                  example: "image"
+                bg_color_value:
+                  type: "string"
+                  example: "red"
+                img_top_pos:
+                  type: "float"
+                  format: "float"
+                  example: 50.5
+                img_left_pos:
+                  type: "float"
+                  format: "float"
+                  example: 50.5
+                img_bottom_pos:
+                  type: "float"
+                  format: "float"
+                  example: 50.5
+                img_right_pos:
+                  type: "float"
+                  format: "float"
+                  example: 50.5
+                img_overlay:
+                  $ref: "#/definitions/ImageResponse"
+                version:
+                  type: "string"
+                  example: "version 1.0.0"
+                ratio:
+                  type: "integer"
+                  format: "int64"
+                  example: 100
+                background_included:
+                  type: "boolean"
+                  example: true
+                show_overlay:
+                  type: "boolean"
+                  example: true
+                include_overlay:
+                  type: "boolean"
+                  example: true
+                product_width:
+                  type: "float"
+                  format: "float"
+                  example: 50
+                product_height:
+                  type: "float"
+                  format: "float"
+                  example: 50
+                real_width:
+                  type: "float"
+                  format: "float"
+                  example: 50
+                real_height:
+                  type: "float"
+                  format: "float"
+                  example: 50
+                real_top:
+                  type: "float"
+                  format: "float"
+                  example: 50
+                real_left:
+                  type: "float"
+                  format: "float"
+                  example: 50
+                area_design_width:
+                  type: "float"
+                  format: "float"
+                  example: 50
+                area_design_height:
+                  type: "float"
+                  format: "float"
+                  example: 50
+                area_design_left:
+                  type: "float"
+                  format: "float"
+                  example: 50
+                area_design_top:
+                  type: "float"
+                  format: "float"
+                  example: 50
+                show_bleed:
+                  type: "boolean"
+                  example: true
+                bleed_top_bottom:
+                  type: "float"
+                  format: "float"
+                  example: 50.50
+                bleed_left_right:
+                  type: "float"
+                  format: "float"
+                  example: 50.50
+                show_safe_zone:
+                  type: "boolean"
+                  example: true
+                margin_vertical:
+                  type: "float"
+                  format: "float"
+                  example: 50
+                margin_horizontal:
+                  type: "float"
+                  format: "float"
+                  example: 50
+                background_img:
+                  $ref: "#/definitions/ImageResponse"
+                created_at:
+                  type: "string"
+                  example: "2021-11-16T08:26:30.000000Z"
+                updated_at:
+                  type: "string"
+                  example: "2021-11-16T08:26:30.000000Z"
+            created_at:
+              type: "string"
+              example: "2021-11-16T08:26:30.000000Z"
+            updated_at:
+              type: "string"
+              example: "2021-11-16T08:26:30.000000Z"
+      message:
+        type: "string"
+        description: "Updated successfully"
+        example: "Updated successfully"
+    xml:
+      name: "TemplateBatchUpdateResponse"
+  TemplateBatchDelete:
+    type: "object"
+    properties:
+      templates:
+        type: "array"
+        items:
+          type: "object"
+          properties:
+            id:
+              type: "string"
+              example: "cce4dc71-6757-4a1c-a259-6b66a4304c14"
+    xml:
+      name: "TemplateBatchDelete"
   Category:
     type: "object"
     required:
