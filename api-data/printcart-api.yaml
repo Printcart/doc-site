@@ -2751,6 +2751,37 @@ paths:
             $ref: "#/definitions/NotFound"
       security:
         - BasicAuth: []
+  /templates/{templateId}/fonts:
+    get:
+      tags:
+        - "Template"
+      # summary: "Find pet by ID"
+      # description: "Returns a single pet"
+      operationId: "getFontsInLayersTemplateById"
+      summary: "Get list fonts layer by template"
+      produces:
+        - "application/json"
+      parameters:
+        - name: "templateId"
+          in: "path"
+          description: "Template ID"
+          required: true
+          type: "string"
+      responses:
+        "200":
+          description: "Retrieved successfully"
+          schema:
+            $ref: "#/definitions/DesignFont"
+        "401":
+          description: "Unauthenticated"
+          schema:
+            $ref: "#/definitions/Unauthenticated"
+        "404":
+          description: "Not found"
+          schema:
+            $ref: "#/definitions/NotFound"
+      security:
+        - BasicAuth: []
   /templates/count:
     get:
       tags:
