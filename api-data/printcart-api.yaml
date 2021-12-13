@@ -951,6 +951,39 @@ paths:
                 example: "Can't find side with id: c5661a1e-8147-4dc3-8600-00fdc81ed14b"
       security:
         - BasicAuth: []
+  /sides/{sideId}/templates:
+    get:
+      tags:
+        - "Side"
+      # summary: "Find pet by ID"
+      # description: "Returns a single pet"
+      operationId: "getTemplateBySide"
+      summary: "Get a list of templates by side"
+      produces:
+        - "application/json"
+      parameters:
+        - name: "sideId"
+          in: "path"
+          description: "Side ID"
+          required: true
+          type: "string"
+      responses:
+        responses:
+        "200":
+          description: "Retrieved successfully"
+          schema:
+            $ref: "#/definitions/DesignResponseShowDataArray"
+        "401":
+          description: "Unauthenticated"
+          schema:
+            $ref: "#/definitions/Unauthenticated"
+        "404":
+          description: "Not found"
+          schema:
+            $ref: "#/definitions/NotFound"
+      security:
+        - BasicAuth: []
+        - ApiKeyAuth: []
   /sides/count:
     get:
       tags:
