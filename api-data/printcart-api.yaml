@@ -3232,15 +3232,23 @@ paths:
           schema:
             $ref: "#/definitions/Unauthenticated"
         "404":
-          description: "Can't find project with id"
-          type: "object"
+          description:
+            - "Not found"
+            - " Can't find project with id"
           schema:
-            type: "object"
-            properties:
-              error:
-                type: "string"
-                description: "Can't find project with id"
-                example: "Can't find project with id: 4419934f-8e1b-4cf0-b432-01ef9258a812"
+            anyOf:
+              - $ref: "#/definitions/NotFound"
+              - $ref: "#/definitions/ProjectError"
+        # "404":
+        #   description: "Can't find project with id"
+        #   type: "object"
+        #   schema:
+        #     type: "object"
+        #     properties:
+        #       error:
+        #         type: "string"
+        #         description: "Can't find project with id"
+        #         example: "Can't find project with id: 4419934f-8e1b-4cf0-b432-01ef9258a812"
         "413":
           description: "Too many projects"
           type: "object"
@@ -3290,15 +3298,23 @@ paths:
           schema:
             $ref: "#/definitions/Unauthenticated"
         "404":
-          description: "Can't find project with id"
-          type: "object"
+          description:
+            - "Not found"
+            - " Can't find project with id"
           schema:
-            type: "object"
-            properties:
-              error:
-                type: "string"
-                description: "Can't find project with id"
-                example: "Can't find project with id: 4419934f-8e1b-4cf0-b432-01ef9258a812"
+            anyOf:
+              - $ref: "#/definitions/NotFound"
+              - $ref: "#/definitions/ProjectError"
+        # "404":
+        #   description: "Can't find project with id"
+        #   type: "object"
+        #   schema:
+        #     type: "object"
+        #     properties:
+        #       error:
+        #         type: "string"
+        #         description: "Can't find project with id"
+        #         example: "Can't find project with id: 4419934f-8e1b-4cf0-b432-01ef9258a812"
       security:
         - BasicAuth: []
   /projects/{projectId}/designs:
@@ -6900,6 +6916,15 @@ definitions:
         example: "Can't find clipart with id: 3f2b04a2-8aa9-31a7-82b0-3e2b94c815fe"
     xml:
       name: "ClipartError"
+  ProjectError:
+    type: "object"
+    properties:
+      error:
+        type: "string"
+        description: "Can't find project with id"
+        example: "Can't find project with id: 4419934f-8e1b-4cf0-b432-01ef9258a812"
+    xml:
+      name: "ProjectError"
   Forbidden:
     type: "object"
     properties:
