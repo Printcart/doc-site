@@ -463,15 +463,23 @@ paths:
           schema:
             $ref: "#/definitions/Unauthenticated"
         "404":
-          description: "Can't find product with id"
-          type: "object"
+          description:
+            - "Not found"
+            - " Can't find product with id"
           schema:
-            type: "object"
-            properties:
-              error:
-                type: "string"
-                description: "Can't find product with id"
-                example: "Can't find product with id: 962af342-a2c9-4665-bb5d-cb208258d958"
+            anyOf:
+              - $ref: "#/definitions/NotFound"
+              - $ref: "#/definitions/ProductError"
+        # "404":
+        #   description: "Can't find product with id"
+        #   type: "object"
+        #   schema:
+        #     type: "object"
+        #     properties:
+        #       error:
+        #         type: "string"
+        #         description: "Can't find product with id"
+        #         example: "Can't find product with id: 962af342-a2c9-4665-bb5d-cb208258d958"
       security:
         - BasicAuth: []
   /products/{productId}/designs:
