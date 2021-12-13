@@ -2204,7 +2204,7 @@ paths:
                 example: "Can't find design with id: cce4dc71-6757-4a1c-a259-6b66a4304c14"
       security:
         - BasicAuth: []
-  /designs/{design}/layers:
+  /designs/{designId}/layers:
     get:
       tags:
         - "Design"
@@ -2235,7 +2235,7 @@ paths:
             $ref: "#/definitions/NotFound"
       security:
         - BasicAuth: []
-  /designs/{design}/fonts:
+  /designs/{designId}/fonts:
     get:
       tags:
         - "Design"
@@ -2718,6 +2718,37 @@ paths:
                 type: "string"
                 description: "Can't find template with id"
                 example: "Can't find template with id: cce4dc71-6757-4a1c-a259-6b66a4304c14"
+      security:
+        - BasicAuth: []
+  /templates/{templateId}/layers:
+    get:
+      tags:
+        - "Template"
+      # summary: "Find pet by ID"
+      # description: "Returns a single pet"
+      operationId: "getLayersTemplateById"
+      summary: "Get list layer by template"
+      produces:
+        - "application/json"
+      parameters:
+        - name: "templateId"
+          in: "path"
+          description: "Template ID"
+          required: true
+          type: "string"
+      responses:
+        "200":
+          description: "Retrieved successfully"
+          schema:
+            $ref: "#/definitions/DesignLayer"
+        "401":
+          description: "Unauthenticated"
+          schema:
+            $ref: "#/definitions/Unauthenticated"
+        "404":
+          description: "Not found"
+          schema:
+            $ref: "#/definitions/NotFound"
       security:
         - BasicAuth: []
   /templates/count:
