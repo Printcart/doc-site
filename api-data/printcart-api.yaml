@@ -123,7 +123,7 @@ paths:
       security:
         - BasicAuth: []
   /account/token-revoke:
-    post:
+    put:
       tags:
         - "Account"
       # summary: "Updated Account"
@@ -3663,8 +3663,8 @@ definitions:
         example: "2|m9RU0sw3yXCXiJqZFbNbrAPwy0Kc9vlZMgDT7vaT"
       message:
         type: "string"
-        description: "Created successfully"
-        example: "Created successfully"
+        description: "Updated successfully"
+        example: "Updated successfully"
     xml:
       name: "ApiTokenResponse"
   Product:
