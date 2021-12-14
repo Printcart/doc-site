@@ -3002,7 +3002,7 @@ paths:
             $ref: "#/definitions/NotFound"
       security:
         - BasicAuth: []
-  /cliparts-storages/{storageId}:
+  /cliparts-storages/{storageId}/cliparts:
     get:
       tags:
         - "Storage"
