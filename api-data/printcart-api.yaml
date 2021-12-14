@@ -6010,61 +6010,59 @@ definitions:
     description: "Lorem ipsum..."
     properties:
       data:
-        type: "array"
-        items:
-          type: "object"
-          properties:
-            layers:
-              type: "array"
-              items:
-                type: "object"
-                properties:
-                  top:
-                    type: "float"
-                    example: 38.9832354205
-                  left:
-                    type: "float"
-                    example: 329.6631024663
-                  text:
-                    type: "string"
-                    example: "Heading"
-                  width:
-                    type: "integer"
-                    format: "int64"
-                    example: 158
-                  height:
-                    type: "integer"
-                    format: "int64"
-                    example: 47.46
-                  originX:
-                    type: "string"
-                    example: "left"
-                  originY:
-                    type: "string"
-                    example: "top"
-                  fontSize:
-                    type: "integer"
-                    format: "int64"
-                    example: 42
-                  minWidth:
-                    type: "integer"
-                    format: "int64"
-                    example: 20
-                  fontStyle:
-                    type: "string"
-                    example: "normal"
-                  textAlign:
-                    type: "string"
-                    example: "left"
-                  underline:
-                    type: "boolean"
-                    example: false,
-                  fontFamily:
-                    type: "string"
-                    example: "Roboto"
-                  fontWeight:
-                    type: "string"
-                    example: "normal"
+        type: "object"
+        properties:
+          layers:
+            type: "array"
+            items:
+              type: "object"
+              properties:
+                top:
+                  type: "float"
+                  example: 38.9832354205
+                left:
+                  type: "float"
+                  example: 329.6631024663
+                text:
+                  type: "string"
+                  example: "Heading"
+                width:
+                  type: "integer"
+                  format: "int64"
+                  example: 158
+                height:
+                  type: "integer"
+                  format: "int64"
+                  example: 47.46
+                originX:
+                  type: "string"
+                  example: "left"
+                originY:
+                  type: "string"
+                  example: "top"
+                fontSize:
+                  type: "integer"
+                  format: "int64"
+                  example: 42
+                minWidth:
+                  type: "integer"
+                  format: "int64"
+                  example: 20
+                fontStyle:
+                  type: "string"
+                  example: "normal"
+                textAlign:
+                  type: "string"
+                  example: "left"
+                underline:
+                  type: "boolean"
+                  example: false,
+                fontFamily:
+                  type: "string"
+                  example: "Roboto"
+                fontWeight:
+                  type: "string"
+                  example: "normal"
       message:
         type: "string"
         description: "Retrieved successfully"
