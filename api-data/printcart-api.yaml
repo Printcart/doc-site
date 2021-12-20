@@ -22,6 +22,7 @@ tags:
   - name: "Storage"
   - name: "Project"
   - name: "Account"
+  - name: "Webhook"
 schemes:
   - "https"
 paths:
@@ -3554,6 +3555,192 @@ paths:
       security:
         - BasicAuth: []
         - ApiKeyAuth: []
+  /webhooks:
+    post:
+      tags:
+        - "Webhook"
+      # summary:
+      # description:
+      operationId: "postWebhook"
+      summary: "Create new webhook"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - in: "body"
+          name: "body"
+          # description: "Pet object that needs to be added to the store"
+          required: true
+          schema:
+            $ref: "#/definitions/Webhook"
+      responses:
+        "201":
+          description: "Created successfully"
+          schema:
+            $ref: "#/definitions/WebhookResponseStore"
+        "400":
+          description: "Invalid input"
+          schema:
+            $ref: "#/definitions/InvalidInput"
+        "401":
+          description: "Unauthenticated"
+          schema:
+            $ref: "#/definitions/Unauthenticated"
+      security:
+        - BasicAuth: []
+    get:
+      tags:
+        - "Webhook"
+      # summary: "..."
+      # description: "..."
+      operationId: "getWebhook"
+      summary: "Get a list of webhooks"
+      produces:
+        - "application/json"
+      responses:
+        "200":
+          description: "Retrieved successfully"
+          schema:
+            $ref: "#/definitions/WebhookResponseShowDataArray"
+        "401":
+          description: "Unauthenticated"
+          schema:
+            $ref: "#/definitions/Unauthenticated"
+        "404":
+          description: "Not found"
+          schema:
+            $ref: "#/definitions/NotFound"
+      security:
+        - BasicAuth: []
+  /webhooks/{webhookId}:
+    get:
+      tags:
+        - "Webhook"
+      # summary: "Find pet by ID"
+      # description: "Returns a single pet"
+      operationId: "getWebhookById"
+      summary: "Get webhook details"
+      produces:
+        - "application/json"
+      parameters:
+        - name: "webhookId"
+          in: "path"
+          description: "Webhook ID"
+          required: true
+          type: "string"
+      responses:
+        "200":
+          description: "Retrieved successfully"
+          schema:
+            $ref: "#/definitions/WebhookResponseShowDataObject"
+        "401":
+          description: "Unauthenticated"
+          schema:
+            $ref: "#/definitions/Unauthenticated"
+        "404":
+          description: "Not found"
+          schema:
+            $ref: "#/definitions/NotFound"
+      security:
+        - BasicAuth: []
+    put:
+      tags:
+        - "Webhook"
+      # summary:
+      # description:
+      operationId: "updateWebhook"
+      summary: "Update webhook details"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - name: "webhookId"
+          in: "path"
+          description: "Webhook ID"
+          required: true
+          type: "string"
+        - in: "body"
+          name: "body"
+          # description: "Pet object that needs to be added to the store"
+          required: true
+          schema:
+            $ref: "#/definitions/WebhookUpdate"
+      responses:
+        "200":
+          description: "Updated successfully"
+          schema:
+            $ref: "#/definitions/WebhookResponseUpdate"
+        "400":
+          description: "Invalid input"
+          schema:
+            $ref: "#/definitions/InvalidInput"
+        "401":
+          description: "Unauthenticated"
+          schema:
+            $ref: "#/definitions/Unauthenticated"
+        "404":
+          description: "Not found"
+          schema:
+            $ref: "#/definitions/NotFound"
+      security:
+        - BasicAuth: []
+    delete:
+      tags:
+        - "Webhook"
+      # summary:
+      # description:
+      operationId: "deleteWebhook"
+      summary: "Delete a webhook"
+      produces:
+        - "application/json"
+      parameters:
+        - name: "webhookId"
+          in: "path"
+          description: "Webhook ID"
+          required: true
+          type: "string"
+      responses:
+        "204":
+          description: "Deleted successfully"
+          schema:
+            $ref: "#/definitions/Deleted"
+        "401":
+          description: "Unauthenticated"
+          schema:
+            $ref: "#/definitions/Unauthenticated"
+        "404":
+          description: "Not found"
+          schema:
+            $ref: "#/definitions/NotFound"
+      security:
+        - BasicAuth: []
+  /webhooks/count:
+    get:
+      tags:
+        - "Webhook"
+      # summary: "..."
+      # description: "..."
+      operationId: "getCountWebhook"
+      summary: "Get a count of webhooks"
+      produces:
+        - "application/json"
+      responses:
+        "200":
+          description: "Retrieved successfully"
+          schema:
+            $ref: "#/definitions/WebhookCount"
+        "401":
+          description: "Unauthenticated"
+          schema:
+            $ref: "#/definitions/Unauthenticated"
+        "404":
+          description: "Not found"
+          schema:
+            $ref: "#/definitions/NotFound"
+      security:
+        - BasicAuth: []
 securityDefinitions:
   ApiKeyAuth:
     type: "apiKey"
@@ -6901,6 +7088,153 @@ definitions:
         example: "Updated successfully"
     xml:
       name: "ProjectResponseUpdate"
+  Webhook:
+    type: "object"
+    required:
+      - 'event'
+      - 'callback_url'
+      - 'topic'
+    properties:
+      event:
+        type: "string"
+        enum:
+          - "POST"
+          - "PUT"
+          - "DELETE"
+          - "POST BATCH"
+          - "PUT BATCH"
+          - "DELETE BATCH"
+        example: "POST"
+      callback_url:
+        type: "string"
+        example: "https://printcart.com/webhook-receiving-url/xxxx"
+      topic:
+        type: "string"
+        enum:
+          - "projects"
+          - "products"
+          - "designs"
+          - "templates"
+          - "sides"
+        example: "projects"
+    xml:
+      name: "Webhook"
+  WebhookUpdate:
+    type: "object"
+    properties:
+      event:
+        type: "string"
+        enum:
+          - "POST"
+          - "PUT"
+          - "DELETE"
+          - "POST BATCH"
+          - "PUT BATCH"
+          - "DELETE BATCH"
+        example: "POST"
+      callback_url:
+        type: "string"
+        example: "https://printcart.com/webhook-receiving-url/xxxx"
+      topic:
+        type: "string"
+        enum:
+          - "projects"
+          - "products"
+          - "designs"
+          - "templates"
+          - "sides"
+        example: "projects"
+    xml:
+      name: "WebhookUpdate"
+  WebhookResponse:
+    type: "object"
+    properties:
+      id:
+        type: "string"
+        example: "ad8d432f-4c7d-459d-9f2f-4a6821666102"
+      event:
+        type: "string"
+        example: "POST"
+      callback_url:
+        type: "string"
+        example: "https://printcart.com/webhook-receiving-url/xxxx"
+      topic:
+        type: "string"
+        example: "projects"
+      created_at:
+        type: "string"
+        example: "2021-11-16T08:26:30.000000Z"
+      updated_at:
+        type: "string"
+        example: "2021-11-16T08:26:30.000000Z"
+    xml:
+      name: "WebhookResponse"
+  WebhookResponseShowDataObject:
+    type: "object"
+    properties:
+      data:
+        type: "object"
+        $ref: "#/definitions/WebhookResponse"
+      message:
+        type: "string"
+        description: "Retrieved successfully"
+        example: "Retrieved successfully"
+    xml:
+      name: "WebhookResponseShowDataObject"
+  WebhookResponseShowDataArray:
+    type: "object"
+    properties:
+      data:
+        type: "array"
+        items:
+          type: "object"
+          $ref: "#/definitions/WebhookResponse"
+      message:
+        type: "string"
+        description: "Retrieved successfully"
+        example: "Retrieved successfully"
+    xml:
+      name: "WebhookResponseShowDataArray"
+  WebhookResponseStore:
+    type: "object"
+    properties:
+      data:
+        type: "object"
+        $ref: "#/definitions/WebhookResponse"
+      message:
+        type: "string"
+        description: "Created successfully"
+        example: "Created successfully"
+    xml:
+      name: "WebhookResponseStore"
+  WebhookResponseUpdate:
+    type: "object"
+    properties:
+      data:
+        type: "object"
+        $ref: "#/definitions/WebhookResponse"
+      message:
+        type: "string"
+        description: "Updated successfully"
+        example: "Updated successfully"
+    xml:
+      name: "WebhookResponseUpdate"
+  WebhookCount:
+    type: "object"
+    properties:
+      data:
+        type: "object"
+        properties:
+          count:
+            type: "integer"
+            format: "int64"
+            example: 10
+      message:
+        type: "string"
+        description: "Retrieved successfully"
+        example: "Retrieved successfully"
+    xml:
+      name: "WebhookCount"
   Unauthenticated:
     type: "object"
     properties:
