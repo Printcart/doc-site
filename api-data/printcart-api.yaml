@@ -4379,11 +4379,11 @@ definitions:
       show_safe_zone:
         type: "boolean"
         example: true
-      margin_vertical:
+      margin_top_bottom:
         type: "float"
         format: "float"
         example: 50
-      margin_horizontal:
+      margin_left_right:
         type: "float"
         format: "float"
         example: 50
@@ -4539,11 +4539,11 @@ definitions:
             show_safe_zone:
               type: "boolean"
               example: true
-            margin_vertical:
+            margin_top_bottom:
               type: "float"
               format: "float"
               example: 50
-            margin_horizontal:
+            margin_left_right:
               type: "float"
               format: "float"
               example: 50
@@ -4674,11 +4674,11 @@ definitions:
       show_safe_zone:
         type: "boolean"
         example: true
-      margin_vertical:
+      margin_top_bottom:
         type: "float"
         format: "float"
         example: 50
-      margin_horizontal:
+      margin_left_right:
         type: "float"
         format: "float"
         example: 50
@@ -4870,11 +4870,11 @@ definitions:
             show_safe_zone:
               type: "boolean"
               example: true
-            margin_vertical:
+            margin_top_bottom:
               type: "float"
               format: "float"
               example: 50
-            margin_horizontal:
+            margin_left_right:
               type: "float"
               format: "float"
               example: 50
@@ -5625,11 +5625,11 @@ definitions:
                 show_safe_zone:
                   type: "boolean"
                   example: true
-                margin_vertical:
+                margin_top_bottom:
                   type: "float"
                   format: "float"
                   example: 50
-                margin_horizontal:
+                margin_left_right:
                   type: "float"
                   format: "float"
                   example: 50
@@ -5791,11 +5791,11 @@ definitions:
                 show_safe_zone:
                   type: "boolean"
                   example: true
-                margin_vertical:
+                margin_top_bottom:
                   type: "float"
                   format: "float"
                   example: 50
-                margin_horizontal:
+                margin_left_right:
                   type: "float"
                   format: "float"
                   example: 50
@@ -5952,11 +5952,11 @@ definitions:
           show_safe_zone:
             type: "boolean"
             example: true
-          margin_vertical:
+          margin_top_bottom:
             type: "float"
             format: "float"
             example: 50
-          margin_horizontal:
+          margin_left_right:
             type: "float"
             format: "float"
             example: 50
@@ -6118,11 +6118,11 @@ definitions:
           show_safe_zone:
             type: "boolean"
             example: true
-          margin_vertical:
+          margin_top_bottom:
             type: "float"
             format: "float"
             example: 50
-          margin_horizontal:
+          margin_left_right:
             type: "float"
             format: "float"
             example: 50
@@ -6551,11 +6551,11 @@ definitions:
                 show_safe_zone:
                   type: "boolean"
                   example: true
-                margin_vertical:
+                margin_top_bottom:
                   type: "float"
                   format: "float"
                   example: 50
-                margin_horizontal:
+                margin_left_right:
                   type: "float"
                   format: "float"
                   example: 50
@@ -6717,11 +6717,11 @@ definitions:
                 show_safe_zone:
                   type: "boolean"
                   example: true
-                margin_vertical:
+                margin_top_bottom:
                   type: "float"
                   format: "float"
                   example: 50
-                margin_horizontal:
+                margin_left_right:
                   type: "float"
                   format: "float"
                   example: 50
@@ -7091,9 +7091,9 @@ definitions:
   Webhook:
     type: "object"
     required:
-      - 'event'
-      - 'callback_url'
-      - 'topic'
+      - "event"
+      - "callback_url"
+      - "topic"
     properties:
       event:
         type: "string"
