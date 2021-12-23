@@ -35,8 +35,7 @@ paths:
       operationId: "createAccount"
       summary: "Create Account"
       consumes:
-        - "multipart/form-data"
-        # - "application/json"
+        - "application/json"
       produces:
         - "application/json"
       parameters:
@@ -52,17 +51,11 @@ paths:
           schema:
             $ref: "#/definitions/AccountResponseStore"
         "400":
-          description:
-            - "Invalid input"
-            - " Invalid Avatar File"
+          description: "Invalid input"
           schema:
-            anyOf:
-              - $ref: "#/definitions/InvalidInput"
-              - $ref: "#/definitions/InvalidAvatarFile"
-        # "400":
-        #   description: "Invalid avatar file"
-        #   schema:
-        #     $ref: "#/definitions/InvalidAvatarFile"
+            $ref: "#/definitions/InvalidInput"
+      security:
+        - BasicAuth: []
     get:
       tags:
         - "Account"
@@ -89,8 +82,7 @@ paths:
       operationId: "updateAccount"
       summary: "Update Account Details"
       consumes:
-        - "multipart/form-data"
-        # - "application/json"
+        - "application/json"
       produces:
         - "application/json"
       parameters:
@@ -106,17 +98,9 @@ paths:
           schema:
             $ref: "#/definitions/AccountResponseUpdate"
         "400":
-          description:
-            - "Invalid input"
-            - " Invalid Avatar File"
+          description: "Invalid input"
           schema:
-            anyOf:
-              - $ref: "#/definitions/InvalidInput"
-              - $ref: "#/definitions/InvalidAvatarFile"
-        # "400":
-        #   description: "Invalid avatar file"
-        #   schema:
-        #     $ref: "#/definitions/InvalidAvatarFile"
+             $ref: "#/definitions/InvalidInput"
         "401":
           description: "Unauthenticated"
           schema:
@@ -3765,9 +3749,6 @@ definitions:
       password:
         type: "string"
         example: "printcart"
-      avatar_img_file:
-        type: "file"
-        description: "Avatar image to upload file"
       google_font_api:
         type: "string"
         example: "AIzaSyBtoM...L3iAPUPrpQ"
@@ -3792,9 +3773,6 @@ definitions:
       google_font_api:
         type: "string"
         example: "AIzaSyBtoM...L3iAPUPrpQ"
-      avatar_img_url:
-        type: "string"
-        example: "https://local-printcart-src-media.s3.us-east-2.amazonaws.com/accounts/19f99961-edac-455e-b407-aa6aa80ec862/0V34SX2YcE31B3zZ0xcm5dFbN1fGUdZc9GRIlxvP.jpg"
       created_at:
         type: "string"
         example: "2021-11-16T08:26:30.000000Z"
