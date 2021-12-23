@@ -91,7 +91,7 @@ paths:
           # description: "Pet object that needs to be added to the store"
           required: true
           schema:
-            $ref: "#/definitions/Account"
+            $ref: "#/definitions/AccountUpdate"
       responses:
         "200":
           description: "Updated successfully"
@@ -244,7 +244,7 @@ paths:
           # description: "Pet object that needs to be added to the store"
           required: true
           schema:
-            $ref: "#/definitions/Product"
+            $ref: "#/definitions/ProductUpdate"
       responses:
         "200":
           description: "Updated successfully"
@@ -719,7 +719,7 @@ paths:
           # description: "Pet object that needs to be added to the store"
           required: true
           schema:
-            $ref: "#/definitions/Side"
+            $ref: "#/definitions/SideUpdate"
       responses:
         "200":
           description: "Updated successfully"
@@ -1702,14 +1702,14 @@ paths:
         - "Image"
       # summary:
       # description:
-      operationId: "deleteImage"
+      operationId: "deleteImageById"
       summary: "Delete a image"
       produces:
         - "application/json"
       parameters:
-        - name: "imageID"
+        - name: "imageId"
           in: "path"
-          description: "Image ID"
+          description: "Image Id"
           required: true
           type: "string"
       responses:
@@ -1734,14 +1734,14 @@ paths:
         - "Image"
       # summary:
       # description:
-      operationId: "uploadFile"
+      operationId: "uploadFiles"
       summary: "Add new image"
       consumes:
         - "multipart/form-data"
       produces:
         - "application/json"
       parameters:
-        - name: "file[]"
+        - name: "files[]"
           in: "formData"
           description: "Image to upload"
           required: true
@@ -1925,7 +1925,7 @@ paths:
           # description: "Pet object that needs to be added to the store"
           required: true
           schema:
-            $ref: "#/definitions/Design"
+            $ref: "#/definitions/DesignUpdate"
       responses:
         "200":
           description: "Updated successfully"
@@ -2441,7 +2441,7 @@ paths:
           # description: "Pet object that needs to be added to the store"
           required: true
           schema:
-            $ref: "#/definitions/Design"
+            $ref: "#/definitions/DesignUpdate"
       responses:
         "200":
           description: "Updated successfully"
@@ -2906,7 +2906,7 @@ paths:
           # description: "Pet object that needs to be added to the store"
           required: true
           schema:
-            $ref: "#/definitions/Category"
+            $ref: "#/definitions/CategoryUpdate"
       responses:
         "200":
           description: "Updated successfully"
@@ -3754,6 +3754,24 @@ definitions:
         example: "AIzaSyBtoM...L3iAPUPrpQ"
     xml:
       name: "Account"
+  AccountUpdate:
+    type: "object"
+    properties:
+      name:
+        type: "string"
+        example: "printcart"
+      email:
+        type: "string"
+        format: "email"
+        example: "printcart@gamil.com"
+      password:
+        type: "string"
+        example: "printcart"
+      google_font_api:
+        type: "string"
+        example: "AIzaSyBtoM...L3iAPUPrpQ"
+    xml:
+      name: "AccountUpdate"
   AccountResponse:
     type: "object"
     properties:
@@ -3902,6 +3920,74 @@ definitions:
         example: "e8304b84-a015-3bd4-a7d3-7a978f465df2"
     xml:
       name: "Product"
+  ProductUpdate:
+    type: "object"
+    properties:
+      name:
+        type: "string"
+        example: "printcart"
+      dynamic_side:
+        type: "boolean"
+        example: true
+      viewport_width:
+        type: "float"
+        format: "float"
+        example: 50.5
+      viewport_height:
+        type: "float"
+        format: "float"
+        example: 50.5
+      scale:
+        type: "float"
+        format: "float"
+        example: 50.5
+      dpi:
+        type: "integer"
+        format: "int64"
+        example: 50
+      dimension_unit:
+        type: "string"
+        enum:
+          - "inch"
+          - "cm"
+        example: "inch"
+      status:
+        type: "string"
+        enum:
+          - "publish"
+          - "draft"
+          - "trashed"
+          - "deleted"
+        example: "publish"
+      allowed_file_types:
+        type: "array"
+        items:
+          type: "string"
+          enum:
+            - "jpg"
+            - "png"
+            - "ai"
+            - "ps"
+            - "pdf"
+            - "bmp"
+            - "iddd"
+        example: ["jpg", "png", "ai", "ps", "pdf", "bmp", "iddd"]
+      max_file_upload:
+        type: "integer"
+        format: "int64"
+        example: 500
+      min_jpg_dpi:
+        type: "integer"
+        format: "int64"
+        example: 500
+      enable_design:
+        type: "boolean"
+        example: false
+      product_image_id:
+        type: "string"
+        example: "e8304b84-a015-3bd4-a7d3-7a978f465df2"
+    xml:
+      name: "ProductUpdate"
   ProductBatch:
     type: "object"
     required:
@@ -3916,13 +4002,13 @@ definitions:
       name: "ProductBatch"
   ProductBatchUpdate:
     type: "object"
-    required:
-      - "name"
     properties:
       products:
         type: "array"
         items:
           type: "object"
+          required:
+            - "id"
           properties:
             id:
               type: "string"
@@ -3999,6 +4085,8 @@ definitions:
         type: "array"
         items:
           type: "object"
+          required:
+            - "id"
           properties:
             id:
               type: "string"
@@ -4291,8 +4379,8 @@ definitions:
         type: "string"
         example: "version 1.0.0"
       ratio:
-        type: "integer"
-        format: "int64"
+        type: "number"
+        format: "double"
         example: 100
       background_included:
         type: "boolean"
@@ -4370,6 +4458,127 @@ definitions:
         example: "e8304b84-a015-3bd4-a7d3-7a978f465df2"
     xml:
       name: "Side"
+  SideUpdate:
+    type: "object"
+    properties:
+      product_id:
+        type: "string"
+        example: "962af342-a2c9-4665-bb5d-cb208258d958"
+      name:
+        type: "string"
+        example: "printcart"
+      bg_type:
+        type: "string"
+        enum:
+          - "color"
+          - "image"
+          - "transparent"
+        example: "image"
+      bg_color_value:
+        type: "string"
+        example: "red"
+      img_top_pos:
+        type: "float"
+        format: "float"
+        example: 50.5
+      img_left_pos:
+        type: "float"
+        format: "float"
+        example: 50.5
+      img_bottom_pos:
+        type: "float"
+        format: "float"
+        example: 50.5
+      img_right_pos:
+        type: "float"
+        format: "float"
+        example: 50.5
+      img_overlay:
+        type: "string"
+        example: "e8304b84-a015-3bd4-a7d3-7a978f465df2"
+      version:
+        type: "string"
+        example: "version 1.0.0"
+      ratio:
+        type: "number"
+        format: "double"
+        example: 100
+      background_included:
+        type: "boolean"
+        example: true
+      show_overlay:
+        type: "boolean"
+        example: true
+      include_overlay:
+        type: "boolean"
+        example: true
+      product_width:
+        type: "float"
+        format: "float"
+        example: 50
+      product_height:
+        type: "float"
+        format: "float"
+        example: 50
+      real_width:
+        type: "float"
+        format: "float"
+        example: 50
+      real_height:
+        type: "float"
+        format: "float"
+        example: 50
+      real_top:
+        type: "float"
+        format: "float"
+        example: 50
+      real_left:
+        type: "float"
+        format: "float"
+        example: 50
+      area_design_width:
+        type: "float"
+        format: "float"
+        example: 50
+      area_design_height:
+        type: "float"
+        format: "float"
+        example: 50
+      area_design_left:
+        type: "float"
+        format: "float"
+        example: 50
+      area_design_top:
+        type: "float"
+        format: "float"
+        example: 50
+      show_bleed:
+        type: "boolean"
+        example: true
+      bleed_top_bottom:
+        type: "float"
+        format: "float"
+        example: 50.50
+      bleed_left_right:
+        type: "float"
+        format: "float"
+        example: 50.50
+      show_safe_zone:
+        type: "boolean"
+        example: true
+      margin_top_bottom:
+        type: "float"
+        format: "float"
+        example: 50
+      margin_left_right:
+        type: "float"
+        format: "float"
+        example: 50
+      bg_img_id:
+        type: "string"
+        example: "e8304b84-a015-3bd4-a7d3-7a978f465df2"
+    xml:
+      name: "SideUpdate"
   SideCount:
     type: "object"
     properties:
@@ -4408,6 +4617,8 @@ definitions:
         type: "array"
         items:
           type: "object"
+          required:
+            - "id"
           properties:
             id:
               type: "string"
@@ -4451,8 +4662,8 @@ definitions:
               type: "string"
               example: "version 1.0.0"
             ratio:
-              type: "integer"
-              format: "int64"
+              type: "number"
+              format: "double"
               example: 100
             background_included:
               type: "boolean"
@@ -4537,6 +4748,8 @@ definitions:
         type: "array"
         items:
           type: "object"
+          required:
+            - "id"
           properties:
             id:
               type: "string"
@@ -4586,8 +4799,8 @@ definitions:
         type: "string"
         example: "version 1.0.0"
       ratio:
-        type: "integer"
-        format: "int64"
+        type: "number"
+        format: "double"
         example: 100
       background_included:
         type: "boolean"
@@ -4782,8 +4995,8 @@ definitions:
               type: "string"
               example: "version 1.0.0"
             ratio:
-              type: "integer"
-              format: "int64"
+              type: "number"
+              format: "double"
               example: 100
             background_included:
               type: "boolean"
@@ -4902,6 +5115,8 @@ definitions:
         type: "array"
         items:
           type: "object"
+          required:
+            - "id"
           properties:
             id:
               type: "string"
@@ -4921,6 +5136,8 @@ definitions:
         type: "array"
         items:
           type: "object"
+          required:
+            - "id"
           properties:
             id:
               type: "string"
@@ -5372,6 +5589,68 @@ definitions:
         example: "accepted"
     xml:
       name: "Design"
+  DesignUpdate:
+    type: "object"
+    properties:
+      project_id:
+        type: "string"
+        example: "4419934f-8e1b-4cf0-b432-01ef9258a812"
+      side_id:
+        type: "string"
+        example: "c5661a1e-8147-4dc3-8600-00fdc81ed14b"
+      design_ratio:
+        type: "number"
+        format: "float"
+        example: 50.50
+      pdf_url:
+        type: "string"
+      preview_image_id:
+        type: "string"
+        example: "e8304b84-a015-3bd4-a7d3-7a978f465df2"
+      design_image_id:
+        type: "string"
+        example: "e8304b84-a015-3bd4-a7d3-7a978f465df2"
+      design_file:
+        type: "file"
+        description: "Lorem ipsum..."
+      quantity:
+        type: "integer"
+        format: "int64"
+        example: 50
+      note:
+        type: "string"
+        example: "printcart"
+      layers:
+        type: "json"
+        description: "Lorem ipsum..."
+        example:
+          [
+            {
+              "top": 183.5025,
+              "left": 195.79,
+              "text": "Blackbird",
+              "width": 68.33984375,
+              "height": 22.6,
+              "originX": "left",
+              "originY": "top",
+              "fontSize": 20,
+              "fontStyle": "normal",
+              "textAlign": "left",
+              "fontFamily": "Yellowtail",
+              "fontWeight": "normal",
+            },
+          ]
+      status:
+        type: "string"
+        enum:
+          - "accepted"
+          - "processing"
+          - "declined"
+          - "trashed"
+          - "deleted"
+        example: "accepted"
+    xml:
+      name: "DesignUpdate"
   DesignBatch:
     type: "object"
     required:
@@ -5405,6 +5684,8 @@ definitions:
         type: "array"
         items:
           type: "object"
+          required:
+            - "id"
           properties:
             id:
               type: "string"
@@ -5475,6 +5756,8 @@ definitions:
         type: "array"
         items:
           type: "object"
+          required:
+            - "id"
           properties:
             id:
               type: "string"
@@ -6330,6 +6613,8 @@ definitions:
         type: "array"
         items:
           type: "object"
+          required:
+            - "id"
           properties:
             id:
               type: "string"
@@ -6730,6 +7015,8 @@ definitions:
         type: "array"
         items:
           type: "object"
+          required:
+            - "id"
           properties:
             id:
               type: "string"
@@ -6749,6 +7036,17 @@ definitions:
         example: null
     xml:
       name: "Category"
+  CategoryUpdate:
+    type: "object"
+    properties:
+      name:
+        type: "string"
+        example: "printcart"
+      parent_id:
+        type: "string"
+        example: null
+    xml:
+      name: "CategoryUpdate"
   CategoryCount:
     type: "object"
     properties:
@@ -6853,15 +7151,6 @@ definitions:
       note:
         type: "string"
         example: "printcart note"
-      design_ids:
-        type: "array"
-        items:
-          type: "string"
-          example:
-            [
-              "cce4dc71-6757-4a1c-a259-6b66a4304c14",
-              "cce4dc71-6757-4a1c-a259-6b66a4304c22",
-            ]
     xml:
       name: "Project"
   ProjectBatch:
@@ -6885,6 +7174,8 @@ definitions:
         type: "array"
         items:
           type: "object"
+          required:
+            - "id"
           properties:
             id:
               type: "string"
@@ -6913,6 +7204,8 @@ definitions:
         type: "array"
         items:
           type: "object"
+          required:
+            - "id"
           properties:
             id:
               type: "string"
