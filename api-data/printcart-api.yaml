@@ -100,7 +100,7 @@ paths:
         "400":
           description: "Invalid input"
           schema:
-             $ref: "#/definitions/InvalidInput"
+            $ref: "#/definitions/InvalidInput"
         "401":
           description: "Unauthenticated"
           schema:
@@ -1117,7 +1117,7 @@ paths:
           # description: "Pet object that needs to be added to the store"
           required: true
           schema:
-            $ref: "#/definitions/Clipart"
+            $ref: "#/definitions/ClipartUpdate"
       responses:
         "200":
           description: "Updated successfully"
@@ -1531,7 +1531,7 @@ paths:
           # description: "Pet object that needs to be added to the store"
           required: true
           schema:
-            $ref: "#/definitions/Font"
+            $ref: "#/definitions/FontUpdate"
       responses:
         "200":
           description: "Updated successfully"
@@ -3066,13 +3066,9 @@ paths:
           schema:
             $ref: "#/definitions/ProjectResponseStore"
         "400":
-          description:
-            - "Invalid input"
-            - " Design uuid: cce4dc71-6757-4a1c-a259-6b66a4304c14 already belong to another project"
+          description: "Invalid input"
           schema:
-            anyOf:
-              - $ref: "#/definitions/InvalidInput"
-              - $ref: "#/definitions/ProjectDesignError"
+            $ref: "#/definitions/InvalidInput"
         # "400":
         #   description: "Design uuid: cce4dc71-6757-4a1c-a259-6b66a4304c14 already belong to another project"
         #   type: "object"
@@ -3087,16 +3083,16 @@ paths:
           description: "Unauthenticated"
           schema:
             $ref: "#/definitions/Unauthenticated"
-        "404":
-          description: "Can't find design with id"
-          type: "object"
-          schema:
-            type: "object"
-            properties:
-              error:
-                type: "string"
-                description: "Can't find design with id"
-                example: "Can't find design with id: cce4dc71-6757-4a1c-a259-6b66a4304c14"
+        # "404":
+        #   description: "Can't find design with id"
+        #   type: "object"
+        #   schema:
+        #     type: "object"
+        #     properties:
+        #       error:
+        #         type: "string"
+        #         description: "Can't find design with id"
+        #         example: "Can't find design with id: cce4dc71-6757-4a1c-a259-6b66a4304c14"
       security:
         - BasicAuth: []
     get:
@@ -3741,13 +3737,16 @@ definitions:
     properties:
       name:
         type: "string"
+        description: Customer name.
         example: "printcart"
       email:
         type: "string"
         format: "email"
+        description: The email address for the customer.
         example: "printcart@gamil.com"
       password:
         type: "string"
+        description: Customer password.
         example: "printcart"
       google_font_api:
         type: "string"
@@ -3759,13 +3758,16 @@ definitions:
     properties:
       name:
         type: "string"
+        description: Customer name.
         example: "printcart"
       email:
         type: "string"
         format: "email"
+        description: The email address for the customer.
         example: "printcart@gamil.com"
       password:
         type: "string"
+        description: Customer password.
         example: "printcart"
       google_font_api:
         type: "string"
@@ -3857,6 +3859,7 @@ definitions:
     properties:
       name:
         type: "string"
+        description: The name given to a product
         example: "printcart"
       dynamic_side:
         type: "boolean"
@@ -3879,17 +3882,20 @@ definitions:
         example: 50
       dimension_unit:
         type: "string"
+        default: "cm"
         enum:
           - "inch"
           - "cm"
         example: "inch"
       status:
         type: "string"
+        default: "publish"
         enum:
           - "publish"
           - "draft"
           - "trashed"
           - "deleted"
+        description: Product status
         example: "publish"
       allowed_file_types:
         type: "array"
@@ -3917,6 +3923,7 @@ definitions:
         example: false
       product_image_id:
         type: "string"
+        description: Image ID.
         example: "e8304b84-a015-3bd4-a7d3-7a978f465df2"
     xml:
       name: "Product"
@@ -3925,6 +3932,7 @@ definitions:
     properties:
       name:
         type: "string"
+        description: Updated name of the product
         example: "printcart"
       dynamic_side:
         type: "boolean"
@@ -3958,6 +3966,7 @@ definitions:
           - "draft"
           - "trashed"
           - "deleted"
+        description: Product status
         example: "publish"
       allowed_file_types:
         type: "array"
@@ -3985,6 +3994,7 @@ definitions:
         example: false
       product_image_id:
         type: "string"
+        description: Image ID.
         example: "e8304b84-a015-3bd4-a7d3-7a978f465df2"
     xml:
       name: "ProductUpdate"
@@ -4012,9 +4022,11 @@ definitions:
           properties:
             id:
               type: "string"
+              description: Product ID.
               example: "962af342-a2c9-4665-bb5d-cb208258d958"
             name:
               type: "string"
+              description: Updated name of the product
               example: "printcart"
             dynamic_side:
               type: "boolean"
@@ -4048,6 +4060,7 @@ definitions:
                 - "draft"
                 - "trashed"
                 - "deleted"
+              description: Product status
               example: "publish"
             allowed_file_types:
               type: "array"
@@ -4075,6 +4088,7 @@ definitions:
               example: false
             product_image_id:
               type: "string"
+              description: Image ID
               example: "e8304b84-a015-3bd4-a7d3-7a978f465df2"
     xml:
       name: "ProductBatchUpdate"
@@ -4090,6 +4104,7 @@ definitions:
           properties:
             id:
               type: "string"
+              description: Product ID
               example: "962af342-a2c9-4665-bb5d-cb208258d958"
     xml:
       name: "ProductBatchDelete"
@@ -4342,12 +4357,15 @@ definitions:
     properties:
       product_id:
         type: "string"
+        description: Product ID
         example: "962af342-a2c9-4665-bb5d-cb208258d958"
       name:
         type: "string"
+        description: The name given to a side
         example: "printcart"
       bg_type:
         type: "string"
+        default: "image"
         enum:
           - "color"
           - "image"
@@ -4374,6 +4392,7 @@ definitions:
         example: 50.5
       img_overlay:
         type: "string"
+        description: Image ID
         example: "e8304b84-a015-3bd4-a7d3-7a978f465df2"
       version:
         type: "string"
@@ -4455,6 +4474,7 @@ definitions:
         example: 50
       bg_img_id:
         type: "string"
+        description: Image ID
         example: "e8304b84-a015-3bd4-a7d3-7a978f465df2"
     xml:
       name: "Side"
@@ -4463,9 +4483,11 @@ definitions:
     properties:
       product_id:
         type: "string"
+        description: Product ID
         example: "962af342-a2c9-4665-bb5d-cb208258d958"
       name:
         type: "string"
+        description: Updated name of the side
         example: "printcart"
       bg_type:
         type: "string"
@@ -4495,6 +4517,7 @@ definitions:
         example: 50.5
       img_overlay:
         type: "string"
+        description: Image ID
         example: "e8304b84-a015-3bd4-a7d3-7a978f465df2"
       version:
         type: "string"
@@ -4576,6 +4599,7 @@ definitions:
         example: 50
       bg_img_id:
         type: "string"
+        description: Image ID
         example: "e8304b84-a015-3bd4-a7d3-7a978f465df2"
     xml:
       name: "SideUpdate"
@@ -4622,12 +4646,15 @@ definitions:
           properties:
             id:
               type: "string"
+              description: Side ID
               example: "c5661a1e-8147-4dc3-8600-00fdc81ed14b"
             product_id:
               type: "string"
+              description: Product ID
               example: "962af342-a2c9-4665-bb5d-cb208258d958"
             name:
               type: "string"
+              description: Updated name of the side
               example: "printcart"
             bg_type:
               type: "string"
@@ -4657,6 +4684,7 @@ definitions:
               example: 50.5
             img_overlay:
               type: "string"
+              description: Image ID
               example: "e8304b84-a015-3bd4-a7d3-7a978f465df2"
             version:
               type: "string"
@@ -4738,6 +4766,7 @@ definitions:
               example: 50
             bg_img_id:
               type: "string"
+              description: Image ID
               example: "e8304b84-a015-3bd4-a7d3-7a978f465df2"
     xml:
       name: "SideBatchUpdate"
@@ -4753,6 +4782,7 @@ definitions:
           properties:
             id:
               type: "string"
+              description: Side ID
               example: "c5661a1e-8147-4dc3-8600-00fdc81ed14b"
     xml:
       name: "SideBatchDelete"
@@ -5090,12 +5120,27 @@ definitions:
     properties:
       name:
         type: "string"
+        description: The name given to a clipart
         example: "printcart"
       image_id:
         type: "string"
+        description: Image ID
         example: "e8304b84-a015-3bd4-a7d3-7a978f465df2"
     xml:
       name: "Clipart"
+  ClipartUpdate:
+    type: "object"
+    properties:
+      name:
+        type: "string"
+        description: Updated name of the clipart
+        example: "printcart"
+      image_id:
+        type: "string"
+        description: Image ID
+        example: "e8304b84-a015-3bd4-a7d3-7a978f465df2"
+    xml:
+      name: "ClipartUpdate"
   ClipartBatch:
     type: "object"
     required:
@@ -5120,12 +5165,15 @@ definitions:
           properties:
             id:
               type: "string"
+              description: Clipart ID
               example: "3f2b04a2-8aa9-31a7-82b0-3e2b94c815fe"
             name:
               type: "string"
+              description: Updated name of the clipart
               example: "printcart"
             image_id:
               type: "string"
+              description: Image ID
               example: "e8304b84-a015-3bd4-a7d3-7a978f465df2"
     xml:
       name: "ClipartBatchUpdate"
@@ -5141,6 +5189,7 @@ definitions:
           properties:
             id:
               type: "string"
+              description: Clipart ID
               example: "3f2b04a2-8aa9-31a7-82b0-3e2b94c815fe"
     xml:
       name: "ClipartBatchDelete"
@@ -5300,12 +5349,14 @@ definitions:
     properties:
       name:
         type: "string"
+        description: The name given to a font
         example: "printcart"
       alias:
         type: "string"
         example: "printcart"
       url:
         type: "string"
+        format: "url"
         example: "https//:printcart.com/printcart"
       type:
         type: "string"
@@ -5315,6 +5366,28 @@ definitions:
         example: "printcart"
     xml:
       name: "Font"
+  FontUpdate:
+    type: "object"
+    properties:
+      name:
+        type: "string"
+        description: Updated name of the font
+        example: "printcart"
+      alias:
+        type: "string"
+        example: "printcart"
+      url:
+        type: "string"
+        format: "url"
+        example: "https//:printcart.com/printcart"
+      type:
+        type: "string"
+        example: "printcart"
+      subset:
+        type: "string"
+        example: "printcart"
+    xml:
+      name: "FontUpdate"
   FontResponse:
     type: "object"
     properties:
@@ -5532,9 +5605,11 @@ definitions:
     properties:
       project_id:
         type: "string"
+        description: Project ID
         example: "4419934f-8e1b-4cf0-b432-01ef9258a812"
       side_id:
         type: "string"
+        description: Side ID
         example: "c5661a1e-8147-4dc3-8600-00fdc81ed14b"
       design_ratio:
         type: "number"
@@ -5542,15 +5617,18 @@ definitions:
         example: 50.50
       pdf_url:
         type: "string"
+        description: "Lorem ipsum..."
       preview_image_id:
         type: "string"
+        description: Image ID
         example: "e8304b84-a015-3bd4-a7d3-7a978f465df2"
       design_image_id:
         type: "string"
+        description: Image ID
         example: "e8304b84-a015-3bd4-a7d3-7a978f465df2"
       design_file:
         type: "file"
-        description: "Lorem ipsum..."
+        description: Image file
       quantity:
         type: "integer"
         format: "int64"
@@ -5580,12 +5658,14 @@ definitions:
           ]
       status:
         type: "string"
+        default: "processing"
         enum:
           - "accepted"
           - "processing"
           - "declined"
           - "trashed"
           - "deleted"
+        description: Design status
         example: "accepted"
     xml:
       name: "Design"
@@ -5594,9 +5674,11 @@ definitions:
     properties:
       project_id:
         type: "string"
+        description: Project ID
         example: "4419934f-8e1b-4cf0-b432-01ef9258a812"
       side_id:
         type: "string"
+        description: Side ID
         example: "c5661a1e-8147-4dc3-8600-00fdc81ed14b"
       design_ratio:
         type: "number"
@@ -5604,15 +5686,18 @@ definitions:
         example: 50.50
       pdf_url:
         type: "string"
+        description: Lorem ipsum...
       preview_image_id:
         type: "string"
+        description: Image ID
         example: "e8304b84-a015-3bd4-a7d3-7a978f465df2"
       design_image_id:
         type: "string"
+        description: Image ID
         example: "e8304b84-a015-3bd4-a7d3-7a978f465df2"
       design_file:
         type: "file"
-        description: "Lorem ipsum..."
+        description: Image file
       quantity:
         type: "integer"
         format: "int64"
@@ -5648,6 +5733,7 @@ definitions:
           - "declined"
           - "trashed"
           - "deleted"
+        description: Design status
         example: "accepted"
     xml:
       name: "DesignUpdate"
@@ -5689,12 +5775,15 @@ definitions:
           properties:
             id:
               type: "string"
+              description: Design ID
               example: "cce4dc71-6757-4a1c-a259-6b66a4304c14"
             project_id:
               type: "string"
+              description: Project ID
               example: "4419934f-8e1b-4cf0-b432-01ef9258a812"
             side_id:
               type: "string"
+              description: Side ID
               example: "c5661a1e-8147-4dc3-8600-00fdc81ed14b"
             design_ratio:
               type: "number"
@@ -5702,15 +5791,18 @@ definitions:
               example: 50.50
             pdf_url:
               type: "string"
+              description: Lorem ipsum...
             preview_image_id:
               type: "string"
+              description: Image ID
               example: "e8304b84-a015-3bd4-a7d3-7a978f465df2"
             design_image_id:
               type: "string"
+              description: Image ID
               example: "e8304b84-a015-3bd4-a7d3-7a978f465df2"
             design_file:
               type: "file"
-              description: "Lorem ipsum..."
+              description: Image file
             quantity:
               type: "integer"
               format: "int64"
@@ -5746,6 +5838,7 @@ definitions:
                 - "declined"
                 - "trashed"
                 - "deleted"
+              description: Design status
               example: "accepted"
     xml:
       name: "DesignBatchUpdate"
@@ -5761,6 +5854,7 @@ definitions:
           properties:
             id:
               type: "string"
+              description: Design ID
               example: "cce4dc71-6757-4a1c-a259-6b66a4304c14"
     xml:
       name: "DesignBatchDelete"
@@ -6537,9 +6631,11 @@ definitions:
     properties:
       project_id:
         type: "string"
+        description: Project ID
         example: "4419934f-8e1b-4cf0-b432-01ef9258a812"
       side_id:
         type: "string"
+        description: Side ID
         example: "c5661a1e-8147-4dc3-8600-00fdc81ed14b"
       design_ratio:
         type: "number"
@@ -6547,15 +6643,18 @@ definitions:
         example: 50.50
       pdf_url:
         type: "string"
+        description: Lorem ipsum...
       preview_image_id:
         type: "string"
+        description: Image ID
         example: "e8304b84-a015-3bd4-a7d3-7a978f465df2"
       design_image_id:
         type: "string"
+        description: Image ID
         example: "e8304b84-a015-3bd4-a7d3-7a978f465df2"
       design_file:
         type: "file"
-        description: "Lorem ipsum..."
+        description: Image file
       quantity:
         type: "integer"
         format: "int64"
@@ -6585,12 +6684,14 @@ definitions:
           ]
       status:
         type: "string"
+        default: "processing"
         enum:
           - "accepted"
           - "processing"
           - "declined"
           - "trashed"
           - "deleted"
+        description: Template status
         example: "accepted"
     xml:
       name: "Template"
@@ -6618,12 +6719,15 @@ definitions:
           properties:
             id:
               type: "string"
+              description: Template ID
               example: "cce4dc71-6757-4a1c-a259-6b66a4304c14"
             project_id:
               type: "string"
+              description: Project ID
               example: "4419934f-8e1b-4cf0-b432-01ef9258a812"
             side_id:
               type: "string"
+              description: Side ID
               example: "c5661a1e-8147-4dc3-8600-00fdc81ed14b"
             design_ratio:
               type: "number"
@@ -6631,15 +6735,18 @@ definitions:
               example: 50.50
             pdf_url:
               type: "string"
+              description: Lorem ipsum...
             preview_image_id:
               type: "string"
+              description: Image ID
               example: "e8304b84-a015-3bd4-a7d3-7a978f465df2"
             design_image_id:
               type: "string"
+              description: Image ID
               example: "e8304b84-a015-3bd4-a7d3-7a978f465df2"
             design_file:
               type: "file"
-              description: "Lorem ipsum..."
+              description: Image file
             quantity:
               type: "integer"
               format: "int64"
@@ -6675,6 +6782,7 @@ definitions:
                 - "declined"
                 - "trashed"
                 - "deleted"
+              description: Template status
               example: "accepted"
     xml:
       name: "TemplateBatchUpdate"
@@ -7020,6 +7128,7 @@ definitions:
           properties:
             id:
               type: "string"
+              description: Template ID
               example: "cce4dc71-6757-4a1c-a259-6b66a4304c14"
     xml:
       name: "TemplateBatchDelete"
@@ -7030,9 +7139,11 @@ definitions:
     properties:
       name:
         type: "string"
+        description: The name given to a storage
         example: "printcart"
       parent_id:
         type: "string"
+        description: Storage ID
         example: null
     xml:
       name: "Category"
@@ -7041,9 +7152,11 @@ definitions:
     properties:
       name:
         type: "string"
+        description: Updated name of the storage
         example: "printcart"
       parent_id:
         type: "string"
+        description: Storage ID
         example: null
     xml:
       name: "CategoryUpdate"
@@ -7138,15 +7251,18 @@ definitions:
     properties:
       name:
         type: "string"
+        description: The name given to a project
         example: "printcart"
       status:
         type: "string"
+        default: "processing"
         enum:
           - "processing"
           - "reviewing"
           - "accepted"
           - "trashed"
           - "deleted"
+        description: Project status
         example: "processing"
       note:
         type: "string"
@@ -7179,9 +7295,11 @@ definitions:
           properties:
             id:
               type: "string"
+              description: Project ID
               example: "4419934f-8e1b-4cf0-b432-01ef9258a812"
             name:
               type: "string"
+              description: Updated name of the project
               example: "printcart"
             status:
               type: "string"
@@ -7191,6 +7309,7 @@ definitions:
                 - "accepted"
                 - "trashed"
                 - "deleted"
+              description: Project status
               example: "processing"
             note:
               type: "string"
@@ -7209,6 +7328,7 @@ definitions:
           properties:
             id:
               type: "string"
+              description: Project ID
               example: "4419934f-8e1b-4cf0-b432-01ef9258a812"
     xml:
       name: "ProjectBatchDelete"
@@ -7368,6 +7488,7 @@ definitions:
     properties:
       event:
         type: "string"
+        default: "POST"
         enum:
           - "POST"
           - "PUT"
@@ -7375,9 +7496,11 @@ definitions:
           - "POST BATCH"
           - "PUT BATCH"
           - "DELETE BATCH"
+        description: Event that triggers the webhook.
         example: "POST"
       callback_url:
         type: "string"
+        format: "url"
         example: "https://printcart.com/webhook-receiving-url/xxxx"
       topic:
         type: "string"
@@ -7402,9 +7525,11 @@ definitions:
           - "POST BATCH"
           - "PUT BATCH"
           - "DELETE BATCH"
+        description: Event that triggers the webhook.
         example: "POST"
       callback_url:
         type: "string"
+        format: "url"
         example: "https://printcart.com/webhook-receiving-url/xxxx"
       topic:
         type: "string"
