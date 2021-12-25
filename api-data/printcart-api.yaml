@@ -10,7 +10,7 @@ info:
   #   name: "Apache 2.0"
   #   url: "http://www.apache.org/licenses/LICENSE-2.0.html"
 # host: "petstore.swagger.io"
-basePath: "https://printcart.com/v1"
+basePath: "https://api.printcart.com/v1"
 tags:
   - name: "Product"
   - name: "Side"
