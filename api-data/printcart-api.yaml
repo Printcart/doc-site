@@ -850,8 +850,8 @@ paths:
           description: "Invalid input"
           schema:
             $ref: "#/definitions/InvalidInput"
-        "201":
-          description: "Created successfully"
+        "200":
+          description: "Updated successfully"
           schema:
             $ref: "#/definitions/SideBatchUpdateResponse"
         "401":
@@ -1264,8 +1264,8 @@ paths:
           schema:
             $ref: "#/definitions/ClipartBatchUpdate"
       responses:
-        "201":
-          description: "Created successfully"
+        "200":
+          description: "Updated successfully"
           schema:
             $ref: "#/definitions/ClipartBatchUpdateResponse"
         "400":
