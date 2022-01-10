@@ -1324,7 +1324,7 @@ paths:
       security:
         - BasicAuth: []
         - ApiKeyAuth: []
-  /cliparts-storages:
+  /clipart-storages:
     post:
       tags:
         - "Image"
