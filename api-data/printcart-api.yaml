@@ -1282,7 +1282,7 @@ paths:
       # summary:
       # description:
       operationId: "uploadFiles"
-      summary: "Add new image"
+      summary: "Add new batch images"
       consumes:
         - "multipart/form-data"
       produces:
@@ -1293,6 +1293,15 @@ paths:
           description: "Image to upload"
           required: true
           type: "file"
+        - name: "type"
+          in: "formData"
+          description: "Image Type"
+          required: false
+          type: "string"
+          enum:
+            - "Null"
+            - "Cliparts"
+            - "Designs"
       responses:
         "201":
           description: "File successfully uploaded"
