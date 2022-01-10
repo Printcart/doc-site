@@ -14,7 +14,6 @@ basePath: "https://api.printcart.com/v1"
 tags:
   - name: "Product"
   - name: "Side"
-  - name: "Clipart"
   - name: "Image"
   - name: "Font"
   - name: "Design"
@@ -326,9 +325,9 @@ paths:
           schema:
             $ref: "#/definitions/Unauthenticated"
         "404":
-          description: "Not found"
+          description: "Can't find image with id"
           schema:
-            $ref: "#/definitions/NotFound"
+            $ref: "#/definitions/ImageError"
         "413":
           description: "Too many products"
           type: "object"
@@ -381,24 +380,14 @@ paths:
           description: "Unauthenticated"
           schema:
             $ref: "#/definitions/Unauthenticated"
-        # "404":
-        #   description: "Can't find product with id"
-        #   type: "object"
-        #   schema:
-        #     type: "object"
-        #     properties:
-        #       error:
-        #         type: "string"
-        #         description: "Can't find product with id"
-        #         example: "Can't find product with id: 962af342-a2c9-4665-bb5d-cb208258d958"
         "404":
           description:
-            - "Not found"
             - " Can't find product with id"
+            - " Can't find image with id"
           schema:
             anyOf:
-              - $ref: "#/definitions/NotFound"
               - $ref: "#/definitions/ProductError"
+              - $ref: "#/definitions/ImageError"
         "413":
           description: "Too many products"
           type: "object"
@@ -448,23 +437,9 @@ paths:
           schema:
             $ref: "#/definitions/Unauthenticated"
         "404":
-          description:
-            - "Not found"
-            - " Can't find product with id"
+          description: "Can't find product with id"
           schema:
-            anyOf:
-              - $ref: "#/definitions/NotFound"
-              - $ref: "#/definitions/ProductError"
-        # "404":
-        #   description: "Can't find product with id"
-        #   type: "object"
-        #   schema:
-        #     type: "object"
-        #     properties:
-        #       error:
-        #         type: "string"
-        #         description: "Can't find product with id"
-        #         example: "Can't find product with id: 962af342-a2c9-4665-bb5d-cb208258d958"
+            $ref: "#/definitions/ProductError"
       security:
         - BasicAuth: []
   /products/{productId}/designs:
@@ -638,6 +613,10 @@ paths:
           description: "Unauthenticated"
           schema:
             $ref: "#/definitions/Unauthenticated"
+        "404":
+          description: "Not found"
+          schema:
+            $ref: "#/definitions/NotFound"
       security:
         - BasicAuth: []
     get:
@@ -802,9 +781,13 @@ paths:
           schema:
             $ref: "#/definitions/Unauthenticated"
         "404":
-          description: "Not found"
+          description:
+            - "Can't find product with id"
+            - "Can't find images with id"
           schema:
-            $ref: "#/definitions/NotFound"
+            anyOf:
+              - $ref: "#/definitions/ProductError"
+              - $ref: "#/definitions/ImageError"
         "413":
           description: "Too many sides"
           type: "object"
@@ -860,22 +843,14 @@ paths:
             $ref: "#/definitions/Unauthenticated"
         "404":
           description:
-            - "Not found"
             - " Can't find side with id"
+            - "Can't find product with id"
+            - "Can't find images with id"
           schema:
             anyOf:
-              - $ref: "#/definitions/NotFound"
               - $ref: "#/definitions/SideError"
-        # "404":
-        #   description: "Can't find side with id"
-        #   type: "object"
-        #   schema:
-        #     type: "object"
-        #     properties:
-        #       error:
-        #         type: "string"
-        #         description: "Can't find side with id"
-        #         example: "Can't find side with id: c5661a1e-8147-4dc3-8600-00fdc81ed14b"
+              - $ref: "#/definitions/ProductError"
+              - $ref: "#/definitions/ImageError"
         "413":
           description: "Too many sides"
           type: "object"
@@ -925,15 +900,9 @@ paths:
           schema:
             $ref: "#/definitions/Unauthenticated"
         "404":
-          description: "Can't find side with id"
-          type: "object"
+          description: " Can't find side with id"
           schema:
-            type: "object"
-            properties:
-              error:
-                type: "string"
-                description: "Can't find side with id"
-                example: "Can't find side with id: c5661a1e-8147-4dc3-8600-00fdc81ed14b"
+            $ref: "#/definitions/SideError"
       security:
         - BasicAuth: []
   /sides/{sideId}/templates:
@@ -984,437 +953,6 @@ paths:
           description: "Retrieved successfully"
           schema:
             $ref: "#/definitions/SideCount"
-        "401":
-          description: "Unauthenticated"
-          schema:
-            $ref: "#/definitions/Unauthenticated"
-      security:
-        - BasicAuth: []
-  /cliparts:
-    post:
-      tags:
-        - "Clipart"
-      # summary:
-      # description:
-      operationId: "postClipart"
-      summary: "Create new clipart"
-      consumes:
-        - "application/json"
-      produces:
-        - "application/json"
-      parameters:
-        - in: "body"
-          name: "body"
-          # description: "Pet object that needs to be added to the store"
-          required: true
-          schema:
-            $ref: "#/definitions/Clipart"
-      responses:
-        "201":
-          description: "Created successfully"
-          schema:
-            $ref: "#/definitions/ClipartResponseStore"
-        "400":
-          description: "Invalid input"
-          schema:
-            $ref: "#/definitions/InvalidInput"
-        "401":
-          description: "Unauthenticated"
-          schema:
-            $ref: "#/definitions/Unauthenticated"
-        "404":
-          description: "Not found"
-          schema:
-            $ref: "#/definitions/NotFound"
-        "415":
-          description: "Unsupported Media Type"
-          type: "object"
-          schema:
-            type: "object"
-            properties:
-              error:
-                type: "string"
-                description: "Unsupported Media Type"
-                example: "Unsupported Media Type"
-      security:
-        - BasicAuth: []
-    get:
-      tags:
-        - "Clipart"
-      # summary: "..."
-      # description: "..."
-      operationId: "getClipart"
-      summary: "Get a list of cliparts"
-      produces:
-        - "application/json"
-      responses:
-        "200":
-          description: "Retrieved successfully"
-          schema:
-            $ref: "#/definitions/ClipartResponseShowDataArray"
-        "401":
-          description: "Unauthenticated"
-          schema:
-            $ref: "#/definitions/Unauthenticated"
-        "404":
-          description: "Not found"
-          schema:
-            $ref: "#/definitions/NotFound"
-      security:
-        - BasicAuth: []
-        - ApiKeyAuth: []
-  /cliparts/{clipartId}:
-    get:
-      tags:
-        - "Clipart"
-      # summary: "Find pet by ID"
-      # description: "Returns a single pet"
-      operationId: "getClipartById"
-      summary: "Get clipart details"
-      produces:
-        - "application/json"
-      parameters:
-        - name: "clipartId"
-          in: "path"
-          description: "Clipart ID"
-          required: true
-          type: "string"
-      responses:
-        "200":
-          description: "Retrieved successfully"
-          schema:
-            $ref: "#/definitions/ClipartResponseShowDataObject"
-        "401":
-          description: "Unauthenticated"
-          schema:
-            $ref: "#/definitions/Unauthenticated"
-        "404":
-          description: "Not found"
-          schema:
-            $ref: "#/definitions/NotFound"
-      security:
-        - BasicAuth: []
-        - ApiKeyAuth: []
-    put:
-      tags:
-        - "Clipart"
-      # summary:
-      # description:
-      operationId: "updateClipart"
-      summary: "Update clipart details"
-      consumes:
-        - "application/json"
-      produces:
-        - "application/json"
-      parameters:
-        - name: "clipartId"
-          in: "path"
-          description: "Clipart ID"
-          required: true
-          type: "string"
-        - in: "body"
-          name: "body"
-          # description: "Pet object that needs to be added to the store"
-          required: true
-          schema:
-            $ref: "#/definitions/ClipartUpdate"
-      responses:
-        "200":
-          description: "Updated successfully"
-          schema:
-            $ref: "#/definitions/ClipartResponseUpdate"
-        "400":
-          description: "Invalid input"
-          schema:
-            $ref: "#/definitions/InvalidInput"
-        "401":
-          description: "Unauthenticated"
-          schema:
-            $ref: "#/definitions/Unauthenticated"
-        "404":
-          description: "Not found"
-          schema:
-            $ref: "#/definitions/NotFound"
-        "415":
-          description: "Unsupported Media Type"
-          type: "object"
-          schema:
-            type: "object"
-            properties:
-              error:
-                type: "string"
-                description: "Unsupported Media Type"
-                example: "Unsupported Media Type"
-      security:
-        - BasicAuth: []
-    delete:
-      tags:
-        - "Clipart"
-      # summary:
-      # description:
-      operationId: "deleteClipart"
-      summary: "Delete a clipart"
-      produces:
-        - "application/json"
-      parameters:
-        - name: "clipartId"
-          in: "path"
-          description: "Clipart ID"
-          required: true
-          type: "string"
-      responses:
-        "200":
-          description: "Deleted successfully"
-          schema:
-            $ref: "#/definitions/Deleted"
-        "401":
-          description: "Unauthenticated"
-          schema:
-            $ref: "#/definitions/Unauthenticated"
-        "404":
-          description: "Not found"
-          schema:
-            $ref: "#/definitions/NotFound"
-      security:
-        - BasicAuth: []
-  /cliparts/batch:
-    post:
-      tags:
-        - "Clipart"
-      # summary:
-      # description:
-      operationId: "postClipartsBatch"
-      summary: "Create batch cliparts"
-      consumes:
-        - "application/json"
-      produces:
-        - "application/json"
-      parameters:
-        - in: "body"
-          name: "body"
-          # description: "Pet object that needs to be added to the store"
-          required: true
-          schema:
-            $ref: "#/definitions/ClipartBatch"
-      responses:
-        "201":
-          description: "Created successfully"
-          schema:
-            $ref: "#/definitions/ClipartBatchResponse"
-        "400":
-          description: "Invalid input"
-          schema:
-            $ref: "#/definitions/InvalidInput"
-        "401":
-          description: "Unauthenticated"
-          schema:
-            $ref: "#/definitions/Unauthenticated"
-        "404":
-          description: "Not found"
-          schema:
-            $ref: "#/definitions/NotFound"
-        "413":
-          description: "Too many cliparts"
-          type: "object"
-          schema:
-            type: "object"
-            properties:
-              error:
-                type: "string"
-                description: "Too many cliparts"
-                example: "Too many cliparts"
-        "415":
-          description: "Unsupported Media Type"
-          type: "object"
-          schema:
-            type: "object"
-            properties:
-              error:
-                type: "string"
-                description: "Unsupported Media Type"
-                example: "Unsupported Media Type"
-        "500":
-          description: "Something went wrong while create cliparts"
-          type: "object"
-          schema:
-            type: "object"
-            properties:
-              error:
-                type: "string"
-                description: "Something went wrong while create cliparts"
-                example: "Something went wrong while create cliparts"
-      security:
-        - BasicAuth: []
-    put:
-      tags:
-        - "Clipart"
-      # summary:
-      # description:
-      operationId: "putClipartsBatch"
-      summary: "Update batch cliparts"
-      consumes:
-        - "application/json"
-      produces:
-        - "application/json"
-      parameters:
-        - in: "body"
-          name: "body"
-          # description: "Pet object that needs to be added to the store"
-          required: true
-          schema:
-            $ref: "#/definitions/ClipartBatchUpdate"
-      responses:
-        "200":
-          description: "Updated successfully"
-          schema:
-            $ref: "#/definitions/ClipartBatchUpdateResponse"
-        "400":
-          description: "Invalid input"
-          schema:
-            $ref: "#/definitions/InvalidInput"
-        "401":
-          description: "Unauthenticated"
-          schema:
-            $ref: "#/definitions/Unauthenticated"
-        "404":
-          description:
-            - "Not found"
-            - " Can't find clipart with id"
-          schema:
-            anyOf:
-              - $ref: "#/definitions/NotFound"
-              - $ref: "#/definitions/ClipartError"
-        # "404":
-        #   description: "Can't find clipart with id"
-        #   type: "object"
-        #   schema:
-        #     type: "object"
-        #     properties:
-        #       error:
-        #         type: "string"
-        #         description: "Can't find clipart with id"
-        #         example: "Can't find clipart with id: 3f2b04a2-8aa9-31a7-82b0-3e2b94c815fe"
-        "413":
-          description: "Too many cliparts"
-          type: "object"
-          schema:
-            type: "object"
-            properties:
-              error:
-                type: "string"
-                description: "Too many cliparts"
-                example: "Too many cliparts"
-        "415":
-          description: "Unsupported Media Type"
-          type: "object"
-          schema:
-            type: "object"
-            properties:
-              error:
-                type: "string"
-                description: "Unsupported Media Type"
-                example: "Unsupported Media Type"
-        "500":
-          description: "Something went wrong while update cliparts"
-          type: "object"
-          schema:
-            type: "object"
-            properties:
-              error:
-                type: "string"
-                description: "Something went wrong while update cliparts"
-                example: "Something went wrong while update cliparts"
-      security:
-        - BasicAuth: []
-    delete:
-      tags:
-        - "Clipart"
-      # description:
-      operationId: "deleteClipartsBatch"
-      summary: "Delete batch cliparts"
-      consumes:
-        - "application/json"
-      produces:
-        - "application/json"
-      parameters:
-        - in: "body"
-          name: "body"
-          # description:
-          required: true
-          schema:
-            $ref: "#/definitions/ClipartBatchDelete"
-      responses:
-        "200":
-          description: "Deleted successfully"
-          schema:
-            $ref: "#/definitions/Deleted"
-        "401":
-          description: "Unauthenticated"
-          schema:
-            $ref: "#/definitions/Unauthenticated"
-        "404":
-          description: "Can't find clipart with id"
-          type: "object"
-          schema:
-            type: "object"
-            properties:
-              error:
-                type: "string"
-                description: "Can't find clipart with id"
-                example: "Can't find clipart with id: 3f2b04a2-8aa9-31a7-82b0-3e2b94c815fe"
-      security:
-        - BasicAuth: []
-  /cliparts-storages:
-    get:
-      tags:
-        - "Clipart"
-      # summary: "..."
-      # description: "..."
-      operationId: "getClipartByCategory"
-      summary: "Get a list of clipart storages"
-      produces:
-        - "application/json"
-      responses:
-        "200":
-          description: "Retrieved successfully"
-          schema:
-            $ref: "#/definitions/CategoryResponseShowDataArray"
-        "401":
-          description: "Unauthenticated"
-          schema:
-            $ref: "#/definitions/Unauthenticated"
-        "404":
-          description: "Not found"
-          schema:
-            $ref: "#/definitions/NotFound"
-        "413":
-          description: "Too many cliparts"
-          type: "object"
-          schema:
-            type: "object"
-            properties:
-              error:
-                type: "string"
-                description: "Too many cliparts"
-                example: "Too many cliparts"
-      security:
-        - BasicAuth: []
-        - ApiKeyAuth: []
-  /cliparts/count:
-    get:
-      tags:
-        - "Clipart"
-      # summary: "..."
-      # description: "..."
-      operationId: "getCountClipart"
-      summary: "Get a count of cliparts"
-      produces:
-        - "application/json"
-      responses:
-        "200":
-          description: "Retrieved successfully"
-          schema:
-            $ref: "#/definitions/ClipartCount"
         "401":
           description: "Unauthenticated"
           schema:
@@ -1620,6 +1158,14 @@ paths:
           description: "Image to upload"
           required: true
           type: "file"
+        - name: "type"
+          in: "formData"
+          description: "Image Type"
+          required: false
+          type: "string"
+          enum:
+            - "Cliparts"
+            - "Designs"
       responses:
         "201":
           description: "File successfully uploaded"
@@ -1735,7 +1281,7 @@ paths:
       # summary:
       # description:
       operationId: "uploadFiles"
-      summary: "Add new image"
+      summary: "Add new batch images"
       consumes:
         - "multipart/form-data"
       produces:
@@ -1746,6 +1292,14 @@ paths:
           description: "Image to upload"
           required: true
           type: "file"
+        - name: "type"
+          in: "formData"
+          description: "Image Type"
+          required: false
+          type: "string"
+          enum:
+            - "Cliparts"
+            - "Designs"
       responses:
         "201":
           description: "File successfully uploaded"
@@ -1765,6 +1319,73 @@ paths:
                 type: "string"
                 description: "File upload missing"
                 example: "File upload missing"
+      security:
+        - BasicAuth: []
+        - ApiKeyAuth: []
+  /clipart-storages:
+    post:
+      tags:
+        - "Image"
+      # summary: "..."
+      # description: "..."
+      operationId: "postImageClipartCategory"
+      summary: "Create new Image Clipart - Storage"
+      produces:
+        - "application/json"
+      parameters:
+        - in: "body"
+          name: "body"
+          # description: "Pet object that needs to be added to the store"
+          required: true
+          schema:
+            $ref: "#/definitions/ImageClipartStorage"
+      responses:
+        "201": 
+          description: "Retrieved successfully"
+          schema:
+            $ref: "#/definitions/CategoryResponseStore"
+        "401":
+          description: "Unauthenticated"
+          schema:
+            $ref: "#/definitions/Unauthenticated"
+        "404":
+          description: "Not found"
+          schema:
+            $ref: "#/definitions/NotFound"
+      security:
+        - BasicAuth: []
+    get:
+      tags:
+        - "Image"
+      # summary: "..."
+      # description: "..."
+      operationId: "getStorageByImageClipart"
+      summary: "Get a list of storages by image clipart"
+      produces:
+        - "application/json"
+      responses:
+        "200":
+          description: "Retrieved successfully"
+          schema:
+            $ref: "#/definitions/CategoryResponseShowDataArray"
+        "401":
+          description: "Unauthenticated"
+          schema:
+            $ref: "#/definitions/Unauthenticated"
+        "404":
+          description: "Not found"
+          schema:
+            $ref: "#/definitions/NotFound"
+        "413":
+          description: "Too many cliparts"
+          type: "object"
+          schema:
+            type: "object"
+            properties:
+              error:
+                type: "string"
+                description: "Too many cliparts"
+                example: "Too many cliparts"
       security:
         - BasicAuth: []
         - ApiKeyAuth: []
@@ -2189,37 +1810,6 @@ paths:
                 example: "Can't find design with id: cce4dc71-6757-4a1c-a259-6b66a4304c14"
       security:
         - BasicAuth: []
-  /designs/{designId}/layers:
-    get:
-      tags:
-        - "Design"
-      # summary: "Find pet by ID"
-      # description: "Returns a single pet"
-      operationId: "getLayersDesignById"
-      summary: "Get list layer by design"
-      produces:
-        - "application/json"
-      parameters:
-        - name: "designId"
-          in: "path"
-          description: "Design ID"
-          required: true
-          type: "string"
-      responses:
-        "200":
-          description: "Retrieved successfully"
-          schema:
-            $ref: "#/definitions/DesignLayer"
-        "401":
-          description: "Unauthenticated"
-          schema:
-            $ref: "#/definitions/Unauthenticated"
-        "404":
-          description: "Not found"
-          schema:
-            $ref: "#/definitions/NotFound"
-      security:
-        - BasicAuth: []
   /designs/{designId}/fonts:
     get:
       tags:
@@ -2251,38 +1841,6 @@ paths:
             $ref: "#/definitions/NotFound"
       security:
         - BasicAuth: []
-  /designs/{designId}/storages:
-    get:
-      tags:
-        - "Design"
-      # summary: "Find pet by ID"
-      # description: "Returns a single pet"
-      operationId: "getStoragesByDesign"
-      summary: "Get a list of storages by design"
-      produces:
-        - "application/json"
-      parameters:
-        - name: "designId"
-          in: "path"
-          description: "Design ID"
-          required: true
-          type: "string"
-      responses:
-        "200":
-          description: "Retrieved successfully"
-          schema:
-            $ref: "#/definitions/CategoryResponseShowDataArray"
-        "401":
-          description: "Unauthenticated"
-          schema:
-            $ref: "#/definitions/Unauthenticated"
-        "404":
-          description: "Not found"
-          schema:
-            $ref: "#/definitions/NotFound"
-      security:
-        - BasicAuth: []
-        - ApiKeyAuth: []
   /designs/count:
     get:
       tags:
@@ -2705,37 +2263,6 @@ paths:
                 example: "Can't find template with id: cce4dc71-6757-4a1c-a259-6b66a4304c14"
       security:
         - BasicAuth: []
-  /templates/{templateId}/layers:
-    get:
-      tags:
-        - "Template"
-      # summary: "Find pet by ID"
-      # description: "Returns a single pet"
-      operationId: "getLayersTemplateById"
-      summary: "Get list layer by template"
-      produces:
-        - "application/json"
-      parameters:
-        - name: "templateId"
-          in: "path"
-          description: "Template ID"
-          required: true
-          type: "string"
-      responses:
-        "200":
-          description: "Retrieved successfully"
-          schema:
-            $ref: "#/definitions/DesignLayer"
-        "401":
-          description: "Unauthenticated"
-          schema:
-            $ref: "#/definitions/Unauthenticated"
-        "404":
-          description: "Not found"
-          schema:
-            $ref: "#/definitions/NotFound"
-      security:
-        - BasicAuth: []
   /templates/{templateId}/fonts:
     get:
       tags:
@@ -2796,7 +2323,7 @@ paths:
       # summary:
       # description:
       operationId: "postCategory"
-      summary: "Create new design storage"
+      summary: "Create new storage"
       consumes:
         - "application/json"
       produces:
@@ -2832,8 +2359,8 @@ paths:
         - "Storage"
       # summary: "..."
       # description: "..."
-      operationId: "getDesignCategory"
-      summary: "Get a list of design storages"
+      operationId: "getCategory"
+      summary: "Get a list of storages"
       produces:
         - "application/json"
       responses:
@@ -2859,7 +2386,7 @@ paths:
       # summary: "Find pet by ID"
       # description: "Returns a single pet"
       operationId: "getCategoryById"
-      summary: "Get design storage details"
+      summary: "Get Storage details"
       produces:
         - "application/json"
       parameters:
@@ -2890,7 +2417,7 @@ paths:
       # summary:
       # description:
       operationId: "updateCategory"
-      summary: "Update design storage details"
+      summary: "Update Storage details"
       consumes:
         - "application/json"
       produces:
@@ -2932,7 +2459,7 @@ paths:
       # summary:
       # description:
       operationId: "deleteCategory"
-      summary: "Delete a design storage"
+      summary: "Delete a Storage"
       produces:
         - "application/json"
       parameters:
@@ -2946,37 +2473,6 @@ paths:
           description: "Deleted successfully"
           schema:
             $ref: "#/definitions/Deleted"
-        "401":
-          description: "Unauthenticated"
-          schema:
-            $ref: "#/definitions/Unauthenticated"
-        "404":
-          description: "Not found"
-          schema:
-            $ref: "#/definitions/NotFound"
-      security:
-        - BasicAuth: []
-  /designs-storages/{storageId}/designs:
-    get:
-      tags:
-        - "Storage"
-      # summary: "Find pet by ID"
-      # description: "Returns a single pet"
-      operationId: "getDesignsByStorage"
-      summary: "Get a list of designs by storage"
-      produces:
-        - "application/json"
-      parameters:
-        - name: "storageId"
-          in: "path"
-          description: "Storage ID"
-          required: true
-          type: "string"
-      responses:
-        "200":
-          description: "Retrieved successfully"
-          schema:
-            $ref: "#/definitions/DesignResponseShowDataArray"
         "401":
           description: "Unauthenticated"
           schema:
@@ -3007,7 +2503,7 @@ paths:
         "200":
           description: "Retrieved successfully"
           schema:
-            $ref: "#/definitions/ClipartResponseShowDataArray"
+            $ref: "#/definitions/ImageResponseShowDataArray"
         "401":
           description: "Unauthenticated"
           schema:
@@ -3026,7 +2522,7 @@ paths:
       # summary: "..."
       # description: "..."
       operationId: "getCountCategory"
-      summary: "Get a count of design storages"
+      summary: "Get a count of Storages"
       produces:
         - "application/json"
       responses:
@@ -3308,23 +2804,9 @@ paths:
           schema:
             $ref: "#/definitions/Unauthenticated"
         "404":
-          description:
-            - "Not found"
-            - " Can't find project with id"
+          description: " Can't find project with id"
           schema:
-            anyOf:
-              - $ref: "#/definitions/NotFound"
-              - $ref: "#/definitions/ProjectError"
-        # "404":
-        #   description: "Can't find project with id"
-        #   type: "object"
-        #   schema:
-        #     type: "object"
-        #     properties:
-        #       error:
-        #         type: "string"
-        #         description: "Can't find project with id"
-        #         example: "Can't find project with id: 4419934f-8e1b-4cf0-b432-01ef9258a812"
+            $ref: "#/definitions/ProjectError"
         "413":
           description: "Too many projects"
           type: "object"
@@ -3374,23 +2856,9 @@ paths:
           schema:
             $ref: "#/definitions/Unauthenticated"
         "404":
-          description:
-            - "Not found"
-            - " Can't find project with id"
+          description: " Can't find project with id"
           schema:
-            anyOf:
-              - $ref: "#/definitions/NotFound"
-              - $ref: "#/definitions/ProjectError"
-        # "404":
-        #   description: "Can't find project with id"
-        #   type: "object"
-        #   schema:
-        #     type: "object"
-        #     properties:
-        #       error:
-        #         type: "string"
-        #         description: "Can't find project with id"
-        #         example: "Can't find project with id: 4419934f-8e1b-4cf0-b432-01ef9258a812"
+            $ref: "#/definitions/ProjectError"
       security:
         - BasicAuth: []
   /projects/{projectId}/designs:
@@ -4476,6 +3944,70 @@ definitions:
         type: "string"
         description: Image ID
         example: "e8304b84-a015-3bd4-a7d3-7a978f465df2"
+      background_size_width:
+        type: "number"
+        format: "double"
+        example: 100
+      background_size_height:
+        type: "number"
+        format: "double"
+        example: 100
+      bleed_position_width:
+        type: "number"
+        format: "double"
+        example: 100
+      bleed_position_height:
+        type: "number"
+        format: "double"
+        example: 100
+      bleed_position_top:
+        type: "number"
+        format: "double"
+        example: 100
+      bleed_position_left:
+        type: "number"
+        format: "double"
+        example: 100
+      margin_position_width:
+        type: "number"
+        format: "double"
+        example: 100
+      margin_position_height:
+        type: "number"
+        format: "double"
+        example: 100
+      margin_position_top:
+        type: "number"
+        format: "double"
+        example: 100
+      margin_position_left:
+        type: "number"
+        format: "double"
+        example: 100
+      measure_size_width:
+        type: "number"
+        format: "double"
+        example: 100
+      measure_size_height:
+        type: "number"
+        format: "double"
+        example: 100
+      measure_size_top:
+        type: "number"
+        format: "double"
+        example: 100
+      measure_size_left:
+        type: "number"
+        format: "double"
+        example: 100
+      ratio_image:
+        type: "number"
+        format: "double"
+        example: 100
+      product_input:
+        type: "number"
+        format: "double"
+        example: 100
     xml:
       name: "Side"
   SideUpdate:
@@ -4601,6 +4133,70 @@ definitions:
         type: "string"
         description: Image ID
         example: "e8304b84-a015-3bd4-a7d3-7a978f465df2"
+      background_size_width:
+        type: "number"
+        format: "double"
+        example: 100
+      background_size_height:
+        type: "number"
+        format: "double"
+        example: 100
+      bleed_position_width:
+        type: "number"
+        format: "double"
+        example: 100
+      bleed_position_height:
+        type: "number"
+        format: "double"
+        example: 100
+      bleed_position_top:
+        type: "number"
+        format: "double"
+        example: 100
+      bleed_position_left:
+        type: "number"
+        format: "double"
+        example: 100
+      margin_position_width:
+        type: "number"
+        format: "double"
+        example: 100
+      margin_position_height:
+        type: "number"
+        format: "double"
+        example: 100
+      margin_position_top:
+        type: "number"
+        format: "double"
+        example: 100
+      margin_position_left:
+        type: "number"
+        format: "double"
+        example: 100
+      measure_size_width:
+        type: "number"
+        format: "double"
+        example: 100
+      measure_size_height:
+        type: "number"
+        format: "double"
+        example: 100
+      measure_size_top:
+        type: "number"
+        format: "double"
+        example: 100
+      measure_size_left:
+        type: "number"
+        format: "double"
+        example: 100
+      ratio_image:
+        type: "number"
+        format: "double"
+        example: 100
+      product_input:
+        type: "number"
+        format: "double"
+        example: 100
     xml:
       name: "SideUpdate"
   SideCount:
@@ -4768,6 +4364,70 @@ definitions:
               type: "string"
               description: Image ID
               example: "e8304b84-a015-3bd4-a7d3-7a978f465df2"
+            background_size_width:
+              type: "number"
+              format: "double"
+              example: 100
+            background_size_height:
+              type: "number"
+              format: "double"
+              example: 100
+            bleed_position_width:
+              type: "number"
+              format: "double"
+              example: 100
+            bleed_position_height:
+              type: "number"
+              format: "double"
+              example: 100
+            bleed_position_top:
+              type: "number"
+              format: "double"
+              example: 100
+            bleed_position_left:
+              type: "number"
+              format: "double"
+              example: 100
+            margin_position_width:
+              type: "number"
+              format: "double"
+              example: 100
+            margin_position_height:
+              type: "number"
+              format: "double"
+              example: 100
+            margin_position_top:
+              type: "number"
+              format: "double"
+              example: 100
+            margin_position_left:
+              type: "number"
+              format: "double"
+              example: 100
+            measure_size_width:
+              type: "number"
+              format: "double"
+              example: 100
+            measure_size_height:
+              type: "number"
+              format: "double"
+              example: 100
+            measure_size_top:
+              type: "number"
+              format: "double"
+              example: 100
+            measure_size_left:
+              type: "number"
+              format: "double"
+              example: 100
+            ratio_image:
+              type: "number"
+              format: "double"
+              example: 100
+            product_input:
+              type: "number"
+              format: "double"
+              example: 100
     xml:
       name: "SideBatchUpdate"
   SideBatchDelete:
@@ -4841,70 +4501,161 @@ definitions:
       include_overlay:
         type: "boolean"
         example: true
-      product_width:
-        type: "float"
-        format: "float"
-        example: 50
-      product_height:
-        type: "float"
-        format: "float"
-        example: 50
-      real_width:
-        type: "float"
-        format: "float"
-        example: 50
-      real_height:
-        type: "float"
-        format: "float"
-        example: 50
-      real_top:
-        type: "float"
-        format: "float"
-        example: 50
-      real_left:
-        type: "float"
-        format: "float"
-        example: 50
-      area_design_width:
-        type: "float"
-        format: "float"
-        example: 50
-      area_design_height:
-        type: "float"
-        format: "float"
-        example: 50
-      area_design_left:
-        type: "float"
-        format: "float"
-        example: 50
-      area_design_top:
-        type: "float"
-        format: "float"
-        example: 50
+      product_size:
+        type: "object"
+        properties:
+          input:
+            type: "number"
+            format: "double"
+            example: 100
+          width: 
+            type: "float"
+            format: "float"
+            example: 50
+          height:
+            type: "float"
+            format: "float"
+            example: 50
+      design_size:
+        type: "object"
+        properties:
+          width:
+            type: "float"
+            format: "float"
+            example: 50
+          height:
+            type: "float"
+            format: "float"
+            example: 50
+          top:
+            type: "float"
+            format: "float"
+            example: 50
+          left:
+            type: "float"
+            format: "float"
+            example: 50
+      design_position:
+        type: "object"
+        properties:
+          width:
+            type: "float"
+            format: "float"
+            example: 50
+          height:
+            type: "float"
+            format: "float"
+            example: 50
+          left:
+            type: "float"
+            format: "float"
+            example: 50
+          top:
+            type: "float"
+            format: "float"
+            example: 50
       show_bleed:
         type: "boolean"
         example: true
-      bleed_top_bottom:
-        type: "float"
-        format: "float"
-        example: 50.50
-      bleed_left_right:
-        type: "float"
-        format: "float"
-        example: 50.50
+      bleed_size:
+        type: "object"
+        properties:
+          top_bottom:
+            type: "float"
+            format: "float"
+            example: 50.50
+          left_right:
+            type: "float"
+            format: "float"
+            example: 50.50
       show_safe_zone:
         type: "boolean"
         example: true
-      margin_top_bottom:
-        type: "float"
-        format: "float"
-        example: 50
-      margin_left_right:
-        type: "float"
-        format: "float"
-        example: 50
+      margin_size:
+        type: "object"
+        properties:
+          top_bottom:
+            type: "float"
+            format: "float"
+            example: 50.50
+          left_right:
+            type: "float"
+            format: "float"
+            example: 50.50
       background_img:
         $ref: "#/definitions/ImageResponse"
+      background_size:
+        type: "object"
+        properties:
+          width:
+            type: "number"
+            format: "double"
+            example: 100
+          height:
+            type: "number"
+            format: "double"
+            example: 100
+      bleed_position:
+        type: "object"
+        properties:
+          width:
+            type: "number"
+            format: "double"
+            example: 100
+          height:
+            type: "number"
+            format: "double"
+            example: 100
+          top:
+            type: "number"
+            format: "double"
+            example: 100
+          left:
+            type: "number"
+            format: "double"
+            example: 100
+      margin_position:
+        type: "object"
+        properties:
+          width:
+            type: "number"
+            format: "double"
+            example: 100
+          height:
+            type: "number"
+            format: "double"
+            example: 100
+          top:
+            type: "number"
+            format: "double"
+            example: 100
+          left:
+            type: "number"
+            format: "double"
+            example: 100
+      measure_size:
+        type: "object"
+        properties:
+          width:
+            type: "number"
+            format: "double"
+            example: 100
+          height:
+            type: "number"
+            format: "double"
+            example: 100
+          top:
+            type: "number"
+            format: "double"
+            example: 100
+          left:
+            type: "number"
+            format: "double"
+            example: 100
+      ratio_image:
+        type: "number"
+        format: "double"
+        example: 100
       created_at:
         type: "string"
         example: "2021-11-16T08:26:30.000000Z"
@@ -5037,70 +4788,161 @@ definitions:
             include_overlay:
               type: "boolean"
               example: true
-            product_width:
-              type: "float"
-              format: "float"
-              example: 50
-            product_height:
-              type: "float"
-              format: "float"
-              example: 50
-            real_width:
-              type: "float"
-              format: "float"
-              example: 50
-            real_height:
-              type: "float"
-              format: "float"
-              example: 50
-            real_top:
-              type: "float"
-              format: "float"
-              example: 50
-            real_left:
-              type: "float"
-              format: "float"
-              example: 50
-            area_design_width:
-              type: "float"
-              format: "float"
-              example: 50
-            area_design_height:
-              type: "float"
-              format: "float"
-              example: 50
-            area_design_left:
-              type: "float"
-              format: "float"
-              example: 50
-            area_design_top:
-              type: "float"
-              format: "float"
-              example: 50
+            product_size:
+              type: "object"
+              properties:
+                input:
+                  type: "number"
+                  format: "double"
+                  example: 100
+                width: 
+                  type: "float"
+                  format: "float"
+                  example: 50
+                height:
+                  type: "float"
+                  format: "float"
+                  example: 50
+            design_size:
+              type: "object"
+              properties:
+                width:
+                  type: "float"
+                  format: "float"
+                  example: 50
+                height:
+                  type: "float"
+                  format: "float"
+                  example: 50
+                top:
+                  type: "float"
+                  format: "float"
+                  example: 50
+                left:
+                  type: "float"
+                  format: "float"
+                  example: 50
+            design_position:
+              type: "object"
+              properties:
+                width:
+                  type: "float"
+                  format: "float"
+                  example: 50
+                height:
+                  type: "float"
+                  format: "float"
+                  example: 50
+                left:
+                  type: "float"
+                  format: "float"
+                  example: 50
+                top:
+                  type: "float"
+                  format: "float"
+                  example: 50
             show_bleed:
               type: "boolean"
               example: true
-            bleed_top_bottom:
-              type: "float"
-              format: "float"
-              example: 50.50
-            bleed_left_right:
-              type: "float"
-              format: "float"
-              example: 50.50
+            bleed_size:
+              type: "object"
+              properties:
+                top_bottom:
+                  type: "float"
+                  format: "float"
+                  example: 50.50
+                left_right:
+                  type: "float"
+                  format: "float"
+                  example: 50.50
             show_safe_zone:
               type: "boolean"
               example: true
-            margin_top_bottom:
-              type: "float"
-              format: "float"
-              example: 50
-            margin_left_right:
-              type: "float"
-              format: "float"
-              example: 50
+            margin_size:
+              type: "object"
+              properties:
+                top_bottom:
+                  type: "float"
+                  format: "float"
+                  example: 50.50
+                left_right:
+                  type: "float"
+                  format: "float"
+                  example: 50.50
             background_img:
               $ref: "#/definitions/ImageResponse"
+            background_size:
+              type: "object"
+              properties:
+                width:
+                  type: "number"
+                  format: "double"
+                  example: 100
+                height:
+                  type: "number"
+                  format: "double"
+                  example: 100
+            bleed_position:
+              type: "object"
+              properties:
+                width:
+                  type: "number"
+                  format: "double"
+                  example: 100
+                height:
+                  type: "number"
+                  format: "double"
+                  example: 100
+                top:
+                  type: "number"
+                  format: "double"
+                  example: 100
+                left:
+                  type: "number"
+                  format: "double"
+                  example: 100
+            margin_position:
+              type: "object"
+              properties:
+                width:
+                  type: "number"
+                  format: "double"
+                  example: 100
+                height:
+                  type: "number"
+                  format: "double"
+                  example: 100
+                top:
+                  type: "number"
+                  format: "double"
+                  example: 100
+                left:
+                  type: "number"
+                  format: "double"
+                  example: 100
+            measure_size:
+              type: "object"
+              properties:
+                width:
+                  type: "number"
+                  format: "double"
+                  example: 100
+                height:
+                  type: "number"
+                  format: "double"
+                  example: 100
+                top:
+                  type: "number"
+                  format: "double"
+                  example: 100
+                left:
+                  type: "number"
+                  format: "double"
+                  example: 100
+            ratio_image:
+              type: "number"
+              format: "double"
+              example: 100
             created_at:
               type: "string"
               example: "2021-11-16T08:26:30.000000Z"
@@ -5113,231 +4955,6 @@ definitions:
         example: "Updated successfully"
     xml:
       name: "SideBatchUpdateResponse"
-  Clipart:
-    type: "object"
-    required:
-      - "image_id"
-    properties:
-      name:
-        type: "string"
-        description: The name given to a clipart
-        example: "printcart"
-      image_id:
-        type: "string"
-        description: Image ID
-        example: "e8304b84-a015-3bd4-a7d3-7a978f465df2"
-    xml:
-      name: "Clipart"
-  ClipartUpdate:
-    type: "object"
-    properties:
-      name:
-        type: "string"
-        description: Updated name of the clipart
-        example: "printcart"
-      image_id:
-        type: "string"
-        description: Image ID
-        example: "e8304b84-a015-3bd4-a7d3-7a978f465df2"
-    xml:
-      name: "ClipartUpdate"
-  ClipartBatch:
-    type: "object"
-    required:
-      - "name"
-    properties:
-      cliparts:
-        type: "array"
-        items:
-          type: "array"
-          $ref: "#/definitions/Clipart"
-    xml:
-      name: "ClipartBatch"
-  ClipartBatchUpdate:
-    type: "object"
-    properties:
-      cliparts:
-        type: "array"
-        items:
-          type: "object"
-          required:
-            - "id"
-          properties:
-            id:
-              type: "string"
-              description: Clipart ID
-              example: "3f2b04a2-8aa9-31a7-82b0-3e2b94c815fe"
-            name:
-              type: "string"
-              description: Updated name of the clipart
-              example: "printcart"
-            image_id:
-              type: "string"
-              description: Image ID
-              example: "e8304b84-a015-3bd4-a7d3-7a978f465df2"
-    xml:
-      name: "ClipartBatchUpdate"
-  ClipartBatchDelete:
-    type: "object"
-    properties:
-      cliparts:
-        type: "array"
-        items:
-          type: "object"
-          required:
-            - "id"
-          properties:
-            id:
-              type: "string"
-              description: Clipart ID
-              example: "3f2b04a2-8aa9-31a7-82b0-3e2b94c815fe"
-    xml:
-      name: "ClipartBatchDelete"
-  ClipartResponse:
-    type: "object"
-    properties:
-      id:
-        type: "string"
-        example: "3f2b04a2-8aa9-31a7-82b0-3e2b94c815fe"
-      name:
-        type: "string"
-        example: "printcart"
-      url:
-        type: "url"
-        example: "https://docs.printcart.com/img/Logo-PrintCart-1.png"
-      width:
-        type: "integer"
-        format: "int64"
-        example: 500
-      height:
-        type: "integer"
-        format: "int64"
-        example: 500
-      created_at:
-        type: "string"
-        example: "2021-11-16T08:26:30.000000Z"
-      updated_at:
-        type: "string"
-        example: "2021-11-16T08:26:30.000000Z"
-    xml:
-      name: "ClipartResponse"
-  ClipartResponseShowDataObject:
-    type: "object"
-    properties:
-      data:
-        type: "object"
-        $ref: "#/definitions/ClipartResponse"
-      message:
-        type: "string"
-        description: "Retrieved successfully"
-        example: "Retrieved successfully"
-    xml:
-      name: "ClipartResponseShowDataObject"
-  ClipartResponseShowDataArray:
-    type: "object"
-    properties:
-      data:
-        type: "array"
-        items:
-          type: "object"
-          $ref: "#/definitions/ClipartResponse"
-      message:
-        type: "string"
-        description: "Retrieved successfully"
-        example: "Retrieved successfully"
-    xml:
-      name: "ClipartResponseShowDataArray"
-  ClipartResponseStore:
-    type: "object"
-    properties:
-      data:
-        type: "object"
-        $ref: "#/definitions/ClipartResponse"
-      message:
-        type: "string"
-        description: "Created successfully"
-        example: "Created successfully"
-    xml:
-      name: "ClipartResponseStore"
-  ClipartResponseUpdate:
-    type: "object"
-    properties:
-      data:
-        type: "object"
-        $ref: "#/definitions/ClipartResponse"
-      message:
-        type: "string"
-        description: "Update successfully"
-        example: "Update successfully"
-    xml:
-      name: "ClipartResponseUpdate"
-  ClipartBatchResponse:
-    type: "object"
-    properties:
-      data:
-        type: "array"
-        items:
-          type: "object"
-          $ref: "#/definitions/ClipartResponse"
-      message:
-        type: "string"
-        description: "Created successfully"
-        example: "Created successfully"
-    xml:
-      name: "ClipartBatchResponse"
-  ClipartBatchUpdateResponse:
-    type: "object"
-    properties:
-      data:
-        type: "array"
-        items:
-          type: "object"
-          properties:
-            id:
-              type: "string"
-              example: "3f2b04a2-8aa9-31a7-82b0-3e2b94c815fe"
-            name:
-              type: "string"
-              example: "printcart"
-            url:
-              type: "url"
-              example: "https://docs.printcart.com/img/Logo-PrintCart-1.png"
-            width:
-              type: "integer"
-              format: "int64"
-              example: 500
-            height:
-              type: "integer"
-              format: "int64"
-              example: 500
-            created_at:
-              type: "string"
-              example: "2021-11-16T08:26:30.000000Z"
-            updated_at:
-              type: "string"
-              example: "2021-11-16T08:26:30.000000Z"
-      message:
-        type: "string"
-        description: "Updated successfully"
-        example: "Updated successfully"
-    xml:
-      name: "ClipartBatchUpdateResponse"
-  ClipartCount:
-    type: "object"
-    properties:
-      data:
-        type: "object"
-        properties:
-          count:
-            type: "integer"
-            format: "int64"
-            example: 10
-      message:
-        type: "string"
-        description: "Retrieved successfully"
-        example: "Retrieved successfully"
-    xml:
-      name: "ClipartCount"
   Font:
     type: "object"
     required:
@@ -5483,6 +5100,22 @@ definitions:
         example: "Retrieved successfully"
     xml:
       name: "FontCount"
+  ImageClipartStorage:
+    type: "object"
+    required:
+      - "category_id"
+      - "clipart_id"
+    properties:
+      category_id:
+        type: "string"
+        description: Storage ID
+        example: "57eea14b-4e8d-4b7b-b864-b31cb8e6ac62"
+      clipart_id:
+        type: "string"
+        description: Image ID
+        example: "e8304b84-a015-3bd4-a7d3-7a978fxxxxxx"
+    xml:
+      name: "ImageClipartStorage"
   ImageResponse:
     type: "object"
     properties:
@@ -6162,6 +5795,57 @@ definitions:
                 updated_at:
                   type: "string"
                   example: "2021-11-16T08:26:30.000000Z"
+            layers:
+              type: "array"
+              items:
+                type: "object"
+                properties:
+                  top:
+                    type: "float"
+                    example: 38.9832354205
+                  left:
+                    type: "float"
+                    example: 329.6631024663
+                  text:
+                    type: "string"
+                    example: "Heading"
+                  width:
+                    type: "integer"
+                    format: "int64"
+                    example: 158
+                  height:
+                    type: "integer"
+                    format: "int64"
+                    example: 47.46
+                  originX:
+                    type: "string"
+                    example: "left"
+                  originY:
+                    type: "string"
+                    example: "top"
+                  fontSize:
+                    type: "integer"
+                    format: "int64"
+                    example: 42
+                  minWidth:
+                    type: "integer"
+                    format: "int64"
+                    example: 20
+                  fontStyle:
+                    type: "string"
+                    example: "normal"
+                  textAlign:
+                    type: "string"
+                    example: "left"
+                  underline:
+                    type: "boolean"
+                    example: false,
+                  fontFamily:
+                    type: "string"
+                    example: "Roboto"
+                  fontWeight:
+                    type: "string"
+                    example: "normal"
             created_at:
               type: "string"
               example: "2021-11-16T08:26:30.000000Z"
@@ -6489,6 +6173,57 @@ definitions:
           updated_at:
             type: "string"
             example: "2021-11-16T08:26:30.000000Z"
+      layers:
+        type: "array"
+        items:
+          type: "object"
+          properties:
+            top:
+              type: "float"
+              example: 38.9832354205
+            left:
+              type: "float"
+              example: 329.6631024663
+            text:
+              type: "string"
+              example: "Heading"
+            width:
+              type: "integer"
+              format: "int64"
+              example: 158
+            height:
+              type: "integer"
+              format: "int64"
+              example: 47.46
+            originX:
+              type: "string"
+              example: "left"
+            originY:
+              type: "string"
+              example: "top"
+            fontSize:
+              type: "integer"
+              format: "int64"
+              example: 42
+            minWidth:
+              type: "integer"
+              format: "int64"
+              example: 20
+            fontStyle:
+              type: "string"
+              example: "normal"
+            textAlign:
+              type: "string"
+              example: "left"
+            underline:
+              type: "boolean"
+              example: false,
+            fontFamily:
+              type: "string"
+              example: "Roboto"
+            fontWeight:
+              type: "string"
+              example: "normal"
       created_at:
         type: "string"
         example: "2021-11-16T08:26:30.000000Z"
@@ -6547,70 +6282,6 @@ definitions:
         example: "Updated successfully"
     xml:
       name: "DesignResponseUpdate"
-  DesignLayer:
-    type: "object"
-    description: "Lorem ipsum..."
-    properties:
-      data:
-        type: "object"
-        properties:
-          layers:
-            type: "array"
-            items:
-              type: "object"
-              properties:
-                top:
-                  type: "float"
-                  example: 38.9832354205
-                left:
-                  type: "float"
-                  example: 329.6631024663
-                text:
-                  type: "string"
-                  example: "Heading"
-                width:
-                  type: "integer"
-                  format: "int64"
-                  example: 158
-                height:
-                  type: "integer"
-                  format: "int64"
-                  example: 47.46
-                originX:
-                  type: "string"
-                  example: "left"
-                originY:
-                  type: "string"
-                  example: "top"
-                fontSize:
-                  type: "integer"
-                  format: "int64"
-                  example: 42
-                minWidth:
-                  type: "integer"
-                  format: "int64"
-                  example: 20
-                fontStyle:
-                  type: "string"
-                  example: "normal"
-                textAlign:
-                  type: "string"
-                  example: "left"
-                underline:
-                  type: "boolean"
-                  example: false,
-                fontFamily:
-                  type: "string"
-                  example: "Roboto"
-                fontWeight:
-                  type: "string"
-                  example: "normal"
-      message:
-        type: "string"
-        description: "Retrieved successfully"
-        example: "Retrieved successfully"
-    xml:
-      name: "DesignLayer"
   DesignFont:
     type: "object"
     properties:
@@ -7748,6 +7419,15 @@ definitions:
         example: "Can't find project with id: 4419934f-8e1b-4cf0-b432-01ef9258a812"
     xml:
       name: "ProjectError"
+  ImageError:
+    type: "object"
+    properties:
+      error:
+        type: "string"
+        description: "Can't find images with id"
+        example: "Can't find images with id: 248f7975-a9f5-3466-b014-69abae9xxxxx"
+    xml:
+      name: "ImageError"
   Forbidden:
     type: "object"
     properties:
