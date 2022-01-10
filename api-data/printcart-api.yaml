@@ -4503,131 +4503,158 @@ definitions:
       include_overlay:
         type: "boolean"
         example: true
-      product_width:
-        type: "float"
-        format: "float"
-        example: 50
-      product_height:
-        type: "float"
-        format: "float"
-        example: 50
-      real_width:
-        type: "float"
-        format: "float"
-        example: 50
-      real_height:
-        type: "float"
-        format: "float"
-        example: 50
-      real_top:
-        type: "float"
-        format: "float"
-        example: 50
-      real_left:
-        type: "float"
-        format: "float"
-        example: 50
-      area_design_width:
-        type: "float"
-        format: "float"
-        example: 50
-      area_design_height:
-        type: "float"
-        format: "float"
-        example: 50
-      area_design_left:
-        type: "float"
-        format: "float"
-        example: 50
-      area_design_top:
-        type: "float"
-        format: "float"
-        example: 50
+      product_size:
+        type: "object"
+        properties:
+          input:
+            type: "number"
+            format: "double"
+            example: 100
+          width: 
+            type: "float"
+            format: "float"
+            example: 50
+          height:
+            type: "float"
+            format: "float"
+            example: 50
+      design_size:
+        type: "object"
+        properties:
+          width:
+            type: "float"
+            format: "float"
+            example: 50
+          height:
+            type: "float"
+            format: "float"
+            example: 50
+          top:
+            type: "float"
+            format: "float"
+            example: 50
+          left:
+            type: "float"
+            format: "float"
+            example: 50
+      design_position:
+        type: "object"
+        properties:
+          width:
+            type: "float"
+            format: "float"
+            example: 50
+          height:
+            type: "float"
+            format: "float"
+            example: 50
+          left:
+            type: "float"
+            format: "float"
+            example: 50
+          top:
+            type: "float"
+            format: "float"
+            example: 50
       show_bleed:
         type: "boolean"
         example: true
-      bleed_top_bottom:
-        type: "float"
-        format: "float"
-        example: 50.50
-      bleed_left_right:
-        type: "float"
-        format: "float"
-        example: 50.50
+      bleed_size:
+        type: "object"
+        properties:
+          top_bottom:
+            type: "float"
+            format: "float"
+            example: 50.50
+          left_right:
+            type: "float"
+            format: "float"
+            example: 50.50
       show_safe_zone:
         type: "boolean"
         example: true
-      margin_top_bottom:
-        type: "float"
-        format: "float"
-        example: 50
-      margin_left_right:
-        type: "float"
-        format: "float"
-        example: 50
+      margin_size:
+        type: "object"
+        properties:
+          top_bottom:
+            type: "float"
+            format: "float"
+            example: 50.50
+          left_right:
+            type: "float"
+            format: "float"
+            example: 50.50
       background_img:
         $ref: "#/definitions/ImageResponse"
-      background_size_width:
-        type: "number"
-        format: "double"
-        example: 100
-      background_size_height:
-        type: "number"
-        format: "double"
-        example: 100
-      bleed_position_width:
-        type: "number"
-        format: "double"
-        example: 100
-      bleed_position_height:
-        type: "number"
-        format: "double"
-        example: 100
-      bleed_position_top:
-        type: "number"
-        format: "double"
-        example: 100
-      bleed_position_left:
-        type: "number"
-        format: "double"
-        example: 100
-      margin_position_width:
-        type: "number"
-        format: "double"
-        example: 100
-      margin_position_height:
-        type: "number"
-        format: "double"
-        example: 100
-      margin_position_top:
-        type: "number"
-        format: "double"
-        example: 100
-      margin_position_left:
-        type: "number"
-        format: "double"
-        example: 100
-      measure_size_width:
-        type: "number"
-        format: "double"
-        example: 100
-      measure_size_height:
-        type: "number"
-        format: "double"
-        example: 100
-      measure_size_top:
-        type: "number"
-        format: "double"
-        example: 100
-      measure_size_left:
-        type: "number"
-        format: "double"
-        example: 100
+      background_size:
+        type: "object"
+        properties:
+          width:
+            type: "number"
+            format: "double"
+            example: 100
+          height:
+            type: "number"
+            format: "double"
+            example: 100
+      bleed_position:
+        type: "object"
+        properties:
+          width:
+            type: "number"
+            format: "double"
+            example: 100
+          height:
+            type: "number"
+            format: "double"
+            example: 100
+          top:
+            type: "number"
+            format: "double"
+            example: 100
+          left:
+            type: "number"
+            format: "double"
+            example: 100
+      margin_position:
+        type: "object"
+        properties:
+          width:
+            type: "number"
+            format: "double"
+            example: 100
+          height:
+            type: "number"
+            format: "double"
+            example: 100
+          top:
+            type: "number"
+            format: "double"
+            example: 100
+          left:
+            type: "number"
+            format: "double"
+            example: 100
+      measure_size:
+        type: "object"
+        properties:
+          width:
+            type: "number"
+            format: "double"
+            example: 100
+          height:
+            type: "number"
+            format: "double"
+            example: 100
+          top:
+            type: "number"
+            format: "double"
+            example: 100
+          left:
+            type: "number"
+            format: "double"
+            example: 100
       ratio_image:
-        type: "number"
-        format: "double"
-        example: 100
-      product_input:
         type: "number"
         format: "double"
         example: 100
@@ -4763,131 +4790,158 @@ definitions:
             include_overlay:
               type: "boolean"
               example: true
-            product_width:
-              type: "float"
-              format: "float"
-              example: 50
-            product_height:
-              type: "float"
-              format: "float"
-              example: 50
-            real_width:
-              type: "float"
-              format: "float"
-              example: 50
-            real_height:
-              type: "float"
-              format: "float"
-              example: 50
-            real_top:
-              type: "float"
-              format: "float"
-              example: 50
-            real_left:
-              type: "float"
-              format: "float"
-              example: 50
-            area_design_width:
-              type: "float"
-              format: "float"
-              example: 50
-            area_design_height:
-              type: "float"
-              format: "float"
-              example: 50
-            area_design_left:
-              type: "float"
-              format: "float"
-              example: 50
-            area_design_top:
-              type: "float"
-              format: "float"
-              example: 50
+            product_size:
+              type: "object"
+              properties:
+                input:
+                  type: "number"
+                  format: "double"
+                  example: 100
+                width: 
+                  type: "float"
+                  format: "float"
+                  example: 50
+                height:
+                  type: "float"
+                  format: "float"
+                  example: 50
+            design_size:
+              type: "object"
+              properties:
+                width:
+                  type: "float"
+                  format: "float"
+                  example: 50
+                height:
+                  type: "float"
+                  format: "float"
+                  example: 50
+                top:
+                  type: "float"
+                  format: "float"
+                  example: 50
+                left:
+                  type: "float"
+                  format: "float"
+                  example: 50
+            design_position:
+              type: "object"
+              properties:
+                width:
+                  type: "float"
+                  format: "float"
+                  example: 50
+                height:
+                  type: "float"
+                  format: "float"
+                  example: 50
+                left:
+                  type: "float"
+                  format: "float"
+                  example: 50
+                top:
+                  type: "float"
+                  format: "float"
+                  example: 50
             show_bleed:
               type: "boolean"
               example: true
-            bleed_top_bottom:
-              type: "float"
-              format: "float"
-              example: 50.50
-            bleed_left_right:
-              type: "float"
-              format: "float"
-              example: 50.50
+            bleed_size:
+              type: "object"
+              properties:
+                top_bottom:
+                  type: "float"
+                  format: "float"
+                  example: 50.50
+                left_right:
+                  type: "float"
+                  format: "float"
+                  example: 50.50
             show_safe_zone:
               type: "boolean"
               example: true
-            margin_top_bottom:
-              type: "float"
-              format: "float"
-              example: 50
-            margin_left_right:
-              type: "float"
-              format: "float"
-              example: 50
+            margin_size:
+              type: "object"
+              properties:
+                top_bottom:
+                  type: "float"
+                  format: "float"
+                  example: 50.50
+                left_right:
+                  type: "float"
+                  format: "float"
+                  example: 50.50
             background_img:
               $ref: "#/definitions/ImageResponse"
-            background_size_width:
-              type: "number"
-              format: "double"
-              example: 100
-            background_size_height:
-              type: "number"
-              format: "double"
-              example: 100
-            bleed_position_width:
-              type: "number"
-              format: "double"
-              example: 100
-            bleed_position_height:
-              type: "number"
-              format: "double"
-              example: 100
-            bleed_position_top:
-              type: "number"
-              format: "double"
-              example: 100
-            bleed_position_left:
-              type: "number"
-              format: "double"
-              example: 100
-            margin_position_width:
-              type: "number"
-              format: "double"
-              example: 100
-            margin_position_height:
-              type: "number"
-              format: "double"
-              example: 100
-            margin_position_top:
-              type: "number"
-              format: "double"
-              example: 100
-            margin_position_left:
-              type: "number"
-              format: "double"
-              example: 100
-            measure_size_width:
-              type: "number"
-              format: "double"
-              example: 100
-            measure_size_height:
-              type: "number"
-              format: "double"
-              example: 100
-            measure_size_top:
-              type: "number"
-              format: "double"
-              example: 100
-            measure_size_left:
-              type: "number"
-              format: "double"
-              example: 100
+            background_size:
+              type: "object"
+              properties:
+                width:
+                  type: "number"
+                  format: "double"
+                  example: 100
+                height:
+                  type: "number"
+                  format: "double"
+                  example: 100
+            bleed_position:
+              type: "object"
+              properties:
+                width:
+                  type: "number"
+                  format: "double"
+                  example: 100
+                height:
+                  type: "number"
+                  format: "double"
+                  example: 100
+                top:
+                  type: "number"
+                  format: "double"
+                  example: 100
+                left:
+                  type: "number"
+                  format: "double"
+                  example: 100
+            margin_position:
+              type: "object"
+              properties:
+                width:
+                  type: "number"
+                  format: "double"
+                  example: 100
+                height:
+                  type: "number"
+                  format: "double"
+                  example: 100
+                top:
+                  type: "number"
+                  format: "double"
+                  example: 100
+                left:
+                  type: "number"
+                  format: "double"
+                  example: 100
+            measure_size:
+              type: "object"
+              properties:
+                width:
+                  type: "number"
+                  format: "double"
+                  example: 100
+                height:
+                  type: "number"
+                  format: "double"
+                  example: 100
+                top:
+                  type: "number"
+                  format: "double"
+                  example: 100
+                left:
+                  type: "number"
+                  format: "double"
+                  example: 100
             ratio_image:
-              type: "number"
-              format: "double"
-              example: 100
-            product_input:
               type: "number"
               format: "double"
               example: 100
