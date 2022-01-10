@@ -1164,7 +1164,6 @@ paths:
           required: false
           type: "string"
           enum:
-            - "Null"
             - "Cliparts"
             - "Designs"
       responses:
@@ -1299,7 +1298,6 @@ paths:
           required: false
           type: "string"
           enum:
-            - "Null"
             - "Cliparts"
             - "Designs"
       responses:
