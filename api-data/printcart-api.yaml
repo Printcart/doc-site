@@ -14,7 +14,6 @@ basePath: "https://api.printcart.com/v1"
 tags:
   - name: "Product"
   - name: "Side"
-  - name: "Clipart"
   - name: "Image"
   - name: "Font"
   - name: "Design"
@@ -960,433 +959,6 @@ paths:
             $ref: "#/definitions/Unauthenticated"
       security:
         - BasicAuth: []
-  /cliparts:
-    post:
-      tags:
-        - "Clipart"
-      # summary:
-      # description:
-      operationId: "postClipart"
-      summary: "Create new clipart"
-      consumes:
-        - "application/json"
-      produces:
-        - "application/json"
-      parameters:
-        - in: "body"
-          name: "body"
-          # description: "Pet object that needs to be added to the store"
-          required: true
-          schema:
-            $ref: "#/definitions/Clipart"
-      responses:
-        "201":
-          description: "Created successfully"
-          schema:
-            $ref: "#/definitions/ClipartResponseStore"
-        "400":
-          description: "Invalid input"
-          schema:
-            $ref: "#/definitions/InvalidInput"
-        "401":
-          description: "Unauthenticated"
-          schema:
-            $ref: "#/definitions/Unauthenticated"
-        "404":
-          description: "Not found"
-          schema:
-            $ref: "#/definitions/NotFound"
-        "415":
-          description: "Unsupported Media Type"
-          type: "object"
-          schema:
-            type: "object"
-            properties:
-              error:
-                type: "string"
-                description: "Unsupported Media Type"
-                example: "Unsupported Media Type"
-      security:
-        - BasicAuth: []
-    get:
-      tags:
-        - "Clipart"
-      # summary: "..."
-      # description: "..."
-      operationId: "getClipart"
-      summary: "Get a list of cliparts"
-      produces:
-        - "application/json"
-      responses:
-        "200":
-          description: "Retrieved successfully"
-          schema:
-            $ref: "#/definitions/ClipartResponseShowDataArray"
-        "401":
-          description: "Unauthenticated"
-          schema:
-            $ref: "#/definitions/Unauthenticated"
-        "404":
-          description: "Not found"
-          schema:
-            $ref: "#/definitions/NotFound"
-      security:
-        - BasicAuth: []
-        - ApiKeyAuth: []
-  /cliparts/{clipartId}:
-    get:
-      tags:
-        - "Clipart"
-      # summary: "Find pet by ID"
-      # description: "Returns a single pet"
-      operationId: "getClipartById"
-      summary: "Get clipart details"
-      produces:
-        - "application/json"
-      parameters:
-        - name: "clipartId"
-          in: "path"
-          description: "Clipart ID"
-          required: true
-          type: "string"
-      responses:
-        "200":
-          description: "Retrieved successfully"
-          schema:
-            $ref: "#/definitions/ClipartResponseShowDataObject"
-        "401":
-          description: "Unauthenticated"
-          schema:
-            $ref: "#/definitions/Unauthenticated"
-        "404":
-          description: "Not found"
-          schema:
-            $ref: "#/definitions/NotFound"
-      security:
-        - BasicAuth: []
-        - ApiKeyAuth: []
-    put:
-      tags:
-        - "Clipart"
-      # summary:
-      # description:
-      operationId: "updateClipart"
-      summary: "Update clipart details"
-      consumes:
-        - "application/json"
-      produces:
-        - "application/json"
-      parameters:
-        - name: "clipartId"
-          in: "path"
-          description: "Clipart ID"
-          required: true
-          type: "string"
-        - in: "body"
-          name: "body"
-          # description: "Pet object that needs to be added to the store"
-          required: true
-          schema:
-            $ref: "#/definitions/ClipartUpdate"
-      responses:
-        "200":
-          description: "Updated successfully"
-          schema:
-            $ref: "#/definitions/ClipartResponseUpdate"
-        "400":
-          description: "Invalid input"
-          schema:
-            $ref: "#/definitions/InvalidInput"
-        "401":
-          description: "Unauthenticated"
-          schema:
-            $ref: "#/definitions/Unauthenticated"
-        "404":
-          description: "Not found"
-          schema:
-            $ref: "#/definitions/NotFound"
-        "415":
-          description: "Unsupported Media Type"
-          type: "object"
-          schema:
-            type: "object"
-            properties:
-              error:
-                type: "string"
-                description: "Unsupported Media Type"
-                example: "Unsupported Media Type"
-      security:
-        - BasicAuth: []
-    delete:
-      tags:
-        - "Clipart"
-      # summary:
-      # description:
-      operationId: "deleteClipart"
-      summary: "Delete a clipart"
-      produces:
-        - "application/json"
-      parameters:
-        - name: "clipartId"
-          in: "path"
-          description: "Clipart ID"
-          required: true
-          type: "string"
-      responses:
-        "200":
-          description: "Deleted successfully"
-          schema:
-            $ref: "#/definitions/Deleted"
-        "401":
-          description: "Unauthenticated"
-          schema:
-            $ref: "#/definitions/Unauthenticated"
-        "404":
-          description: "Not found"
-          schema:
-            $ref: "#/definitions/NotFound"
-      security:
-        - BasicAuth: []
-  /cliparts/batch:
-    post:
-      tags:
-        - "Clipart"
-      # summary:
-      # description:
-      operationId: "postClipartsBatch"
-      summary: "Create batch cliparts"
-      consumes:
-        - "application/json"
-      produces:
-        - "application/json"
-      parameters:
-        - in: "body"
-          name: "body"
-          # description: "Pet object that needs to be added to the store"
-          required: true
-          schema:
-            $ref: "#/definitions/ClipartBatch"
-      responses:
-        "201":
-          description: "Created successfully"
-          schema:
-            $ref: "#/definitions/ClipartBatchResponse"
-        "400":
-          description: "Invalid input"
-          schema:
-            $ref: "#/definitions/InvalidInput"
-        "401":
-          description: "Unauthenticated"
-          schema:
-            $ref: "#/definitions/Unauthenticated"
-        "404":
-          description: "Can't find images with id: 248f7975-a9f5-3466-b014-69abae9xxxxx"
-          type: "object"
-          schema:
-            type: "object"
-            properties:
-              error:
-                type: "string"
-                description: "Can't find images with id: 248f7975-a9f5-3466-b014-69abae9xxxxx"
-                example: "Can't find images with id: 248f7975-a9f5-3466-b014-69abae9xxxxx"
-        "413":
-          description: "Too many cliparts"
-          type: "object"
-          schema:
-            type: "object"
-            properties:
-              error:
-                type: "string"
-                description: "Too many cliparts"
-                example: "Too many cliparts"
-        "415":
-          description: "Unsupported Media Type"
-          type: "object"
-          schema:
-            type: "object"
-            properties:
-              error:
-                type: "string"
-                description: "Unsupported Media Type"
-                example: "Unsupported Media Type"
-        "500":
-          description: "Something went wrong while create cliparts"
-          type: "object"
-          schema:
-            type: "object"
-            properties:
-              error:
-                type: "string"
-                description: "Something went wrong while create cliparts"
-                example: "Something went wrong while create cliparts"
-      security:
-        - BasicAuth: []
-    put:
-      tags:
-        - "Clipart"
-      # summary:
-      # description:
-      operationId: "putClipartsBatch"
-      summary: "Update batch cliparts"
-      consumes:
-        - "application/json"
-      produces:
-        - "application/json"
-      parameters:
-        - in: "body"
-          name: "body"
-          # description: "Pet object that needs to be added to the store"
-          required: true
-          schema:
-            $ref: "#/definitions/ClipartBatchUpdate"
-      responses:
-        "200":
-          description: "Updated successfully"
-          schema:
-            $ref: "#/definitions/ClipartBatchUpdateResponse"
-        "400":
-          description: "Invalid input"
-          schema:
-            $ref: "#/definitions/InvalidInput"
-        "401":
-          description: "Unauthenticated"
-          schema:
-            $ref: "#/definitions/Unauthenticated"
-        "404":
-          description:
-            - "Can't find clipart with id"
-            - "Can't find image with id"
-          schema:
-            anyOf:
-              - $ref: "#/definitions/ClipartError"
-              - $ref: "#/definitions/ImageError"
-        "413":
-          description: "Too many cliparts"
-          type: "object"
-          schema:
-            type: "object"
-            properties:
-              error:
-                type: "string"
-                description: "Too many cliparts"
-                example: "Too many cliparts"
-        "415":
-          description: "Unsupported Media Type"
-          type: "object"
-          schema:
-            type: "object"
-            properties:
-              error:
-                type: "string"
-                description: "Unsupported Media Type"
-                example: "Unsupported Media Type"
-        "500":
-          description: "Something went wrong while update cliparts"
-          type: "object"
-          schema:
-            type: "object"
-            properties:
-              error:
-                type: "string"
-                description: "Something went wrong while update cliparts"
-                example: "Something went wrong while update cliparts"
-      security:
-        - BasicAuth: []
-    delete:
-      tags:
-        - "Clipart"
-      # description:
-      operationId: "deleteClipartsBatch"
-      summary: "Delete batch cliparts"
-      consumes:
-        - "application/json"
-      produces:
-        - "application/json"
-      parameters:
-        - in: "body"
-          name: "body"
-          # description:
-          required: true
-          schema:
-            $ref: "#/definitions/ClipartBatchDelete"
-      responses:
-        "200":
-          description: "Deleted successfully"
-          schema:
-            $ref: "#/definitions/Deleted"
-        "401":
-          description: "Unauthenticated"
-          schema:
-            $ref: "#/definitions/Unauthenticated"
-        "404":
-          description: "Can't find clipart with id"
-          type: "object"
-          schema:
-            type: "object"
-            properties:
-              error:
-                type: "string"
-                description: "Can't find clipart with id"
-                example: "Can't find clipart with id: 3f2b04a2-8aa9-31a7-82b0-3e2b94cxxxxx"
-      security:
-        - BasicAuth: []
-  /cliparts-storages:
-    get:
-      tags:
-        - "Clipart"
-      # summary: "..."
-      # description: "..."
-      operationId: "getClipartByCategory"
-      summary: "Get a list of clipart storages"
-      produces:
-        - "application/json"
-      responses:
-        "200":
-          description: "Retrieved successfully"
-          schema:
-            $ref: "#/definitions/CategoryResponseShowDataArray"
-        "401":
-          description: "Unauthenticated"
-          schema:
-            $ref: "#/definitions/Unauthenticated"
-        "404":
-          description: "Not found"
-          schema:
-            $ref: "#/definitions/NotFound"
-        "413":
-          description: "Too many cliparts"
-          type: "object"
-          schema:
-            type: "object"
-            properties:
-              error:
-                type: "string"
-                description: "Too many cliparts"
-                example: "Too many cliparts"
-      security:
-        - BasicAuth: []
-        - ApiKeyAuth: []
-  /cliparts/count:
-    get:
-      tags:
-        - "Clipart"
-      # summary: "..."
-      # description: "..."
-      operationId: "getCountClipart"
-      summary: "Get a count of cliparts"
-      produces:
-        - "application/json"
-      responses:
-        "200":
-          description: "Retrieved successfully"
-          schema:
-            $ref: "#/definitions/ClipartCount"
-        "401":
-          description: "Unauthenticated"
-          schema:
-            $ref: "#/definitions/Unauthenticated"
-      security:
-        - BasicAuth: []
   /fonts:
     post:
       tags:
@@ -1586,6 +1158,15 @@ paths:
           description: "Image to upload"
           required: true
           type: "file"
+        - name: "type"
+          in: "formData"
+          description: "Image Type"
+          required: false
+          type: "string"
+          enum:
+            - "Null"
+            - "Cliparts"
+            - "Designs"
       responses:
         "201":
           description: "File successfully uploaded"
@@ -1731,6 +1312,73 @@ paths:
                 type: "string"
                 description: "File upload missing"
                 example: "File upload missing"
+      security:
+        - BasicAuth: []
+        - ApiKeyAuth: []
+  /cliparts-storages:
+    post:
+      tags:
+        - "Image"
+      # summary: "..."
+      # description: "..."
+      operationId: "postImageClipartCategory"
+      summary: "Create new Image Clipart - Storage"
+      produces:
+        - "application/json"
+      parameters:
+        - in: "body"
+          name: "body"
+          # description: "Pet object that needs to be added to the store"
+          required: true
+          schema:
+            $ref: "#/definitions/ImageClipartStorage"
+      responses:
+        "201": 
+          description: "Retrieved successfully"
+          schema:
+            $ref: "#/definitions/CategoryResponseStore"
+        "401":
+          description: "Unauthenticated"
+          schema:
+            $ref: "#/definitions/Unauthenticated"
+        "404":
+          description: "Not found"
+          schema:
+            $ref: "#/definitions/NotFound"
+      security:
+        - BasicAuth: []
+    get:
+      tags:
+        - "Image"
+      # summary: "..."
+      # description: "..."
+      operationId: "getStorageByImageClipart"
+      summary: "Get a list of storages by image clipart"
+      produces:
+        - "application/json"
+      responses:
+        "200":
+          description: "Retrieved successfully"
+          schema:
+            $ref: "#/definitions/CategoryResponseShowDataArray"
+        "401":
+          description: "Unauthenticated"
+          schema:
+            $ref: "#/definitions/Unauthenticated"
+        "404":
+          description: "Not found"
+          schema:
+            $ref: "#/definitions/NotFound"
+        "413":
+          description: "Too many cliparts"
+          type: "object"
+          schema:
+            type: "object"
+            properties:
+              error:
+                type: "string"
+                description: "Too many cliparts"
+                example: "Too many cliparts"
       security:
         - BasicAuth: []
         - ApiKeyAuth: []
@@ -2186,38 +1834,6 @@ paths:
             $ref: "#/definitions/NotFound"
       security:
         - BasicAuth: []
-  /designs/{designId}/storages:
-    get:
-      tags:
-        - "Design"
-      # summary: "Find pet by ID"
-      # description: "Returns a single pet"
-      operationId: "getStoragesByDesign"
-      summary: "Get a list of storages by design"
-      produces:
-        - "application/json"
-      parameters:
-        - name: "designId"
-          in: "path"
-          description: "Design ID"
-          required: true
-          type: "string"
-      responses:
-        "200":
-          description: "Retrieved successfully"
-          schema:
-            $ref: "#/definitions/CategoryResponseShowDataArray"
-        "401":
-          description: "Unauthenticated"
-          schema:
-            $ref: "#/definitions/Unauthenticated"
-        "404":
-          description: "Not found"
-          schema:
-            $ref: "#/definitions/NotFound"
-      security:
-        - BasicAuth: []
-        - ApiKeyAuth: []
   /designs/count:
     get:
       tags:
@@ -2700,7 +2316,7 @@ paths:
       # summary:
       # description:
       operationId: "postCategory"
-      summary: "Create new design storage"
+      summary: "Create new storage"
       consumes:
         - "application/json"
       produces:
@@ -2736,8 +2352,8 @@ paths:
         - "Storage"
       # summary: "..."
       # description: "..."
-      operationId: "getDesignCategory"
-      summary: "Get a list of design storages"
+      operationId: "getCategory"
+      summary: "Get a list of storages"
       produces:
         - "application/json"
       responses:
@@ -2763,7 +2379,7 @@ paths:
       # summary: "Find pet by ID"
       # description: "Returns a single pet"
       operationId: "getCategoryById"
-      summary: "Get design storage details"
+      summary: "Get Storage details"
       produces:
         - "application/json"
       parameters:
@@ -2794,7 +2410,7 @@ paths:
       # summary:
       # description:
       operationId: "updateCategory"
-      summary: "Update design storage details"
+      summary: "Update Storage details"
       consumes:
         - "application/json"
       produces:
@@ -2836,7 +2452,7 @@ paths:
       # summary:
       # description:
       operationId: "deleteCategory"
-      summary: "Delete a design storage"
+      summary: "Delete a Storage"
       produces:
         - "application/json"
       parameters:
@@ -2850,37 +2466,6 @@ paths:
           description: "Deleted successfully"
           schema:
             $ref: "#/definitions/Deleted"
-        "401":
-          description: "Unauthenticated"
-          schema:
-            $ref: "#/definitions/Unauthenticated"
-        "404":
-          description: "Not found"
-          schema:
-            $ref: "#/definitions/NotFound"
-      security:
-        - BasicAuth: []
-  /designs-storages/{storageId}/designs:
-    get:
-      tags:
-        - "Storage"
-      # summary: "Find pet by ID"
-      # description: "Returns a single pet"
-      operationId: "getDesignsByStorage"
-      summary: "Get a list of designs by storage"
-      produces:
-        - "application/json"
-      parameters:
-        - name: "storageId"
-          in: "path"
-          description: "Storage ID"
-          required: true
-          type: "string"
-      responses:
-        "200":
-          description: "Retrieved successfully"
-          schema:
-            $ref: "#/definitions/DesignResponseShowDataArray"
         "401":
           description: "Unauthenticated"
           schema:
@@ -2911,7 +2496,7 @@ paths:
         "200":
           description: "Retrieved successfully"
           schema:
-            $ref: "#/definitions/ClipartResponseShowDataArray"
+            $ref: "#/definitions/ImageResponseShowDataArray"
         "401":
           description: "Unauthenticated"
           schema:
@@ -2930,7 +2515,7 @@ paths:
       # summary: "..."
       # description: "..."
       operationId: "getCountCategory"
-      summary: "Get a count of design storages"
+      summary: "Get a count of Storages"
       produces:
         - "application/json"
       responses:
@@ -5309,231 +4894,6 @@ definitions:
         example: "Updated successfully"
     xml:
       name: "SideBatchUpdateResponse"
-  Clipart:
-    type: "object"
-    required:
-      - "image_id"
-    properties:
-      name:
-        type: "string"
-        description: The name given to a clipart
-        example: "printcart"
-      image_id:
-        type: "string"
-        description: Image ID
-        example: "e8304b84-a015-3bd4-a7d3-7a978f465df2"
-    xml:
-      name: "Clipart"
-  ClipartUpdate:
-    type: "object"
-    properties:
-      name:
-        type: "string"
-        description: Updated name of the clipart
-        example: "printcart"
-      image_id:
-        type: "string"
-        description: Image ID
-        example: "e8304b84-a015-3bd4-a7d3-7a978f465df2"
-    xml:
-      name: "ClipartUpdate"
-  ClipartBatch:
-    type: "object"
-    required:
-      - "name"
-    properties:
-      cliparts:
-        type: "array"
-        items:
-          type: "array"
-          $ref: "#/definitions/Clipart"
-    xml:
-      name: "ClipartBatch"
-  ClipartBatchUpdate:
-    type: "object"
-    properties:
-      cliparts:
-        type: "array"
-        items:
-          type: "object"
-          required:
-            - "id"
-          properties:
-            id:
-              type: "string"
-              description: Clipart ID
-              example: "3f2b04a2-8aa9-31a7-82b0-3e2b94c815fe"
-            name:
-              type: "string"
-              description: Updated name of the clipart
-              example: "printcart"
-            image_id:
-              type: "string"
-              description: Image ID
-              example: "e8304b84-a015-3bd4-a7d3-7a978f465df2"
-    xml:
-      name: "ClipartBatchUpdate"
-  ClipartBatchDelete:
-    type: "object"
-    properties:
-      cliparts:
-        type: "array"
-        items:
-          type: "object"
-          required:
-            - "id"
-          properties:
-            id:
-              type: "string"
-              description: Clipart ID
-              example: "3f2b04a2-8aa9-31a7-82b0-3e2b94c815fe"
-    xml:
-      name: "ClipartBatchDelete"
-  ClipartResponse:
-    type: "object"
-    properties:
-      id:
-        type: "string"
-        example: "3f2b04a2-8aa9-31a7-82b0-3e2b94c815fe"
-      name:
-        type: "string"
-        example: "printcart"
-      url:
-        type: "url"
-        example: "https://docs.printcart.com/img/Logo-PrintCart-1.png"
-      width:
-        type: "integer"
-        format: "int64"
-        example: 500
-      height:
-        type: "integer"
-        format: "int64"
-        example: 500
-      created_at:
-        type: "string"
-        example: "2021-11-16T08:26:30.000000Z"
-      updated_at:
-        type: "string"
-        example: "2021-11-16T08:26:30.000000Z"
-    xml:
-      name: "ClipartResponse"
-  ClipartResponseShowDataObject:
-    type: "object"
-    properties:
-      data:
-        type: "object"
-        $ref: "#/definitions/ClipartResponse"
-      message:
-        type: "string"
-        description: "Retrieved successfully"
-        example: "Retrieved successfully"
-    xml:
-      name: "ClipartResponseShowDataObject"
-  ClipartResponseShowDataArray:
-    type: "object"
-    properties:
-      data:
-        type: "array"
-        items:
-          type: "object"
-          $ref: "#/definitions/ClipartResponse"
-      message:
-        type: "string"
-        description: "Retrieved successfully"
-        example: "Retrieved successfully"
-    xml:
-      name: "ClipartResponseShowDataArray"
-  ClipartResponseStore:
-    type: "object"
-    properties:
-      data:
-        type: "object"
-        $ref: "#/definitions/ClipartResponse"
-      message:
-        type: "string"
-        description: "Created successfully"
-        example: "Created successfully"
-    xml:
-      name: "ClipartResponseStore"
-  ClipartResponseUpdate:
-    type: "object"
-    properties:
-      data:
-        type: "object"
-        $ref: "#/definitions/ClipartResponse"
-      message:
-        type: "string"
-        description: "Update successfully"
-        example: "Update successfully"
-    xml:
-      name: "ClipartResponseUpdate"
-  ClipartBatchResponse:
-    type: "object"
-    properties:
-      data:
-        type: "array"
-        items:
-          type: "object"
-          $ref: "#/definitions/ClipartResponse"
-      message:
-        type: "string"
-        description: "Created successfully"
-        example: "Created successfully"
-    xml:
-      name: "ClipartBatchResponse"
-  ClipartBatchUpdateResponse:
-    type: "object"
-    properties:
-      data:
-        type: "array"
-        items:
-          type: "object"
-          properties:
-            id:
-              type: "string"
-              example: "3f2b04a2-8aa9-31a7-82b0-3e2b94c815fe"
-            name:
-              type: "string"
-              example: "printcart"
-            url:
-              type: "url"
-              example: "https://docs.printcart.com/img/Logo-PrintCart-1.png"
-            width:
-              type: "integer"
-              format: "int64"
-              example: 500
-            height:
-              type: "integer"
-              format: "int64"
-              example: 500
-            created_at:
-              type: "string"
-              example: "2021-11-16T08:26:30.000000Z"
-            updated_at:
-              type: "string"
-              example: "2021-11-16T08:26:30.000000Z"
-      message:
-        type: "string"
-        description: "Updated successfully"
-        example: "Updated successfully"
-    xml:
-      name: "ClipartBatchUpdateResponse"
-  ClipartCount:
-    type: "object"
-    properties:
-      data:
-        type: "object"
-        properties:
-          count:
-            type: "integer"
-            format: "int64"
-            example: 10
-      message:
-        type: "string"
-        description: "Retrieved successfully"
-        example: "Retrieved successfully"
-    xml:
-      name: "ClipartCount"
   Font:
     type: "object"
     required:
@@ -5679,6 +5039,22 @@ definitions:
         example: "Retrieved successfully"
     xml:
       name: "FontCount"
+  ImageClipartStorage:
+    type: "object"
+    required:
+      - "category_id"
+      - "image_id"
+    properties:
+      category_id:
+        type: "string"
+        description: Storage ID
+        example: "57eea14b-4e8d-4b7b-b864-b31cb8e6ac62"
+      image_id:
+        type: "string"
+        description: Image ID
+        example: "e8304b84-a015-3bd4-a7d3-7a978fxxxxxx"
+    xml:
+      name: "ImageClipartStorage"
   ImageResponse:
     type: "object"
     properties:
