@@ -5106,13 +5106,13 @@ definitions:
     type: "object"
     required:
       - "category_id"
-      - "image_id"
+      - "clipart_id"
     properties:
       category_id:
         type: "string"
         description: Storage ID
         example: "57eea14b-4e8d-4b7b-b864-b31cb8e6ac62"
-      image_id:
+      clipart_id:
         type: "string"
         description: Image ID
         example: "e8304b84-a015-3bd4-a7d3-7a978fxxxxxx"
