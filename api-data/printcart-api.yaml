@@ -7334,6 +7334,14 @@ definitions:
   InvalidInput:
     type: "object"
     properties:
+      error:
+        type: "object"
+        properties:
+          field_name:
+            type: "array"
+            items:
+              type: "string"
+              example: That field error message
       message:
         type: "string"
         description: "Invalid input"
