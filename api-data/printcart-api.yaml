@@ -1185,6 +1185,16 @@ paths:
                 type: "string"
                 description: "File upload missing"
                 example: "File upload missing"
+        "415":
+          description: "Unsupported Media Type"
+          type: "object"
+          schema:
+            type: "object"
+            properties:
+              message:
+                type: "string"
+                description: "Unsupported Media Type"
+                example: "Unsupported Media Type"
       security:
         - BasicAuth: []
         - ApiKeyAuth: []
@@ -1319,6 +1329,16 @@ paths:
                 type: "string"
                 description: "File upload missing"
                 example: "File upload missing"
+        "415":
+          description: "Unsupported Media Type"
+          type: "object"
+          schema:
+            type: "object"
+            properties:
+              message:
+                type: "string"
+                description: "Unsupported Media Type"
+                example: "Unsupported Media Type"
       security:
         - BasicAuth: []
         - ApiKeyAuth: []
@@ -1340,7 +1360,7 @@ paths:
           schema:
             $ref: "#/definitions/ImageClipartStorage"
       responses:
-        "201": 
+        "201":
           description: "Retrieved successfully"
           schema:
             $ref: "#/definitions/CategoryResponseStore"
@@ -4508,7 +4528,7 @@ definitions:
             type: "number"
             format: "double"
             example: 100
-          width: 
+          width:
             type: "float"
             format: "float"
             example: 50
@@ -4795,7 +4815,7 @@ definitions:
                   type: "number"
                   format: "double"
                   example: 100
-                width: 
+                width:
                   type: "float"
                   format: "float"
                   example: 50
