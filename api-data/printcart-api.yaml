@@ -53,8 +53,6 @@ paths:
           description: "Invalid input"
           schema:
             $ref: "#/definitions/InvalidInput"
-      security:
-        - BasicAuth: []
     get:
       tags:
         - "Account"
@@ -1222,6 +1220,7 @@ paths:
             $ref: "#/definitions/NotFound"
       security:
         - BasicAuth: []
+        - ApiKeyAuth: []
   /images/{imageId}:
     get:
       tags:
@@ -1752,16 +1751,6 @@ paths:
           description: "Unauthenticated"
           schema:
             $ref: "#/definitions/Unauthenticated"
-        # "404":
-        #   description: "Can't find design with id"
-        #   type: "object"
-        #   schema:
-        #     type: "object"
-        #     properties:
-        #       error:
-        #         type: "string"
-        #         description: "Can't find design with id"
-        #         example: "Can't find design with id: cce4dc71-6757-4a1c-a259-6b66a4304c14"
         "404":
           description:
             - "Not found"
@@ -1861,6 +1850,7 @@ paths:
             $ref: "#/definitions/NotFound"
       security:
         - BasicAuth: []
+        - ApiKeyAuth: []
   /designs/count:
     get:
       tags:
@@ -1882,7 +1872,6 @@ paths:
             $ref: "#/definitions/Unauthenticated"
       security:
         - BasicAuth: []
-        - ApiKeyAuth: []
   /templates:
     post:
       tags:
@@ -2205,16 +2194,6 @@ paths:
           description: "Unauthenticated"
           schema:
             $ref: "#/definitions/Unauthenticated"
-        # "404":
-        #   description: "Can't find design with id"
-        #   type: "object"
-        #   schema:
-        #     type: "object"
-        #     properties:
-        #       error:
-        #         type: "string"
-        #         description: "Can't find design with id"
-        #         example: "Can't find design with id: cce4dc71-6757-4a1c-a259-6b66a4304c14"
         "404":
           description:
             - "Not found"
@@ -2314,6 +2293,7 @@ paths:
             $ref: "#/definitions/NotFound"
       security:
         - BasicAuth: []
+        - ApiKeyAuth: []
   /templates/count:
     get:
       tags:
@@ -2335,7 +2315,6 @@ paths:
             $ref: "#/definitions/Unauthenticated"
       security:
         - BasicAuth: []
-        - ApiKeyAuth: []
   /storages:
     post:
       tags:
@@ -2556,7 +2535,6 @@ paths:
             $ref: "#/definitions/Unauthenticated"
       security:
         - BasicAuth: []
-        - ApiKeyAuth: []
   /projects:
     post:
       tags:
@@ -2611,6 +2589,7 @@ paths:
         #         example: "Can't find design with id: cce4dc71-6757-4a1c-a259-6b66a4304c14"
       security:
         - BasicAuth: []
+        - ApiKeyAuth: []
     get:
       tags:
         - "Project"
@@ -2667,7 +2646,6 @@ paths:
             $ref: "#/definitions/NotFound"
       security:
         - BasicAuth: []
-        - ApiKeyAuth: []
     put:
       tags:
         - "Project"
@@ -2793,6 +2771,7 @@ paths:
                 example: "Something went wrong while create projects"
       security:
         - BasicAuth: []
+        - ApiKeyAuth: []
     put:
       tags:
         - "Project"
@@ -2912,7 +2891,6 @@ paths:
             $ref: "#/definitions/NotFound"
       security:
         - BasicAuth: []
-        - ApiKeyAuth: []
   /projects/{projectId}/products:
     get:
       tags:
@@ -2944,7 +2922,6 @@ paths:
             $ref: "#/definitions/NotFound"
       security:
         - BasicAuth: []
-        - ApiKeyAuth: []
   /projects/count:
     get:
       tags:
@@ -2966,7 +2943,6 @@ paths:
             $ref: "#/definitions/Unauthenticated"
       security:
         - BasicAuth: []
-        - ApiKeyAuth: []
   /projects/{projectId}/designs/count:
     get:
       tags:
@@ -2994,7 +2970,6 @@ paths:
             $ref: "#/definitions/Unauthenticated"
       security:
         - BasicAuth: []
-        - ApiKeyAuth: []
   /projects/{projectId}/products/count:
     get:
       tags:
@@ -3022,7 +2997,6 @@ paths:
             $ref: "#/definitions/Unauthenticated"
       security:
         - BasicAuth: []
-        - ApiKeyAuth: []
   /webhooks:
     post:
       tags:
