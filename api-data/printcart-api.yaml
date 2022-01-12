@@ -3341,7 +3341,8 @@ definitions:
       dpi:
         type: "integer"
         format: "int64"
-        example: 50
+        default: 72
+        example: 100
       dimension_unit:
         type: "string"
         default: "cm"
@@ -3414,7 +3415,7 @@ definitions:
       dpi:
         type: "integer"
         format: "int64"
-        example: 50
+        example: 100
       dimension_unit:
         type: "string"
         enum:
