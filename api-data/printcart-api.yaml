@@ -5294,6 +5294,14 @@ definitions:
           - "deleted"
         description: Design status
         example: "accepted"
+      viewport_width:
+        type: "number"
+        format: "float"
+        example: 50.50
+      viewport_height:
+        type: "number"
+        format: "float"
+        example: 50.50
     xml:
       name: "Design"
   DesignUpdate:
@@ -5362,6 +5370,14 @@ definitions:
           - "deleted"
         description: Design status
         example: "accepted"
+      viewport_width:
+        type: "number"
+        format: "float"
+        example: 50.50
+      viewport_height:
+        type: "number"
+        format: "float"
+        example: 50.50
     xml:
       name: "DesignUpdate"
   DesignBatch:
@@ -5467,6 +5483,14 @@ definitions:
                 - "deleted"
               description: Design status
               example: "accepted"
+            viewport_width:
+              type: "number"
+              format: "float"
+              example: 50.50
+            viewport_height:
+              type: "number"
+              format: "float"
+              example: 50.50
     xml:
       name: "DesignBatchUpdate"
   DesignBatchDelete:
@@ -5840,6 +5864,14 @@ definitions:
                   fontWeight:
                     type: "string"
                     example: "normal"
+            viewport_width:
+              type: "number"
+              format: "float"
+              example: 50.50
+            viewport_height:
+              type: "number"
+              format: "float"
+              example: 50.50
             created_at:
               type: "string"
               example: "2021-11-16T08:26:30.000000Z"
@@ -6218,6 +6250,14 @@ definitions:
             fontWeight:
               type: "string"
               example: "normal"
+      viewport_width:
+        type: "number"
+        format: "float"
+        example: 50.50
+      viewport_height:
+        type: "number"
+        format: "float"
+        example: 50.50
       created_at:
         type: "string"
         example: "2021-11-16T08:26:30.000000Z"
@@ -6358,6 +6398,14 @@ definitions:
           - "deleted"
         description: Template status
         example: "accepted"
+      viewport_width:
+        type: "number"
+        format: "float"
+        example: 50.50
+      viewport_height:
+        type: "number"
+        format: "float"
+        example: 50.50
     xml:
       name: "Template"
   TemplateBatch:
@@ -6449,6 +6497,14 @@ definitions:
                 - "deleted"
               description: Template status
               example: "accepted"
+            viewport_width:
+              type: "number"
+              format: "float"
+              example: 50.50
+            viewport_height:
+              type: "number"
+              format: "float"
+              example: 50.50
     xml:
       name: "TemplateBatchUpdate"
   TemplateBatchResponse:
@@ -6769,6 +6825,14 @@ definitions:
                 updated_at:
                   type: "string"
                   example: "2021-11-16T08:26:30.000000Z"
+            viewport_width:
+              type: "number"
+              format: "float"
+              example: 50.50
+            viewport_height:
+              type: "number"
+              format: "float"
+              example: 50.50
             created_at:
               type: "string"
               example: "2021-11-16T08:26:30.000000Z"
