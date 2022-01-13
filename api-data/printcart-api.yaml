@@ -50,9 +50,13 @@ paths:
           schema:
             $ref: "#/definitions/AccountResponseStore"
         "400":
-          description: "Invalid input"
+          description: 
+            - "Invalid input"
+            - "Header Content-Type"
           schema:
-            $ref: "#/definitions/InvalidInput"
+            anyOf:
+              - $ref: "#/definitions/InvalidInput"
+              - $ref: "#/definitions/CreateAccountHeaderContentType"
     get:
       tags:
         - "Account"
@@ -95,9 +99,13 @@ paths:
           schema:
             $ref: "#/definitions/AccountResponseUpdate"
         "400":
-          description: "Invalid input"
+          description: 
+            - "Invalid input"
+            - "Header Content-Type"
           schema:
-            $ref: "#/definitions/InvalidInput"
+            anyOf:
+              - $ref: "#/definitions/InvalidInput"
+              - $ref: "#/definitions/UpdateAccountHeaderContentType"
         "401":
           description: "Unauthenticated"
           schema:
@@ -152,9 +160,13 @@ paths:
           schema:
             $ref: "#/definitions/ProductResponseStore"
         "400":
-          description: "Invalid input"
+          description: 
+            - "Invalid input"
+            - "Header Content-Type"
           schema:
-            $ref: "#/definitions/InvalidInput"
+            anyOf:
+              - $ref: "#/definitions/InvalidInput"
+              - $ref: "#/definitions/CreateProductHeaderContentType"
         "401":
           description: "Unauthenticated"
           schema:
@@ -248,9 +260,13 @@ paths:
           schema:
             $ref: "#/definitions/ProductResponseUpdate"
         "400":
-          description: "Invalid input"
+          description: 
+            - "Invalid input"
+            - "Header Content-Type"
           schema:
-            $ref: "#/definitions/InvalidInput"
+            anyOf:
+              - $ref: "#/definitions/InvalidInput"
+              - $ref: "#/definitions/UpdateProductHeaderContentType"
         "401":
           description: "Unauthenticated"
           schema:
@@ -315,9 +331,13 @@ paths:
           schema:
             $ref: "#/definitions/ProductBatchResponse"
         "400":
-          description: "Invalid input"
+          description: 
+            - "Invalid input"
+            - "Header Content-Type"
           schema:
-            $ref: "#/definitions/InvalidInput"
+            anyOf:
+              - $ref: "#/definitions/InvalidInput"
+              - $ref: "#/definitions/CreateBatchProductHeaderContentType"
         "401":
           description: "Unauthenticated"
           schema:
@@ -371,9 +391,13 @@ paths:
           schema:
             $ref: "#/definitions/ProductBatchUpdateResponse"
         "400":
-          description: "Invalid input"
+          description: 
+            - "Invalid input"
+            - "Header Content-Type"
           schema:
-            $ref: "#/definitions/InvalidInput"
+            anyOf:
+              - $ref: "#/definitions/InvalidInput"
+              - $ref: "#/definitions/UpdateBatchProductHeaderContentType"
         "401":
           description: "Unauthenticated"
           schema:
@@ -430,6 +454,10 @@ paths:
           description: "Deleted successfully"
           schema:
             $ref: "#/definitions/Deleted"
+        "400":
+          description: "Header Content-Type"
+          schema:
+            $ref: "#/definitions/DeleteBatchProductHeaderContentType"
         "401":
           description: "Unauthenticated"
           schema:
@@ -604,9 +632,13 @@ paths:
           schema:
             $ref: "#/definitions/SideResponseStore"
         "400":
-          description: "Invalid input"
+          description: 
+            - "Invalid input"
+            - "Header Content-Type"
           schema:
-            $ref: "#/definitions/InvalidInput"
+            anyOf:
+              - $ref: "#/definitions/InvalidInput"
+              - $ref: "#/definitions/CreateSideHeaderContentType"
         "401":
           description: "Unauthenticated"
           schema:
@@ -703,9 +735,13 @@ paths:
           schema:
             $ref: "#/definitions/SideResponseUpdate"
         "400":
-          description: "Invalid input"
+          description: 
+            - "Invalid input"
+            - "Header Content-Type"
           schema:
-            $ref: "#/definitions/InvalidInput"
+            anyOf:
+              - $ref: "#/definitions/InvalidInput"
+              - $ref: "#/definitions/UpdateSideHeaderContentType"
         "401":
           description: "Unauthenticated"
           schema:
@@ -771,9 +807,13 @@ paths:
           schema:
             $ref: "#/definitions/SideBatchResponse"
         "400":
-          description: "Invalid input"
+          description: 
+            - "Invalid input"
+            - "Header Content-Type"
           schema:
-            $ref: "#/definitions/InvalidInput"
+            anyOf:
+              - $ref: "#/definitions/InvalidInput"
+              - $ref: "#/definitions/CreateBatchSideHeaderContentType"
         "401":
           description: "Unauthenticated"
           schema:
@@ -827,14 +867,18 @@ paths:
           schema:
             $ref: "#/definitions/SideBatchUpdate"
       responses:
-        "400":
-          description: "Invalid input"
-          schema:
-            $ref: "#/definitions/InvalidInput"
         "200":
           description: "Updated successfully"
           schema:
             $ref: "#/definitions/SideBatchUpdateResponse"
+        "400":
+          description: 
+            - "Invalid input"
+            - "Header Content-Type"
+          schema:
+            anyOf:
+              - $ref: "#/definitions/InvalidInput"
+              - $ref: "#/definitions/UpdateBatchSideHeaderContentType"
         "401":
           description: "Unauthenticated"
           schema:
@@ -893,6 +937,10 @@ paths:
           description: "Deleted successfully"
           schema:
             $ref: "#/definitions/Deleted"
+        "400":
+          description: "Header Content-Type"
+          schema:
+            $ref: "#/definitions/DeleteBatchSideHeaderContentType"
         "401":
           description: "Unauthenticated"
           schema:
@@ -982,9 +1030,13 @@ paths:
           schema:
             $ref: "#/definitions/FontResponseStore"
         "400":
-          description: "Invalid input"
+          description: 
+            - "Invalid input"
+            - "Header Content-Type"
           schema:
-            $ref: "#/definitions/InvalidInput"
+            anyOf:
+              - $ref: "#/definitions/InvalidInput"
+              - $ref: "#/definitions/CreateFontHeaderContentType"
         "401":
           description: "Unauthenticated"
           schema:
@@ -1074,9 +1126,13 @@ paths:
           schema:
             $ref: "#/definitions/FontResponseUpdate"
         "400":
-          description: "Invalid input"
+          description: 
+            - "Invalid input"
+            - "Header Content-Type"
           schema:
-            $ref: "#/definitions/InvalidInput"
+            anyOf:
+              - $ref: "#/definitions/InvalidInput"
+              - $ref: "#/definitions/UpdateFontHeaderContentType"
         "401":
           description: "Unauthenticated"
           schema:
@@ -2342,9 +2398,13 @@ paths:
           schema:
             $ref: "#/definitions/CategoryResponseStore"
         "400":
-          description: "Invalid input"
+          description: 
+            - "Invalid input"
+            - "Header Content-Type"
           schema:
-            $ref: "#/definitions/InvalidInput"
+            anyOf:
+              - $ref: "#/definitions/InvalidInput"
+              - $ref: "#/definitions/CreateStorageHeaderContentType"
         "401":
           description: "Unauthenticated"
           schema:
@@ -2441,9 +2501,13 @@ paths:
           schema:
             $ref: "#/definitions/CategoryResponseUpdate"
         "400":
-          description: "Invalid input"
+          description: 
+            - "Invalid input"
+            - "Header Content-Type"
           schema:
-            $ref: "#/definitions/InvalidInput"
+            anyOf:
+              - $ref: "#/definitions/InvalidInput"
+              - $ref: "#/definitions/UpdateStorageHeaderContentType"
         "401":
           description: "Unauthenticated"
           schema:
@@ -2560,11 +2624,15 @@ paths:
         "201":
           description: "Created successfully"
           schema:
-            $ref: "#/definitions/ProjectResponseStore"
+            $ref: "#/definitions/ProjectResponseStore" 
         "400":
-          description: "Invalid input"
+          description: 
+            - "Invalid input"
+            - "Header Content-Type"
           schema:
-            $ref: "#/definitions/InvalidInput"
+            anyOf:
+              - $ref: "#/definitions/InvalidInput"
+              - $ref: "#/definitions/CreateProjectHeaderContentType"
         # "400":
         #   description: "Design uuid: cce4dc71-6757-4a1c-a259-6b66a4304c14 already belong to another project"
         #   type: "object"
@@ -2676,9 +2744,13 @@ paths:
           schema:
             $ref: "#/definitions/ProjectResponseUpdate"
         "400":
-          description: "Invalid input"
+          description: 
+            - "Invalid input"
+            - "Header Content-Type"
           schema:
-            $ref: "#/definitions/InvalidInput"
+            anyOf:
+              - $ref: "#/definitions/InvalidInput"
+              - $ref: "#/definitions/UpdateProjectHeaderContentType"
         "401":
           description: "Unauthenticated"
           schema:
@@ -2743,9 +2815,13 @@ paths:
           schema:
             $ref: "#/definitions/ProjectBatchResponse"
         "400":
-          description: "Invalid input"
+          description: 
+            - "Invalid input"
+            - "Header Content-Type"
           schema:
-            $ref: "#/definitions/InvalidInput"
+            anyOf:
+              - $ref: "#/definitions/InvalidInput"
+              - $ref: "#/definitions/CreateBatchProjectHeaderContentType"
         "401":
           description: "Unauthenticated"
           schema:
@@ -2796,9 +2872,13 @@ paths:
           schema:
             $ref: "#/definitions/ProjectBatchUpdateResponse"
         "400":
-          description: "Invalid input"
+          description: 
+            - "Invalid input"
+            - "Header Content-Type"
           schema:
-            $ref: "#/definitions/InvalidInput"
+            anyOf:
+              - $ref: "#/definitions/InvalidInput"
+              - $ref: "#/definitions/UpdateBatchProjectHeaderContentType"
         "401":
           description: "Unauthenticated"
           schema:
@@ -2851,6 +2931,10 @@ paths:
           description: "Deleted successfully"
           schema:
             $ref: "#/definitions/Deleted"
+        "400":
+          description: "Header Content-Type"
+          schema:
+            $ref: "#/definitions/DeleteBatchProjectHeaderContentType"
         "401":
           description: "Unauthenticated"
           schema:
@@ -3023,9 +3107,13 @@ paths:
           schema:
             $ref: "#/definitions/WebhookResponseStore"
         "400":
-          description: "Invalid input"
+          description: 
+            - "Invalid input"
+            - "Header Content-Type"
           schema:
-            $ref: "#/definitions/InvalidInput"
+            anyOf:
+              - $ref: "#/definitions/InvalidInput"
+              - $ref: "#/definitions/CreateWebhookHeaderContentType"
         "401":
           description: "Unauthenticated"
           schema:
@@ -3116,9 +3204,13 @@ paths:
           schema:
             $ref: "#/definitions/WebhookResponseUpdate"
         "400":
-          description: "Invalid input"
+          description: 
+            - "Invalid input"
+            - "Header Content-Type"
           schema:
-            $ref: "#/definitions/InvalidInput"
+            anyOf:
+              - $ref: "#/definitions/InvalidInput"
+              - $ref: "#/definitions/UpdateWebhookHeaderContentType"
         "401":
           description: "Unauthenticated"
           schema:
@@ -3874,133 +3966,160 @@ definitions:
       include_overlay:
         type: "boolean"
         example: true
-      product_width:
-        type: "float"
-        format: "float"
-        example: 50
-      product_height:
-        type: "float"
-        format: "float"
-        example: 50
-      real_width:
-        type: "float"
-        format: "float"
-        example: 50
-      real_height:
-        type: "float"
-        format: "float"
-        example: 50
-      real_top:
-        type: "float"
-        format: "float"
-        example: 50
-      real_left:
-        type: "float"
-        format: "float"
-        example: 50
-      area_design_width:
-        type: "float"
-        format: "float"
-        example: 50
-      area_design_height:
-        type: "float"
-        format: "float"
-        example: 50
-      area_design_left:
-        type: "float"
-        format: "float"
-        example: 50
-      area_design_top:
-        type: "float"
-        format: "float"
-        example: 50
+      product_size:
+        type: "object"
+        properties: 
+          product_input:
+            type: "number"
+            format: "double"
+            example: 100
+          product_width:
+            type: "float"
+            format: "float"
+            example: 50
+          product_height:
+            type: "float"
+            format: "float"
+            example: 50
+      design_size: 
+        type: "object"
+        properties:
+          width:
+            type: "float"
+            format: "float"
+            example: 50
+          height:
+            type: "float"
+            format: "float"
+            example: 50
+          top:
+            type: "float"
+            format: "float"
+            example: 50
+          left:
+            type: "float"
+            format: "float"
+            example: 50
+      design_position:
+        type: "object"
+        properties:
+          width:
+            type: "float"
+            format: "float"
+            example: 50
+          height:
+            type: "float"
+            format: "float"
+            example: 50
+          left:
+            type: "float"
+            format: "float"
+            example: 50
+          top:
+            type: "float"
+            format: "float"
+            example: 50
       show_bleed:
         type: "boolean"
         example: true
-      bleed_top_bottom:
-        type: "float"
-        format: "float"
-        example: 50.50
-      bleed_left_right:
-        type: "float"
-        format: "float"
-        example: 50.50
+      bleed_size:
+        type: "object"
+        properties:
+          top_bottom:
+            type: "float"
+            format: "float"
+            example: 50.50
+          left_right:
+            type: "float"
+            format: "float"
+            example: 50.50
       show_safe_zone:
         type: "boolean"
         example: true
-      margin_top_bottom:
-        type: "float"
-        format: "float"
-        example: 50
-      margin_left_right:
-        type: "float"
-        format: "float"
-        example: 50
+      margin_size:
+        type: "object"
+        properties:
+          top_bottom:
+            type: "float"
+            format: "float"
+            example: 50
+          left_right:
+            type: "float"
+            format: "float"
+            example: 50
       bg_img_id:
         type: "string"
         description: Image ID
         example: "e8304b84-a015-3bd4-a7d3-7a978f465df2"
-      background_size_width:
-        type: "number"
-        format: "double"
-        example: 100
-      background_size_height:
-        type: "number"
-        format: "double"
-        example: 100
-      bleed_position_width:
-        type: "number"
-        format: "double"
-        example: 100
-      bleed_position_height:
-        type: "number"
-        format: "double"
-        example: 100
-      bleed_position_top:
-        type: "number"
-        format: "double"
-        example: 100
-      bleed_position_left:
-        type: "number"
-        format: "double"
-        example: 100
-      margin_position_width:
-        type: "number"
-        format: "double"
-        example: 100
-      margin_position_height:
-        type: "number"
-        format: "double"
-        example: 100
-      margin_position_top:
-        type: "number"
-        format: "double"
-        example: 100
-      margin_position_left:
-        type: "number"
-        format: "double"
-        example: 100
-      measure_size_width:
-        type: "number"
-        format: "double"
-        example: 100
-      measure_size_height:
-        type: "number"
-        format: "double"
-        example: 100
-      measure_size_top:
-        type: "number"
-        format: "double"
-        example: 100
-      measure_size_left:
-        type: "number"
-        format: "double"
-        example: 100
+      background_size:
+        type: "object"
+        properties:
+          width:
+            type: "number"
+            format: "double"
+            example: 100
+          height:
+            type: "number"
+            format: "double"
+            example: 100
+      bleed_position:
+        type: "object"
+        properties:
+          width:
+            type: "number"
+            format: "double"
+            example: 100
+          height:
+            type: "number"
+            format: "double"
+            example: 100
+          top:
+            type: "number"
+            format: "double"
+            example: 100
+          left:
+            type: "number"
+            format: "double"
+            example: 100
+      margin_position:
+        type: "object"
+        properties:
+          width:
+            type: "number"
+            format: "double"
+            example: 100
+          height:
+            type: "number"
+            format: "double"
+            example: 100
+          top:
+            type: "number"
+            format: "double"
+            example: 100
+          left:
+            type: "number"
+            format: "double"
+            example: 100
+      measure_size:
+        type: "object"
+        properties:
+          width:
+            type: "number"
+            format: "double"
+            example: 100
+          height:
+            type: "number"
+            format: "double"
+            example: 100
+          top:
+            type: "number"
+            format: "double"
+            example: 100
+          left:
+            type: "number"
+            format: "double"
+            example: 100
       ratio_image:
-        type: "number"
-        format: "double"
-        example: 100
-      product_input:
         type: "number"
         format: "double"
         example: 100
@@ -4063,133 +4182,160 @@ definitions:
       include_overlay:
         type: "boolean"
         example: true
-      product_width:
-        type: "float"
-        format: "float"
-        example: 50
-      product_height:
-        type: "float"
-        format: "float"
-        example: 50
-      real_width:
-        type: "float"
-        format: "float"
-        example: 50
-      real_height:
-        type: "float"
-        format: "float"
-        example: 50
-      real_top:
-        type: "float"
-        format: "float"
-        example: 50
-      real_left:
-        type: "float"
-        format: "float"
-        example: 50
-      area_design_width:
-        type: "float"
-        format: "float"
-        example: 50
-      area_design_height:
-        type: "float"
-        format: "float"
-        example: 50
-      area_design_left:
-        type: "float"
-        format: "float"
-        example: 50
-      area_design_top:
-        type: "float"
-        format: "float"
-        example: 50
+      product_size:
+        type: "object"
+        properties: 
+          product_input:
+            type: "number"
+            format: "double"
+            example: 100
+          product_width:
+            type: "float"
+            format: "float"
+            example: 50
+          product_height:
+            type: "float"
+            format: "float"
+            example: 50
+      design_size: 
+        type: "object"
+        properties:
+          width:
+            type: "float"
+            format: "float"
+            example: 50
+          height:
+            type: "float"
+            format: "float"
+            example: 50
+          top:
+            type: "float"
+            format: "float"
+            example: 50
+          left:
+            type: "float"
+            format: "float"
+            example: 50
+      design_position:
+        type: "object"
+        properties:
+          width:
+            type: "float"
+            format: "float"
+            example: 50
+          height:
+            type: "float"
+            format: "float"
+            example: 50
+          left:
+            type: "float"
+            format: "float"
+            example: 50
+          top:
+            type: "float"
+            format: "float"
+            example: 50
       show_bleed:
         type: "boolean"
         example: true
-      bleed_top_bottom:
-        type: "float"
-        format: "float"
-        example: 50.50
-      bleed_left_right:
-        type: "float"
-        format: "float"
-        example: 50.50
+      bleed_size:
+        type: "object"
+        properties:
+          top_bottom:
+            type: "float"
+            format: "float"
+            example: 50.50
+          left_right:
+            type: "float"
+            format: "float"
+            example: 50.50
       show_safe_zone:
         type: "boolean"
         example: true
-      margin_top_bottom:
-        type: "float"
-        format: "float"
-        example: 50
-      margin_left_right:
-        type: "float"
-        format: "float"
-        example: 50
+      margin_size:
+        type: "object"
+        properties:
+          top_bottom:
+            type: "float"
+            format: "float"
+            example: 50
+          left_right:
+            type: "float"
+            format: "float"
+            example: 50
       bg_img_id:
         type: "string"
         description: Image ID
         example: "e8304b84-a015-3bd4-a7d3-7a978f465df2"
-      background_size_width:
-        type: "number"
-        format: "double"
-        example: 100
-      background_size_height:
-        type: "number"
-        format: "double"
-        example: 100
-      bleed_position_width:
-        type: "number"
-        format: "double"
-        example: 100
-      bleed_position_height:
-        type: "number"
-        format: "double"
-        example: 100
-      bleed_position_top:
-        type: "number"
-        format: "double"
-        example: 100
-      bleed_position_left:
-        type: "number"
-        format: "double"
-        example: 100
-      margin_position_width:
-        type: "number"
-        format: "double"
-        example: 100
-      margin_position_height:
-        type: "number"
-        format: "double"
-        example: 100
-      margin_position_top:
-        type: "number"
-        format: "double"
-        example: 100
-      margin_position_left:
-        type: "number"
-        format: "double"
-        example: 100
-      measure_size_width:
-        type: "number"
-        format: "double"
-        example: 100
-      measure_size_height:
-        type: "number"
-        format: "double"
-        example: 100
-      measure_size_top:
-        type: "number"
-        format: "double"
-        example: 100
-      measure_size_left:
-        type: "number"
-        format: "double"
-        example: 100
+      background_size:
+        type: "object"
+        properties:
+          width:
+            type: "number"
+            format: "double"
+            example: 100
+          height:
+            type: "number"
+            format: "double"
+            example: 100
+      bleed_position:
+        type: "object"
+        properties:
+          width:
+            type: "number"
+            format: "double"
+            example: 100
+          height:
+            type: "number"
+            format: "double"
+            example: 100
+          top:
+            type: "number"
+            format: "double"
+            example: 100
+          left:
+            type: "number"
+            format: "double"
+            example: 100
+      margin_position:
+        type: "object"
+        properties:
+          width:
+            type: "number"
+            format: "double"
+            example: 100
+          height:
+            type: "number"
+            format: "double"
+            example: 100
+          top:
+            type: "number"
+            format: "double"
+            example: 100
+          left:
+            type: "number"
+            format: "double"
+            example: 100
+      measure_size:
+        type: "object"
+        properties:
+          width:
+            type: "number"
+            format: "double"
+            example: 100
+          height:
+            type: "number"
+            format: "double"
+            example: 100
+          top:
+            type: "number"
+            format: "double"
+            example: 100
+          left:
+            type: "number"
+            format: "double"
+            example: 100
       ratio_image:
-        type: "number"
-        format: "double"
-        example: 100
-      product_input:
         type: "number"
         format: "double"
         example: 100
@@ -4294,133 +4440,160 @@ definitions:
             include_overlay:
               type: "boolean"
               example: true
-            product_width:
-              type: "float"
-              format: "float"
-              example: 50
-            product_height:
-              type: "float"
-              format: "float"
-              example: 50
-            real_width:
-              type: "float"
-              format: "float"
-              example: 50
-            real_height:
-              type: "float"
-              format: "float"
-              example: 50
-            real_top:
-              type: "float"
-              format: "float"
-              example: 50
-            real_left:
-              type: "float"
-              format: "float"
-              example: 50
-            area_design_width:
-              type: "float"
-              format: "float"
-              example: 50
-            area_design_height:
-              type: "float"
-              format: "float"
-              example: 50
-            area_design_left:
-              type: "float"
-              format: "float"
-              example: 50
-            area_design_top:
-              type: "float"
-              format: "float"
-              example: 50
+            product_size:
+              type: "object"
+              properties: 
+                product_input:
+                  type: "number"
+                  format: "double"
+                  example: 100
+                product_width:
+                  type: "float"
+                  format: "float"
+                  example: 50
+                product_height:
+                  type: "float"
+                  format: "float"
+                  example: 50
+            design_size: 
+              type: "object"
+              properties:
+                width:
+                  type: "float"
+                  format: "float"
+                  example: 50
+                height:
+                  type: "float"
+                  format: "float"
+                  example: 50
+                top:
+                  type: "float"
+                  format: "float"
+                  example: 50
+                left:
+                  type: "float"
+                  format: "float"
+                  example: 50
+            design_position:
+              type: "object"
+              properties:
+                width:
+                  type: "float"
+                  format: "float"
+                  example: 50
+                height:
+                  type: "float"
+                  format: "float"
+                  example: 50
+                left:
+                  type: "float"
+                  format: "float"
+                  example: 50
+                top:
+                  type: "float"
+                  format: "float"
+                  example: 50
             show_bleed:
               type: "boolean"
               example: true
-            bleed_top_bottom:
-              type: "float"
-              format: "float"
-              example: 50.50
-            bleed_left_right:
-              type: "float"
-              format: "float"
-              example: 50.50
+            bleed_size:
+              type: "object"
+              properties:
+                top_bottom:
+                  type: "float"
+                  format: "float"
+                  example: 50.50
+                left_right:
+                  type: "float"
+                  format: "float"
+                  example: 50.50
             show_safe_zone:
               type: "boolean"
               example: true
-            margin_top_bottom:
-              type: "float"
-              format: "float"
-              example: 50
-            margin_left_right:
-              type: "float"
-              format: "float"
-              example: 50
+            margin_size:
+              type: "object"
+              properties:
+                top_bottom:
+                  type: "float"
+                  format: "float"
+                  example: 50
+                left_right:
+                  type: "float"
+                  format: "float"
+                  example: 50
             bg_img_id:
               type: "string"
               description: Image ID
               example: "e8304b84-a015-3bd4-a7d3-7a978f465df2"
-            background_size_width:
-              type: "number"
-              format: "double"
-              example: 100
-            background_size_height:
-              type: "number"
-              format: "double"
-              example: 100
-            bleed_position_width:
-              type: "number"
-              format: "double"
-              example: 100
-            bleed_position_height:
-              type: "number"
-              format: "double"
-              example: 100
-            bleed_position_top:
-              type: "number"
-              format: "double"
-              example: 100
-            bleed_position_left:
-              type: "number"
-              format: "double"
-              example: 100
-            margin_position_width:
-              type: "number"
-              format: "double"
-              example: 100
-            margin_position_height:
-              type: "number"
-              format: "double"
-              example: 100
-            margin_position_top:
-              type: "number"
-              format: "double"
-              example: 100
-            margin_position_left:
-              type: "number"
-              format: "double"
-              example: 100
-            measure_size_width:
-              type: "number"
-              format: "double"
-              example: 100
-            measure_size_height:
-              type: "number"
-              format: "double"
-              example: 100
-            measure_size_top:
-              type: "number"
-              format: "double"
-              example: 100
-            measure_size_left:
-              type: "number"
-              format: "double"
-              example: 100
+            background_size:
+              type: "object"
+              properties:
+                width:
+                  type: "number"
+                  format: "double"
+                  example: 100
+                height:
+                  type: "number"
+                  format: "double"
+                  example: 100
+            bleed_position:
+              type: "object"
+              properties:
+                width:
+                  type: "number"
+                  format: "double"
+                  example: 100
+                height:
+                  type: "number"
+                  format: "double"
+                  example: 100
+                top:
+                  type: "number"
+                  format: "double"
+                  example: 100
+                left:
+                  type: "number"
+                  format: "double"
+                  example: 100
+            margin_position:
+              type: "object"
+              properties:
+                width:
+                  type: "number"
+                  format: "double"
+                  example: 100
+                height:
+                  type: "number"
+                  format: "double"
+                  example: 100
+                top:
+                  type: "number"
+                  format: "double"
+                  example: 100
+                left:
+                  type: "number"
+                  format: "double"
+                  example: 100
+            measure_size:
+              type: "object"
+              properties:
+                width:
+                  type: "number"
+                  format: "double"
+                  example: 100
+                height:
+                  type: "number"
+                  format: "double"
+                  example: 100
+                top:
+                  type: "number"
+                  format: "double"
+                  example: 100
+                left:
+                  type: "number"
+                  format: "double"
+                  example: 100
             ratio_image:
-              type: "number"
-              format: "double"
-              example: 100
-            product_input:
               type: "number"
               format: "double"
               example: 100
@@ -7514,6 +7687,213 @@ definitions:
         example: "Deleted successfully"
     xml:
       name: "Deleted"
+  CreateAccountHeaderContentType:
+    type: "object"
+    properties:
+      message:
+        type: "string"
+        description: "Can not create account new with your Content Type"
+        example: "Can not create account new with your Content Type"
+    xml:
+      name: CreateAccountHeaderContentType
+  UpdateAccountHeaderContentType:
+    type: "object"
+    properties:
+      message:
+        type: "string"
+        description: "Can not update account with your Content Type"
+        example: "Can not update account with your Content Type"
+    xml:
+      name: UpdateAccountHeaderContentType
+  CreateProductHeaderContentType:
+    type: "object"
+    properties:
+      message:
+        type: "string"
+        description: "Can not create product new with your Content Type"
+        example: "Can not create product new with your Content Type"
+    xml:
+      name: CreateProductHeaderContentType
+  CreateBatchProductHeaderContentType:
+    type: "object"
+    properties:
+      message:
+        type: "string"
+        description: "Can not create products new with your Content Type"
+        example: "Can not create products new with your Content Type"
+    xml:
+      name: CreateBatchProductHeaderContentType
+  UpdateProductHeaderContentType:
+    type: "object"
+    properties:
+      message:
+        type: "string"
+        description: "Can not update product with your Content Type"
+        example: "Can not update product with your Content Type"
+    xml:
+      name: UpdateProductHeaderContentType
+  UpdateBatchProductHeaderContentType:
+    type: "object"
+    properties:
+      message:
+        type: "string"
+        description: "Can not update products with your Content Type"
+        example: "Can not update products with your Content Type"
+    xml:
+      name: UpdateBatchProductHeaderContentType
+  DeleteBatchProductHeaderContentType:
+    type: "object"
+    properties:
+      message:
+        type: "string"
+        description: "Can not delete products with your Content Type"
+        example: "Can not delete products with your Content Type"
+    xml:
+      name: DeleteBatchProductHeaderContentType
+  CreateStorageHeaderContentType:
+    type: "object"
+    properties:
+      message:
+        type: "string"
+        description: "Can not create storage new with your Content Type"
+        example: "Can not create storage new with your Content Type"
+    xml:
+      name: CreateStorageHeaderContentType
+  UpdateStorageHeaderContentType:
+    type: "object"
+    properties:
+      message:
+        type: "string"
+        description: "Can not update storage with your Content Type"
+        example: "Can not update storage with your Content Type"
+    xml:
+      name: UpdateStorageHeaderContentType
+  CreateFontHeaderContentType:
+    type: "object"
+    properties:
+      message:
+        type: "string"
+        description: "Can not create font new with your Content Type"
+        example: "Can not create font new with your Content Type"
+    xml:
+      name: CreateFontHeaderContentType
+  UpdateFontHeaderContentType:
+    type: "object"
+    properties:
+      message:
+        type: "string"
+        description: "Can not update font with your Content Type"
+        example: "Can not update font with your Content Type"
+    xml:
+      name: UpdateFontHeaderContentType
+  CreateProjectHeaderContentType:
+    type: "object"
+    properties:
+      message:
+        type: "string"
+        description: "Can not create project new with your Content Type"
+        example: "Can not create project new with your Content Type"
+    xml:
+      name: CreateProjectHeaderContentType
+  CreateBatchProjectHeaderContentType:
+    type: "object"
+    properties:
+      message:
+        type: "string"
+        description: "Can not create projects new with your Content Type"
+        example: "Can not create projects new with your Content Type"
+    xml:
+      name: CreateBatchProjectHeaderContentType
+  UpdateProjectHeaderContentType:
+    type: "object"
+    properties:
+      message:
+        type: "string"
+        description: "Can not update project with your Content Type"
+        example: "Can not update project with your Content Type"
+    xml:
+      name: UpdateProjectHeaderContentType
+  UpdateBatchProjectHeaderContentType:
+    type: "object"
+    properties:
+      message:
+        type: "string"
+        description: "Can not update projects with your Content Type"
+        example: "Can not update projects with your Content Type"
+    xml:
+      name: UpdateBatchProjectHeaderContentType
+  DeleteBatchProjectHeaderContentType:
+    type: "object"
+    properties:
+      message:
+        type: "string"
+        description: "Can not delete projects with your Content Type"
+        example: "Can not delete projects with your Content Type"
+    xml:
+      name: DeleteBatchProjectHeaderContentType
+  CreateSideHeaderContentType:
+    type: "object"
+    properties:
+      message:
+        type: "string"
+        description: "Can not create side new with your Content Type"
+        example: "Can not create side new with your Content Type"
+    xml:
+      name: CreateSideHeaderContentType
+  CreateBatchSideHeaderContentType:
+    type: "object"
+    properties:
+      message:
+        type: "string"
+        description: "Can not create sides new with your Content Type"
+        example: "Can not create sides new with your Content Type"
+    xml:
+      name: CreateBatchSideHeaderContentType
+  UpdateSideHeaderContentType:
+    type: "object"
+    properties:
+      message:
+        type: "string"
+        description: "Can not update side with your Content Type"
+        example: "Can not update side with your Content Type"
+    xml:
+      name: UpdateSideHeaderContentType
+  UpdateBatchSideHeaderContentType:
+    type: "object"
+    properties:
+      message:
+        type: "string"
+        description: "Can not update sides with your Content Type"
+        example: "Can not update sides with your Content Type"
+    xml:
+      name: UpdateBatchSideHeaderContentType
+  DeleteBatchSideHeaderContentType:
+    type: "object"
+    properties:
+      message:
+        type: "string"
+        description: "Can not delete sides with your Content Type"
+        example: "Can not delete sides with your Content Type"
+    xml:
+      name: DeleteBatchSideHeaderContentType
+  CreateWebhookHeaderContentType:
+    type: "object"
+    properties:
+      message:
+        type: "string"
+        description: "Can not create webhook new with your Content Type"
+        example: "Can not create webhook new with your Content Type"
+    xml:
+      name: CreateWebhookHeaderContentType
+  UpdateWebhookHeaderContentType:
+    type: "object"
+    properties:
+      message:
+        type: "string"
+        description: "Can not update webhook with your Content Type"
+        example: "Can not update webhook with your Content Type"
+    xml:
+      name: UpdateWebhookHeaderContentType
 externalDocs:
   description: "Find out more about Swagger"
   url: "http://swagger.io"
