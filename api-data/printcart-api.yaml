@@ -1543,6 +1543,7 @@ paths:
             $ref: "#/definitions/NotFound"
       security:
         - BasicAuth: []
+        - ApiKeyAuth: []
     put:
       tags:
         - "Design"
@@ -1986,6 +1987,7 @@ paths:
             $ref: "#/definitions/NotFound"
       security:
         - BasicAuth: []
+        - ApiKeyAuth: []
     put:
       tags:
         - "Template"
@@ -2614,7 +2616,6 @@ paths:
             $ref: "#/definitions/NotFound"
       security:
         - BasicAuth: []
-        - ApiKeyAuth: []
   /projects/{projectId}:
     get:
       tags:
