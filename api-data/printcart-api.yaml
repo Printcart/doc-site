@@ -50,13 +50,9 @@ paths:
           schema:
             $ref: "#/definitions/AccountResponseStore"
         "400":
-          description: 
-            - "Invalid input"
-            - "Header Content-Type"
+          description: "Invalid input"
           schema:
-            anyOf:
-              - $ref: "#/definitions/InvalidInput"
-              - $ref: "#/definitions/CreateAccountHeaderContentType"
+            $ref: "#/definitions/InvalidInput"
     get:
       tags:
         - "Account"
@@ -99,13 +95,9 @@ paths:
           schema:
             $ref: "#/definitions/AccountResponseUpdate"
         "400":
-          description: 
-            - "Invalid input"
-            - "Header Content-Type"
+          description: "Invalid input"
           schema:
-            anyOf:
-              - $ref: "#/definitions/InvalidInput"
-              - $ref: "#/definitions/UpdateAccountHeaderContentType"
+           $ref: "#/definitions/InvalidInput"
         "401":
           description: "Unauthenticated"
           schema:
@@ -160,13 +152,9 @@ paths:
           schema:
             $ref: "#/definitions/ProductResponseStore"
         "400":
-          description: 
-            - "Invalid input"
-            - "Header Content-Type"
+          description: "Invalid input"
           schema:
-            anyOf:
-              - $ref: "#/definitions/InvalidInput"
-              - $ref: "#/definitions/CreateProductHeaderContentType"
+            $ref: "#/definitions/InvalidInput"
         "401":
           description: "Unauthenticated"
           schema:
@@ -260,13 +248,9 @@ paths:
           schema:
             $ref: "#/definitions/ProductResponseUpdate"
         "400":
-          description: 
-            - "Invalid input"
-            - "Header Content-Type"
+          description: "Invalid input"
           schema:
-            anyOf:
-              - $ref: "#/definitions/InvalidInput"
-              - $ref: "#/definitions/UpdateProductHeaderContentType"
+            $ref: "#/definitions/InvalidInput"
         "401":
           description: "Unauthenticated"
           schema:
@@ -331,13 +315,9 @@ paths:
           schema:
             $ref: "#/definitions/ProductBatchResponse"
         "400":
-          description: 
-            - "Invalid input"
-            - "Header Content-Type"
+          description: "Invalid input"
           schema:
-            anyOf:
-              - $ref: "#/definitions/InvalidInput"
-              - $ref: "#/definitions/CreateBatchProductHeaderContentType"
+            $ref: "#/definitions/InvalidInput"
         "401":
           description: "Unauthenticated"
           schema:
@@ -391,13 +371,9 @@ paths:
           schema:
             $ref: "#/definitions/ProductBatchUpdateResponse"
         "400":
-          description: 
-            - "Invalid input"
-            - "Header Content-Type"
+          description: "Invalid input"
           schema:
-            anyOf:
-              - $ref: "#/definitions/InvalidInput"
-              - $ref: "#/definitions/UpdateBatchProductHeaderContentType"
+            $ref: "#/definitions/InvalidInput"
         "401":
           description: "Unauthenticated"
           schema:
@@ -454,10 +430,6 @@ paths:
           description: "Deleted successfully"
           schema:
             $ref: "#/definitions/Deleted"
-        "400":
-          description: "Header Content-Type"
-          schema:
-            $ref: "#/definitions/DeleteBatchProductHeaderContentType"
         "401":
           description: "Unauthenticated"
           schema:
@@ -1030,13 +1002,9 @@ paths:
           schema:
             $ref: "#/definitions/FontResponseStore"
         "400":
-          description: 
-            - "Invalid input"
-            - "Header Content-Type"
+          description: "Invalid input"
           schema:
-            anyOf:
-              - $ref: "#/definitions/InvalidInput"
-              - $ref: "#/definitions/CreateFontHeaderContentType"
+            $ref: "#/definitions/InvalidInput"
         "401":
           description: "Unauthenticated"
           schema:
@@ -1126,13 +1094,9 @@ paths:
           schema:
             $ref: "#/definitions/FontResponseUpdate"
         "400":
-          description: 
-            - "Invalid input"
-            - "Header Content-Type"
+          description: "Invalid input"
           schema:
-            anyOf:
-              - $ref: "#/definitions/InvalidInput"
-              - $ref: "#/definitions/UpdateFontHeaderContentType"
+            $ref: "#/definitions/InvalidInput"
         "401":
           description: "Unauthenticated"
           schema:
@@ -2398,13 +2362,9 @@ paths:
           schema:
             $ref: "#/definitions/CategoryResponseStore"
         "400":
-          description: 
-            - "Invalid input"
-            - "Header Content-Type"
+          description: "Invalid input"
           schema:
-            anyOf:
-              - $ref: "#/definitions/InvalidInput"
-              - $ref: "#/definitions/CreateStorageHeaderContentType"
+            $ref: "#/definitions/InvalidInput"
         "401":
           description: "Unauthenticated"
           schema:
@@ -2501,13 +2461,9 @@ paths:
           schema:
             $ref: "#/definitions/CategoryResponseUpdate"
         "400":
-          description: 
-            - "Invalid input"
-            - "Header Content-Type"
+          description: "Invalid input"
           schema:
-            anyOf:
-              - $ref: "#/definitions/InvalidInput"
-              - $ref: "#/definitions/UpdateStorageHeaderContentType"
+            $ref: "#/definitions/InvalidInput"
         "401":
           description: "Unauthenticated"
           schema:
@@ -2626,13 +2582,9 @@ paths:
           schema:
             $ref: "#/definitions/ProjectResponseStore" 
         "400":
-          description: 
-            - "Invalid input"
-            - "Header Content-Type"
+          description: "Invalid input"
           schema:
-            anyOf:
-              - $ref: "#/definitions/InvalidInput"
-              - $ref: "#/definitions/CreateProjectHeaderContentType"
+            $ref: "#/definitions/InvalidInput"
         # "400":
         #   description: "Design uuid: cce4dc71-6757-4a1c-a259-6b66a4304c14 already belong to another project"
         #   type: "object"
@@ -2744,13 +2696,9 @@ paths:
           schema:
             $ref: "#/definitions/ProjectResponseUpdate"
         "400":
-          description: 
-            - "Invalid input"
-            - "Header Content-Type"
+          description: "Invalid input"
           schema:
-            anyOf:
-              - $ref: "#/definitions/InvalidInput"
-              - $ref: "#/definitions/UpdateProjectHeaderContentType"
+            $ref: "#/definitions/InvalidInput"
         "401":
           description: "Unauthenticated"
           schema:
@@ -2815,13 +2763,9 @@ paths:
           schema:
             $ref: "#/definitions/ProjectBatchResponse"
         "400":
-          description: 
-            - "Invalid input"
-            - "Header Content-Type"
+          description: "Invalid input"
           schema:
-            anyOf:
-              - $ref: "#/definitions/InvalidInput"
-              - $ref: "#/definitions/CreateBatchProjectHeaderContentType"
+            $ref: "#/definitions/InvalidInput"
         "401":
           description: "Unauthenticated"
           schema:
@@ -2872,13 +2816,9 @@ paths:
           schema:
             $ref: "#/definitions/ProjectBatchUpdateResponse"
         "400":
-          description: 
-            - "Invalid input"
-            - "Header Content-Type"
+          description: "Invalid input"
           schema:
-            anyOf:
-              - $ref: "#/definitions/InvalidInput"
-              - $ref: "#/definitions/UpdateBatchProjectHeaderContentType"
+            $ref: "#/definitions/InvalidInput"
         "401":
           description: "Unauthenticated"
           schema:
@@ -2931,10 +2871,6 @@ paths:
           description: "Deleted successfully"
           schema:
             $ref: "#/definitions/Deleted"
-        "400":
-          description: "Header Content-Type"
-          schema:
-            $ref: "#/definitions/DeleteBatchProjectHeaderContentType"
         "401":
           description: "Unauthenticated"
           schema:
@@ -3107,13 +3043,9 @@ paths:
           schema:
             $ref: "#/definitions/WebhookResponseStore"
         "400":
-          description: 
-            - "Invalid input"
-            - "Header Content-Type"
+          description: "Invalid input"
           schema:
-            anyOf:
-              - $ref: "#/definitions/InvalidInput"
-              - $ref: "#/definitions/CreateWebhookHeaderContentType"
+            $ref: "#/definitions/InvalidInput"
         "401":
           description: "Unauthenticated"
           schema:
@@ -3204,13 +3136,9 @@ paths:
           schema:
             $ref: "#/definitions/WebhookResponseUpdate"
         "400":
-          description: 
-            - "Invalid input"
-            - "Header Content-Type"
+          description: "Invalid input"
           schema:
-            anyOf:
-              - $ref: "#/definitions/InvalidInput"
-              - $ref: "#/definitions/UpdateWebhookHeaderContentType"
+            $ref: "#/definitions/InvalidInput"
         "401":
           description: "Unauthenticated"
           schema:
@@ -7687,150 +7615,6 @@ definitions:
         example: "Deleted successfully"
     xml:
       name: "Deleted"
-  CreateAccountHeaderContentType:
-    type: "object"
-    properties:
-      message:
-        type: "string"
-        description: "Can not create account new with your Content Type"
-        example: "Can not create account new with your Content Type"
-    xml:
-      name: CreateAccountHeaderContentType
-  UpdateAccountHeaderContentType:
-    type: "object"
-    properties:
-      message:
-        type: "string"
-        description: "Can not update account with your Content Type"
-        example: "Can not update account with your Content Type"
-    xml:
-      name: UpdateAccountHeaderContentType
-  CreateProductHeaderContentType:
-    type: "object"
-    properties:
-      message:
-        type: "string"
-        description: "Can not create product new with your Content Type"
-        example: "Can not create product new with your Content Type"
-    xml:
-      name: CreateProductHeaderContentType
-  CreateBatchProductHeaderContentType:
-    type: "object"
-    properties:
-      message:
-        type: "string"
-        description: "Can not create products new with your Content Type"
-        example: "Can not create products new with your Content Type"
-    xml:
-      name: CreateBatchProductHeaderContentType
-  UpdateProductHeaderContentType:
-    type: "object"
-    properties:
-      message:
-        type: "string"
-        description: "Can not update product with your Content Type"
-        example: "Can not update product with your Content Type"
-    xml:
-      name: UpdateProductHeaderContentType
-  UpdateBatchProductHeaderContentType:
-    type: "object"
-    properties:
-      message:
-        type: "string"
-        description: "Can not update products with your Content Type"
-        example: "Can not update products with your Content Type"
-    xml:
-      name: UpdateBatchProductHeaderContentType
-  DeleteBatchProductHeaderContentType:
-    type: "object"
-    properties:
-      message:
-        type: "string"
-        description: "Can not delete products with your Content Type"
-        example: "Can not delete products with your Content Type"
-    xml:
-      name: DeleteBatchProductHeaderContentType
-  CreateStorageHeaderContentType:
-    type: "object"
-    properties:
-      message:
-        type: "string"
-        description: "Can not create storage new with your Content Type"
-        example: "Can not create storage new with your Content Type"
-    xml:
-      name: CreateStorageHeaderContentType
-  UpdateStorageHeaderContentType:
-    type: "object"
-    properties:
-      message:
-        type: "string"
-        description: "Can not update storage with your Content Type"
-        example: "Can not update storage with your Content Type"
-    xml:
-      name: UpdateStorageHeaderContentType
-  CreateFontHeaderContentType:
-    type: "object"
-    properties:
-      message:
-        type: "string"
-        description: "Can not create font new with your Content Type"
-        example: "Can not create font new with your Content Type"
-    xml:
-      name: CreateFontHeaderContentType
-  UpdateFontHeaderContentType:
-    type: "object"
-    properties:
-      message:
-        type: "string"
-        description: "Can not update font with your Content Type"
-        example: "Can not update font with your Content Type"
-    xml:
-      name: UpdateFontHeaderContentType
-  CreateProjectHeaderContentType:
-    type: "object"
-    properties:
-      message:
-        type: "string"
-        description: "Can not create project new with your Content Type"
-        example: "Can not create project new with your Content Type"
-    xml:
-      name: CreateProjectHeaderContentType
-  CreateBatchProjectHeaderContentType:
-    type: "object"
-    properties:
-      message:
-        type: "string"
-        description: "Can not create projects new with your Content Type"
-        example: "Can not create projects new with your Content Type"
-    xml:
-      name: CreateBatchProjectHeaderContentType
-  UpdateProjectHeaderContentType:
-    type: "object"
-    properties:
-      message:
-        type: "string"
-        description: "Can not update project with your Content Type"
-        example: "Can not update project with your Content Type"
-    xml:
-      name: UpdateProjectHeaderContentType
-  UpdateBatchProjectHeaderContentType:
-    type: "object"
-    properties:
-      message:
-        type: "string"
-        description: "Can not update projects with your Content Type"
-        example: "Can not update projects with your Content Type"
-    xml:
-      name: UpdateBatchProjectHeaderContentType
-  DeleteBatchProjectHeaderContentType:
-    type: "object"
-    properties:
-      message:
-        type: "string"
-        description: "Can not delete projects with your Content Type"
-        example: "Can not delete projects with your Content Type"
-    xml:
-      name: DeleteBatchProjectHeaderContentType
   CreateSideHeaderContentType:
     type: "object"
     properties:
@@ -7876,24 +7660,6 @@ definitions:
         example: "Can not delete sides with your Content Type"
     xml:
       name: DeleteBatchSideHeaderContentType
-  CreateWebhookHeaderContentType:
-    type: "object"
-    properties:
-      message:
-        type: "string"
-        description: "Can not create webhook new with your Content Type"
-        example: "Can not create webhook new with your Content Type"
-    xml:
-      name: CreateWebhookHeaderContentType
-  UpdateWebhookHeaderContentType:
-    type: "object"
-    properties:
-      message:
-        type: "string"
-        description: "Can not update webhook with your Content Type"
-        example: "Can not update webhook with your Content Type"
-    xml:
-      name: UpdateWebhookHeaderContentType
 externalDocs:
   description: "Find out more about Swagger"
   url: "http://swagger.io"
