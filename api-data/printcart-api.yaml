@@ -1182,8 +1182,8 @@ paths:
           required: false
           type: "string"
           enum:
-            - "Cliparts"
-            - "Designs"
+            - "cliparts"
+            - "designs"
       responses:
         "201":
           description: "File successfully uploaded"
@@ -1327,8 +1327,8 @@ paths:
           required: false
           type: "string"
           enum:
-            - "Cliparts"
-            - "Designs"
+            - "cliparts"
+            - "designs"
       responses:
         "201":
           description: "File successfully uploaded"
