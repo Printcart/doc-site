@@ -3207,7 +3207,7 @@ paths:
 securityDefinitions:
   ApiKeyAuth:
     type: "apiKey"
-    name: "Authorization"
+    name: "X-PrintCart-Unauth-Token"
     in: "header"
   BasicAuth:
     type: "basic"
