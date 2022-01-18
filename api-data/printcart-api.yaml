@@ -53,8 +53,6 @@ paths:
           description: "Invalid input"
           schema:
             $ref: "#/definitions/InvalidInput"
-      security:
-        - BasicAuth: []
     get:
       tags:
         - "Account"
@@ -99,7 +97,7 @@ paths:
         "400":
           description: "Invalid input"
           schema:
-            $ref: "#/definitions/InvalidInput"
+           $ref: "#/definitions/InvalidInput"
         "401":
           description: "Unauthenticated"
           schema:
@@ -606,9 +604,13 @@ paths:
           schema:
             $ref: "#/definitions/SideResponseStore"
         "400":
-          description: "Invalid input"
+          description: 
+            - "Invalid input"
+            - "Header Content-Type"
           schema:
-            $ref: "#/definitions/InvalidInput"
+            anyOf:
+              - $ref: "#/definitions/InvalidInput"
+              - $ref: "#/definitions/CreateSideHeaderContentType"
         "401":
           description: "Unauthenticated"
           schema:
@@ -705,9 +707,13 @@ paths:
           schema:
             $ref: "#/definitions/SideResponseUpdate"
         "400":
-          description: "Invalid input"
+          description: 
+            - "Invalid input"
+            - "Header Content-Type"
           schema:
-            $ref: "#/definitions/InvalidInput"
+            anyOf:
+              - $ref: "#/definitions/InvalidInput"
+              - $ref: "#/definitions/UpdateSideHeaderContentType"
         "401":
           description: "Unauthenticated"
           schema:
@@ -773,9 +779,13 @@ paths:
           schema:
             $ref: "#/definitions/SideBatchResponse"
         "400":
-          description: "Invalid input"
+          description: 
+            - "Invalid input"
+            - "Header Content-Type"
           schema:
-            $ref: "#/definitions/InvalidInput"
+            anyOf:
+              - $ref: "#/definitions/InvalidInput"
+              - $ref: "#/definitions/CreateBatchSideHeaderContentType"
         "401":
           description: "Unauthenticated"
           schema:
@@ -829,14 +839,18 @@ paths:
           schema:
             $ref: "#/definitions/SideBatchUpdate"
       responses:
-        "400":
-          description: "Invalid input"
-          schema:
-            $ref: "#/definitions/InvalidInput"
         "200":
           description: "Updated successfully"
           schema:
             $ref: "#/definitions/SideBatchUpdateResponse"
+        "400":
+          description: 
+            - "Invalid input"
+            - "Header Content-Type"
+          schema:
+            anyOf:
+              - $ref: "#/definitions/InvalidInput"
+              - $ref: "#/definitions/UpdateBatchSideHeaderContentType"
         "401":
           description: "Unauthenticated"
           schema:
@@ -895,6 +909,10 @@ paths:
           description: "Deleted successfully"
           schema:
             $ref: "#/definitions/Deleted"
+        "400":
+          description: "Header Content-Type"
+          schema:
+            $ref: "#/definitions/DeleteBatchSideHeaderContentType"
         "401":
           description: "Unauthenticated"
           schema:
@@ -926,7 +944,7 @@ paths:
         "200":
           description: "Retrieved successfully"
           schema:
-            $ref: "#/definitions/DesignResponseShowDataArray"
+            $ref: "#/definitions/TemplateResponseShowDataArray"
         "401":
           description: "Unauthenticated"
           schema:
@@ -1164,8 +1182,8 @@ paths:
           required: false
           type: "string"
           enum:
-            - "Cliparts"
-            - "Designs"
+            - "cliparts"
+            - "designs"
       responses:
         "201":
           description: "File successfully uploaded"
@@ -1185,6 +1203,16 @@ paths:
                 type: "string"
                 description: "File upload missing"
                 example: "File upload missing"
+        "415":
+          description: "Unsupported Media Type"
+          type: "object"
+          schema:
+            type: "object"
+            properties:
+              message:
+                type: "string"
+                description: "Unsupported Media Type"
+                example: "Unsupported Media Type"
       security:
         - BasicAuth: []
         - ApiKeyAuth: []
@@ -1212,6 +1240,7 @@ paths:
             $ref: "#/definitions/NotFound"
       security:
         - BasicAuth: []
+        - ApiKeyAuth: []
   /images/{imageId}:
     get:
       tags:
@@ -1298,8 +1327,8 @@ paths:
           required: false
           type: "string"
           enum:
-            - "Cliparts"
-            - "Designs"
+            - "cliparts"
+            - "designs"
       responses:
         "201":
           description: "File successfully uploaded"
@@ -1319,6 +1348,16 @@ paths:
                 type: "string"
                 description: "File upload missing"
                 example: "File upload missing"
+        "415":
+          description: "Unsupported Media Type"
+          type: "object"
+          schema:
+            type: "object"
+            properties:
+              message:
+                type: "string"
+                description: "Unsupported Media Type"
+                example: "Unsupported Media Type"
       security:
         - BasicAuth: []
         - ApiKeyAuth: []
@@ -1340,7 +1379,7 @@ paths:
           schema:
             $ref: "#/definitions/ImageClipartStorage"
       responses:
-        "201": 
+        "201":
           description: "Retrieved successfully"
           schema:
             $ref: "#/definitions/CategoryResponseStore"
@@ -1524,6 +1563,7 @@ paths:
             $ref: "#/definitions/NotFound"
       security:
         - BasicAuth: []
+        - ApiKeyAuth: []
     put:
       tags:
         - "Design"
@@ -1580,6 +1620,7 @@ paths:
             $ref: "#/definitions/NotFound"
       security:
         - BasicAuth: []
+        - ApiKeyAuth: []
     delete:
       tags:
         - "Design"
@@ -1732,16 +1773,6 @@ paths:
           description: "Unauthenticated"
           schema:
             $ref: "#/definitions/Unauthenticated"
-        # "404":
-        #   description: "Can't find design with id"
-        #   type: "object"
-        #   schema:
-        #     type: "object"
-        #     properties:
-        #       error:
-        #         type: "string"
-        #         description: "Can't find design with id"
-        #         example: "Can't find design with id: cce4dc71-6757-4a1c-a259-6b66a4304c14"
         "404":
           description:
             - "Not found"
@@ -1772,6 +1803,7 @@ paths:
                 example: "Something went wrong while update designs"
       security:
         - BasicAuth: []
+        - ApiKeyAuth: []
     delete:
       tags:
         - "Design"
@@ -1841,6 +1873,7 @@ paths:
             $ref: "#/definitions/NotFound"
       security:
         - BasicAuth: []
+        - ApiKeyAuth: []
   /designs/count:
     get:
       tags:
@@ -1862,7 +1895,6 @@ paths:
             $ref: "#/definitions/Unauthenticated"
       security:
         - BasicAuth: []
-        - ApiKeyAuth: []
   /templates:
     post:
       tags:
@@ -1886,7 +1918,7 @@ paths:
         "201":
           description: "Created successfully"
           schema:
-            $ref: "#/definitions/DesignResponseStore"
+            $ref: "#/definitions/TemplateResponseStore"
         "400":
           description:
             - "Invalid input"
@@ -1935,7 +1967,7 @@ paths:
         "200":
           description: "Retrieved successfully"
           schema:
-            $ref: "#/definitions/DesignResponseShowDataArray"
+            $ref: "#/definitions/TemplateResponseShowDataArray"
         "401":
           description: "Unauthenticated"
           schema:
@@ -1966,7 +1998,7 @@ paths:
         "200":
           description: "Retrieved successfully"
           schema:
-            $ref: "#/definitions/DesignResponseShowDataObject"
+            $ref: "#/definitions/TemplateResponseShowDataObject"
         "401":
           description: "Unauthenticated"
           schema:
@@ -1977,6 +2009,7 @@ paths:
             $ref: "#/definitions/NotFound"
       security:
         - BasicAuth: []
+        - ApiKeyAuth: []
     put:
       tags:
         - "Template"
@@ -1999,12 +2032,12 @@ paths:
           # description: "Pet object that needs to be added to the store"
           required: true
           schema:
-            $ref: "#/definitions/DesignUpdate"
+            $ref: "#/definitions/TemplateUpdate"
       responses:
         "200":
           description: "Updated successfully"
           schema:
-            $ref: "#/definitions/DesignResponseUpdate"
+            $ref: "#/definitions/TemplateResponseUpdate"
         "400":
           description:
             - "Invalid input"
@@ -2033,6 +2066,7 @@ paths:
             $ref: "#/definitions/NotFound"
       security:
         - BasicAuth: []
+        - ApiKeyAuth: []
     delete:
       tags:
         - "Template"
@@ -2185,16 +2219,6 @@ paths:
           description: "Unauthenticated"
           schema:
             $ref: "#/definitions/Unauthenticated"
-        # "404":
-        #   description: "Can't find design with id"
-        #   type: "object"
-        #   schema:
-        #     type: "object"
-        #     properties:
-        #       error:
-        #         type: "string"
-        #         description: "Can't find design with id"
-        #         example: "Can't find design with id: cce4dc71-6757-4a1c-a259-6b66a4304c14"
         "404":
           description:
             - "Not found"
@@ -2225,6 +2249,7 @@ paths:
                 example: "Something went wrong while update templates"
       security:
         - BasicAuth: []
+        - ApiKeyAuth: []
     delete:
       tags:
         - "Template"
@@ -2294,6 +2319,7 @@ paths:
             $ref: "#/definitions/NotFound"
       security:
         - BasicAuth: []
+        - ApiKeyAuth: []
   /templates/count:
     get:
       tags:
@@ -2315,7 +2341,6 @@ paths:
             $ref: "#/definitions/Unauthenticated"
       security:
         - BasicAuth: []
-        - ApiKeyAuth: []
   /storages:
     post:
       tags:
@@ -2483,7 +2508,7 @@ paths:
             $ref: "#/definitions/NotFound"
       security:
         - BasicAuth: []
-  /cliparts-storages/{storageId}/cliparts:
+  /clipart-storages/{storageId}/cliparts:
     get:
       tags:
         - "Storage"
@@ -2536,7 +2561,6 @@ paths:
             $ref: "#/definitions/Unauthenticated"
       security:
         - BasicAuth: []
-        - ApiKeyAuth: []
   /projects:
     post:
       tags:
@@ -2560,7 +2584,7 @@ paths:
         "201":
           description: "Created successfully"
           schema:
-            $ref: "#/definitions/ProjectResponseStore"
+            $ref: "#/definitions/ProjectResponseStore" 
         "400":
           description: "Invalid input"
           schema:
@@ -2591,6 +2615,7 @@ paths:
         #         example: "Can't find design with id: cce4dc71-6757-4a1c-a259-6b66a4304c14"
       security:
         - BasicAuth: []
+        - ApiKeyAuth: []
     get:
       tags:
         - "Project"
@@ -2615,7 +2640,6 @@ paths:
             $ref: "#/definitions/NotFound"
       security:
         - BasicAuth: []
-        - ApiKeyAuth: []
   /projects/{projectId}:
     get:
       tags:
@@ -2647,7 +2671,6 @@ paths:
             $ref: "#/definitions/NotFound"
       security:
         - BasicAuth: []
-        - ApiKeyAuth: []
     put:
       tags:
         - "Project"
@@ -2773,6 +2796,7 @@ paths:
                 example: "Something went wrong while create projects"
       security:
         - BasicAuth: []
+        - ApiKeyAuth: []
     put:
       tags:
         - "Project"
@@ -2892,7 +2916,6 @@ paths:
             $ref: "#/definitions/NotFound"
       security:
         - BasicAuth: []
-        - ApiKeyAuth: []
   /projects/{projectId}/products:
     get:
       tags:
@@ -2924,7 +2947,6 @@ paths:
             $ref: "#/definitions/NotFound"
       security:
         - BasicAuth: []
-        - ApiKeyAuth: []
   /projects/count:
     get:
       tags:
@@ -2946,7 +2968,6 @@ paths:
             $ref: "#/definitions/Unauthenticated"
       security:
         - BasicAuth: []
-        - ApiKeyAuth: []
   /projects/{projectId}/designs/count:
     get:
       tags:
@@ -2974,7 +2995,6 @@ paths:
             $ref: "#/definitions/Unauthenticated"
       security:
         - BasicAuth: []
-        - ApiKeyAuth: []
   /projects/{projectId}/products/count:
     get:
       tags:
@@ -3002,7 +3022,6 @@ paths:
             $ref: "#/definitions/Unauthenticated"
       security:
         - BasicAuth: []
-        - ApiKeyAuth: []
   /webhooks:
     post:
       tags:
@@ -3192,7 +3211,7 @@ paths:
 securityDefinitions:
   ApiKeyAuth:
     type: "apiKey"
-    name: "Authorization"
+    name: "X-PrintCart-Unauth-Token"
     in: "header"
   BasicAuth:
     type: "basic"
@@ -3347,7 +3366,8 @@ definitions:
       dpi:
         type: "integer"
         format: "int64"
-        example: 50
+        default: 72
+        example: 100
       dimension_unit:
         type: "string"
         default: "cm"
@@ -3420,7 +3440,7 @@ definitions:
       dpi:
         type: "integer"
         format: "int64"
-        example: 50
+        example: 100
       dimension_unit:
         type: "string"
         enum:
@@ -3878,133 +3898,160 @@ definitions:
       include_overlay:
         type: "boolean"
         example: true
-      product_width:
-        type: "float"
-        format: "float"
-        example: 50
-      product_height:
-        type: "float"
-        format: "float"
-        example: 50
-      real_width:
-        type: "float"
-        format: "float"
-        example: 50
-      real_height:
-        type: "float"
-        format: "float"
-        example: 50
-      real_top:
-        type: "float"
-        format: "float"
-        example: 50
-      real_left:
-        type: "float"
-        format: "float"
-        example: 50
-      area_design_width:
-        type: "float"
-        format: "float"
-        example: 50
-      area_design_height:
-        type: "float"
-        format: "float"
-        example: 50
-      area_design_left:
-        type: "float"
-        format: "float"
-        example: 50
-      area_design_top:
-        type: "float"
-        format: "float"
-        example: 50
+      product_size:
+        type: "object"
+        properties: 
+          product_input:
+            type: "number"
+            format: "double"
+            example: 100
+          product_width:
+            type: "float"
+            format: "float"
+            example: 50
+          product_height:
+            type: "float"
+            format: "float"
+            example: 50
+      design_size: 
+        type: "object"
+        properties:
+          width:
+            type: "float"
+            format: "float"
+            example: 50
+          height:
+            type: "float"
+            format: "float"
+            example: 50
+          top:
+            type: "float"
+            format: "float"
+            example: 50
+          left:
+            type: "float"
+            format: "float"
+            example: 50
+      design_position:
+        type: "object"
+        properties:
+          width:
+            type: "float"
+            format: "float"
+            example: 50
+          height:
+            type: "float"
+            format: "float"
+            example: 50
+          left:
+            type: "float"
+            format: "float"
+            example: 50
+          top:
+            type: "float"
+            format: "float"
+            example: 50
       show_bleed:
         type: "boolean"
         example: true
-      bleed_top_bottom:
-        type: "float"
-        format: "float"
-        example: 50.50
-      bleed_left_right:
-        type: "float"
-        format: "float"
-        example: 50.50
+      bleed_size:
+        type: "object"
+        properties:
+          top_bottom:
+            type: "float"
+            format: "float"
+            example: 50.50
+          left_right:
+            type: "float"
+            format: "float"
+            example: 50.50
       show_safe_zone:
         type: "boolean"
         example: true
-      margin_top_bottom:
-        type: "float"
-        format: "float"
-        example: 50
-      margin_left_right:
-        type: "float"
-        format: "float"
-        example: 50
+      margin_size:
+        type: "object"
+        properties:
+          top_bottom:
+            type: "float"
+            format: "float"
+            example: 50
+          left_right:
+            type: "float"
+            format: "float"
+            example: 50
       bg_img_id:
         type: "string"
         description: Image ID
         example: "e8304b84-a015-3bd4-a7d3-7a978f465df2"
-      background_size_width:
-        type: "number"
-        format: "double"
-        example: 100
-      background_size_height:
-        type: "number"
-        format: "double"
-        example: 100
-      bleed_position_width:
-        type: "number"
-        format: "double"
-        example: 100
-      bleed_position_height:
-        type: "number"
-        format: "double"
-        example: 100
-      bleed_position_top:
-        type: "number"
-        format: "double"
-        example: 100
-      bleed_position_left:
-        type: "number"
-        format: "double"
-        example: 100
-      margin_position_width:
-        type: "number"
-        format: "double"
-        example: 100
-      margin_position_height:
-        type: "number"
-        format: "double"
-        example: 100
-      margin_position_top:
-        type: "number"
-        format: "double"
-        example: 100
-      margin_position_left:
-        type: "number"
-        format: "double"
-        example: 100
-      measure_size_width:
-        type: "number"
-        format: "double"
-        example: 100
-      measure_size_height:
-        type: "number"
-        format: "double"
-        example: 100
-      measure_size_top:
-        type: "number"
-        format: "double"
-        example: 100
-      measure_size_left:
-        type: "number"
-        format: "double"
-        example: 100
+      background_size:
+        type: "object"
+        properties:
+          width:
+            type: "number"
+            format: "double"
+            example: 100
+          height:
+            type: "number"
+            format: "double"
+            example: 100
+      bleed_position:
+        type: "object"
+        properties:
+          width:
+            type: "number"
+            format: "double"
+            example: 100
+          height:
+            type: "number"
+            format: "double"
+            example: 100
+          top:
+            type: "number"
+            format: "double"
+            example: 100
+          left:
+            type: "number"
+            format: "double"
+            example: 100
+      margin_position:
+        type: "object"
+        properties:
+          width:
+            type: "number"
+            format: "double"
+            example: 100
+          height:
+            type: "number"
+            format: "double"
+            example: 100
+          top:
+            type: "number"
+            format: "double"
+            example: 100
+          left:
+            type: "number"
+            format: "double"
+            example: 100
+      measure_size:
+        type: "object"
+        properties:
+          width:
+            type: "number"
+            format: "double"
+            example: 100
+          height:
+            type: "number"
+            format: "double"
+            example: 100
+          top:
+            type: "number"
+            format: "double"
+            example: 100
+          left:
+            type: "number"
+            format: "double"
+            example: 100
       ratio_image:
-        type: "number"
-        format: "double"
-        example: 100
-      product_input:
         type: "number"
         format: "double"
         example: 100
@@ -4067,133 +4114,160 @@ definitions:
       include_overlay:
         type: "boolean"
         example: true
-      product_width:
-        type: "float"
-        format: "float"
-        example: 50
-      product_height:
-        type: "float"
-        format: "float"
-        example: 50
-      real_width:
-        type: "float"
-        format: "float"
-        example: 50
-      real_height:
-        type: "float"
-        format: "float"
-        example: 50
-      real_top:
-        type: "float"
-        format: "float"
-        example: 50
-      real_left:
-        type: "float"
-        format: "float"
-        example: 50
-      area_design_width:
-        type: "float"
-        format: "float"
-        example: 50
-      area_design_height:
-        type: "float"
-        format: "float"
-        example: 50
-      area_design_left:
-        type: "float"
-        format: "float"
-        example: 50
-      area_design_top:
-        type: "float"
-        format: "float"
-        example: 50
+      product_size:
+        type: "object"
+        properties: 
+          product_input:
+            type: "number"
+            format: "double"
+            example: 100
+          product_width:
+            type: "float"
+            format: "float"
+            example: 50
+          product_height:
+            type: "float"
+            format: "float"
+            example: 50
+      design_size: 
+        type: "object"
+        properties:
+          width:
+            type: "float"
+            format: "float"
+            example: 50
+          height:
+            type: "float"
+            format: "float"
+            example: 50
+          top:
+            type: "float"
+            format: "float"
+            example: 50
+          left:
+            type: "float"
+            format: "float"
+            example: 50
+      design_position:
+        type: "object"
+        properties:
+          width:
+            type: "float"
+            format: "float"
+            example: 50
+          height:
+            type: "float"
+            format: "float"
+            example: 50
+          left:
+            type: "float"
+            format: "float"
+            example: 50
+          top:
+            type: "float"
+            format: "float"
+            example: 50
       show_bleed:
         type: "boolean"
         example: true
-      bleed_top_bottom:
-        type: "float"
-        format: "float"
-        example: 50.50
-      bleed_left_right:
-        type: "float"
-        format: "float"
-        example: 50.50
+      bleed_size:
+        type: "object"
+        properties:
+          top_bottom:
+            type: "float"
+            format: "float"
+            example: 50.50
+          left_right:
+            type: "float"
+            format: "float"
+            example: 50.50
       show_safe_zone:
         type: "boolean"
         example: true
-      margin_top_bottom:
-        type: "float"
-        format: "float"
-        example: 50
-      margin_left_right:
-        type: "float"
-        format: "float"
-        example: 50
+      margin_size:
+        type: "object"
+        properties:
+          top_bottom:
+            type: "float"
+            format: "float"
+            example: 50
+          left_right:
+            type: "float"
+            format: "float"
+            example: 50
       bg_img_id:
         type: "string"
         description: Image ID
         example: "e8304b84-a015-3bd4-a7d3-7a978f465df2"
-      background_size_width:
-        type: "number"
-        format: "double"
-        example: 100
-      background_size_height:
-        type: "number"
-        format: "double"
-        example: 100
-      bleed_position_width:
-        type: "number"
-        format: "double"
-        example: 100
-      bleed_position_height:
-        type: "number"
-        format: "double"
-        example: 100
-      bleed_position_top:
-        type: "number"
-        format: "double"
-        example: 100
-      bleed_position_left:
-        type: "number"
-        format: "double"
-        example: 100
-      margin_position_width:
-        type: "number"
-        format: "double"
-        example: 100
-      margin_position_height:
-        type: "number"
-        format: "double"
-        example: 100
-      margin_position_top:
-        type: "number"
-        format: "double"
-        example: 100
-      margin_position_left:
-        type: "number"
-        format: "double"
-        example: 100
-      measure_size_width:
-        type: "number"
-        format: "double"
-        example: 100
-      measure_size_height:
-        type: "number"
-        format: "double"
-        example: 100
-      measure_size_top:
-        type: "number"
-        format: "double"
-        example: 100
-      measure_size_left:
-        type: "number"
-        format: "double"
-        example: 100
+      background_size:
+        type: "object"
+        properties:
+          width:
+            type: "number"
+            format: "double"
+            example: 100
+          height:
+            type: "number"
+            format: "double"
+            example: 100
+      bleed_position:
+        type: "object"
+        properties:
+          width:
+            type: "number"
+            format: "double"
+            example: 100
+          height:
+            type: "number"
+            format: "double"
+            example: 100
+          top:
+            type: "number"
+            format: "double"
+            example: 100
+          left:
+            type: "number"
+            format: "double"
+            example: 100
+      margin_position:
+        type: "object"
+        properties:
+          width:
+            type: "number"
+            format: "double"
+            example: 100
+          height:
+            type: "number"
+            format: "double"
+            example: 100
+          top:
+            type: "number"
+            format: "double"
+            example: 100
+          left:
+            type: "number"
+            format: "double"
+            example: 100
+      measure_size:
+        type: "object"
+        properties:
+          width:
+            type: "number"
+            format: "double"
+            example: 100
+          height:
+            type: "number"
+            format: "double"
+            example: 100
+          top:
+            type: "number"
+            format: "double"
+            example: 100
+          left:
+            type: "number"
+            format: "double"
+            example: 100
       ratio_image:
-        type: "number"
-        format: "double"
-        example: 100
-      product_input:
         type: "number"
         format: "double"
         example: 100
@@ -4298,133 +4372,160 @@ definitions:
             include_overlay:
               type: "boolean"
               example: true
-            product_width:
-              type: "float"
-              format: "float"
-              example: 50
-            product_height:
-              type: "float"
-              format: "float"
-              example: 50
-            real_width:
-              type: "float"
-              format: "float"
-              example: 50
-            real_height:
-              type: "float"
-              format: "float"
-              example: 50
-            real_top:
-              type: "float"
-              format: "float"
-              example: 50
-            real_left:
-              type: "float"
-              format: "float"
-              example: 50
-            area_design_width:
-              type: "float"
-              format: "float"
-              example: 50
-            area_design_height:
-              type: "float"
-              format: "float"
-              example: 50
-            area_design_left:
-              type: "float"
-              format: "float"
-              example: 50
-            area_design_top:
-              type: "float"
-              format: "float"
-              example: 50
+            product_size:
+              type: "object"
+              properties: 
+                product_input:
+                  type: "number"
+                  format: "double"
+                  example: 100
+                product_width:
+                  type: "float"
+                  format: "float"
+                  example: 50
+                product_height:
+                  type: "float"
+                  format: "float"
+                  example: 50
+            design_size: 
+              type: "object"
+              properties:
+                width:
+                  type: "float"
+                  format: "float"
+                  example: 50
+                height:
+                  type: "float"
+                  format: "float"
+                  example: 50
+                top:
+                  type: "float"
+                  format: "float"
+                  example: 50
+                left:
+                  type: "float"
+                  format: "float"
+                  example: 50
+            design_position:
+              type: "object"
+              properties:
+                width:
+                  type: "float"
+                  format: "float"
+                  example: 50
+                height:
+                  type: "float"
+                  format: "float"
+                  example: 50
+                left:
+                  type: "float"
+                  format: "float"
+                  example: 50
+                top:
+                  type: "float"
+                  format: "float"
+                  example: 50
             show_bleed:
               type: "boolean"
               example: true
-            bleed_top_bottom:
-              type: "float"
-              format: "float"
-              example: 50.50
-            bleed_left_right:
-              type: "float"
-              format: "float"
-              example: 50.50
+            bleed_size:
+              type: "object"
+              properties:
+                top_bottom:
+                  type: "float"
+                  format: "float"
+                  example: 50.50
+                left_right:
+                  type: "float"
+                  format: "float"
+                  example: 50.50
             show_safe_zone:
               type: "boolean"
               example: true
-            margin_top_bottom:
-              type: "float"
-              format: "float"
-              example: 50
-            margin_left_right:
-              type: "float"
-              format: "float"
-              example: 50
+            margin_size:
+              type: "object"
+              properties:
+                top_bottom:
+                  type: "float"
+                  format: "float"
+                  example: 50
+                left_right:
+                  type: "float"
+                  format: "float"
+                  example: 50
             bg_img_id:
               type: "string"
               description: Image ID
               example: "e8304b84-a015-3bd4-a7d3-7a978f465df2"
-            background_size_width:
-              type: "number"
-              format: "double"
-              example: 100
-            background_size_height:
-              type: "number"
-              format: "double"
-              example: 100
-            bleed_position_width:
-              type: "number"
-              format: "double"
-              example: 100
-            bleed_position_height:
-              type: "number"
-              format: "double"
-              example: 100
-            bleed_position_top:
-              type: "number"
-              format: "double"
-              example: 100
-            bleed_position_left:
-              type: "number"
-              format: "double"
-              example: 100
-            margin_position_width:
-              type: "number"
-              format: "double"
-              example: 100
-            margin_position_height:
-              type: "number"
-              format: "double"
-              example: 100
-            margin_position_top:
-              type: "number"
-              format: "double"
-              example: 100
-            margin_position_left:
-              type: "number"
-              format: "double"
-              example: 100
-            measure_size_width:
-              type: "number"
-              format: "double"
-              example: 100
-            measure_size_height:
-              type: "number"
-              format: "double"
-              example: 100
-            measure_size_top:
-              type: "number"
-              format: "double"
-              example: 100
-            measure_size_left:
-              type: "number"
-              format: "double"
-              example: 100
+            background_size:
+              type: "object"
+              properties:
+                width:
+                  type: "number"
+                  format: "double"
+                  example: 100
+                height:
+                  type: "number"
+                  format: "double"
+                  example: 100
+            bleed_position:
+              type: "object"
+              properties:
+                width:
+                  type: "number"
+                  format: "double"
+                  example: 100
+                height:
+                  type: "number"
+                  format: "double"
+                  example: 100
+                top:
+                  type: "number"
+                  format: "double"
+                  example: 100
+                left:
+                  type: "number"
+                  format: "double"
+                  example: 100
+            margin_position:
+              type: "object"
+              properties:
+                width:
+                  type: "number"
+                  format: "double"
+                  example: 100
+                height:
+                  type: "number"
+                  format: "double"
+                  example: 100
+                top:
+                  type: "number"
+                  format: "double"
+                  example: 100
+                left:
+                  type: "number"
+                  format: "double"
+                  example: 100
+            measure_size:
+              type: "object"
+              properties:
+                width:
+                  type: "number"
+                  format: "double"
+                  example: 100
+                height:
+                  type: "number"
+                  format: "double"
+                  example: 100
+                top:
+                  type: "number"
+                  format: "double"
+                  example: 100
+                left:
+                  type: "number"
+                  format: "double"
+                  example: 100
             ratio_image:
-              type: "number"
-              format: "double"
-              example: 100
-            product_input:
               type: "number"
               format: "double"
               example: 100
@@ -4508,7 +4609,7 @@ definitions:
             type: "number"
             format: "double"
             example: 100
-          width: 
+          width:
             type: "float"
             format: "float"
             example: 50
@@ -4795,7 +4896,7 @@ definitions:
                   type: "number"
                   format: "double"
                   example: 100
-                width: 
+                width:
                   type: "float"
                   format: "float"
                   example: 50
@@ -5300,6 +5401,14 @@ definitions:
           - "deleted"
         description: Design status
         example: "accepted"
+      viewport_width:
+        type: "number"
+        format: "float"
+        example: 50.50
+      viewport_height:
+        type: "number"
+        format: "float"
+        example: 50.50
     xml:
       name: "Design"
   DesignUpdate:
@@ -5368,6 +5477,14 @@ definitions:
           - "deleted"
         description: Design status
         example: "accepted"
+      viewport_width:
+        type: "number"
+        format: "float"
+        example: 50.50
+      viewport_height:
+        type: "number"
+        format: "float"
+        example: 50.50
     xml:
       name: "DesignUpdate"
   DesignBatch:
@@ -5473,6 +5590,14 @@ definitions:
                 - "deleted"
               description: Design status
               example: "accepted"
+            viewport_width:
+              type: "number"
+              format: "float"
+              example: 50.50
+            viewport_height:
+              type: "number"
+              format: "float"
+              example: 50.50
     xml:
       name: "DesignBatchUpdate"
   DesignBatchDelete:
@@ -5846,6 +5971,14 @@ definitions:
                   fontWeight:
                     type: "string"
                     example: "normal"
+            viewport_width:
+              type: "number"
+              format: "float"
+              example: 50.50
+            viewport_height:
+              type: "number"
+              format: "float"
+              example: 50.50
             created_at:
               type: "string"
               example: "2021-11-16T08:26:30.000000Z"
@@ -6224,6 +6357,14 @@ definitions:
             fontWeight:
               type: "string"
               example: "normal"
+      viewport_width:
+        type: "number"
+        format: "float"
+        example: 50.50
+      viewport_height:
+        type: "number"
+        format: "float"
+        example: 50.50
       created_at:
         type: "string"
         example: "2021-11-16T08:26:30.000000Z"
@@ -6353,17 +6494,14 @@ definitions:
               "fontWeight": "normal",
             },
           ]
-      status:
-        type: "string"
-        default: "processing"
-        enum:
-          - "accepted"
-          - "processing"
-          - "declined"
-          - "trashed"
-          - "deleted"
-        description: Template status
-        example: "accepted"
+      viewport_width:
+        type: "number"
+        format: "float"
+        example: 50.50
+      viewport_height:
+        type: "number"
+        format: "float"
+        example: 50.50
     xml:
       name: "Template"
   TemplateBatch:
@@ -6445,18 +6583,373 @@ definitions:
                     "fontWeight": "normal",
                   },
                 ]
-            status:
-              type: "string"
-              enum:
-                - "accepted"
-                - "processing"
-                - "declined"
-                - "trashed"
-                - "deleted"
-              description: Template status
-              example: "accepted"
+            viewport_width:
+              type: "number"
+              format: "float"
+              example: 50.50
+            viewport_height:
+              type: "number"
+              format: "float"
+              example: 50.50
     xml:
       name: "TemplateBatchUpdate"
+  TemplateResponse:
+    type: "object"
+    properties:
+      id:
+        type: "string"
+        example: "cce4dc71-6757-4a1c-a259-6b66a4304c14"
+      project:
+        $ref: "#/definitions/ProjectResponse"
+      side:
+        type: "object"
+        properties:
+          id:
+            type: "string"
+            example: "c5661a1e-8147-4dc3-8600-00fdc81ed14b"
+          product:
+            $ref: "#/definitions/ProductResponse"
+          name:
+            type: "string"
+            example: "printcart"
+          bg_type:
+            type: "string"
+            enum:
+              - "color"
+              - "image"
+              - "transparent"
+            example: "image"
+          bg_color_value:
+            type: "string"
+            example: "red"
+          img_top_pos:
+            type: "float"
+            format: "float"
+            example: 50.5
+          img_left_pos:
+            type: "float"
+            format: "float"
+            example: 50.5
+          img_bottom_pos:
+            type: "float"
+            format: "float"
+            example: 50.5
+          img_right_pos:
+            type: "float"
+            format: "float"
+            example: 50.5
+          img_overlay:
+            $ref: "#/definitions/ImageResponse"
+          version:
+            type: "string"
+            example: "version 1.0.0"
+          ratio:
+            type: "integer"
+            format: "int64"
+            example: 100
+          background_included:
+            type: "boolean"
+            example: true
+          show_overlay:
+            type: "boolean"
+            example: true
+          include_overlay:
+            type: "boolean"
+            example: true
+          product_width:
+            type: "float"
+            format: "float"
+            example: 50
+          product_height:
+            type: "float"
+            format: "float"
+            example: 50
+          real_width:
+            type: "float"
+            format: "float"
+            example: 50
+          real_height:
+            type: "float"
+            format: "float"
+            example: 50
+          real_top:
+            type: "float"
+            format: "float"
+            example: 50
+          real_left:
+            type: "float"
+            format: "float"
+            example: 50
+          area_design_width:
+            type: "float"
+            format: "float"
+            example: 50
+          area_design_height:
+            type: "float"
+            format: "float"
+            example: 50
+          area_design_left:
+            type: "float"
+            format: "float"
+            example: 50
+          area_design_top:
+            type: "float"
+            format: "float"
+            example: 50
+          show_bleed:
+            type: "boolean"
+            example: true
+          bleed_top_bottom:
+            type: "float"
+            format: "float"
+            example: 50.50
+          bleed_left_right:
+            type: "float"
+            format: "float"
+            example: 50.50
+          show_safe_zone:
+            type: "boolean"
+            example: true
+          margin_top_bottom:
+            type: "float"
+            format: "float"
+            example: 50
+          margin_left_right:
+            type: "float"
+            format: "float"
+            example: 50
+          background_img:
+            $ref: "#/definitions/ImageResponse"
+          created_at:
+            type: "string"
+            example: "2021-11-16T08:26:30.000000Z"
+          updated_at:
+            type: "string"
+            example: "2021-11-16T08:26:30.000000Z"
+      design_ratio:
+        type: "number"
+        format: "float"
+        example: 50.50
+      pdf_url:
+        type: "string"
+      product:
+        $ref: "#/definitions/ProductResponse"
+      preview_image:
+        $ref: "#/definitions/ImageResponse"
+      design_image:
+        $ref: "#/definitions/ImageResponse"
+      quantity:
+        type: "integer"
+        format: "int64"
+        example: 50
+      note:
+        type: "string"
+        example: "printcart note"
+      original_output_options:
+        type: "object"
+        properties:
+          dpi:
+            type: "integer"
+            format: "int64"
+            example: 500
+          dimension_unit:
+            type: "string"
+            enum:
+              - "inch"
+              - "cm"
+            example: "inch"
+      original_side:
+        type: "object"
+        properties:
+          id:
+            type: "string"
+            example: "c5661a1e-8147-4dc3-8600-00fdc81ed14b"
+          product:
+            $ref: "#/definitions/ProductResponse"
+          name:
+            type: "string"
+            example: "printcart"
+          bg_type:
+            type: "string"
+            enum:
+              - "color"
+              - "image"
+              - "transparent"
+            example: "image"
+          bg_color_value:
+            type: "string"
+            example: "red"
+          img_top_pos:
+            type: "float"
+            format: "float"
+            example: 50.5
+          img_left_pos:
+            type: "float"
+            format: "float"
+            example: 50.5
+          img_bottom_pos:
+            type: "float"
+            format: "float"
+            example: 50.5
+          img_right_pos:
+            type: "float"
+            format: "float"
+            example: 50.5
+          img_overlay:
+            $ref: "#/definitions/ImageResponse"
+          version:
+            type: "string"
+            example: "version 1.0.0"
+          ratio:
+            type: "integer"
+            format: "int64"
+            example: 100
+          background_included:
+            type: "boolean"
+            example: true
+          show_overlay:
+            type: "boolean"
+            example: true
+          include_overlay:
+            type: "boolean"
+            example: true
+          product_width:
+            type: "float"
+            format: "float"
+            example: 50
+          product_height:
+            type: "float"
+            format: "float"
+            example: 50
+          real_width:
+            type: "float"
+            format: "float"
+            example: 50
+          real_height:
+            type: "float"
+            format: "float"
+            example: 50
+          real_top:
+            type: "float"
+            format: "float"
+            example: 50
+          real_left:
+            type: "float"
+            format: "float"
+            example: 50
+          area_design_width:
+            type: "float"
+            format: "float"
+            example: 50
+          area_design_height:
+            type: "float"
+            format: "float"
+            example: 50
+          area_design_left:
+            type: "float"
+            format: "float"
+            example: 50
+          area_design_top:
+            type: "float"
+            format: "float"
+            example: 50
+          show_bleed:
+            type: "boolean"
+            example: true
+          bleed_top_bottom:
+            type: "float"
+            format: "float"
+            example: 50.50
+          bleed_left_right:
+            type: "float"
+            format: "float"
+            example: 50.50
+          show_safe_zone:
+            type: "boolean"
+            example: true
+          margin_top_bottom:
+            type: "float"
+            format: "float"
+            example: 50
+          margin_left_right:
+            type: "float"
+            format: "float"
+            example: 50
+          background_img:
+            $ref: "#/definitions/ImageResponse"
+          created_at:
+            type: "string"
+            example: "2021-11-16T08:26:30.000000Z"
+          updated_at:
+            type: "string"
+            example: "2021-11-16T08:26:30.000000Z"
+      layers:
+        type: "array"
+        items:
+          type: "object"
+          properties:
+            top:
+              type: "float"
+              example: 38.9832354205
+            left:
+              type: "float"
+              example: 329.6631024663
+            text:
+              type: "string"
+              example: "Heading"
+            width:
+              type: "integer"
+              format: "int64"
+              example: 158
+            height:
+              type: "integer"
+              format: "int64"
+              example: 47.46
+            originX:
+              type: "string"
+              example: "left"
+            originY:
+              type: "string"
+              example: "top"
+            fontSize:
+              type: "integer"
+              format: "int64"
+              example: 42
+            minWidth:
+              type: "integer"
+              format: "int64"
+              example: 20
+            fontStyle:
+              type: "string"
+              example: "normal"
+            textAlign:
+              type: "string"
+              example: "left"
+            underline:
+              type: "boolean"
+              example: false,
+            fontFamily:
+              type: "string"
+              example: "Roboto"
+            fontWeight:
+              type: "string"
+              example: "normal"
+      viewport_width:
+        type: "number"
+        format: "float"
+        example: 50.50
+      viewport_height:
+        type: "number"
+        format: "float"
+        example: 50.50
+      created_at:
+        type: "string"
+        example: "2021-11-16T08:26:30.000000Z"
+      updated_at:
+        type: "string"
+        example: "2021-11-16T08:26:30.000000Z"
+    xml:
+      name: "TemplateResponse"
   TemplateBatchResponse:
     type: "object"
     properties:
@@ -6464,7 +6957,7 @@ definitions:
         type: "array"
         items:
           type: "object"
-          $ref: "#/definitions/DesignResponse"
+          $ref: "#/definitions/TemplateResponse"
       message:
         type: "string"
         description: "Created successfully"
@@ -6628,15 +7121,6 @@ definitions:
             note:
               type: "string"
               example: "printcart note"
-            status:
-              type: "string"
-              enum:
-                - "accepted"
-                - "processing"
-                - "declined"
-                - "trashed"
-                - "deleted"
-              example: "accepted"
             original_output_options:
               type: "object"
               properties:
@@ -6775,6 +7259,14 @@ definitions:
                 updated_at:
                   type: "string"
                   example: "2021-11-16T08:26:30.000000Z"
+            viewport_width:
+              type: "number"
+              format: "float"
+              example: 50.50
+            viewport_height:
+              type: "number"
+              format: "float"
+              example: 50.50
             created_at:
               type: "string"
               example: "2021-11-16T08:26:30.000000Z"
@@ -6803,6 +7295,122 @@ definitions:
               example: "cce4dc71-6757-4a1c-a259-6b66a4304c14"
     xml:
       name: "TemplateBatchDelete"
+  TemplateResponseStore:
+    type: "object"
+    properties:
+      data:
+        type: "object"
+        $ref: "#/definitions/TemplateResponse"
+      message:
+        type: "string"
+        description: "Created successfully"
+        example: "Created successfully"
+    xml:
+      name: "TemplateResponseStore"
+  TemplateResponseShowDataObject:
+    type: "object"
+    properties:
+      data:
+        type: "object"
+        $ref: "#/definitions/TemplateResponse"
+      message:
+        type: "string"
+        description: "Retrieved successfully"
+        example: "Retrieved successfully"
+    xml:
+      name: "TemplateResponseShowDataObject"
+  TemplateResponseShowDataArray:
+    type: "object"
+    properties:
+      data:
+        type: "array"
+        items:
+          type: "object"
+          $ref: "#/definitions/TemplateResponse"
+      message:
+        type: "string"
+        description: "Retrieved successfully"
+        example: "Retrieved successfully"
+    xml:
+      name: "TemplateResponseShowDataArray"
+  TemplateResponseUpdate:
+    type: "object"
+    properties:
+      data:
+        type: "object"
+        $ref: "#/definitions/TemplateResponse"
+      message:
+        type: "string"
+        description: "Updated successfully"
+        example: "Updated successfully"
+    xml:
+      name: "TemplateResponseUpdate"
+  TemplateUpdate:
+    type: "object"
+    properties:
+      project_id:
+        type: "string"
+        description: Project ID
+        example: "4419934f-8e1b-4cf0-b432-01ef9258a812"
+      side_id:
+        type: "string"
+        description: Side ID
+        example: "c5661a1e-8147-4dc3-8600-00fdc81ed14b"
+      design_ratio:
+        type: "number"
+        format: "float"
+        example: 50.50
+      pdf_url:
+        type: "string"
+        description: Lorem ipsum...
+      preview_image_id:
+        type: "string"
+        description: Image ID
+        example: "e8304b84-a015-3bd4-a7d3-7a978f465df2"
+      design_image_id:
+        type: "string"
+        description: Image ID
+        example: "e8304b84-a015-3bd4-a7d3-7a978f465df2"
+      design_file:
+        type: "file"
+        description: Image file
+      quantity:
+        type: "integer"
+        format: "int64"
+        example: 50
+      note:
+        type: "string"
+        example: "printcart"
+      layers:
+        type: "json"
+        description: "Lorem ipsum..."
+        example:
+          [
+            {
+              "top": 183.5025,
+              "left": 195.79,
+              "text": "Blackbird",
+              "width": 68.33984375,
+              "height": 22.6,
+              "originX": "left",
+              "originY": "top",
+              "fontSize": 20,
+              "fontStyle": "normal",
+              "textAlign": "left",
+              "fontFamily": "Yellowtail",
+              "fontWeight": "normal",
+            },
+          ]
+      viewport_width:
+        type: "number"
+        format: "float"
+        example: 50.50
+      viewport_height:
+        type: "number"
+        format: "float"
+        example: 50.50
+    xml:
+      name: "TemplateUpdate"
   Category:
     type: "object"
     required:
@@ -7314,6 +7922,14 @@ definitions:
   InvalidInput:
     type: "object"
     properties:
+      error:
+        type: "object"
+        properties:
+          field_name:
+            type: "array"
+            items:
+              type: "string"
+              example: That field error message
       message:
         type: "string"
         description: "Invalid input"
@@ -7446,6 +8062,51 @@ definitions:
         example: "Deleted successfully"
     xml:
       name: "Deleted"
+  CreateSideHeaderContentType:
+    type: "object"
+    properties:
+      message:
+        type: "string"
+        description: "Can not create side new with your Content Type"
+        example: "Can not create side new with your Content Type"
+    xml:
+      name: CreateSideHeaderContentType
+  CreateBatchSideHeaderContentType:
+    type: "object"
+    properties:
+      message:
+        type: "string"
+        description: "Can not create sides new with your Content Type"
+        example: "Can not create sides new with your Content Type"
+    xml:
+      name: CreateBatchSideHeaderContentType
+  UpdateSideHeaderContentType:
+    type: "object"
+    properties:
+      message:
+        type: "string"
+        description: "Can not update side with your Content Type"
+        example: "Can not update side with your Content Type"
+    xml:
+      name: UpdateSideHeaderContentType
+  UpdateBatchSideHeaderContentType:
+    type: "object"
+    properties:
+      message:
+        type: "string"
+        description: "Can not update sides with your Content Type"
+        example: "Can not update sides with your Content Type"
+    xml:
+      name: UpdateBatchSideHeaderContentType
+  DeleteBatchSideHeaderContentType:
+    type: "object"
+    properties:
+      message:
+        type: "string"
+        description: "Can not delete sides with your Content Type"
+        example: "Can not delete sides with your Content Type"
+    xml:
+      name: DeleteBatchSideHeaderContentType
 externalDocs:
   description: "Find out more about Swagger"
   url: "http://swagger.io"
