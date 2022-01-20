@@ -15,6 +15,7 @@ tags:
   - name: "Product"
   - name: "Side"
   - name: "Image"
+  - name: "Clipart"
   - name: "Font"
   - name: "Design"
   - name: "Template"
@@ -1176,14 +1177,6 @@ paths:
           description: "Image to upload"
           required: true
           type: "file"
-        - name: "type"
-          in: "formData"
-          description: "Image Type"
-          required: false
-          type: "string"
-          enum:
-            - "cliparts"
-            - "designs"
       responses:
         "201":
           description: "File successfully uploaded"
@@ -1321,14 +1314,6 @@ paths:
           description: "Image to upload"
           required: true
           type: "file"
-        - name: "type"
-          in: "formData"
-          description: "Image Type"
-          required: false
-          type: "string"
-          enum:
-            - "cliparts"
-            - "designs"
       responses:
         "201":
           description: "File successfully uploaded"
@@ -1361,73 +1346,6 @@ paths:
       security:
         - BasicAuth: []
         - ApiKeyAuth: []
-  /clipart-storages:
-    post:
-      tags:
-        - "Image"
-      # summary: "..."
-      # description: "..."
-      operationId: "postImageClipartCategory"
-      summary: "Create new Image Clipart - Storage"
-      produces:
-        - "application/json"
-      parameters:
-        - in: "body"
-          name: "body"
-          # description: "Pet object that needs to be added to the store"
-          required: true
-          schema:
-            $ref: "#/definitions/ImageClipartStorage"
-      responses:
-        "201":
-          description: "Retrieved successfully"
-          schema:
-            $ref: "#/definitions/CategoryResponseStore"
-        "401":
-          description: "Unauthenticated"
-          schema:
-            $ref: "#/definitions/Unauthenticated"
-        "404":
-          description: "Not found"
-          schema:
-            $ref: "#/definitions/NotFound"
-      security:
-        - BasicAuth: []
-    get:
-      tags:
-        - "Image"
-      # summary: "..."
-      # description: "..."
-      operationId: "getStorageByImageClipart"
-      summary: "Get a list of storages by image clipart"
-      produces:
-        - "application/json"
-      responses:
-        "200":
-          description: "Retrieved successfully"
-          schema:
-            $ref: "#/definitions/CategoryResponseShowDataArray"
-        "401":
-          description: "Unauthenticated"
-          schema:
-            $ref: "#/definitions/Unauthenticated"
-        "404":
-          description: "Not found"
-          schema:
-            $ref: "#/definitions/NotFound"
-        "413":
-          description: "Too many cliparts"
-          type: "object"
-          schema:
-            type: "object"
-            properties:
-              error:
-                type: "string"
-                description: "Too many cliparts"
-                example: "Too many cliparts"
-      security:
-        - BasicAuth: []
-        - ApiKeyAuth: []
   /images/count:
     get:
       tags:
@@ -1449,6 +1367,248 @@ paths:
             $ref: "#/definitions/Unauthenticated"
       security:
         - BasicAuth: []
+  /cliparts:
+    post:
+      tags:
+        - "Clipart"
+      # summary:
+      # description:
+      operationId: "uploadFileClipart"
+      summary: "Add new clipart"
+      consumes:
+        - "multipart/form-data"
+      produces:
+        - "application/json"
+      parameters:
+        - name: "file"
+          in: "formData"
+          description: "Clipart to upload"
+          required: true
+          type: "file"
+      responses:
+        "201":
+          description: "File successfully uploaded"
+          schema:
+            $ref: "#/definitions/ImageResponseStore"
+        "401":
+          description: "Unauthenticated"
+          schema:
+            $ref: "#/definitions/Unauthenticated"
+        "405":
+          description: "File upload missing"
+          type: "object"
+          schema:
+            type: "object"
+            properties:
+              message:
+                type: "string"
+                description: "File upload missing"
+                example: "File upload missing"
+        "415":
+          description: "Unsupported Media Type"
+          type: "object"
+          schema:
+            type: "object"
+            properties:
+              message:
+                type: "string"
+                description: "Unsupported Media Type"
+                example: "Unsupported Media Type"
+      security:
+        - BasicAuth: []
+        - ApiKeyAuth: []
+    get:
+      tags:
+        - "Clipart"
+      # summary: "..."
+      # description: "..."
+      operationId: "getClipart"
+      summary: "Get a list of cliparts"
+      produces:
+        - "application/json"
+      responses:
+        "200":
+          description: "Retrieved successfully"
+          schema:
+            $ref: "#/definitions/ImageResponseShowDataArray"
+        "401":
+          description: "Unauthenticated"
+          schema:
+            $ref: "#/definitions/Unauthenticated"
+        "404":
+          description: "Not found"
+          schema:
+            $ref: "#/definitions/NotFound"
+      security:
+        - BasicAuth: []
+        - ApiKeyAuth: []
+  /cliparts/{clipartId}:
+    get:
+      tags:
+        - "Clipart"
+      # summary: "Find pet by ID"
+      # description: "Returns a single pet"
+      operationId: "getClipartById"
+      summary: "Get clipart details"
+      produces:
+        - "application/json"
+      parameters:
+        - name: "clipartId"
+          in: "path"
+          description: "Clipart ID"
+          required: true
+          type: "string"
+      responses:
+        "200":
+          description: "Retrieved successfully"
+          schema:
+            $ref: "#/definitions/ImageResponseShowDataObject"
+        "401":
+          description: "Unauthenticated"
+          schema:
+            $ref: "#/definitions/Unauthenticated"
+        "404":
+          description: "Not found"
+          schema:
+            $ref: "#/definitions/NotFound"
+      security:
+        - BasicAuth: []
+        - ApiKeyAuth: []
+    delete:
+      tags:
+        - "Clipart"
+      # summary:
+      # description:
+      operationId: "deleteClipartById"
+      summary: "Delete a clipart"
+      produces:
+        - "application/json"
+      parameters:
+        - name: "clipartId"
+          in: "path"
+          description: "Clipart Id"
+          required: true
+          type: "string"
+      responses:
+        "200":
+          description: "Deleted successfully"
+          schema:
+            $ref: "#/definitions/Deleted"
+        "401":
+          description: "Unauthenticated"
+          schema:
+            $ref: "#/definitions/Unauthenticated"
+        "404":
+          description: "Not found"
+          schema:
+            $ref: "#/definitions/NotFound"
+      security:
+        - BasicAuth: []
+  /clipart/batch:
+    post:
+      post:
+      tags:
+        - "Clipart"
+      # summary:
+      # description:
+      operationId: "uploadFilesClipart"
+      summary: "Add new batch clipart"
+      consumes:
+        - "multipart/form-data"
+      produces:
+        - "application/json"
+      parameters:
+        - name: "files[]"
+          in: "formData"
+          description: "Clipart to upload"
+          required: true
+          type: "file"
+      responses:
+        "201":
+          description: "File successfully uploaded"
+          schema:
+            $ref: "#/definitions/ImageResponseStoreBatch"
+        "401":
+          description: "Unauthenticated"
+          schema:
+            $ref: "#/definitions/Unauthenticated"
+        "405":
+          description: "File upload missing"
+          type: "object"
+          schema:
+            type: "object"
+            properties:
+              message:
+                type: "string"
+                description: "File upload missing"
+                example: "File upload missing"
+        "415":
+          description: "Unsupported Media Type"
+          type: "object"
+          schema:
+            type: "object"
+            properties:
+              message:
+                type: "string"
+                description: "Unsupported Media Type"
+                example: "Unsupported Media Type"
+      security:
+        - BasicAuth: []
+        - ApiKeyAuth: []
+  /clipart-storages/{storageId}/cliparts:
+    get:
+      tags:
+        - "Clipart"
+      # summary: "Find pet by ID"
+      # description: "Returns a single pet"
+      operationId: "getClipartsByStorage"
+      summary: "Get a list of cliparts by storage"
+      produces:
+        - "application/json"
+      parameters:
+        - name: "storageId"
+          in: "path"
+          description: "Storage ID"
+          required: true
+          type: "string"
+      responses:
+        "200":
+          description: "Retrieved successfully"
+          schema:
+            $ref: "#/definitions/ImageResponseShowDataArray"
+        "401":
+          description: "Unauthenticated"
+          schema:
+            $ref: "#/definitions/Unauthenticated"
+        "404":
+          description: "Not found"
+          schema:
+            $ref: "#/definitions/NotFound"
+      security:
+        - BasicAuth: []
+        - ApiKeyAuth: []
+  /cliparts/count:
+    get:
+      tags:
+        - "Clipart"
+      # summary: "..."
+      # description: "..."
+      operationId: "getCountClipart"
+      summary: "Get a count of cliparts"
+      produces:
+        - "application/json"
+      responses:
+        "200":
+          description: "Retrieved successfully"
+          schema:
+            $ref: "#/definitions/ImageCount"
+        "401":
+          description: "Unauthenticated"
+          schema:
+            $ref: "#/definitions/Unauthenticated"
+      security:
+        - BasicAuth: []
+        - ApiKeyAuth: []
   /designs:
     post:
       tags:
@@ -1863,6 +2023,32 @@ paths:
           description: "Retrieved successfully"
           schema:
             $ref: "#/definitions/DesignFont"
+        "401":
+          description: "Unauthenticated"
+          schema:
+            $ref: "#/definitions/Unauthenticated"
+        "404":
+          description: "Not found"
+          schema:
+            $ref: "#/definitions/NotFound"
+      security:
+        - BasicAuth: []
+        - ApiKeyAuth: []
+  /designs/images:
+    get:
+      tags:
+        - "Design"
+      # summary: "..."
+      # description: "..."
+      operationId: "getDesignImage"
+      summary: "Get a list images by design"
+      produces:
+        - "application/json"
+      responses:
+        "200":
+          description: "Retrieved successfully"
+          schema:
+            $ref: "#/definitions/ImageResponseShowDataArray"
         "401":
           description: "Unauthenticated"
           schema:
@@ -2508,27 +2694,28 @@ paths:
             $ref: "#/definitions/NotFound"
       security:
         - BasicAuth: []
-  /clipart-storages/{storageId}/cliparts:
-    get:
+  /clipart-storages:
+    post:
       tags:
         - "Storage"
-      # summary: "Find pet by ID"
-      # description: "Returns a single pet"
-      operationId: "getClipartsByStorage"
-      summary: "Get a list of cliparts by storage"
+      # summary: "..."
+      # description: "..."
+      operationId: "postClipartStorage"
+      summary: "Create new Clipart - Storage"
       produces:
         - "application/json"
       parameters:
-        - name: "storageId"
-          in: "path"
-          description: "Storage ID"
+        - in: "body"
+          name: "body"
+          # description: "Pet object that needs to be added to the store"
           required: true
-          type: "string"
+          schema:
+            $ref: "#/definitions/ImageClipartStorage"
       responses:
-        "200":
+        "201":
           description: "Retrieved successfully"
           schema:
-            $ref: "#/definitions/ImageResponseShowDataArray"
+            $ref: "#/definitions/CategoryResponseStore"
         "401":
           description: "Unauthenticated"
           schema:
@@ -2537,6 +2724,40 @@ paths:
           description: "Not found"
           schema:
             $ref: "#/definitions/NotFound"
+      security:
+        - BasicAuth: []
+    get:
+      tags:
+        - "Storage"
+      # summary: "..."
+      # description: "..."
+      operationId: "getStorageByClipart"
+      summary: "Get a list of storages by clipart"
+      produces:
+        - "application/json"
+      responses:
+        "200":
+          description: "Retrieved successfully"
+          schema:
+            $ref: "#/definitions/CategoryResponseShowDataArray"
+        "401":
+          description: "Unauthenticated"
+          schema:
+            $ref: "#/definitions/Unauthenticated"
+        "404":
+          description: "Not found"
+          schema:
+            $ref: "#/definitions/NotFound"
+        "413":
+          description: "Too many cliparts"
+          type: "object"
+          schema:
+            type: "object"
+            properties:
+              error:
+                type: "string"
+                description: "Too many cliparts"
+                example: "Too many cliparts"
       security:
         - BasicAuth: []
         - ApiKeyAuth: []
