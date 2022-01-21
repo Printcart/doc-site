@@ -96,7 +96,7 @@ Printcart allows a maximum of 100 items per request
 
 ## Query parameters
 
-Almost all endpoints accept optional parameters which can be passed as an HTTP query string parameter, e.g. `GET https://api.printcart.com/project?status=completed&sortBy=created_date`. All parameters are documented along with each endpoint.
+Almost all endpoints accept optional parameters which can be passed as an HTTP query string parameter, e.g. `GET https://api.printcart.com/project?status=completed&sortBy=created_date`. All parameters are [documented](/rest-api-reference) along with each endpoint.
 
 ## API limit rate
 
