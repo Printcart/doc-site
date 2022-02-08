@@ -22,6 +22,7 @@ tags:
   - name: "Storage"
   - name: "Project"
   - name: "Account"
+  - name: "Store"
   - name: "Webhook"
 schemes:
   - "https"
@@ -98,21 +99,165 @@ paths:
         "400":
           description: "Invalid input"
           schema:
-           $ref: "#/definitions/InvalidInput"
+            $ref: "#/definitions/InvalidInput"
         "401":
           description: "Unauthenticated"
           schema:
             $ref: "#/definitions/Unauthenticated"
       security:
         - BasicAuth: []
-  /account/token-revoke:
+  /stores:
+    post:
+      tags:
+        - "Store"
+      operationId: "createStore"
+      summary: "Create Store"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - in: "body"
+          name: "body"
+          description:
+          required: true
+          schema:
+            $ref: "#/definitions/Store"
+      responses:
+        "201":
+          description: "Created successfully"
+          schema:
+            $ref: "#/definitions/StoreResponseCreate"
+        "400":
+          description: "Invalid input"
+          schema:
+            $ref: "#/definitions/InvalidInput"
+      security:
+        - BasicAuth: []
+    get:
+      tags:
+        - "Store"
+      operationId: "getStore"
+      summary: "Get Store Info"
+      produces:
+        - "application/json"
+      responses:
+        "200":
+          description: "Retrieved successfully"
+          schema:
+            $ref: "#/definitions/StoreResponseShow"
+        "401":
+          description: "Unauthenticated"
+          schema:
+            $ref: "#/definitions/Unauthenticated"
+      security:
+        - BasicAuth: []
+  /stores/{storeId}:
+    get:
+      tags:
+        - "Store"
+      operationId: "getStoreById"
+      summary: "Get Store details"
+      produces:
+        - "application/json"
+      parameters:
+        - name: "storeId"
+          in: "path"
+          description: "Store ID"
+          required: true
+          type: "string"
+      responses:
+        "200":
+          description: "Retrieved successfully"
+          schema:
+            $ref: "#/definitions/StoreResponseShow"
+        "404":
+          description: "Not found"
+          schema:
+            $ref: "#/definitions/NotFound"
+        "401":
+          description: "Unauthenticated"
+          schema:
+            $ref: "#/definitions/Unauthenticated"
+      security:
+        - BasicAuth: []
     put:
       tags:
-        - "Account"
+        - "Store"
+      operationId: "updateStore"
+      summary: "Update store details"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - name: "storeId"
+          in: "path"
+          description: "Store ID"
+          required: true
+          type: "string"
+        - in: "body"
+          name: "body"
+          required: true
+          schema:
+            $ref: "#/definitions/StoreUpdate"
+      responses:
+        "200":
+          description: "Updated successfully"
+          schema:
+            $ref: "#/definitions/StoreResponseUpdate"
+        "400":
+          description: "Invalid input"
+          schema:
+            $ref: "#/definitions/InvalidInput"
+        "401":
+          description: "Unauthenticated"
+          schema:
+            $ref: "#/definitions/Unauthenticated"
+        "404":
+          description: "Not found"
+          schema:
+            $ref: "#/definitions/NotFound"
+      security:
+        - BasicAuth: []
+    delete:
+      tags:
+        - "Store"
+      # summary:
+      # description:
+      operationId: "deleteStore"
+      summary: "Delete a store"
+      produces:
+        - "application/json"
+      parameters:
+        - name: "storeId"
+          in: "path"
+          description: "Store ID"
+          required: true
+          type: "string"
+      responses:
+        "200":
+          description: "Deleted successfully"
+          schema:
+            $ref: "#/definitions/Deleted"
+        "401":
+          description: "Unauthenticated"
+          schema:
+            $ref: "#/definitions/Unauthenticated"
+        "404":
+          description: "Not found"
+          schema:
+            $ref: "#/definitions/NotFound"
+      security:
+        - BasicAuth: []
+  /stores/{storeId}/token-revoke:
+    put:
+      tags:
+        - "Store"
       # summary: "Updated Account"
       # description: "This can only be done by the logged in Account."
       operationId: "tokenRevoke"
-      summary: "Renew API Key"
+      summary: "Renew UnAuth Token"
       consumes:
         - "application/json"
       produces:
@@ -121,7 +266,7 @@ paths:
         "200":
           description: "Updated successfully"
           schema:
-            $ref: "#/definitions/ApiTokenResponse"
+            $ref: "#/definitions/StoreTokenRevokeResponse"
         "401":
           description: "Unauthenticated"
           schema:
@@ -161,7 +306,7 @@ paths:
           schema:
             $ref: "#/definitions/Unauthenticated"
       security:
-        - BasicAuth: []
+        - BasicStoreAuth: []
     get:
       tags:
         - "Product"
@@ -185,8 +330,8 @@ paths:
           schema:
             $ref: "#/definitions/Unauthenticated"
       security:
-        - BasicAuth: []
-        - ApiKeyAuth: []
+        - BasicStoreAuth: []
+        - UnAuthToken: []
   /products/{productId}:
     get:
       tags:
@@ -217,8 +362,8 @@ paths:
           schema:
             $ref: "#/definitions/Unauthenticated"
       security:
-        - BasicAuth: []
-        - ApiKeyAuth: []
+        - BasicStoreAuth: []
+        - UnAuthToken: []
     put:
       put:
       tags:
@@ -261,7 +406,7 @@ paths:
           schema:
             $ref: "#/definitions/NotFound"
       security:
-        - BasicAuth: []
+        - BasicStoreAuth: []
     delete:
       tags:
         - "Product"
@@ -291,7 +436,7 @@ paths:
           schema:
             $ref: "#/definitions/NotFound"
       security:
-        - BasicAuth: []
+        - BasicStoreAuth: []
   /products/batch:
     post:
       tags:
@@ -348,7 +493,7 @@ paths:
                 description: "Something went wrong while create products"
                 example: "Something went wrong while create products"
       security:
-        - BasicAuth: []
+        - BasicStoreAuth: []
     put:
       tags:
         - "Product"
@@ -408,7 +553,7 @@ paths:
                 description: "Something went wrong while update products"
                 example: "Something went wrong while update products"
       security:
-        - BasicAuth: []
+        - BasicStoreAuth: []
     delete:
       tags:
         - "Product"
@@ -440,7 +585,7 @@ paths:
           schema:
             $ref: "#/definitions/ProductError"
       security:
-        - BasicAuth: []
+        - BasicStoreAuth: []
   /products/{productId}/designs:
     get:
       get:
@@ -472,7 +617,7 @@ paths:
           schema:
             $ref: "#/definitions/NotFound"
       security:
-        - BasicAuth: []
+        - BasicStoreAuth: []
   /products/{productId}/sides:
     get:
       tags:
@@ -503,8 +648,8 @@ paths:
           schema:
             $ref: "#/definitions/NotFound"
       security:
-        - BasicAuth: []
-        - ApiKeyAuth: []
+        - BasicStoreAuth: []
+        - UnAuthToken: []
   /products/{productId}/designs/count:
     get:
       tags:
@@ -531,7 +676,7 @@ paths:
           schema:
             $ref: "#/definitions/Unauthenticated"
       security:
-        - BasicAuth: []
+        - BasicStoreAuth: []
   /products/{productId}/sides/count:
     get:
       tags:
@@ -558,7 +703,7 @@ paths:
           schema:
             $ref: "#/definitions/Unauthenticated"
       security:
-        - BasicAuth: []
+        - BasicStoreAuth: []
   /products/count:
     get:
       tags:
@@ -579,7 +724,7 @@ paths:
           schema:
             $ref: "#/definitions/Unauthenticated"
       security:
-        - BasicAuth: []
+        - BasicStoreAuth: []
   /sides:
     post:
       tags:
@@ -605,7 +750,7 @@ paths:
           schema:
             $ref: "#/definitions/SideResponseStore"
         "400":
-          description: 
+          description:
             - "Invalid input"
             - "Header Content-Type"
           schema:
@@ -621,7 +766,7 @@ paths:
           schema:
             $ref: "#/definitions/NotFound"
       security:
-        - BasicAuth: []
+        - BasicStoreAuth: []
     get:
       tags:
         - "Side"
@@ -645,8 +790,8 @@ paths:
           schema:
             $ref: "#/definitions/NotFound"
       security:
-        - BasicAuth: []
-        - ApiKeyAuth: []
+        - BasicStoreAuth: []
+        - UnAuthToken: []
   /sides/{sideId}:
     get:
       tags:
@@ -677,8 +822,8 @@ paths:
           schema:
             $ref: "#/definitions/NotFound"
       security:
-        - BasicAuth: []
-        - ApiKeyAuth: []
+        - BasicStoreAuth: []
+        - UnAuthToken: []
     put:
       tags:
         - "Side"
@@ -708,7 +853,7 @@ paths:
           schema:
             $ref: "#/definitions/SideResponseUpdate"
         "400":
-          description: 
+          description:
             - "Invalid input"
             - "Header Content-Type"
           schema:
@@ -724,7 +869,7 @@ paths:
           schema:
             $ref: "#/definitions/NotFound"
       security:
-        - BasicAuth: []
+        - BasicStoreAuth: []
     delete:
       tags:
         - "Side"
@@ -754,7 +899,7 @@ paths:
           schema:
             $ref: "#/definitions/NotFound"
       security:
-        - BasicAuth: []
+        - BasicStoreAuth: []
   /sides/batch:
     post:
       tags:
@@ -780,7 +925,7 @@ paths:
           schema:
             $ref: "#/definitions/SideBatchResponse"
         "400":
-          description: 
+          description:
             - "Invalid input"
             - "Header Content-Type"
           schema:
@@ -820,7 +965,7 @@ paths:
                 description: "Something went wrong while create sides"
                 example: "Something went wrong while create sides"
       security:
-        - BasicAuth: []
+        - BasicStoreAuth: []
     put:
       tags:
         - "Side"
@@ -845,7 +990,7 @@ paths:
           schema:
             $ref: "#/definitions/SideBatchUpdateResponse"
         "400":
-          description: 
+          description:
             - "Invalid input"
             - "Header Content-Type"
           schema:
@@ -887,7 +1032,7 @@ paths:
                 description: "Something went wrong while update sides"
                 example: "Something went wrong while update sides"
       security:
-        - BasicAuth: []
+        - BasicStoreAuth: []
     delete:
       tags:
         - "Side"
@@ -923,7 +1068,7 @@ paths:
           schema:
             $ref: "#/definitions/SideError"
       security:
-        - BasicAuth: []
+        - BasicStoreAuth: []
   /sides/{sideId}/templates:
     get:
       tags:
@@ -955,8 +1100,8 @@ paths:
           schema:
             $ref: "#/definitions/NotFound"
       security:
-        - BasicAuth: []
-        - ApiKeyAuth: []
+        - BasicStoreAuth: []
+        - UnAuthToken: []
   /sides/count:
     get:
       tags:
@@ -977,7 +1122,7 @@ paths:
           schema:
             $ref: "#/definitions/Unauthenticated"
       security:
-        - BasicAuth: []
+        - BasicStoreAuth: []
   /fonts:
     post:
       tags:
@@ -1011,7 +1156,7 @@ paths:
           schema:
             $ref: "#/definitions/Unauthenticated"
       security:
-        - BasicAuth: []
+        - BasicStoreAuth: []
     get:
       tags:
         - "Font"
@@ -1035,8 +1180,8 @@ paths:
           schema:
             $ref: "#/definitions/NotFound"
       security:
-        - BasicAuth: []
-        - ApiKeyAuth: []
+        - BasicStoreAuth: []
+        - UnAuthToken: []
   /fonts/{fontId}:
     get:
       tags:
@@ -1064,8 +1209,8 @@ paths:
           schema:
             $ref: "#/definitions/NotFound"
       security:
-        - BasicAuth: []
-        - ApiKeyAuth: []
+        - BasicStoreAuth: []
+        - UnAuthToken: []
     put:
       tags:
         - "Font"
@@ -1107,7 +1252,7 @@ paths:
           schema:
             $ref: "#/definitions/NotFound"
       security:
-        - BasicAuth: []
+        - BasicStoreAuth: []
     delete:
       tags:
         - "Font"
@@ -1137,7 +1282,7 @@ paths:
           schema:
             $ref: "#/definitions/NotFound"
       security:
-        - BasicAuth: []
+        - BasicStoreAuth: []
   /fonts/count:
     get:
       tags:
@@ -1158,7 +1303,7 @@ paths:
           schema:
             $ref: "#/definitions/Unauthenticated"
       security:
-        - BasicAuth: []
+        - BasicStoreAuth: []
   /images:
     post:
       tags:
@@ -1207,8 +1352,8 @@ paths:
                 description: "Unsupported Media Type"
                 example: "Unsupported Media Type"
       security:
-        - BasicAuth: []
-        - ApiKeyAuth: []
+        - BasicStoreAuth: []
+        - UnAuthToken: []
     get:
       tags:
         - "Image"
@@ -1232,8 +1377,8 @@ paths:
           schema:
             $ref: "#/definitions/NotFound"
       security:
-        - BasicAuth: []
-        - ApiKeyAuth: []
+        - BasicStoreAuth: []
+        - UnAuthToken: []
   /images/{imageId}:
     get:
       tags:
@@ -1264,7 +1409,7 @@ paths:
           schema:
             $ref: "#/definitions/NotFound"
       security:
-        - BasicAuth: []
+        - BasicStoreAuth: []
     delete:
       tags:
         - "Image"
@@ -1294,7 +1439,7 @@ paths:
           schema:
             $ref: "#/definitions/NotFound"
       security:
-        - BasicAuth: []
+        - BasicStoreAuth: []
   /images/batch:
     post:
       post:
@@ -1344,8 +1489,8 @@ paths:
                 description: "Unsupported Media Type"
                 example: "Unsupported Media Type"
       security:
-        - BasicAuth: []
-        - ApiKeyAuth: []
+        - BasicStoreAuth: []
+        - UnAuthToken: []
   /images/count:
     get:
       tags:
@@ -1366,7 +1511,7 @@ paths:
           schema:
             $ref: "#/definitions/Unauthenticated"
       security:
-        - BasicAuth: []
+        - BasicStoreAuth: []
   /cliparts:
     post:
       tags:
@@ -1415,8 +1560,8 @@ paths:
                 description: "Unsupported Media Type"
                 example: "Unsupported Media Type"
       security:
-        - BasicAuth: []
-        - ApiKeyAuth: []
+        - BasicStoreAuth: []
+        - UnAuthToken: []
     get:
       tags:
         - "Clipart"
@@ -1440,8 +1585,8 @@ paths:
           schema:
             $ref: "#/definitions/NotFound"
       security:
-        - BasicAuth: []
-        - ApiKeyAuth: []
+        - BasicStoreAuth: []
+        - UnAuthToken: []
   /cliparts/{clipartId}:
     get:
       tags:
@@ -1472,8 +1617,8 @@ paths:
           schema:
             $ref: "#/definitions/NotFound"
       security:
-        - BasicAuth: []
-        - ApiKeyAuth: []
+        - BasicStoreAuth: []
+        - UnAuthToken: []
     delete:
       tags:
         - "Clipart"
@@ -1503,7 +1648,7 @@ paths:
           schema:
             $ref: "#/definitions/NotFound"
       security:
-        - BasicAuth: []
+        - BasicStoreAuth: []
   /clipart/batch:
     post:
       post:
@@ -1553,8 +1698,8 @@ paths:
                 description: "Unsupported Media Type"
                 example: "Unsupported Media Type"
       security:
-        - BasicAuth: []
-        - ApiKeyAuth: []
+        - BasicStoreAuth: []
+        - UnAuthToken: []
   /clipart-storages/{storageId}/cliparts:
     get:
       tags:
@@ -1585,8 +1730,8 @@ paths:
           schema:
             $ref: "#/definitions/NotFound"
       security:
-        - BasicAuth: []
-        - ApiKeyAuth: []
+        - BasicStoreAuth: []
+        - UnAuthToken: []
   /cliparts/count:
     get:
       tags:
@@ -1607,8 +1752,8 @@ paths:
           schema:
             $ref: "#/definitions/Unauthenticated"
       security:
-        - BasicAuth: []
-        - ApiKeyAuth: []
+        - BasicStoreAuth: []
+        - UnAuthToken: []
   /designs:
     post:
       tags:
@@ -1666,8 +1811,8 @@ paths:
           schema:
             $ref: "#/definitions/NotFound"
       security:
-        - BasicAuth: []
-        - ApiKeyAuth: []
+        - BasicStoreAuth: []
+        - UnAuthToken: []
     get:
       tags:
         - "Design"
@@ -1691,7 +1836,7 @@ paths:
           schema:
             $ref: "#/definitions/NotFound"
       security:
-        - BasicAuth: []
+        - BasicStoreAuth: []
   /designs/{designId}:
     get:
       tags:
@@ -1722,8 +1867,8 @@ paths:
           schema:
             $ref: "#/definitions/NotFound"
       security:
-        - BasicAuth: []
-        - ApiKeyAuth: []
+        - BasicStoreAuth: []
+        - UnAuthToken: []
     put:
       tags:
         - "Design"
@@ -1779,8 +1924,8 @@ paths:
           schema:
             $ref: "#/definitions/NotFound"
       security:
-        - BasicAuth: []
-        - ApiKeyAuth: []
+        - BasicStoreAuth: []
+        - UnAuthToken: []
     delete:
       tags:
         - "Design"
@@ -1810,7 +1955,7 @@ paths:
           schema:
             $ref: "#/definitions/NotFound"
       security:
-        - BasicAuth: []
+        - BasicStoreAuth: []
   /designs/batch:
     post:
       tags:
@@ -1887,8 +2032,8 @@ paths:
                 description: "Something went wrong while create designs"
                 example: "Something went wrong while create designs"
       security:
-        - BasicAuth: []
-        - ApiKeyAuth: []
+        - BasicStoreAuth: []
+        - UnAuthToken: []
     put:
       tags:
         - "Design"
@@ -1962,8 +2107,8 @@ paths:
                 description: "Something went wrong while update designs"
                 example: "Something went wrong while update designs"
       security:
-        - BasicAuth: []
-        - ApiKeyAuth: []
+        - BasicStoreAuth: []
+        - UnAuthToken: []
     delete:
       tags:
         - "Design"
@@ -2001,7 +2146,7 @@ paths:
                 description: "Can't find design with id"
                 example: "Can't find design with id: cce4dc71-6757-4a1c-a259-6b66a4304c14"
       security:
-        - BasicAuth: []
+        - BasicStoreAuth: []
   /designs/{designId}/fonts:
     get:
       tags:
@@ -2032,8 +2177,8 @@ paths:
           schema:
             $ref: "#/definitions/NotFound"
       security:
-        - BasicAuth: []
-        - ApiKeyAuth: []
+        - BasicStoreAuth: []
+        - UnAuthToken: []
   /designs/images:
     get:
       tags:
@@ -2058,8 +2203,8 @@ paths:
           schema:
             $ref: "#/definitions/NotFound"
       security:
-        - BasicAuth: []
-        - ApiKeyAuth: []
+        - BasicStoreAuth: []
+        - UnAuthToken: []
   /designs/count:
     get:
       tags:
@@ -2080,7 +2225,7 @@ paths:
           schema:
             $ref: "#/definitions/Unauthenticated"
       security:
-        - BasicAuth: []
+        - BasicStoreAuth: []
   /templates:
     post:
       tags:
@@ -2138,8 +2283,8 @@ paths:
           schema:
             $ref: "#/definitions/NotFound"
       security:
-        - BasicAuth: []
-        - ApiKeyAuth: []
+        - BasicStoreAuth: []
+        - UnAuthToken: []
     get:
       tags:
         - "Template"
@@ -2163,7 +2308,7 @@ paths:
           schema:
             $ref: "#/definitions/NotFound"
       security:
-        - BasicAuth: []
+        - BasicStoreAuth: []
   /templates/{templateId}:
     get:
       tags:
@@ -2194,8 +2339,8 @@ paths:
           schema:
             $ref: "#/definitions/NotFound"
       security:
-        - BasicAuth: []
-        - ApiKeyAuth: []
+        - BasicStoreAuth: []
+        - UnAuthToken: []
     put:
       tags:
         - "Template"
@@ -2251,8 +2396,8 @@ paths:
           schema:
             $ref: "#/definitions/NotFound"
       security:
-        - BasicAuth: []
-        - ApiKeyAuth: []
+        - BasicStoreAuth: []
+        - UnAuthToken: []
     delete:
       tags:
         - "Template"
@@ -2282,7 +2427,7 @@ paths:
           schema:
             $ref: "#/definitions/NotFound"
       security:
-        - BasicAuth: []
+        - BasicStoreAuth: []
   /templates/batch:
     post:
       tags:
@@ -2359,8 +2504,8 @@ paths:
                 description: "Something went wrong while create templates"
                 example: "Something went wrong while create templates"
       security:
-        - BasicAuth: []
-        - ApiKeyAuth: []
+        - BasicStoreAuth: []
+        - UnAuthToken: []
     put:
       tags:
         - "Template"
@@ -2434,8 +2579,8 @@ paths:
                 description: "Something went wrong while update templates"
                 example: "Something went wrong while update templates"
       security:
-        - BasicAuth: []
-        - ApiKeyAuth: []
+        - BasicStoreAuth: []
+        - UnAuthToken: []
     delete:
       tags:
         - "Template"
@@ -2473,7 +2618,7 @@ paths:
                 description: "Can't find template with id"
                 example: "Can't find template with id: cce4dc71-6757-4a1c-a259-6b66a4304c14"
       security:
-        - BasicAuth: []
+        - BasicStoreAuth: []
   /templates/{templateId}/fonts:
     get:
       tags:
@@ -2504,8 +2649,8 @@ paths:
           schema:
             $ref: "#/definitions/NotFound"
       security:
-        - BasicAuth: []
-        - ApiKeyAuth: []
+        - BasicStoreAuth: []
+        - UnAuthToken: []
   /templates/count:
     get:
       tags:
@@ -2526,7 +2671,7 @@ paths:
           schema:
             $ref: "#/definitions/Unauthenticated"
       security:
-        - BasicAuth: []
+        - BasicStoreAuth: []
   /storages:
     post:
       tags:
@@ -2564,7 +2709,7 @@ paths:
           schema:
             $ref: "#/definitions/NotFound"
       security:
-        - BasicAuth: []
+        - BasicStoreAuth: []
     get:
       tags:
         - "Storage"
@@ -2588,8 +2733,8 @@ paths:
           schema:
             $ref: "#/definitions/NotFound"
       security:
-        - BasicAuth: []
-        - ApiKeyAuth: []
+        - BasicStoreAuth: []
+        - UnAuthToken: []
   /storages/{storageId}:
     get:
       tags:
@@ -2620,8 +2765,8 @@ paths:
           schema:
             $ref: "#/definitions/NotFound"
       security:
-        - BasicAuth: []
-        - ApiKeyAuth: []
+        - BasicStoreAuth: []
+        - UnAuthToken: []
     put:
       tags:
         - "Storage"
@@ -2663,7 +2808,7 @@ paths:
           schema:
             $ref: "#/definitions/NotFound"
       security:
-        - BasicAuth: []
+        - BasicStoreAuth: []
     delete:
       tags:
         - "Storage"
@@ -2693,7 +2838,7 @@ paths:
           schema:
             $ref: "#/definitions/NotFound"
       security:
-        - BasicAuth: []
+        - BasicStoreAuth: []
   /clipart-storages:
     post:
       tags:
@@ -2725,7 +2870,7 @@ paths:
           schema:
             $ref: "#/definitions/NotFound"
       security:
-        - BasicAuth: []
+        - BasicStoreAuth: []
     get:
       tags:
         - "Storage"
@@ -2759,8 +2904,8 @@ paths:
                 description: "Too many cliparts"
                 example: "Too many cliparts"
       security:
-        - BasicAuth: []
-        - ApiKeyAuth: []
+        - BasicStoreAuth: []
+        - UnAuthToken: []
   /storages/count:
     get:
       tags:
@@ -2781,7 +2926,7 @@ paths:
           schema:
             $ref: "#/definitions/Unauthenticated"
       security:
-        - BasicAuth: []
+        - BasicStoreAuth: []
   /projects:
     post:
       tags:
@@ -2805,7 +2950,7 @@ paths:
         "201":
           description: "Created successfully"
           schema:
-            $ref: "#/definitions/ProjectResponseStore" 
+            $ref: "#/definitions/ProjectResponseStore"
         "400":
           description: "Invalid input"
           schema:
@@ -2835,8 +2980,8 @@ paths:
         #         description: "Can't find design with id"
         #         example: "Can't find design with id: cce4dc71-6757-4a1c-a259-6b66a4304c14"
       security:
-        - BasicAuth: []
-        - ApiKeyAuth: []
+        - BasicStoreAuth: []
+        - UnAuthToken: []
     get:
       tags:
         - "Project"
@@ -2860,7 +3005,7 @@ paths:
           schema:
             $ref: "#/definitions/NotFound"
       security:
-        - BasicAuth: []
+        - BasicStoreAuth: []
   /projects/{projectId}:
     get:
       tags:
@@ -2891,7 +3036,7 @@ paths:
           schema:
             $ref: "#/definitions/NotFound"
       security:
-        - BasicAuth: []
+        - BasicStoreAuth: []
     put:
       tags:
         - "Project"
@@ -2933,7 +3078,7 @@ paths:
           schema:
             $ref: "#/definitions/NotFound"
       security:
-        - BasicAuth: []
+        - BasicStoreAuth: []
     delete:
       tags:
         - "Project"
@@ -2963,7 +3108,7 @@ paths:
           schema:
             $ref: "#/definitions/NotFound"
       security:
-        - BasicAuth: []
+        - BasicStoreAuth: []
   /projects/batch:
     post:
       tags:
@@ -3016,8 +3161,8 @@ paths:
                 description: "Something went wrong while create projects"
                 example: "Something went wrong while create projects"
       security:
-        - BasicAuth: []
-        - ApiKeyAuth: []
+        - BasicStoreAuth: []
+        - UnAuthToken: []
     put:
       tags:
         - "Project"
@@ -3073,7 +3218,7 @@ paths:
                 description: "Something went wrong while update projects"
                 example: "Something went wrong while update projects"
       security:
-        - BasicAuth: []
+        - BasicStoreAuth: []
     delete:
       tags:
         - "Project"
@@ -3105,7 +3250,7 @@ paths:
           schema:
             $ref: "#/definitions/ProjectError"
       security:
-        - BasicAuth: []
+        - BasicStoreAuth: []
   /projects/{projectId}/designs:
     get:
       tags:
@@ -3136,7 +3281,7 @@ paths:
           schema:
             $ref: "#/definitions/NotFound"
       security:
-        - BasicAuth: []
+        - BasicStoreAuth: []
   /projects/{projectId}/products:
     get:
       tags:
@@ -3167,7 +3312,7 @@ paths:
           schema:
             $ref: "#/definitions/NotFound"
       security:
-        - BasicAuth: []
+        - BasicStoreAuth: []
   /projects/count:
     get:
       tags:
@@ -3188,7 +3333,7 @@ paths:
           schema:
             $ref: "#/definitions/Unauthenticated"
       security:
-        - BasicAuth: []
+        - BasicStoreAuth: []
   /projects/{projectId}/designs/count:
     get:
       tags:
@@ -3215,7 +3360,7 @@ paths:
           schema:
             $ref: "#/definitions/Unauthenticated"
       security:
-        - BasicAuth: []
+        - BasicStoreAuth: []
   /projects/{projectId}/products/count:
     get:
       tags:
@@ -3242,7 +3387,7 @@ paths:
           schema:
             $ref: "#/definitions/Unauthenticated"
       security:
-        - BasicAuth: []
+        - BasicStoreAuth: []
   /webhooks:
     post:
       tags:
@@ -3276,7 +3421,7 @@ paths:
           schema:
             $ref: "#/definitions/Unauthenticated"
       security:
-        - BasicAuth: []
+        - BasicStoreAuth: []
     get:
       tags:
         - "Webhook"
@@ -3300,7 +3445,7 @@ paths:
           schema:
             $ref: "#/definitions/NotFound"
       security:
-        - BasicAuth: []
+        - BasicStoreAuth: []
   /webhooks/{webhookId}:
     get:
       tags:
@@ -3331,7 +3476,7 @@ paths:
           schema:
             $ref: "#/definitions/NotFound"
       security:
-        - BasicAuth: []
+        - BasicStoreAuth: []
     put:
       tags:
         - "Webhook"
@@ -3373,7 +3518,7 @@ paths:
           schema:
             $ref: "#/definitions/NotFound"
       security:
-        - BasicAuth: []
+        - BasicStoreAuth: []
     delete:
       tags:
         - "Webhook"
@@ -3403,7 +3548,7 @@ paths:
           schema:
             $ref: "#/definitions/NotFound"
       security:
-        - BasicAuth: []
+        - BasicStoreAuth: []
   /webhooks/count:
     get:
       tags:
@@ -3428,14 +3573,16 @@ paths:
           schema:
             $ref: "#/definitions/NotFound"
       security:
-        - BasicAuth: []
+        - BasicStoreAuth: []
 securityDefinitions:
-  ApiKeyAuth:
+  BasicAuth:
+    type: "basic"
+  BasicStoreAuth:
+    type: "basic"
+  UnAuthToken:
     type: "apiKey"
     name: "X-PrintCart-Unauth-Token"
     in: "header"
-  BasicAuth:
-    type: "basic"
 definitions:
   Account:
     type: "object"
@@ -3456,9 +3603,6 @@ definitions:
         type: "string"
         description: Customer password.
         example: "printcart"
-      google_font_api:
-        type: "string"
-        example: "AIzaSyBtoM...L3iAPUPrpQ"
     xml:
       name: "Account"
   AccountUpdate:
@@ -3477,9 +3621,6 @@ definitions:
         type: "string"
         description: Customer password.
         example: "printcart"
-      google_font_api:
-        type: "string"
-        example: "AIzaSyBtoM...L3iAPUPrpQ"
     xml:
       name: "AccountUpdate"
   AccountResponse:
@@ -3498,18 +3639,12 @@ definitions:
       email_verified_at:
         type: "string"
         example: null
-      google_font_api:
-        type: "string"
-        example: "AIzaSyBtoM...L3iAPUPrpQ"
       created_at:
         type: "string"
         example: "2021-11-16T08:26:30.000000Z"
       updated_at:
         type: "string"
         example: "2021-11-16T08:26:30.000000Z"
-      api_token:
-        type: "string"
-        example: "1|kRtTFoeS2bhXcVPbOYHW4EwP2DXaA9BxtdEX3EfH"
     xml:
       name: "AccountResponse"
   AccountResponseShow:
@@ -3548,18 +3683,109 @@ definitions:
         example: "Updated successfully"
     xml:
       name: "AccountResponseUpdate"
-  ApiTokenResponse:
+  Store:
+    type: "object"
+    required:
+      - "store_name"
+    properties:
+      store_name:
+        type: "string"
+        description: Customer name.
+        example: "store printcart"
+      google_font_api:
+        type: "string"
+        example: "AIzaSyBtoM...L3iAPUPrpQ"
+    xml:
+      name: "Store"
+  StoreUpdate:
     type: "object"
     properties:
-      api_token:
+      store_name:
         type: "string"
-        example: "2|m9RU0sw3yXCXiJqZFbNbrAPwy0Kc9vlZMgDT7vaT"
+        description: Customer name.
+        example: "store printcart"
+      google_font_api:
+        type: "string"
+        example: "AIzaSyBtoM...L3iAPUPrpQ"
+    xml:
+      name: "StoreUpdate"
+  StoreResponse:
+    type: "object"
+    properties:
+      id:
+        type: "string"
+        example: "a2ba0785-7f53-3eea-a020-bac895d357d6"
+      name:
+        type: "string"
+        example: "store printcart"
+      sid:
+        type: "string"
+        example: "pcsia_b9a7d6fa332b74bdd073cabbac0e6ee539ed3b361aca0c2f7b9bbfe683430cce"
+      secret:
+        type: "string"
+        example: "pcsup_02be5f225e8ddb1ff1569cf4bac0c9346c60928394902ab2f193fcd5bfc2657d"
+      unauth_access_token:
+        type: "string"
+        example: "b20dd13e142d5202aeda6c7365cef5420a82bbf6ad4dc3d16c05711af3a22184"
+      google_font_api:
+        type: "string"
+        example: "AIzaSyBtoM...L3iAPUPrpQ"
+      created_at:
+        type: "string"
+        example: "2021-11-16T08:26:30.000000Z"
+      updated_at:
+        type: "string"
+        example: "2021-11-16T08:26:30.000000Z"
+    xml:
+      name: "StoreResponse"
+  StoreResponseShow:
+    type: "object"
+    properties:
+      data:
+        type: "object"
+        $ref: "#/definitions/StoreResponse"
+      message:
+        type: "string"
+        description: "Retrieved successfully"
+        example: "Retrieved successfully"
+    xml:
+      name: "StoreResponseShow"
+  StoreResponseCreate:
+    type: "object"
+    properties:
+      data:
+        type: "object"
+        $ref: "#/definitions/StoreResponse"
+      message:
+        type: "string"
+        description: "Created successfully"
+        example: "Created successfully"
+    xml:
+      name: "StoreResponseCreate"
+  StoreResponseUpdate:
+    type: "object"
+    properties:
+      data:
+        type: "object"
+        $ref: "#/definitions/StoreResponse"
       message:
         type: "string"
         description: "Updated successfully"
         example: "Updated successfully"
     xml:
-      name: "ApiTokenResponse"
+      name: "StoreResponseUpdate"
+  StoreTokenRevokeResponse:
+    type: "object"
+    properties:
+      unauth_access_token:
+        type: "string"
+        example: "22d23e41e296c45b0c6c9cd722398b90a3cc906301bdebfaac4751cf2dowmar3"
+      message:
+        type: "string"
+        description: "Updated successfully"
+        example: "Updated successfully"
+    xml:
+      name: "StoreTokenRevokeResponse"
   Product:
     type: "object"
     required:
@@ -4121,7 +4347,7 @@ definitions:
         example: true
       product_size:
         type: "object"
-        properties: 
+        properties:
           product_input:
             type: "number"
             format: "double"
@@ -4134,7 +4360,7 @@ definitions:
             type: "float"
             format: "float"
             example: 50
-      design_size: 
+      design_size:
         type: "object"
         properties:
           width:
@@ -4337,7 +4563,7 @@ definitions:
         example: true
       product_size:
         type: "object"
-        properties: 
+        properties:
           product_input:
             type: "number"
             format: "double"
@@ -4350,7 +4576,7 @@ definitions:
             type: "float"
             format: "float"
             example: 50
-      design_size: 
+      design_size:
         type: "object"
         properties:
           width:
@@ -4595,7 +4821,7 @@ definitions:
               example: true
             product_size:
               type: "object"
-              properties: 
+              properties:
                 product_input:
                   type: "number"
                   format: "double"
@@ -4608,7 +4834,7 @@ definitions:
                   type: "float"
                   format: "float"
                   example: 50
-            design_size: 
+            design_size:
               type: "object"
               properties:
                 width:
