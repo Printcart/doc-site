@@ -3059,7 +3059,7 @@ paths:
           # description: "Pet object that needs to be added to the store"
           required: true
           schema:
-            $ref: "#/definitions/Project"
+            $ref: "#/definitions/ProjectUpdate"
       responses:
         "200":
           description: "Updated successfully"
@@ -7993,8 +7993,37 @@ definitions:
       note:
         type: "string"
         example: "printcart note"
+      design_ids:
+        type: "array"
+        example: [
+          '8e7ee612-4667-474c-809a-ff848400f7a3',
+          '42f4a0e7-3ea4-4f62-9a04-0b41fb8c69d1'
+        ]
     xml:
       name: "Project"
+  ProjectUpdate:
+    type: "object"
+    properties:
+      name:
+        type: "string"
+        description: The name given to a project
+        example: "printcart"
+      status:
+        type: "string"
+        default: "processing"
+        enum:
+          - "processing"
+          - "reviewing"
+          - "accepted"
+          - "trashed"
+          - "deleted"
+        description: Project status
+        example: "processing"
+      note:
+        type: "string"
+        example: "printcart note"
+    xml:
+      name: "ProjectUpdate"
   ProjectBatch:
     type: "object"
     required:
@@ -8003,8 +8032,25 @@ definitions:
       projects:
         type: "array"
         items:
-          type: "array"
-          $ref: "#/definitions/Project"
+          properties:
+            name:
+              type: "string"
+              description: The name given to a project
+              example: "printcart"
+            status:
+              type: "string"
+              default: "processing"
+              enum:
+                - "processing"
+                - "reviewing"
+                - "accepted"
+                - "trashed"
+                - "deleted"
+              description: Project status
+              example: "processing"
+            note:
+              type: "string"
+              example: "printcart note"
     xml:
       name: "ProjectBatch"
   ProjectBatchUpdate:
