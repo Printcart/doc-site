@@ -132,6 +132,10 @@ paths:
           description: "Invalid input"
           schema:
             $ref: "#/definitions/InvalidInput"
+        "402":
+          description: "Payment Required"
+          schema:
+            $ref: "#/definitions/PaymentRequired"
       security:
         - BasicAuth: []
     get:
@@ -305,6 +309,10 @@ paths:
           description: "Unauthenticated"
           schema:
             $ref: "#/definitions/Unauthenticated"
+        "402":
+          description: "Payment Required"
+          schema:
+            $ref: "#/definitions/PaymentRequired"
       security:
         - BasicStoreAuth: []
     get:
@@ -468,6 +476,10 @@ paths:
           description: "Unauthenticated"
           schema:
             $ref: "#/definitions/Unauthenticated"
+        "402":
+          description: "Payment Required"
+          schema:
+            $ref: "#/definitions/PaymentRequired"
         "404":
           description: "Can't find image with id"
           schema:
@@ -1322,6 +1334,15 @@ paths:
           description: "Image to upload"
           required: true
           type: "file"
+        - name: "type"
+          in: "formData"
+          required: false
+          type: "string"
+          default: null
+          enum:
+            - "null"
+            - "cliparts"
+            - "designs"
       responses:
         "201":
           description: "File successfully uploaded"
@@ -1331,6 +1352,10 @@ paths:
           description: "Unauthenticated"
           schema:
             $ref: "#/definitions/Unauthenticated"
+        "402":
+          description: "Payment Required"
+          schema:
+            $ref: "#/definitions/PaymentRequired"
         "405":
           description: "File upload missing"
           type: "object"
@@ -1459,6 +1484,15 @@ paths:
           description: "Image to upload"
           required: true
           type: "file"
+        - name: "type"
+          in: "formData"
+          required: false
+          type: "string"
+          default: null
+          enum:
+            - "null"
+            - "cliparts"
+            - "designs"
       responses:
         "201":
           description: "File successfully uploaded"
@@ -1468,6 +1502,10 @@ paths:
           description: "Unauthenticated"
           schema:
             $ref: "#/definitions/Unauthenticated"
+        "402":
+          description: "Payment Required"
+          schema:
+            $ref: "#/definitions/PaymentRequired"
         "405":
           description: "File upload missing"
           type: "object"
@@ -1806,6 +1844,10 @@ paths:
           description: "Unauthenticated"
           schema:
             $ref: "#/definitions/Unauthenticated"
+        "402":
+          description: "Payment Required"
+          schema:
+            $ref: "#/definitions/PaymentRequired"
         "404":
           description: "Not found"
           schema:
@@ -1919,6 +1961,10 @@ paths:
           description: "Unauthenticated"
           schema:
             $ref: "#/definitions/Unauthenticated"
+        "402":
+          description: "Payment Required"
+          schema:
+            $ref: "#/definitions/PaymentRequired"
         "404":
           description: "Not found"
           schema:
@@ -2007,6 +2053,10 @@ paths:
           description: "Unauthenticated"
           schema:
             $ref: "#/definitions/Unauthenticated"
+        "402":
+          description: "Payment Required"
+          schema:
+            $ref: "#/definitions/PaymentRequired"
         "404":
           description: "Not found"
           schema:
@@ -2078,6 +2128,10 @@ paths:
           description: "Unauthenticated"
           schema:
             $ref: "#/definitions/Unauthenticated"
+        "402":
+          description: "Payment Required"
+          schema:
+            $ref: "#/definitions/PaymentRequired"
         "404":
           description:
             - "Not found"
@@ -2969,6 +3023,10 @@ paths:
           description: "Unauthenticated"
           schema:
             $ref: "#/definitions/Unauthenticated"
+        "402":
+          description: "Payment Required"
+          schema:
+            $ref: "#/definitions/PaymentRequired"
         # "404":
         #   description: "Can't find design with id"
         #   type: "object"
@@ -3136,6 +3194,10 @@ paths:
           description: "Invalid input"
           schema:
             $ref: "#/definitions/InvalidInput"
+        "402":
+          description: "Payment Required"
+          schema:
+            $ref: "#/definitions/PaymentRequired"
         "401":
           description: "Unauthenticated"
           schema:
@@ -3603,6 +3665,13 @@ definitions:
         type: "string"
         description: Customer password.
         example: "printcart"
+      tier:
+        type: "string"
+        default: "free"
+        enum:
+          - "free"
+          - "premium"
+          - "enterprise"
     xml:
       name: "Account"
   AccountUpdate:
@@ -3685,13 +3754,13 @@ definitions:
       name: "AccountResponseUpdate"
   Store:
     type: "object"
-    required:
-      - "store_name"
     properties:
-      store_name:
+      shop_url:
         type: "string"
-        description: Customer name.
-        example: "store printcart"
+      integration:
+        type: "string"
+      integration_details:
+        type: "json"
       google_font_api:
         type: "string"
         example: "AIzaSyBtoM...L3iAPUPrpQ"
@@ -3700,10 +3769,12 @@ definitions:
   StoreUpdate:
     type: "object"
     properties:
-      store_name:
+      shop_url:
         type: "string"
-        description: Customer name.
-        example: "store printcart"
+      integration:
+        type: "string"
+      integration_details:
+        type: "json"
       google_font_api:
         type: "string"
         example: "AIzaSyBtoM...L3iAPUPrpQ"
@@ -3715,9 +3786,6 @@ definitions:
       id:
         type: "string"
         example: "a2ba0785-7f53-3eea-a020-bac895d357d6"
-      name:
-        type: "string"
-        example: "store printcart"
       sid:
         type: "string"
         example: "pcsia_b9a7d6fa332b74bdd073cabbac0e6ee539ed3b361aca0c2f7b9bbfe683430cce"
@@ -3730,6 +3798,8 @@ definitions:
       google_font_api:
         type: "string"
         example: "AIzaSyBtoM...L3iAPUPrpQ"
+      shop_url:
+        type: "string"
       created_at:
         type: "string"
         example: "2021-11-16T08:26:30.000000Z"
@@ -3860,6 +3930,8 @@ definitions:
         type: "string"
         description: Image ID.
         example: "e8304b84-a015-3bd4-a7d3-7a978f465df2"
+      integration_product_id:
+        type: "string"
     xml:
       name: "Product"
   ProductUpdate:
@@ -5817,6 +5889,10 @@ definitions:
       note:
         type: "string"
         example: "printcart"
+      is_template:
+        type: "boolean"
+        default: false
+        example: false
       layers:
         type: "json"
         description: "Lorem ipsum..."
@@ -6921,6 +6997,10 @@ definitions:
       note:
         type: "string"
         example: "printcart"
+      is_template:
+        type: "boolean"
+        default: true
+        example: true
       layers:
         type: "json"
         description: "Lorem ipsum..."
@@ -8563,7 +8643,7 @@ definitions:
         description: "Can not create side new with your Content Type"
         example: "Can not create side new with your Content Type"
     xml:
-      name: CreateSideHeaderContentType
+      name: "CreateSideHeaderContentType"
   CreateBatchSideHeaderContentType:
     type: "object"
     properties:
@@ -8572,7 +8652,7 @@ definitions:
         description: "Can not create sides new with your Content Type"
         example: "Can not create sides new with your Content Type"
     xml:
-      name: CreateBatchSideHeaderContentType
+      name: "CreateBatchSideHeaderContentType"
   UpdateSideHeaderContentType:
     type: "object"
     properties:
@@ -8581,7 +8661,7 @@ definitions:
         description: "Can not update side with your Content Type"
         example: "Can not update side with your Content Type"
     xml:
-      name: UpdateSideHeaderContentType
+      name: "UpdateSideHeaderContentType"
   UpdateBatchSideHeaderContentType:
     type: "object"
     properties:
@@ -8590,7 +8670,7 @@ definitions:
         description: "Can not update sides with your Content Type"
         example: "Can not update sides with your Content Type"
     xml:
-      name: UpdateBatchSideHeaderContentType
+      name: "UpdateBatchSideHeaderContentType"
   DeleteBatchSideHeaderContentType:
     type: "object"
     properties:
@@ -8599,7 +8679,15 @@ definitions:
         description: "Can not delete sides with your Content Type"
         example: "Can not delete sides with your Content Type"
     xml:
-      name: DeleteBatchSideHeaderContentType
+      name: "DeleteBatchSideHeaderContentType"
+  PaymentRequired:
+    type: "object"
+    properties:
+      message:
+        description: "Please upgrade your account. For more new experiences!"
+        example: "Please upgrade your account. For more new experiences!"
+    xml:
+      name: "PaymentRequired"
 externalDocs:
   description: "Find out more about Swagger"
   url: "http://swagger.io"
