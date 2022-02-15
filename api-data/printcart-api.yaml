@@ -129,13 +129,13 @@ paths:
           schema:
             $ref: "#/definitions/StoreResponseCreate"
         "400":
-          description: "Invalid input"
+          description: 
+            - "Invalid input"
+            - "Please upgrade your account..."
           schema:
-            $ref: "#/definitions/InvalidInput"
-        "402":
-          description: "Payment Required"
-          schema:
-            $ref: "#/definitions/PaymentRequired"
+            anyOf:
+              - $ref: "#/definitions/InvalidInput"
+              - $ref: "#/definitions/CheckUserTier"
       security:
         - BasicAuth: []
     get:
@@ -302,17 +302,17 @@ paths:
           schema:
             $ref: "#/definitions/ProductResponseStore"
         "400":
-          description: "Invalid input"
+          description: 
+            - "Invalid input"
+            - "Please upgrade your account..."
           schema:
-            $ref: "#/definitions/InvalidInput"
+            anyOf:
+              - $ref: "#/definitions/InvalidInput"
+              - $ref: "#/definitions/CheckUserTier"
         "401":
           description: "Unauthenticated"
           schema:
             $ref: "#/definitions/Unauthenticated"
-        "402":
-          description: "Payment Required"
-          schema:
-            $ref: "#/definitions/PaymentRequired"
       security:
         - BasicStoreAuth: []
     get:
@@ -469,17 +469,17 @@ paths:
           schema:
             $ref: "#/definitions/ProductBatchResponse"
         "400":
-          description: "Invalid input"
+          description: 
+            - "Invalid input"
+            - "Please upgrade your account..."
           schema:
-            $ref: "#/definitions/InvalidInput"
+            anyOf:
+              - $ref: "#/definitions/InvalidInput"
+              - $ref: "#/definitions/CheckUserTier"
         "401":
           description: "Unauthenticated"
           schema:
             $ref: "#/definitions/Unauthenticated"
-        "402":
-          description: "Payment Required"
-          schema:
-            $ref: "#/definitions/PaymentRequired"
         "404":
           description: "Can't find image with id"
           schema:
@@ -1348,14 +1348,14 @@ paths:
           description: "File successfully uploaded"
           schema:
             $ref: "#/definitions/ImageResponseStore"
+        "400":
+          description: "Please upgrade your account..."
+          schema:
+            $ref: "#/definitions/CheckUserTier"
         "401":
           description: "Unauthenticated"
           schema:
             $ref: "#/definitions/Unauthenticated"
-        "402":
-          description: "Payment Required"
-          schema:
-            $ref: "#/definitions/PaymentRequired"
         "405":
           description: "File upload missing"
           type: "object"
@@ -1498,14 +1498,14 @@ paths:
           description: "File successfully uploaded"
           schema:
             $ref: "#/definitions/ImageResponseStoreBatch"
+        "400":
+          description: "Please upgrade your account..."
+          schema:
+            $ref: "#/definitions/CheckUserTier"
         "401":
           description: "Unauthenticated"
           schema:
             $ref: "#/definitions/Unauthenticated"
-        "402":
-          description: "Payment Required"
-          schema:
-            $ref: "#/definitions/PaymentRequired"
         "405":
           description: "File upload missing"
           type: "object"
@@ -1818,12 +1818,14 @@ paths:
             $ref: "#/definitions/DesignResponseStore"
         "400":
           description:
-            - "Invalid input"
+            - " Please upgrade your account..."
+            - " Invalid input"
             - " Invalid design file"
             - " Missing design file"
             - " Can not upload design file with your Content Type"
           schema:
             anyOf:
+              - $ref: "#/definitions/CheckUserTier"
               - $ref: "#/definitions/InvalidInput"
               - $ref: "#/definitions/InvalidDesignFile"
               - $ref: "#/definitions/MissingDesignFile"
@@ -1844,10 +1846,6 @@ paths:
           description: "Unauthenticated"
           schema:
             $ref: "#/definitions/Unauthenticated"
-        "402":
-          description: "Payment Required"
-          schema:
-            $ref: "#/definitions/PaymentRequired"
         "404":
           description: "Not found"
           schema:
@@ -1941,11 +1939,13 @@ paths:
             $ref: "#/definitions/DesignResponseUpdate"
         "400":
           description:
+            - "Please upgrade your account..."
             - "Invalid input"
             - " Invalid design file"
             - " Can not upload design file with your Content Type"
           schema:
             anyOf:
+              - $ref: "#/definitions/CheckUserTier"
               - $ref: "#/definitions/InvalidInput"
               - $ref: "#/definitions/InvalidDesignFile"
               - $ref: "#/definitions/MultipartFormData"
@@ -1961,10 +1961,6 @@ paths:
           description: "Unauthenticated"
           schema:
             $ref: "#/definitions/Unauthenticated"
-        "402":
-          description: "Payment Required"
-          schema:
-            $ref: "#/definitions/PaymentRequired"
         "404":
           description: "Not found"
           schema:
@@ -2027,12 +2023,14 @@ paths:
             $ref: "#/definitions/DesignBatchResponse"
         "400":
           description:
+            - "Please upgrade your account..."
             - "Invalid input"
             - " Invalid design file"
             - " Missing design file"
             - " Can not upload design file with your Content Type"
           schema:
             anyOf:
+              - $ref: "#/definitions/CheckUserTier"
               - $ref: "#/definitions/InvalidInput"
               - $ref: "#/definitions/InvalidDesignFile"
               - $ref: "#/definitions/MissingDesignFile"
@@ -2053,10 +2051,6 @@ paths:
           description: "Unauthenticated"
           schema:
             $ref: "#/definitions/Unauthenticated"
-        "402":
-          description: "Payment Required"
-          schema:
-            $ref: "#/definitions/PaymentRequired"
         "404":
           description: "Not found"
           schema:
@@ -2108,11 +2102,13 @@ paths:
             $ref: "#/definitions/DesignBatchUpdateResponse"
         "400":
           description:
+            - "Please upgrade your account..."
             - "Invalid input"
             - " Invalid design file"
             - " Can not upload design file with your Content Type"
           schema:
             anyOf:
+              - $ref: "#/definitions/CheckUserTier"
               - $ref: "#/definitions/InvalidInput"
               - $ref: "#/definitions/InvalidDesignFile"
               - $ref: "#/definitions/MultipartFormData"
@@ -2128,10 +2124,6 @@ paths:
           description: "Unauthenticated"
           schema:
             $ref: "#/definitions/Unauthenticated"
-        "402":
-          description: "Payment Required"
-          schema:
-            $ref: "#/definitions/PaymentRequired"
         "404":
           description:
             - "Not found"
@@ -3006,9 +2998,13 @@ paths:
           schema:
             $ref: "#/definitions/ProjectResponseStore"
         "400":
-          description: "Invalid input"
+          description: 
+            - "Invalid input"
+            - "Please upgrade your account..."
           schema:
-            $ref: "#/definitions/InvalidInput"
+            anyOf:
+              - $ref: "#/definitions/InvalidInput"
+              - $ref: "#/definitions/CheckUserTier"
         # "400":
         #   description: "Design uuid: cce4dc71-6757-4a1c-a259-6b66a4304c14 already belong to another project"
         #   type: "object"
@@ -3023,10 +3019,6 @@ paths:
           description: "Unauthenticated"
           schema:
             $ref: "#/definitions/Unauthenticated"
-        "402":
-          description: "Payment Required"
-          schema:
-            $ref: "#/definitions/PaymentRequired"
         # "404":
         #   description: "Can't find design with id"
         #   type: "object"
@@ -3191,13 +3183,13 @@ paths:
           schema:
             $ref: "#/definitions/ProjectBatchResponse"
         "400":
-          description: "Invalid input"
+          description: 
+            - "Invalid input"
+            - "Please upgrade your account..."
           schema:
-            $ref: "#/definitions/InvalidInput"
-        "402":
-          description: "Payment Required"
-          schema:
-            $ref: "#/definitions/PaymentRequired"
+            anyOf:
+              - $ref: "#/definitions/InvalidInput"
+              - $ref: "#/definitions/CheckUserTier"
         "401":
           description: "Unauthenticated"
           schema:
@@ -8656,14 +8648,14 @@ definitions:
         example: "Can not delete sides with your Content Type"
     xml:
       name: "DeleteBatchSideHeaderContentType"
-  PaymentRequired:
+  CheckUserTier:
     type: "object"
     properties:
       message:
         description: "Please upgrade your account. For more new experiences!"
         example: "Please upgrade your account. For more new experiences!"
     xml:
-      name: "PaymentRequired"
+      name: "CheckUserTier"
 externalDocs:
   description: "Find out more about Swagger"
   url: "http://swagger.io"
