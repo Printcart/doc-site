@@ -3611,31 +3611,6 @@ paths:
             $ref: "#/definitions/NotFound"
       security:
         - BasicStoreAuth: []
-  /webhooks/count:
-    get:
-      tags:
-        - "Webhook"
-      # summary: "..."
-      # description: "..."
-      operationId: "getCountWebhook"
-      summary: "Get a count of webhooks"
-      produces:
-        - "application/json"
-      responses:
-        "200":
-          description: "Retrieved successfully"
-          schema:
-            $ref: "#/definitions/WebhookCount"
-        "401":
-          description: "Unauthenticated"
-          schema:
-            $ref: "#/definitions/Unauthenticated"
-        "404":
-          description: "Not found"
-          schema:
-            $ref: "#/definitions/NotFound"
-      security:
-        - BasicStoreAuth: []
 securityDefinitions:
   BasicAuth:
     type: "basic"
