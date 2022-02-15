@@ -8050,10 +8050,11 @@ definitions:
         example: "printcart note"
       design_ids:
         type: "array"
-        example: [
-          '8e7ee612-4667-474c-809a-ff848400f7a3',
-          '42f4a0e7-3ea4-4f62-9a04-0b41fb8c69d1'
-        ]
+        example:
+          [
+            "8e7ee612-4667-474c-809a-ff848400f7a3",
+            "42f4a0e7-3ea4-4f62-9a04-0b41fb8c69d1",
+          ]
     xml:
       name: "Project"
   ProjectUpdate:
