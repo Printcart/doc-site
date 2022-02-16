@@ -3767,6 +3767,8 @@ definitions:
         example: "AIzaSyBtoM...L3iAPUPrpQ"
       shop_url:
         type: "string"
+      integration_type:
+        type: "string"
       created_at:
         type: "string"
         example: "2021-11-16T08:26:30.000000Z"
