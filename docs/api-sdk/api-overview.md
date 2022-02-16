@@ -14,7 +14,7 @@ This guide introduces the different methods of authenticating and authorizing in
 
 There are 2 types of authentication in Printcart API:
 - Basic HTTP Authentication
-- API Key
+- UnAuth Token
 
 ### Basic HTTP Authentication
 
@@ -30,21 +30,21 @@ To authenticate with HTTP, you may provide a username and password with the foll
 https://username:password@api.printcart.com/v1/your_desired_path
 ```
 
-### API Key
+### UnAuth Token
 
 Some Printcart API endpoints don't need your username and password to authenticate. Those endpoints only interact with your public data so the code can be shared publicly.
 
-To request to those endpoints, you only need to send `API Key` in the `Authorization` header:
+To request to those endpoints, you only need to send `UnAuth Token` in the `X-PrintCart-Unauth-Token` header:
 
 ```
-Authorization: Bearer <token>
+X-PrintCart-Unauth-Token: <UnAuth Token>
 ```
 
-In order to get your API key, please copy the `API Key` at this [link](https://dashboard.printcart.com/settings).
+In order to get your UnAuth Token, please copy the `UnAuth Token` at this [link](https://dashboard.printcart.com/settings).
 
-![Get Printcart API Key](/img/get-api-key.png)
+![Get Printcart UnAuth Token](/img/get-api-key.png)
 
-Check our [API Reference](/rest-api-reference) for all endpoints that can be authenticated with API Key.
+Check our [API Reference](/rest-api-reference) for all endpoints that can be authenticated with UnAuth Token.
 
 ## Status codes
 
