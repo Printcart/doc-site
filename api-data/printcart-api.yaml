@@ -3759,7 +3759,7 @@ definitions:
       secret:
         type: "string"
         example: "pcsup_02be5f225e8ddb1ff1569cf4bac0c9346c60928394902ab2f193fcd5bfc2657d"
-      unauth_access_token:
+      unauth_token:
         type: "string"
         example: "b20dd13e142d5202aeda6c7365cef5420a82bbf6ad4dc3d16c05711af3a22184"
       google_font_api:
@@ -3816,7 +3816,7 @@ definitions:
   StoreTokenRevokeResponse:
     type: "object"
     properties:
-      unauth_access_token:
+      unauth_token:
         type: "string"
         example: "22d23e41e296c45b0c6c9cd722398b90a3cc906301bdebfaac4751cf2dowmar3"
       message:
