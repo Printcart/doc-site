@@ -3739,6 +3739,9 @@ definitions:
   StoreUpdate:
     type: "object"
     properties:
+      store_name:
+        type: "string"
+        example: "printcart store update"
       shop_url:
         type: "string"
       integration:
