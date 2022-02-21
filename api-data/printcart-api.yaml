@@ -3753,6 +3753,9 @@ definitions:
       id:
         type: "string"
         example: "a2ba0785-7f53-3eea-a020-bac895d357d6"
+      name:
+        type: "string"
+        example: "printcart store"
       sid:
         type: "string"
         example: "pcsia_b9a7d6fa332b74bdd073cabbac0e6ee539ed3b361aca0c2f7b9bbfe683430cce"
