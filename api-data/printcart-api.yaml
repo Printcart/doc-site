@@ -3722,6 +3722,9 @@ definitions:
   Store:
     type: "object"
     properties:
+      store_name:
+        type: "string"
+        example: "printcart store"
       shop_url:
         type: "string"
       integration:
