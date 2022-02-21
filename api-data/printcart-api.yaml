@@ -149,7 +149,7 @@ paths:
         "200":
           description: "Retrieved successfully"
           schema:
-            $ref: "#/definitions/StoreResponseShow"
+            $ref: "#/definitions/StoreResponseShowDataArray"
         "401":
           description: "Unauthenticated"
           schema:
@@ -3780,6 +3780,20 @@ definitions:
         example: "2021-11-16T08:26:30.000000Z"
     xml:
       name: "StoreResponse"
+  StoreResponseShowDataArray:
+    type: "object"
+    properties:
+      data:
+        type: "array"
+        items:
+          type: "object"
+          $ref: "#/definitions/StoreResponse"
+      message:
+        type: "string"
+        description: "Retrieved successfully"
+        example: "Retrieved successfully"
+    xml:
+      name: "StoreResponseShowDataArray"
   StoreResponseShow:
     type: "object"
     properties:
