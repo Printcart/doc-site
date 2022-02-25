@@ -63,7 +63,7 @@ const darkCodeTheme = require("prism-react-renderer/themes/dracula");
               type: "doc",
               docId: "guides/quickstart",
               position: "left",
-              label: "Guides",
+              label: "Quickstart Guides",
             },
             {
               type: "doc",
@@ -71,6 +71,11 @@ const darkCodeTheme = require("prism-react-renderer/themes/dracula");
               position: "left",
               label: "API & SDK",
             },
+            // {
+            //   type: "rest-api-reference",
+            //   position: "left",
+            //   label: "Rest API Reference",
+            // },
           ],
         },
         footer: {
