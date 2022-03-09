@@ -4373,29 +4373,10 @@ definitions:
       bg_color_value:
         type: "string"
         example: "red"
-      img_top_pos:
-        type: "float"
-        format: "float"
-        example: 50.5
-      img_left_pos:
-        type: "float"
-        format: "float"
-        example: 50.5
-      img_bottom_pos:
-        type: "float"
-        format: "float"
-        example: 50.5
-      img_right_pos:
-        type: "float"
-        format: "float"
-        example: 50.5
       img_overlay:
         type: "string"
         description: Image ID
         example: "e8304b84-a015-3bd4-a7d3-7a978f465df2"
-      version:
-        type: "string"
-        example: "version 1.0.0"
       ratio:
         type: "number"
         format: "double"
@@ -4589,29 +4570,10 @@ definitions:
       bg_color_value:
         type: "string"
         example: "red"
-      img_top_pos:
-        type: "float"
-        format: "float"
-        example: 50.5
-      img_left_pos:
-        type: "float"
-        format: "float"
-        example: 50.5
-      img_bottom_pos:
-        type: "float"
-        format: "float"
-        example: 50.5
-      img_right_pos:
-        type: "float"
-        format: "float"
-        example: 50.5
       img_overlay:
         type: "string"
         description: Image ID
         example: "e8304b84-a015-3bd4-a7d3-7a978f465df2"
-      version:
-        type: "string"
-        example: "version 1.0.0"
       ratio:
         type: "number"
         format: "double"
@@ -4847,29 +4809,10 @@ definitions:
             bg_color_value:
               type: "string"
               example: "red"
-            img_top_pos:
-              type: "float"
-              format: "float"
-              example: 50.5
-            img_left_pos:
-              type: "float"
-              format: "float"
-              example: 50.5
-            img_bottom_pos:
-              type: "float"
-              format: "float"
-              example: 50.5
-            img_right_pos:
-              type: "float"
-              format: "float"
-              example: 50.5
             img_overlay:
               type: "string"
               description: Image ID
               example: "e8304b84-a015-3bd4-a7d3-7a978f465df2"
-            version:
-              type: "string"
-              example: "version 1.0.0"
             ratio:
               type: "number"
               format: "double"
@@ -5078,28 +5021,9 @@ definitions:
         example: "image"
       bg_color_value:
         type: "string"
-        example: "red"
-      img_top_pos:
-        type: "float"
-        format: "float"
-        example: 50.5
-      img_left_pos:
-        type: "float"
-        format: "float"
-        example: 50.5
-      img_bottom_pos:
-        type: "float"
-        format: "float"
-        example: 50.5
-      img_right_pos:
-        type: "float"
-        format: "float"
-        example: 50.5
+        example: "storageId"
       img_overlay:
         $ref: "#/definitions/ImageResponse"
-      version:
-        type: "string"
-        example: "version 1.0.0"
       ratio:
         type: "number"
         format: "double"
@@ -5194,7 +5118,7 @@ definitions:
             type: "float"
             format: "float"
             example: 50.50
-      background_img:
+      side_image:
         $ref: "#/definitions/ImageResponse"
       background_size:
         type: "object"
@@ -5366,27 +5290,8 @@ definitions:
             bg_color_value:
               type: "string"
               example: "red"
-            img_top_pos:
-              type: "float"
-              format: "float"
-              example: 50.5
-            img_left_pos:
-              type: "float"
-              format: "float"
-              example: 50.5
-            img_bottom_pos:
-              type: "float"
-              format: "float"
-              example: 50.5
-            img_right_pos:
-              type: "float"
-              format: "float"
-              example: 50.5
             img_overlay:
               $ref: "#/definitions/ImageResponse"
-            version:
-              type: "string"
-              example: "version 1.0.0"
             ratio:
               type: "number"
               format: "double"
@@ -5481,7 +5386,7 @@ definitions:
                   type: "float"
                   format: "float"
                   example: 50.50
-            background_img:
+            side_image:
               $ref: "#/definitions/ImageResponse"
             background_size:
               type: "object"
@@ -5737,10 +5642,6 @@ definitions:
       name:
         type: "string"
         example: "printcart"
-      size:
-        type: "integer"
-        format: "int64"
-        example: 20000
       url:
         type: "string"
         example: "https://local-printcart-src-media.s3.us-east-2.amazonaws.com/images/19f99961-edac-455e-b407-aa6aa80ec862/0V34SX2YcE31B3zZ0xcm5dFbN1fGUdZc9GRIlxvP.jpg"
