@@ -25,8 +25,6 @@ tags:
   - name: "Account"
   - name: "Store"
   - name: "Webhook"
-schemes:
-  - "https"
 paths:
   /account:
     post:
@@ -426,7 +424,6 @@ paths:
         - BasicStore: []
         - UnAuthToken: []
     put:
-      put:
       tags:
         - "Product"
       operationId: "updateProduct"
@@ -547,7 +544,6 @@ paths:
                 $ref: "#/components/schemas/NotFound"
         "413":
           description: "Too many products"
-          type: "object"
           content:
             application/json:
               schema:
@@ -559,7 +555,6 @@ paths:
                     example: "Too many products"
         "500":
           description: "Something went wrong while create products"
-          type: "object"
           content:
             application/json:
               schema:
@@ -613,7 +608,6 @@ paths:
                   - $ref: "#/components/schemas/NotFound"
         "413":
           description: "Too many products"
-          type: "object"
           content:
             application/json:
               schema:
@@ -625,7 +619,6 @@ paths:
                     example: "Too many products"
         "500":
           description: "Something went wrong while update products"
-          type: "object"
           content:
             application/json:
               schema:
@@ -669,7 +662,6 @@ paths:
                 $ref: "#/components/schemas/ProductError"
         "500":
           description: "Something went wrong while delete products"
-          type: "object"
           content:
             application/json:
               schema:
@@ -683,7 +675,6 @@ paths:
         - BasicStore: []
   /products/{productId}/designs:
     get:
-      get:
       tags:
         - "Product"
       operationId: "getDesignsByProduct"
@@ -1087,7 +1078,6 @@ paths:
                 $ref: "#/components/schemas/Unauthenticated"
         "413":
           description: "Too many sides"
-          type: "object"
           content:
             application/json:
               schema:
@@ -1099,7 +1089,6 @@ paths:
                     example: "Too many sides"
         "500":
           description: "Something went wrong while create sides"
-          type: "object"
           content:
             application/json:
               schema:
@@ -1155,7 +1144,6 @@ paths:
                 $ref: "#/components/schemas/SideError"
         "413":
           description: "Too many sides"
-          type: "object"
           content:
             application/json:
               schema:
@@ -1167,7 +1155,6 @@ paths:
                     example: "Too many sides"
         "500":
           description: "Something went wrong while update sides"
-          type: "object"
           content:
             application/json:
               schema:
@@ -1236,7 +1223,6 @@ paths:
           schema:
             type: "string"
       responses:
-        responses:
         "200":
           description: "Retrieved successfully"
           content:
@@ -1507,7 +1493,7 @@ paths:
             schema:
               properties:
                 file:
-                  type: "file"
+                  type: "string"
                   description: "Image to upload"
                   format: binary
                 type: 
@@ -1544,7 +1530,6 @@ paths:
                 $ref: "#/components/schemas/Unauthenticated"
         "415":
           description: "Unsupported Media Type"
-          type: "object"
           content:
             application/json:
               schema:
@@ -1663,7 +1648,6 @@ paths:
         - BasicStore: []
   /images/batch:
     post:
-      post:
       tags:
         - "Image"
       operationId: "uploadFiles"
@@ -1675,7 +1659,7 @@ paths:
             schema:
               properties:
                 files[]:
-                  type: "file"
+                  type: "string"
                   description: "Image to upload"
                   format: binary
                 type: 
@@ -1712,7 +1696,6 @@ paths:
                 $ref: "#/components/schemas/Unauthenticated"
         "415":
           description: "Unsupported Media Type"
-          type: "object"
           content:
             application/json:
               schema:
@@ -1759,7 +1742,7 @@ paths:
             schema:
               properties:
                 file:
-                  type: "file"
+                  type: "string"
                   description: "Clipart to upload"
                   format: binary
       responses:
@@ -1777,7 +1760,6 @@ paths:
                 $ref: "#/components/schemas/Unauthenticated"
         "400":
           description: "File upload missing"
-          type: "object"
           content:
             application/json:
               schema:
@@ -1789,7 +1771,6 @@ paths:
                     example: "File upload missing"
         "415":
           description: "Unsupported Media Type"
-          type: "object"
           content:
             application/json:
               schema:
@@ -1849,7 +1830,7 @@ paths:
         - name: "clipartId"
           in: "path"
           description: "Clipart ID"
-          required: 
+          required: true
           schema:
             type: "string"
       responses:
@@ -1920,7 +1901,7 @@ paths:
             schema:
               properties:
                 files[]:
-                  type: "file"
+                  type: "string"
                   description: "Clipart to upload"
                   format: binary
       responses:
@@ -2293,7 +2274,6 @@ paths:
                 $ref: "#/components/schemas/NotFound"
         "413":
           description: "Too many designs"
-          type: "object"
           content:
             application/json:
               schema:
@@ -2305,7 +2285,6 @@ paths:
                     example: "Too many designs"
         "500":
           description: "Something went wrong while create designs"
-          type: "object"
           content:
             application/json:
               schema:
@@ -2371,7 +2350,6 @@ paths:
                   - $ref: "#/components/schemas/DesignError"
         "413":
           description: "Too many designs"
-          type: "object"
           content:
             application/json:
               schema:
@@ -2383,7 +2361,6 @@ paths:
                     example: "Too many designs"
         "500":
           description: "Something went wrong while update designs"
-          type: "object"
           content:
             application/json:
               schema:
@@ -2422,7 +2399,6 @@ paths:
                 $ref: "#/components/schemas/Unauthenticated"
         "404":
           description: "Can't find design with id"
-          type: "object"
           content:
             application/json:
               schema:
@@ -2434,7 +2410,6 @@ paths:
                     example: "Can't find design with id: cce4dc71-6757-4a1c-a259-6b66a4304c14"
         "500":
           description: "Something went wrong while delete designs"
-          type: "object"
           content:
             application/json:
               schema:
@@ -2813,7 +2788,6 @@ paths:
                 $ref: "#/components/schemas/NotFound"
         "413":
           description: "Too many templates"
-          type: "object"
           content:
             application/json:
               schema:
@@ -2825,7 +2799,6 @@ paths:
                     example: "Too many templates"
         "500":
           description: "Something went wrong while create templates"
-          type: "object"
           content:
             application/json:
               schema:
@@ -2889,7 +2862,6 @@ paths:
                   - $ref: "#/components/schemas/DesignError"
         "413":
           description: "Too many templates"
-          type: "object"
           content:
             application/json:
               schema:
@@ -2901,7 +2873,6 @@ paths:
                     example: "Too many templates"
         "500":
           description: "Something went wrong while update templates"
-          type: "object"
           content:
             application/json:
               schema:
@@ -3003,8 +2974,6 @@ paths:
         - "Template"
       operationId: "getCountTemplate"
       summary: "Get a count of templates"
-      produces:
-        - "application/json"
       responses:
         "200":
           description: "Retrieved successfully"
@@ -3275,7 +3244,6 @@ paths:
                 $ref: "#/components/schemas/NotFound"
         "413":
           description: "Too many cliparts"
-          type: "object"
           content:
             application/json:
               schema:
@@ -3348,7 +3316,6 @@ paths:
                 $ref: "#/components/schemas/Unauthenticated"
         "404":
           description: "Can't find design with id"
-          type: "object"
           content:
             application/json:
               schema:
@@ -3382,7 +3349,6 @@ paths:
                 $ref: "#/components/schemas/NotFound"
         "413":
           description: "Too many projects"
-          type: "object"
           content:
             application/json:
               schema:
@@ -3543,7 +3509,6 @@ paths:
                 $ref: "#/components/schemas/Unauthenticated"
         "413":
           description: "Too many projects"
-          type: "object"
           content:
             application/json:
               schema:
@@ -3555,7 +3520,6 @@ paths:
                     example: "Too many projects"
         "500":
           description: "Something went wrong while create projects"
-          type: "object"
           content:
             application/json:
               schema:
@@ -3606,7 +3570,6 @@ paths:
                 $ref: "#/components/schemas/ProjectError"
         "413":
           description: "Too many projects"
-          type: "object"
           content:
             application/json:
               schema:
@@ -3618,7 +3581,6 @@ paths:
                     example: "Too many projects"
         "500":
           description: "Something went wrong while update projects"
-          type: "object"
           content:
             application/json:
               schema:
@@ -3662,7 +3624,6 @@ paths:
                 $ref: "#/components/schemas/ProjectError"
         "500":
           description: "Something went wrong while delete projects"
-          type: "object"
           content:
             application/json:
               schema:
@@ -4282,15 +4243,15 @@ components:
           type: "boolean"
           example: true
         viewport_width:
-          type: "float"
+          type: "number"
           format: "float"
           example: 50.5
         viewport_height:
-          type: "float"
+          type: "number"
           format: "float"
           example: 50.5
         scale:
-          type: "float"
+          type: "number"
           format: "float"
           example: 50.5
         dpi:
@@ -4360,15 +4321,15 @@ components:
           type: "boolean"
           example: true
         viewport_width:
-          type: "float"
+          type: "number"
           format: "float"
           example: 50.5
         viewport_height:
-          type: "float"
+          type: "number"
           format: "float"
           example: 50.5
         scale:
-          type: "float"
+          type: "number"
           format: "float"
           example: 50.5
         dpi:
@@ -4454,15 +4415,15 @@ components:
                 type: "boolean"
                 example: true
               viewport_width:
-                type: "float"
+                type: "number"
                 format: "float"
                 example: 50.5
               viewport_height:
-                type: "float"
+                type: "number"
                 format: "float"
                 example: 50.5
               scale:
-                type: "float"
+                type: "number"
                 format: "float"
                 example: 50.5
               dpi:
@@ -4688,15 +4649,15 @@ components:
                 type: "boolean"
                 example: true
               viewport_width:
-                type: "float"
+                type: "number"
                 format: "float"
                 example: 50.5
               viewport_height:
-                type: "float"
+                type: "number"
                 format: "float"
                 example: 50.5
               scale:
-                type: "float"
+                type: "number"
                 format: "float"
                 example: 50.5
               dpi:
@@ -4821,49 +4782,49 @@ components:
               format: "double"
               example: 100
             product_width:
-              type: "float"
+              type: "number"
               format: "float"
               example: 50
             product_height:
-              type: "float"
+              type: "number"
               format: "float"
               example: 50
         design_size:
           type: "object"
           properties:
             width:
-              type: "float"
+              type: "number"
               format: "float"
               example: 50
             height:
-              type: "float"
+              type: "number"
               format: "float"
               example: 50
             top:
-              type: "float"
+              type: "number"
               format: "float"
               example: 50
             left:
-              type: "float"
+              type: "number"
               format: "float"
               example: 50
         design_position:
           type: "object"
           properties:
             width:
-              type: "float"
+              type: "number"
               format: "float"
               example: 50
             height:
-              type: "float"
+              type: "number"
               format: "float"
               example: 50
             left:
-              type: "float"
+              type: "number"
               format: "float"
               example: 50
             top:
-              type: "float"
+              type: "number"
               format: "float"
               example: 50
         show_bleed:
@@ -4873,11 +4834,11 @@ components:
           type: "object"
           properties:
             top_bottom:
-              type: "float"
+              type: "number"
               format: "float"
               example: 50.50
             left_right:
-              type: "float"
+              type: "number"
               format: "float"
               example: 50.50
         show_safe_zone:
@@ -4887,11 +4848,11 @@ components:
           type: "object"
           properties:
             top_bottom:
-              type: "float"
+              type: "number"
               format: "float"
               example: 50
             left_right:
-              type: "float"
+              type: "number"
               format: "float"
               example: 50
         bg_img_id:
@@ -5018,49 +4979,49 @@ components:
               format: "double"
               example: 100
             product_width:
-              type: "float"
+              type: "number"
               format: "float"
               example: 50
             product_height:
-              type: "float"
+              type: "number"
               format: "float"
               example: 50
         design_size:
           type: "object"
           properties:
             width:
-              type: "float"
+              type: "number"
               format: "float"
               example: 50
             height:
-              type: "float"
+              type: "number"
               format: "float"
               example: 50
             top:
-              type: "float"
+              type: "number"
               format: "float"
               example: 50
             left:
-              type: "float"
+              type: "number"
               format: "float"
               example: 50
         design_position:
           type: "object"
           properties:
             width:
-              type: "float"
+              type: "number"
               format: "float"
               example: 50
             height:
-              type: "float"
+              type: "number"
               format: "float"
               example: 50
             left:
-              type: "float"
+              type: "number"
               format: "float"
               example: 50
             top:
-              type: "float"
+              type: "number"
               format: "float"
               example: 50
         show_bleed:
@@ -5070,11 +5031,11 @@ components:
           type: "object"
           properties:
             top_bottom:
-              type: "float"
+              type: "number"
               format: "float"
               example: 50.50
             left_right:
-              type: "float"
+              type: "number"
               format: "float"
               example: 50.50
         show_safe_zone:
@@ -5084,11 +5045,11 @@ components:
           type: "object"
           properties:
             top_bottom:
-              type: "float"
+              type: "number"
               format: "float"
               example: 50
             left_right:
-              type: "float"
+              type: "number"
               format: "float"
               example: 50
         bg_img_id:
@@ -5257,49 +5218,49 @@ components:
                     format: "double"
                     example: 100
                   product_width:
-                    type: "float"
+                    type: "number"
                     format: "float"
                     example: 50
                   product_height:
-                    type: "float"
+                    type: "number"
                     format: "float"
                     example: 50
               design_size:
                 type: "object"
                 properties:
                   width:
-                    type: "float"
+                    type: "number"
                     format: "float"
                     example: 50
                   height:
-                    type: "float"
+                    type: "number"
                     format: "float"
                     example: 50
                   top:
-                    type: "float"
+                    type: "number"
                     format: "float"
                     example: 50
                   left:
-                    type: "float"
+                    type: "number"
                     format: "float"
                     example: 50
               design_position:
                 type: "object"
                 properties:
                   width:
-                    type: "float"
+                    type: "number"
                     format: "float"
                     example: 50
                   height:
-                    type: "float"
+                    type: "number"
                     format: "float"
                     example: 50
                   left:
-                    type: "float"
+                    type: "number"
                     format: "float"
                     example: 50
                   top:
-                    type: "float"
+                    type: "number"
                     format: "float"
                     example: 50
               show_bleed:
@@ -5309,11 +5270,11 @@ components:
                 type: "object"
                 properties:
                   top_bottom:
-                    type: "float"
+                    type: "number"
                     format: "float"
                     example: 50.50
                   left_right:
-                    type: "float"
+                    type: "number"
                     format: "float"
                     example: 50.50
               show_safe_zone:
@@ -5323,11 +5284,11 @@ components:
                 type: "object"
                 properties:
                   top_bottom:
-                    type: "float"
+                    type: "number"
                     format: "float"
                     example: 50
                   left_right:
-                    type: "float"
+                    type: "number"
                     format: "float"
                     example: 50
               bg_img_id:
@@ -5468,49 +5429,49 @@ components:
               format: "double"
               example: 100
             width:
-              type: "float"
+              type: "number"
               format: "float"
               example: 50
             height:
-              type: "float"
+              type: "number"
               format: "float"
               example: 50
         design_size:
           type: "object"
           properties:
             width:
-              type: "float"
+              type: "number"
               format: "float"
               example: 50
             height:
-              type: "float"
+              type: "number"
               format: "float"
               example: 50
             top:
-              type: "float"
+              type: "number"
               format: "float"
               example: 50
             left:
-              type: "float"
+              type: "number"
               format: "float"
               example: 50
         design_position:
           type: "object"
           properties:
             width:
-              type: "float"
+              type: "number"
               format: "float"
               example: 50
             height:
-              type: "float"
+              type: "number"
               format: "float"
               example: 50
             left:
-              type: "float"
+              type: "number"
               format: "float"
               example: 50
             top:
-              type: "float"
+              type: "number"
               format: "float"
               example: 50
         show_bleed:
@@ -5520,11 +5481,11 @@ components:
           type: "object"
           properties:
             top_bottom:
-              type: "float"
+              type: "number"
               format: "float"
               example: 50.50
             left_right:
-              type: "float"
+              type: "number"
               format: "float"
               example: 50.50
         show_safe_zone:
@@ -5534,11 +5495,11 @@ components:
           type: "object"
           properties:
             top_bottom:
-              type: "float"
+              type: "number"
               format: "float"
               example: 50.50
             left_right:
-              type: "float"
+              type: "number"
               format: "float"
               example: 50.50
         side_image:
@@ -5736,49 +5697,49 @@ components:
                     format: "double"
                     example: 100
                   width:
-                    type: "float"
+                    type: "number"
                     format: "float"
                     example: 50
                   height:
-                    type: "float"
+                    type: "number"
                     format: "float"
                     example: 50
               design_size:
                 type: "object"
                 properties:
                   width:
-                    type: "float"
+                    type: "number"
                     format: "float"
                     example: 50
                   height:
-                    type: "float"
+                    type: "number"
                     format: "float"
                     example: 50
                   top:
-                    type: "float"
+                    type: "number"
                     format: "float"
                     example: 50
                   left:
-                    type: "float"
+                    type: "number"
                     format: "float"
                     example: 50
               design_position:
                 type: "object"
                 properties:
                   width:
-                    type: "float"
+                    type: "number"
                     format: "float"
                     example: 50
                   height:
-                    type: "float"
+                    type: "number"
                     format: "float"
                     example: 50
                   left:
-                    type: "float"
+                    type: "number"
                     format: "float"
                     example: 50
                   top:
-                    type: "float"
+                    type: "number"
                     format: "float"
                     example: 50
               show_bleed:
@@ -5788,11 +5749,11 @@ components:
                 type: "object"
                 properties:
                   top_bottom:
-                    type: "float"
+                    type: "number"
                     format: "float"
                     example: 50.50
                   left_right:
-                    type: "float"
+                    type: "number"
                     format: "float"
                     example: 50.50
               show_safe_zone:
@@ -5802,11 +5763,11 @@ components:
                 type: "object"
                 properties:
                   top_bottom:
-                    type: "float"
+                    type: "number"
                     format: "float"
                     example: 50.50
                   left_right:
-                    type: "float"
+                    type: "number"
                     format: "float"
                     example: 50.50
               side_image:
@@ -6191,7 +6152,7 @@ components:
           description: Image ID
           example: "e8304b84-a015-3bd4-a7d3-7a978f465df2"
         design_file:
-          type: "file"
+          type: "string"
           description: "Image file"
           format: binary
         quantity:
@@ -6351,7 +6312,7 @@ components:
           description: Image ID
           example: "e8304b84-a015-3bd4-a7d3-7a978f465df2"
         design_file:
-          type: "file"
+          type: "string"
           description: "Image file"
           format: binary
         quantity:
@@ -6546,7 +6507,7 @@ components:
                 description: Image ID
                 example: "e8304b84-a015-3bd4-a7d3-7a978f465df2"
               design_file:
-                type: "file"
+                type: "string"
                 description: "Image file"
                 format: binary
               quantity:
@@ -6731,19 +6692,19 @@ components:
                     type: "string"
                     example: "red"
                   img_top_pos:
-                    type: "float"
+                    type: "number"
                     format: "float"
                     example: 50.5
                   img_left_pos:
-                    type: "float"
+                    type: "number"
                     format: "float"
                     example: 50.5
                   img_bottom_pos:
-                    type: "float"
+                    type: "number"
                     format: "float"
                     example: 50.5
                   img_right_pos:
-                    type: "float"
+                    type: "number"
                     format: "float"
                     example: 50.5
                   img_overlay:
@@ -6765,65 +6726,65 @@ components:
                     type: "boolean"
                     example: true
                   product_width:
-                    type: "float"
+                    type: "number"
                     format: "float"
                     example: 50
                   product_height:
-                    type: "float"
+                    type: "number"
                     format: "float"
                     example: 50
                   real_width:
-                    type: "float"
+                    type: "number"
                     format: "float"
                     example: 50
                   real_height:
-                    type: "float"
+                    type: "number"
                     format: "float"
                     example: 50
                   real_top:
-                    type: "float"
+                    type: "number"
                     format: "float"
                     example: 50
                   real_left:
-                    type: "float"
+                    type: "number"
                     format: "float"
                     example: 50
                   area_design_width:
-                    type: "float"
+                    type: "number"
                     format: "float"
                     example: 50
                   area_design_height:
-                    type: "float"
+                    type: "number"
                     format: "float"
                     example: 50
                   area_design_left:
-                    type: "float"
+                    type: "number"
                     format: "float"
                     example: 50
                   area_design_top:
-                    type: "float"
+                    type: "number"
                     format: "float"
                     example: 50
                   show_bleed:
                     type: "boolean"
                     example: true
                   bleed_top_bottom:
-                    type: "float"
+                    type: "number"
                     format: "float"
                     example: 50.50
                   bleed_left_right:
-                    type: "float"
+                    type: "number"
                     format: "float"
                     example: 50.50
                   show_safe_zone:
                     type: "boolean"
                     example: true
                   margin_top_bottom:
-                    type: "float"
+                    type: "number"
                     format: "float"
                     example: 50
                   margin_left_right:
-                    type: "float"
+                    type: "number"
                     format: "float"
                     example: 50
                   background_img:
@@ -6897,19 +6858,19 @@ components:
                     type: "string"
                     example: "red"
                   img_top_pos:
-                    type: "float"
+                    type: "number"
                     format: "float"
                     example: 50.5
                   img_left_pos:
-                    type: "float"
+                    type: "number"
                     format: "float"
                     example: 50.5
                   img_bottom_pos:
-                    type: "float"
+                    type: "number"
                     format: "float"
                     example: 50.5
                   img_right_pos:
-                    type: "float"
+                    type: "number"
                     format: "float"
                     example: 50.5
                   img_overlay:
@@ -6931,65 +6892,65 @@ components:
                     type: "boolean"
                     example: true
                   product_width:
-                    type: "float"
+                    type: "number"
                     format: "float"
                     example: 50
                   product_height:
-                    type: "float"
+                    type: "number"
                     format: "float"
                     example: 50
                   real_width:
-                    type: "float"
+                    type: "number"
                     format: "float"
                     example: 50
                   real_height:
-                    type: "float"
+                    type: "number"
                     format: "float"
                     example: 50
                   real_top:
-                    type: "float"
+                    type: "number"
                     format: "float"
                     example: 50
                   real_left:
-                    type: "float"
+                    type: "number"
                     format: "float"
                     example: 50
                   area_design_width:
-                    type: "float"
+                    type: "number"
                     format: "float"
                     example: 50
                   area_design_height:
-                    type: "float"
+                    type: "number"
                     format: "float"
                     example: 50
                   area_design_left:
-                    type: "float"
+                    type: "number"
                     format: "float"
                     example: 50
                   area_design_top:
-                    type: "float"
+                    type: "number"
                     format: "float"
                     example: 50
                   show_bleed:
                     type: "boolean"
                     example: true
                   bleed_top_bottom:
-                    type: "float"
+                    type: "number"
                     format: "float"
                     example: 50.50
                   bleed_left_right:
-                    type: "float"
+                    type: "number"
                     format: "float"
                     example: 50.50
                   show_safe_zone:
                     type: "boolean"
                     example: true
                   margin_top_bottom:
-                    type: "float"
+                    type: "number"
                     format: "float"
                     example: 50
                   margin_left_right:
-                    type: "float"
+                    type: "number"
                     format: "float"
                     example: 50
                   background_img:
@@ -7006,10 +6967,10 @@ components:
                   type: "object"
                   properties:
                     top:
-                      type: "float"
+                      type: "number"
                       example: 38.9832354205
                     left:
-                      type: "float"
+                      type: "number"
                       example: 329.6631024663
                     text:
                       type: "string"
@@ -7117,19 +7078,19 @@ components:
               type: "string"
               example: "red"
             img_top_pos:
-              type: "float"
+              type: "number"
               format: "float"
               example: 50.5
             img_left_pos:
-              type: "float"
+              type: "number"
               format: "float"
               example: 50.5
             img_bottom_pos:
-              type: "float"
+              type: "number"
               format: "float"
               example: 50.5
             img_right_pos:
-              type: "float"
+              type: "number"
               format: "float"
               example: 50.5
             img_overlay:
@@ -7151,65 +7112,65 @@ components:
               type: "boolean"
               example: true
             product_width:
-              type: "float"
+              type: "number"
               format: "float"
               example: 50
             product_height:
-              type: "float"
+              type: "number"
               format: "float"
               example: 50
             real_width:
-              type: "float"
+              type: "number"
               format: "float"
               example: 50
             real_height:
-              type: "float"
+              type: "number"
               format: "float"
               example: 50
             real_top:
-              type: "float"
+              type: "number"
               format: "float"
               example: 50
             real_left:
-              type: "float"
+              type: "number"
               format: "float"
               example: 50
             area_design_width:
-              type: "float"
+              type: "number"
               format: "float"
               example: 50
             area_design_height:
-              type: "float"
+              type: "number"
               format: "float"
               example: 50
             area_design_left:
-              type: "float"
+              type: "number"
               format: "float"
               example: 50
             area_design_top:
-              type: "float"
+              type: "number"
               format: "float"
               example: 50
             show_bleed:
               type: "boolean"
               example: true
             bleed_top_bottom:
-              type: "float"
+              type: "number"
               format: "float"
               example: 50.50
             bleed_left_right:
-              type: "float"
+              type: "number"
               format: "float"
               example: 50.50
             show_safe_zone:
               type: "boolean"
               example: true
             margin_top_bottom:
-              type: "float"
+              type: "number"
               format: "float"
               example: 50
             margin_left_right:
-              type: "float"
+              type: "number"
               format: "float"
               example: 50
             background_img:
@@ -7283,19 +7244,19 @@ components:
               type: "string"
               example: "red"
             img_top_pos:
-              type: "float"
+              type: "number"
               format: "float"
               example: 50.5
             img_left_pos:
-              type: "float"
+              type: "number"
               format: "float"
               example: 50.5
             img_bottom_pos:
-              type: "float"
+              type: "number"
               format: "float"
               example: 50.5
             img_right_pos:
-              type: "float"
+              type: "number"
               format: "float"
               example: 50.5
             img_overlay:
@@ -7317,65 +7278,65 @@ components:
               type: "boolean"
               example: true
             product_width:
-              type: "float"
+              type: "number"
               format: "float"
               example: 50
             product_height:
-              type: "float"
+              type: "number"
               format: "float"
               example: 50
             real_width:
-              type: "float"
+              type: "number"
               format: "float"
               example: 50
             real_height:
-              type: "float"
+              type: "number"
               format: "float"
               example: 50
             real_top:
-              type: "float"
+              type: "number"
               format: "float"
               example: 50
             real_left:
-              type: "float"
+              type: "number"
               format: "float"
               example: 50
             area_design_width:
-              type: "float"
+              type: "number"
               format: "float"
               example: 50
             area_design_height:
-              type: "float"
+              type: "number"
               format: "float"
               example: 50
             area_design_left:
-              type: "float"
+              type: "number"
               format: "float"
               example: 50
             area_design_top:
-              type: "float"
+              type: "number"
               format: "float"
               example: 50
             show_bleed:
               type: "boolean"
               example: true
             bleed_top_bottom:
-              type: "float"
+              type: "number"
               format: "float"
               example: 50.50
             bleed_left_right:
-              type: "float"
+              type: "number"
               format: "float"
               example: 50.50
             show_safe_zone:
               type: "boolean"
               example: true
             margin_top_bottom:
-              type: "float"
+              type: "number"
               format: "float"
               example: 50
             margin_left_right:
-              type: "float"
+              type: "number"
               format: "float"
               example: 50
             background_img:
@@ -7392,10 +7353,10 @@ components:
             type: "object"
             properties:
               top:
-                type: "float"
+                type: "number"
                 example: 38.9832354205
               left:
-                type: "float"
+                type: "number"
                 example: 329.6631024663
               text:
                 type: "string"
@@ -7541,7 +7502,7 @@ components:
           description: Image ID
           example: "e8304b84-a015-3bd4-a7d3-7a978f465df2"
         design_file:
-          type: "file"
+          type: "string"
           description: "Image file"
           format: binary
         quantity:
@@ -7712,7 +7673,7 @@ components:
                 description: Image ID
                 example: "e8304b84-a015-3bd4-a7d3-7a978f465df2"
               design_file:
-                type: "file"
+                type: "string"
                 description: "Image file"
                 format: binary
               quantity:
@@ -7856,19 +7817,19 @@ components:
               type: "string"
               example: "red"
             img_top_pos:
-              type: "float"
+              type: "number"
               format: "float"
               example: 50.5
             img_left_pos:
-              type: "float"
+              type: "number"
               format: "float"
               example: 50.5
             img_bottom_pos:
-              type: "float"
+              type: "number"
               format: "float"
               example: 50.5
             img_right_pos:
-              type: "float"
+              type: "number"
               format: "float"
               example: 50.5
             img_overlay:
@@ -7890,65 +7851,65 @@ components:
               type: "boolean"
               example: true
             product_width:
-              type: "float"
+              type: "number"
               format: "float"
               example: 50
             product_height:
-              type: "float"
+              type: "number"
               format: "float"
               example: 50
             real_width:
-              type: "float"
+              type: "number"
               format: "float"
               example: 50
             real_height:
-              type: "float"
+              type: "number"
               format: "float"
               example: 50
             real_top:
-              type: "float"
+              type: "number"
               format: "float"
               example: 50
             real_left:
-              type: "float"
+              type: "number"
               format: "float"
               example: 50
             area_design_width:
-              type: "float"
+              type: "number"
               format: "float"
               example: 50
             area_design_height:
-              type: "float"
+              type: "number"
               format: "float"
               example: 50
             area_design_left:
-              type: "float"
+              type: "number"
               format: "float"
               example: 50
             area_design_top:
-              type: "float"
+              type: "number"
               format: "float"
               example: 50
             show_bleed:
               type: "boolean"
               example: true
             bleed_top_bottom:
-              type: "float"
+              type: "number"
               format: "float"
               example: 50.50
             bleed_left_right:
-              type: "float"
+              type: "number"
               format: "float"
               example: 50.50
             show_safe_zone:
               type: "boolean"
               example: true
             margin_top_bottom:
-              type: "float"
+              type: "number"
               format: "float"
               example: 50
             margin_left_right:
-              type: "float"
+              type: "number"
               format: "float"
               example: 50
             background_img:
@@ -8013,19 +7974,19 @@ components:
               type: "string"
               example: "red"
             img_top_pos:
-              type: "float"
+              type: "number"
               format: "float"
               example: 50.5
             img_left_pos:
-              type: "float"
+              type: "number"
               format: "float"
               example: 50.5
             img_bottom_pos:
-              type: "float"
+              type: "number"
               format: "float"
               example: 50.5
             img_right_pos:
-              type: "float"
+              type: "number"
               format: "float"
               example: 50.5
             img_overlay:
@@ -8047,65 +8008,65 @@ components:
               type: "boolean"
               example: true
             product_width:
-              type: "float"
+              type: "number"
               format: "float"
               example: 50
             product_height:
-              type: "float"
+              type: "number"
               format: "float"
               example: 50
             real_width:
-              type: "float"
+              type: "number"
               format: "float"
               example: 50
             real_height:
-              type: "float"
+              type: "number"
               format: "float"
               example: 50
             real_top:
-              type: "float"
+              type: "number"
               format: "float"
               example: 50
             real_left:
-              type: "float"
+              type: "number"
               format: "float"
               example: 50
             area_design_width:
-              type: "float"
+              type: "number"
               format: "float"
               example: 50
             area_design_height:
-              type: "float"
+              type: "number"
               format: "float"
               example: 50
             area_design_left:
-              type: "float"
+              type: "number"
               format: "float"
               example: 50
             area_design_top:
-              type: "float"
+              type: "number"
               format: "float"
               example: 50
             show_bleed:
               type: "boolean"
               example: true
             bleed_top_bottom:
-              type: "float"
+              type: "number"
               format: "float"
               example: 50.50
             bleed_left_right:
-              type: "float"
+              type: "number"
               format: "float"
               example: 50.50
             show_safe_zone:
               type: "boolean"
               example: true
             margin_top_bottom:
-              type: "float"
+              type: "number"
               format: "float"
               example: 50
             margin_left_right:
-              type: "float"
+              type: "number"
               format: "float"
               example: 50
             background_img:
@@ -8122,10 +8083,10 @@ components:
             type: "object"
             properties:
               top:
-                type: "float"
+                type: "number"
                 example: 38.9832354205
               left:
-                type: "float"
+                type: "number"
                 example: 329.6631024663
               text:
                 type: "string"
@@ -8232,19 +8193,19 @@ components:
                     type: "string"
                     example: "red"
                   img_top_pos:
-                    type: "float"
+                    type: "number"
                     format: "float"
                     example: 50.5
                   img_left_pos:
-                    type: "float"
+                    type: "number"
                     format: "float"
                     example: 50.5
                   img_bottom_pos:
-                    type: "float"
+                    type: "number"
                     format: "float"
                     example: 50.5
                   img_right_pos:
-                    type: "float"
+                    type: "number"
                     format: "float"
                     example: 50.5
                   img_overlay:
@@ -8266,65 +8227,65 @@ components:
                     type: "boolean"
                     example: true
                   product_width:
-                    type: "float"
+                    type: "number"
                     format: "float"
                     example: 50
                   product_height:
-                    type: "float"
+                    type: "number"
                     format: "float"
                     example: 50
                   real_width:
-                    type: "float"
+                    type: "number"
                     format: "float"
                     example: 50
                   real_height:
-                    type: "float"
+                    type: "number"
                     format: "float"
                     example: 50
                   real_top:
-                    type: "float"
+                    type: "number"
                     format: "float"
                     example: 50
                   real_left:
-                    type: "float"
+                    type: "number"
                     format: "float"
                     example: 50
                   area_design_width:
-                    type: "float"
+                    type: "number"
                     format: "float"
                     example: 50
                   area_design_height:
-                    type: "float"
+                    type: "number"
                     format: "float"
                     example: 50
                   area_design_left:
-                    type: "float"
+                    type: "number"
                     format: "float"
                     example: 50
                   area_design_top:
-                    type: "float"
+                    type: "number"
                     format: "float"
                     example: 50
                   show_bleed:
                     type: "boolean"
                     example: true
                   bleed_top_bottom:
-                    type: "float"
+                    type: "number"
                     format: "float"
                     example: 50.50
                   bleed_left_right:
-                    type: "float"
+                    type: "number"
                     format: "float"
                     example: 50.50
                   show_safe_zone:
                     type: "boolean"
                     example: true
                   margin_top_bottom:
-                    type: "float"
+                    type: "number"
                     format: "float"
                     example: 50
                   margin_left_right:
-                    type: "float"
+                    type: "number"
                     format: "float"
                     example: 50
                   background_img:
@@ -8389,19 +8350,19 @@ components:
                     type: "string"
                     example: "red"
                   img_top_pos:
-                    type: "float"
+                    type: "number"
                     format: "float"
                     example: 50.5
                   img_left_pos:
-                    type: "float"
+                    type: "number"
                     format: "float"
                     example: 50.5
                   img_bottom_pos:
-                    type: "float"
+                    type: "number"
                     format: "float"
                     example: 50.5
                   img_right_pos:
-                    type: "float"
+                    type: "number"
                     format: "float"
                     example: 50.5
                   img_overlay:
@@ -8423,65 +8384,65 @@ components:
                     type: "boolean"
                     example: true
                   product_width:
-                    type: "float"
+                    type: "number"
                     format: "float"
                     example: 50
                   product_height:
-                    type: "float"
+                    type: "number"
                     format: "float"
                     example: 50
                   real_width:
-                    type: "float"
+                    type: "number"
                     format: "float"
                     example: 50
                   real_height:
-                    type: "float"
+                    type: "number"
                     format: "float"
                     example: 50
                   real_top:
-                    type: "float"
+                    type: "number"
                     format: "float"
                     example: 50
                   real_left:
-                    type: "float"
+                    type: "number"
                     format: "float"
                     example: 50
                   area_design_width:
-                    type: "float"
+                    type: "number"
                     format: "float"
                     example: 50
                   area_design_height:
-                    type: "float"
+                    type: "number"
                     format: "float"
                     example: 50
                   area_design_left:
-                    type: "float"
+                    type: "number"
                     format: "float"
                     example: 50
                   area_design_top:
-                    type: "float"
+                    type: "number"
                     format: "float"
                     example: 50
                   show_bleed:
                     type: "boolean"
                     example: true
                   bleed_top_bottom:
-                    type: "float"
+                    type: "number"
                     format: "float"
                     example: 50.50
                   bleed_left_right:
-                    type: "float"
+                    type: "number"
                     format: "float"
                     example: 50.50
                   show_safe_zone:
                     type: "boolean"
                     example: true
                   margin_top_bottom:
-                    type: "float"
+                    type: "number"
                     format: "float"
                     example: 50
                   margin_left_right:
-                    type: "float"
+                    type: "number"
                     format: "float"
                     example: 50
                   background_img:
