@@ -1389,7 +1389,7 @@
     "@docusaurus/utils-validation" "2.0.0-beta.17"
     tslib "^2.3.1"
 
-"@docusaurus/plugin-google-gtag@2.0.0-beta.17":
+"@docusaurus/plugin-google-gtag@2.0.0-beta.17", "@docusaurus/plugin-google-gtag@^2.0.0-beta.17":
   version "2.0.0-beta.17"
   resolved "https://registry.yarnpkg.com/@docusaurus/plugin-google-gtag/-/plugin-google-gtag-2.0.0-beta.17.tgz#e6baf8f03cea756ed2259a5356fa689388bc303d"
   integrity sha512-1pnWHtIk1Jfeqwvr8PlcPE5SODWT1gW4TI+ptmJbJ296FjjyvL/pG0AcGEJmYLY/OQc3oz0VQ0W2ognw9jmFIw==
@@ -3838,6 +3838,11 @@ dns-txt@^2.0.2:
   integrity sha1-uR2Ab10nGI5Ks+fRB9iBocxGQrY=
   dependencies:
     buffer-indexof "^1.0.0"
+
+docusaurus-gtm-plugin@^0.0.2:
+  version "0.0.2"
+  resolved "https://registry.yarnpkg.com/docusaurus-gtm-plugin/-/docusaurus-gtm-plugin-0.0.2.tgz#f39864b54ca594e3281902c23b6df0763761602b"
+  integrity sha512-Xx/df0Ppd5SultlzUj9qlQk2lX9mNVfTb41juyBUPZ1Nc/5dNx+uN0VuLyF4JEObkDRrUY1EFo9fEUDo8I6QOQ==
 
 docusaurus-plugin-redoc@^0.6.0:
   version "0.6.0"

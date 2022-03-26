@@ -14,7 +14,15 @@ const darkCodeTheme = require("prism-react-renderer/themes/dracula");
     favicon: "img/logo-printcart.png",
     organizationName: "Printcart", // Usually your GitHub org/user name.
     projectName: "Printcart", // Usually your repo name.
-
+    plugins: [
+      [
+        require.resolve('docusaurus-gtm-plugin'),
+        {
+          id: 'GTM-5XPFNVS', // GTM Container ID
+        }
+      ]
+    ],
+   
     presets: [
       [
         "@docusaurus/preset-classic",
@@ -74,9 +82,9 @@ const darkCodeTheme = require("prism-react-renderer/themes/dracula");
             // },
             { 
               type: "doc",
-              docId: "users-manual/introduce",
+              docId: "users-manual/get-started",
               position: "left",
-              label: "User Manual",
+              label: "Shop Owner",
             },
             // {
             //   type: "doc",
