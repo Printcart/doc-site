@@ -14,7 +14,15 @@ const darkCodeTheme = require("prism-react-renderer/themes/dracula");
     favicon: "img/logo-printcart.png",
     organizationName: "Printcart", // Usually your GitHub org/user name.
     projectName: "Printcart", // Usually your repo name.
-
+    plugins: [
+      [
+        require.resolve('docusaurus-gtm-plugin'),
+        {
+          id: 'GTM-5XPFNVS', // GTM Container ID
+        }
+      ]
+    ],
+   
     presets: [
       [
         "@docusaurus/preset-classic",
@@ -59,18 +67,42 @@ const darkCodeTheme = require("prism-react-renderer/themes/dracula");
             src: "img/Logo-PrintCart-1.png",
           },
           items: [
-            {
+            { 
+              // to: 'docs/dashboard-manual/introduce',
               type: "doc",
-              docId: "guides/quickstart",
+              docId: "welcome",
               position: "left",
-              label: "Guides",
+              label: "Welcome Printcart",
             },
+            // {
+            //   type: "doc",
+            //   docId: "guides/quickstart",
+            //   position: "left",
+            //   label: "Quickstart Guides",
+            // },
+            { 
+              type: "doc",
+              docId: "users-manual/get-started",
+              position: "left",
+              label: "Shop Owner",
+            },
+            // {
+            //   type: "doc",
+            //   docId: "online-design/introduce",
+            //   position: "left",
+            //   label: "Online Design Tool",
+            // },
             {
               type: "doc",
               docId: "api-sdk/intro",
               position: "left",
-              label: "API & SDK",
+              label: "Developer Guide",
             },
+            // {
+            //   type: "rest-api-reference",
+            //   position: "left",
+            //   label: "Rest API Reference",
+            // },
           ],
         },
         footer: {

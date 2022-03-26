@@ -1,0 +1,11 @@
+# Upload Images
+- If customers don’t satisfied with sample pictures, they can upload images as they want. They also can select from different many sources like Facebook or enter an image’s URL.
+- The picture can be uploaded from a local, URL or social network such as Facebook.
+- Temporarily saved uploaded files for later use.
+- The uploaded file is typed as PNG, JPG, GIF. Its maximum size can be adjusted in the backend. 
+- Art can be zoomed or rotated.
+- Creating text shadow according to dimension X or Y. Shadow blur, opacity, shadow color also can be changeable.
+- The picture’s opacity can be customized.
+- Four types of quick-changing pictures are available.
+- The picture can be turned via the tool.
+- Picture crop styles are varied such as crop tool, lasso tool, heart shape, round or star shape, etc. The picture can be reset back to its origin. 

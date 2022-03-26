@@ -1141,6 +1141,12 @@
   version "7.17.7"
   resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.17.7.tgz#a5f3328dc41ff39d803f311cfe17703418cf9825"
   integrity sha512-L6rvG9GDxaLgFjg41K+5Yv9OMrU98sWe+Ykmc6FDJW/+vYZMhdOMKkISgzptMaERHvS2Y2lw9MDRm2gHhlQQoA==
+    regenerator-runtime "^0.13.4"
+
+"@babel/runtime@^7.1.2", "@babel/runtime@^7.10.2", "@babel/runtime@^7.10.3", "@babel/runtime@^7.12.1", "@babel/runtime@^7.12.13", "@babel/runtime@^7.12.5", "@babel/runtime@^7.16.7", "@babel/runtime@^7.17.2", "@babel/runtime@^7.8.4":
+  version "7.17.2"
+  resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.17.2.tgz#66f68591605e59da47523c631416b18508779941"
+  integrity sha512-hzeyJyMA1YGdJTuWU0e/j4wKXrU4OMFvY2MSlaI9B7VQb0r5cxTE3EAIS2Q7Tn2RIcDkRvTA/v2JsAEhxe99uw==
   dependencies:
     regenerator-runtime "^0.13.4"
 
@@ -1467,8 +1473,8 @@
     prismjs "^1.27.0"
     react-router-dom "^5.2.0"
     rtlcss "^3.3.0"
-
-"@docusaurus/theme-common@2.0.0-beta.17", "@docusaurus/theme-common@^2.0.0-beta.17":
+    
+"@docusaurus/theme-common@2.0.0-beta.17":
   version "2.0.0-beta.17"
   resolved "https://registry.yarnpkg.com/@docusaurus/theme-common/-/theme-common-2.0.0-beta.17.tgz#3b71bb8b0973a0cee969a1bb76794c81d597f290"
   integrity sha512-LJBDhx+Qexn1JHBqZbE4k+7lBaV1LgpE33enXf43ShB7ebhC91d5HLHhBwgt0pih4+elZU4rG+BG/roAmsNM0g==
@@ -1512,7 +1518,7 @@
     fs-extra "^10.0.1"
     tslib "^2.3.1"
 
-"@docusaurus/types@2.0.0-beta.17", "@docusaurus/types@^2.0.0-beta.17":
+"@docusaurus/types@2.0.0-beta.17":
   version "2.0.0-beta.17"
   resolved "https://registry.yarnpkg.com/@docusaurus/types/-/types-2.0.0-beta.17.tgz#582e3d961ce4409ed17454669b3f6a7a9f696cdd"
   integrity sha512-4o7TXu5sKlQpybfFFtsGUElBXwSpiXKsQyyWaRKj7DRBkvMtkDX6ITZNnZO9+EHfLbP/cfrokB8C/oO7mCQ5BQ==
@@ -1540,6 +1546,7 @@
     "@docusaurus/utils" "2.0.0-beta.17"
     joi "^17.6.0"
     tslib "^2.3.1"
+
 
 "@docusaurus/utils@2.0.0-beta.17", "@docusaurus/utils@^2.0.0-beta.17":
   version "2.0.0-beta.17"
@@ -3846,16 +3853,6 @@ dns-txt@^2.0.2:
   dependencies:
     buffer-indexof "^1.0.0"
 
-docusaurus-plugin-redoc@^0.9.0:
-  version "0.9.0"
-  resolved "https://registry.yarnpkg.com/docusaurus-plugin-redoc/-/docusaurus-plugin-redoc-0.9.0.tgz#d57a91f1868e588025e1b14f5eb5908338abc577"
-  integrity sha512-oW7R4NbrPTTEujAZliWDwLYpjgqfb7vt5zM/fb0VIiKnxWtaTVAqJ0pwW9Gapx6zesnAfvgVFYByFdTpkqFCUQ==
-  dependencies:
-    "@docusaurus/types" "^2.0.0-beta.17"
-    "@docusaurus/utils" "^2.0.0-beta.17"
-    joi "^17.5.0"
-    yaml "^1.10.2"
-
 docusaurus-theme-redoc@^0.9.2:
   version "0.9.2"
   resolved "https://registry.yarnpkg.com/docusaurus-theme-redoc/-/docusaurus-theme-redoc-0.9.2.tgz#03ba62498d101f92d37c39a2f6b973404313ace5"
@@ -3863,6 +3860,28 @@ docusaurus-theme-redoc@^0.9.2:
   dependencies:
     "@docusaurus/theme-common" "^2.0.0-beta.17"
     "@docusaurus/types" "^2.0.0-beta.17"
+
+docusaurus-gtm-plugin@^0.0.2:
+  version "0.0.2"
+  resolved "https://registry.yarnpkg.com/docusaurus-gtm-plugin/-/docusaurus-gtm-plugin-0.0.2.tgz#f39864b54ca594e3281902c23b6df0763761602b"
+  integrity sha512-Xx/df0Ppd5SultlzUj9qlQk2lX9mNVfTb41juyBUPZ1Nc/5dNx+uN0VuLyF4JEObkDRrUY1EFo9fEUDo8I6QOQ==
+
+docusaurus-plugin-redoc@^0.6.0:
+  version "0.6.0"
+  resolved "https://registry.yarnpkg.com/docusaurus-plugin-redoc/-/docusaurus-plugin-redoc-0.6.0.tgz#4dbd9a76b14ef689aeabf66501d312d6c7bb211e"
+  integrity sha512-o+P9OElt0adYfFl5wGofcs8cg/x/zZ/8HFXy+TloqVfJemfJd963x4kAPKgvifDugPUCe0FQAI7PBQDkRQv3Rg==
+  dependencies:
+    "@docusaurus/types" "^2.0.0-beta.15"
+    "@docusaurus/utils" "^2.0.0-beta.15"
+    joi "^17.5.0"
+    yaml "^1.10.2"
+
+docusaurus-theme-redoc@^0.6.0:
+  version "0.6.0"
+  resolved "https://registry.yarnpkg.com/docusaurus-theme-redoc/-/docusaurus-theme-redoc-0.6.0.tgz#c16c2377ce9f209768373132f0f437c8d2403d46"
+  integrity sha512-wjgvUPnvsjt9DAD7pPbqOhD5CRtQUDvdYvtlLucClruEF72XfWRHpJLrZWiyVn1AjjR/5rfhGdPcYZTsRghGNw==
+  dependencies:
+    "@docusaurus/types" "^2.0.0-beta.15"
     clsx "^1.1.1"
     copyfiles "^2.4.1"
     lodash "^4.17.21"
