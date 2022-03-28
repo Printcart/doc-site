@@ -17,11 +17,13 @@ tags:
   - name: "Side"
   - name: "Image"
   - name: "Clipart"
+  - name: "Clipart Storage"
   - name: "Font"
   - name: "Design"
   - name: "Template"
   - name: "Storage"
   - name: "Project"
+  - name: "Project Folder"
   - name: "Account"
   - name: "Store"
   - name: "Webhook"
@@ -247,7 +249,7 @@ paths:
                 $ref: "#/components/schemas/NotFound"
       security:
         - BasicAuth: []
-  /store-details:
+  /stores/store-details:
     get:
       tags:
         - "Store"
@@ -1942,12 +1944,145 @@ paths:
       security:
         - BasicStore: []
         - UnAuthToken: []
-  /clipart-storages/{storageId}/cliparts:
+  /cliparts/count:
     get:
       tags:
         - "Clipart"
+      operationId: "getCountClipart"
+      summary: "Get a count of cliparts"
+      responses:
+        "200":
+          description: "Retrieved successfully"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ImageCount"
+        "401":
+          description: "Unauthenticated"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Unauthenticated"
+      security:
+        - BasicStore: []
+        - UnAuthToken: []
+  /clipart-storages:
+    post:
+      tags:
+        - "Clipart Storage"
+      operationId: "postClipartStorage"
+      summary: "Create new Clipart - Storage"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ClipartStorage"
+      responses:
+        "201":
+          description: "Retrieved successfully"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CategoryResponseStore"
+        "400":
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidInput"
+        "401":
+          description: "Unauthenticated"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Unauthenticated"
+        "404":
+          description: "Not found"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NotFound"
+      security:
+        - BasicStore: []
+    get:
+      tags:
+        - "Clipart Storage"
+      operationId: "getClipartStorage"
+      summary: "Get a list of Cliparts - Storages"
+      responses:
+        "200":
+          description: "Retrieved successfully"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CategoryResponseShowDataArray"
+        "401":
+          description: "Unauthenticated"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Unauthenticated"
+        "404":
+          description: "Not found"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NotFound"
+        "413":
+          description: "Too many storages"
+          content:
+            application/json:
+              schema:
+                type: "object"
+                properties:
+                  error:
+                    type: "string"
+                    description: "Too many storages"
+                    example: "Too many storages"
+      security:
+        - BasicStore: []
+        - UnAuthToken: []
+  /clipart-storages/{storageId}:
+    delete:
+      tags:
+        - "Clipart Storage"
+      operationId: "deleteClipartStorage"
+      summary: "Delete a Clipart - Storage"
+      parameters:
+        - name: "storageId"
+          in: "path"
+          description: "Storage ID"
+          required: true
+          schema:
+            type: "string"
+      responses:
+        "200":
+          description: "Deleted successfully"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Deleted"
+        "401":
+          description: "Unauthenticated"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Unauthenticated"
+        "404":
+          description: "Not found"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NotFound"
+      security:
+        - BasicStore: []
+  /clipart-storages/{storageId}/cliparts:
+    get:
+      tags:
+        - "Clipart Storage"
       operationId: "getClipartsByStorage"
-      summary: "Get a list of cliparts by storage"
+      summary: "Get a list of Cliparts by Storage"
       parameters:
         - name: "storageId"
           in: "path"
@@ -1987,25 +2122,48 @@ paths:
       security:
         - BasicStore: []
         - UnAuthToken: []
-  /cliparts/count:
+  /clipart-storages/{clipartId}/storages:
     get:
       tags:
-        - "Clipart"
-      operationId: "getCountClipart"
-      summary: "Get a count of cliparts"
+        - "Clipart Storage"
+      operationId: "getStoragesByClipart"
+      summary: "Get a list of Storages by Clipart"
+      parameters:
+        - name: "clipartId"
+          in: "path"
+          description: "Clipart ID"
+          required: true
+          schema:
+            type: "string"
       responses:
         "200":
           description: "Retrieved successfully"
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ImageCount"
+                $ref: "#/components/schemas/CategoryResponseShowDataArray"
         "401":
           description: "Unauthenticated"
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/Unauthenticated"
+        "404":
+          description: "Not found"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NotFound"
+        "413":
+          description: Too many storages
+          content:
+            application/json:
+              schema:
+                properties:
+                  error:
+                    type: "string"
+                    description: Too many storages
+                    example: Too many storages
       security:
         - BasicStore: []
         - UnAuthToken: []
@@ -3146,116 +3304,6 @@ paths:
                 $ref: "#/components/schemas/NotFound"
       security:
         - BasicStore: []
-    delete:
-      tags:
-        - "Storage"
-      operationId: "deleteCategory"
-      summary: "Delete a Storage"
-      parameters:
-        - name: "storageId"
-          in: "path"
-          description: "Storage ID"
-          required: true
-          schema:
-            type: "string"
-      responses:
-        "200":
-          description: "Deleted successfully"
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Deleted"
-        "401":
-          description: "Unauthenticated"
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Unauthenticated"
-        "404":
-          description: "Not found"
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/NotFound"
-      security:
-        - BasicStore: []
-  /clipart-storages:
-    post:
-      tags:
-        - "Storage"
-      operationId: "postClipartStorage"
-      summary: "Create new Clipart - Storage"
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/ImageClipartStorage"
-      responses:
-        "201":
-          description: "Retrieved successfully"
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/CategoryResponseStore"
-        "400":
-          description: Invalid input
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/InvalidInput"
-        "401":
-          description: "Unauthenticated"
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Unauthenticated"
-        "404":
-          description: "Not found"
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/NotFound"
-      security:
-        - BasicStore: []
-    get:
-      tags:
-        - "Storage"
-      operationId: "getStorageByClipart"
-      summary: "Get a list of storages by clipart"
-      responses:
-        "200":
-          description: "Retrieved successfully"
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/CategoryResponseShowDataArray"
-        "401":
-          description: "Unauthenticated"
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Unauthenticated"
-        "404":
-          description: "Not found"
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/NotFound"
-        "413":
-          description: "Too many cliparts"
-          content:
-            application/json:
-              schema:
-                type: "object"
-                properties:
-                  error:
-                    type: "string"
-                    description: "Too many cliparts"
-                    example: "Too many cliparts"
-      security:
-        - BasicStore: []
-        - UnAuthToken: []
   /storages/count:
     get:
       tags:
@@ -3802,6 +3850,207 @@ paths:
                 $ref: "#/components/schemas/Unauthenticated"
       security:
         - BasicStore: []
+  /project-folder:
+    post:
+      tags:
+        - "Project Folder"
+      operationId: "postProjectFolder"
+      summary: "Create new Project Folder"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ProjectFolder"
+      responses:
+        "201":
+          description: "Retrieved successfully"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CategoryResponseStore"
+        "400":
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidInput"
+        "401":
+          description: "Unauthenticated"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Unauthenticated"
+        "404":
+          description: "Not found"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NotFound"
+      security:
+        - BasicStore: []
+    get:
+      tags:
+        - "Project Folder"
+      operationId: "getProjectFolder"
+      summary: "Get a list of Projects Folders"
+      responses:
+        "200":
+          description: "Retrieved successfully"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CategoryResponseShowDataArray"
+        "401":
+          description: "Unauthenticated"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Unauthenticated"
+        "404":
+          description: "Not found"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NotFound"
+        "413":
+          description: "Too many storages"
+          content:
+            application/json:
+              schema:
+                type: "object"
+                properties:
+                  error:
+                    type: "string"
+                    description: "Too many storages"
+                    example: "Too many storages"
+      security:
+        - BasicStore: []
+        - UnAuthToken: []
+  /project-folder/{storageId}:
+    delete:
+      tags:
+        - "Project Folder"
+      operationId: "deleteProjectFolder"
+      summary: "Delete a Project Folder"
+      parameters:
+        - name: "storageId"
+          in: "path"
+          description: "Storage ID"
+          required: true
+          schema:
+            type: "string"
+      responses:
+        "200":
+          description: "Deleted successfully"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Deleted"
+        "401":
+          description: "Unauthenticated"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Unauthenticated"
+        "404":
+          description: "Not found"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NotFound"
+      security:
+        - BasicStore: []
+  /project-folder/{storageId}/projects:
+    get:
+      tags:
+        - "Project Folder"
+      operationId: "getProjectByFolder"
+      summary: "Get a list of Projects by Folder"
+      parameters:
+        - name: "storageId"
+          in: "path"
+          description: "Storage ID"
+          required: true
+          schema:
+            type: "string"
+      responses:
+        "200":
+          description: "Retrieved successfully"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProjectResponseShowDataArray"
+        "401":
+          description: "Unauthenticated"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Unauthenticated"
+        "404":
+          description: "Not found"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NotFound"
+        "413":
+          description: Too many projects folder
+          content:
+            application/json:
+              schema:
+                properties:
+                  error:
+                    type: "string"
+                    description: Too many projects folder
+                    example: Too many projects folder
+      security:
+        - BasicStore: []
+        - UnAuthToken: []
+  /project-folder/{projectId}/folders:
+    get:
+      tags:
+        - "Project Folder"
+      operationId: "getFolderByProject"
+      summary: "Get a list of Folders by Project"
+      parameters:
+        - name: "projectId"
+          in: "path"
+          description: "Project ID"
+          required: true
+          schema:
+            type: "string"
+      responses:
+        "200":
+          description: "Retrieved successfully"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CategoryResponseShowDataArray"
+        "401":
+          description: "Unauthenticated"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Unauthenticated"
+        "404":
+          description: "Not found"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NotFound"
+        "413":
+          description: Too many folders by project
+          content:
+            application/json:
+              schema:
+                properties:
+                  error:
+                    type: "string"
+                    description: Too many folders by project
+                    example: Too many folders by project
+      security:
+        - BasicStore: []
+        - UnAuthToken: []
   /webhooks:
     post:
       tags:
@@ -6001,7 +6250,7 @@ components:
           example: "Retrieved successfully"
       xml:
         name: "FontCount"
-    ImageClipartStorage:
+    ClipartStorage:
       type: "object"
       required:
         - "category_id"
@@ -6016,7 +6265,7 @@ components:
           description: Image ID
           example: "e8304b84-a015-3bd4-a7d3-7a978fxxxxxx"
       xml:
-        name: "ImageClipartStorage"
+        name: "ClipartStorage"
     ImageResponse:
       type: "object"
       properties:
@@ -9059,6 +9308,21 @@ components:
           example: "Updated successfully"
       xml:
         name: "ProjectResponseUpdate"
+    ProjectFolder:
+      type: "object"
+      required:
+        - "category_id"
+      properties:
+        category_id:
+          type: "string"
+          description: Storage ID
+          example: "57eea14b-4e8d-4b7b-b864-b31cb8e6ac62"
+        project_id:
+          type: "string"
+          description: Project ID
+          example: "e8304b84-a015-3bd4-a7d3-7a978fxxxxxx"
+      xml:
+        name: "ProjectFolder"
     Webhook:
       type: "object"
       required:
@@ -9389,3 +9653,5 @@ components:
 externalDocs:
   description: "Find out more about Swagger"
   url: "http://swagger.io"
+
+# endpoint 104
