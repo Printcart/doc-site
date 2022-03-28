@@ -139,7 +139,7 @@ paths:
         "400":
           description: |
             - Invalid input
-            - Please upgrade your account. For more new experiences!
+            - Please upgrade your account.
           content:
             application/json:
               schema:
@@ -331,7 +331,7 @@ paths:
         "400":
           description: |
             - Invalid input
-            - Please upgrade your account. For more new experiences!
+            - Please upgrade your account.
           content:
             application/json:
               schema:
@@ -525,7 +525,7 @@ paths:
         "400":
           description: |
             - Invalid input
-            - Please upgrade your account. For more new experiences!
+            - Please upgrade your account.
           content:
             application/json:
               schema:
@@ -1516,7 +1516,7 @@ paths:
           description: |
             - Invalid input
             - File upload missing
-            - Please upgrade your account. For more new experiences!
+            - Please upgrade your account.
           content:
             application/json:
               schema:
@@ -1682,7 +1682,7 @@ paths:
           description: |
             - Invalid input
             - File upload missing
-            - Please upgrade your account. For more new experiences!
+            - Please upgrade your account.
           content:
             application/json:
               schema:
@@ -2194,7 +2194,7 @@ paths:
             - Invalid design file
             - Missing design file
             - Can not upload design file with your Content Type
-            - Please upgrade your account. For more new experiences!
+            - Please upgrade your account.
           content:
             application/json:
               schema:
@@ -2323,7 +2323,7 @@ paths:
             - Invalid input
             - Invalid design file
             - Can not upload design file with your Content Type
-            - Please upgrade your account. For more new experiences!
+            - Please upgrade your account.
           content:
             application/json:
               schema:
@@ -2408,7 +2408,7 @@ paths:
             - Invalid design file
             - Missing design file
             - Can not upload design file with your Content Type
-            - Please upgrade your account. For more new experiences!
+            - Please upgrade your account.
           content:
             application/json:
               schema:
@@ -2481,7 +2481,7 @@ paths:
             - Invalid input
             - Invalid design file
             - Can not upload design file with your Content Type
-            - Please upgrade your account. For more new experiences!
+            - Please upgrade your account.
           content:
             application/json:
               schema:
@@ -3347,7 +3347,7 @@ paths:
         "400":
           description: |
             - Invalid input
-            - Please upgrade your account. For more new experiences!
+            - Please upgrade your account.
             - Design id: ... already belong to another project
           content:
             application/json:
@@ -3542,7 +3542,7 @@ paths:
         "400":
           description: |
             - Invalid input
-            - Please upgrade your account. For more new experiences!
+            - Please upgrade your account.
           content:
             application/json:
               schema:
@@ -9640,8 +9640,8 @@ components:
       properties:
         message:
           type: "string"
-          description: "Please upgrade your account. For more new experiences!"
-          example: "Please upgrade your account. For more new experiences!"
+          description: "Please upgrade your account."
+          example: "Please upgrade your account."
       xml:
         name: "CheckUserTier"
     MissingImage:
