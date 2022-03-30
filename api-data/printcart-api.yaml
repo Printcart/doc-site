@@ -5006,7 +5006,7 @@ components:
         bg_color_value:
           type: "string"
           example: "red"
-        img_overlay:
+        img_overlay_id:
           type: "string"
           description: Image ID
           example: "e8304b84-a015-3bd4-a7d3-7a978f465df2"
@@ -5203,7 +5203,7 @@ components:
         bg_color_value:
           type: "string"
           example: "red"
-        img_overlay:
+        img_overlay_id:
           type: "string"
           description: Image ID
           example: "e8304b84-a015-3bd4-a7d3-7a978f465df2"
@@ -5442,7 +5442,7 @@ components:
               bg_color_value:
                 type: "string"
                 example: "red"
-              img_overlay:
+              img_overlay_id:
                 type: "string"
                 description: Image ID
                 example: "e8304b84-a015-3bd4-a7d3-7a978f465df2"
