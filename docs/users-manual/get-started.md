@@ -1,12 +1,12 @@
 # Getting Started
 
 ## Printcart Dashboard
-Getting Printcart is simple. Before you use to the solution, we recommend that you try out our demo store to get a feel for the user experience.
+Getting Printcart is very simple. Before you use the solution, we recommend that you try out our demo store to get a feel for the user experience.
 
 Try it now at: 
 https://dashboard.printcart.com/signin
 
-Experience the Online Design Feature:
+Try the Online Design Features:
 
 https://printcart-store.myshopify.com/products/snakeskin-print-sweatshirt
 

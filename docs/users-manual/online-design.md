@@ -7,10 +7,10 @@ Bellow is Online Design Display
 ## Before Start
 The Online Design App has the sections:
 ### Top toolbar
-Main toolbar include buttons: File, Edit, View, Undo, Redo, Title, and Process
+Top toolbar include buttons: File, Edit, View, Undo, Redo, Title, and Process
 
-- **File**: Customers can import or export design.
-- **Edit**: Clear All Design. Besides, we will develop "save design for late" function to your registered customers can save their design.
+- **File**: Users can import or export designs.
+- **Edit**: Have Clear All Design function. Besides, we will develop a "save the design for late" function to your registered users can save their design.
 - **View**: There are many functions for designers: Ruler, Show Grid, Show Bleed Line, Show Dimensions, Show Warning.
 - **Undo and Redo**: Click to go back and go foward design steps.
 - **Title**: you can write name project for your design.
@@ -18,26 +18,27 @@ Main toolbar include buttons: File, Edit, View, Undo, Redo, Title, and Process
 
 
 ### Main Tab
-Main tab include tabs: Text, Cliparts, Photos, Elements, Layers
+The main tab has a position at the vertical column on the left side of the interface. It includes tabs: Text, Cliparts, Photos, Elements, Layers.
 - **Text**: You can edit or upload your font on Designs.
-- **Cliparts**: You can add cliparts to design and change color for cliparts
-- **Photo**: Your customers can add any photos to their design follow 2 ways
-    - Upload to Online Design
-    - Get photo from any image link on the Internet
-- **Element**: Includes most online design functionality required:
-    - Draw (by mouse): Customers can free draw by choose brush: Pencil, Circle, Spray. Besides, they can draw many other lines and Shapes.
-    - Shapes: add Shapes on Element tab
-    - Icons: You can add more than 500 impressive icon templates ready to use
-    - Bar/QR-Code: Easy insert your website address by QR/bar-Code
+- **Cliparts**: Cliparts can be stylized text, art patterns, complex textures designs by SVG files that you have configured in the dashboard.
+- **Photo**: Your customers can add any photos to their design in 3 ways.
+    - Upload to Online Design.
+    - Get photo from any image link on the Internet.
+    - From Linked Free Photos Platforms.
+- **Element**: Includes almost all online design functions such as
+    - Draw (by mouse): Customers can free draw by choosing brush: Pencil, Circle, Spray. Besides, they can draw many other lines and Shapes.
+    - Shapes: add Shapes on the Element tab.
+    - Icons: You can add more than 500 impressive icon templates ready to use.
+    - Bar/QR-Code: Easily insert your website and product information address by QR/bar-Code.
     - Grid Frame: Layout grids help customers to align design objects within a frame.
-    - Photo Frame: Create creative Design on Product with special Frame.
-    - Image Place Older: You can add or custom shape on design with SVG code
-- **Layers**: Easily arrange design layers simply like traditional design tools
+    - Photo Frame: Create other designs on Product with a special Frame.
+    - Image Place Older: You can add or custom shape on design with SVG code.
+- **Layers**: Easily arrange design layers simply like traditional design tools.
 ### Main ToolBar
 Each new function tab will have its own unique toolbar
-- With Text main Toolbar have: Font, Size, Color, Text Align, Uppercase, Bold, Italic, Line height and spacing, strocke, and Background.
+- With Text main Toolbar have Font, Size, Color, Text Align, Uppercase, Bold, Italic, Line height and spacing, stroke, and Background.
 - Cliparts: Group and ungroup function
-- Photo: Filter and cliping mask
+- Photo: Photo: Filter and clipping mask
 - Element: Group layers and change colors
 ### Common ToolBar
 Online Design App will have some common function for each layer.
@@ -45,16 +46,16 @@ Online Design App will have some common function for each layer.
 - Opacity: The layer opacity change in the document window as you move the slider.
 - Shadow: Use for a drop shadow is to simulate 3D depth in a 2D image
 - Layer Stack: Use layers stack to perform tasks compositing multiple images, adding text to an image, or adding vector graphic shapes, adding a special effect such as a drop shadow or a glow.
-- Layer Postion: Use to align the position of the layer in the design frame.
+- Layer Position: Use to align the position of the layer in the design frame.
 
 ## How to use Online Design App
 
 ### Add Text
-You can add text with various colors, fonts, and sizes. Especially, they can curve text in their design and edit anything of text as shadow, pattern, rotate, opacity, outline, line height, background, etc. Actions and techniques design that users can perform include:
+You can add text with various colors, fonts, and sizes. Especially, they can curve text in their design and edit anything of text as a shadow, pattern, rotation, opacity, outline, line height, background, etc. Actions and techniques designed that users can perform include:
 
 - Any text and font are available for your choice.
-- There are plenty of fonts being included in font category
-- Font style includes italic, bold, underline with the full type of alignment such as left, center, right or justified.
+- There are plenty of fonts being included in the font category
+- Font style includes italic, bold, underline with the full type of alignment such as left, center, right, or justified.
 - Font color is varied.
 - Text background is available and changeable.
 - Text pattern is available.
@@ -68,39 +69,39 @@ You can add text with various colors, fonts, and sizes. Especially, they can cur
 
 ### Add Clipart
 - You can add art, change colors, move, resize, rotate and delete art, flip, center function and so on
-- Art’s color can be customized. It not only gives an easy way to manage color but also allows customers to change the color of each part of this image
-- Art can be rotated and changed its opacity.
-- Art can be zoomed in or zoomed out.
+- Customize art colors. It not only gives a simple function to manage color but also allows customers to change the color of each part of this image
+- You can rotate and change its opacity.
+- Zoomed in or zoomed out Art.
 - Art can be moved or deleted.
-- Multiple arts can be added on one design
+- You can add multi-art to one design
 
 ### Upload Images
-- If customers don’t satisfied with sample pictures, they can upload images as they want. They also can select from different many sources like Facebook or enter an image’s URL.
-- The picture can be uploaded from a local, URL or social network such as Facebook.
+- If customers do not satisfy with the template, they can upload images as they want.
+- Customers can upload images from a computer, images source, or social network such as Facebook.
 - Temporarily saved uploaded files for later use.
-- The uploaded file is typed as PNG, JPG, GIF. Its maximum size can be adjusted in the backend. 
-- Art can be zoomed or rotated.
-- Creating text shadow according to dimension X or Y. Shadow blur, opacity, shadow color also can be changeable.
-- The picture’s opacity can be customized.
+- You can upload file types like PNG, JPG, GIF. Can adjust the maximum size in the backend.
+- Zoom or rotate Arts easily.
+- Creating text shadow according to dimension X or Y. Easy change shadow blur, opacity, shadow color.
+- Customize the picture’s opacity
 - Four types of quick-changing pictures are available.
-- The picture can be turned via the tool.
-- Picture crop styles are varied such as crop tool, lasso tool, heart shape, round or star shape, etc. The picture can be reset back to its origin.
+- Turn the picture with the tool.
+- Various picture crop styles such as crop tool, lasso tool, heart shape, round or star shape, etc. You can reset the picture back to its origin.
 
 ### Create Design Elements
 **Free-hand drawing**
-- Especially, you also can use many available brush to draw, you can create your own signature.
+- You can use many available brushes to draw. You can create your own signature.
 - Drawing brushes such as pencil, circle, spray, pattern, square, texture are available for different choices.
-- Brush and brush width color can be changed.
-- Add available geometries as rectangle, circle, triangle, line, and polygon. Besides, users can change color, rotate, and opacity.
+- Can change the brush and brush width color.
+- Add available geometries as a rectangle, circle, triangle, line, and polygon. Besides, users can change color, rotate, and opacity.
 
 **More professional by add QR code**
-- You can create QR code on your design. QR codes will help customers access the link they want on Design
-- QR Picture can be zoomed according to the needs of the customers.
+- You can create a QR code on your design. QR codes will help customers access the link they want on Design
+- Can zoom QR pictures in according to the needs of the customers.
 
 ### Powerful layers
 - Drag and drop to sort layers and change layers of items
-- Layer position can be dragged to different positions.
-- Layer(s) can be deleted partly or entirely.
-- Scroll can be created when multiple layers exist.
-- Certain buttons are used to quickly change layer’s position.
-- Layer can be displayed or hided easily.
+- You can drag layer positions to different positions.
+- Can delete layer positions partly or entirely.
+- Create a scroll when multiple layers exist.
+- You can use buttons to change the layer’s position.
+- Display or hidden layers easily.
