@@ -865,7 +865,7 @@ paths:
         "400":
           description: |
             - Invalid input
-            - Can not side new with your Content Type
+            - Invalid Content-type header
           content:
             application/json:
               schema:
@@ -987,7 +987,7 @@ paths:
         "400":
           description: |
             - Invalid input
-            - Can not create side new with your Content Type
+            - Invalid Content-type header
           content:
             application/json:
               schema:
@@ -1064,7 +1064,7 @@ paths:
           description: |
             - Invalid input
             - Not found
-            - Can not create side new with your Content Type
+            - Invalid Content-type header
           content:
             application/json:
               schema:
@@ -1124,7 +1124,7 @@ paths:
           description: |
             - Invalid input
             - Not found
-            - Can not sides with your Content Type
+            - Invalid Content-type header
           content:
             application/json:
               schema:
@@ -9632,8 +9632,8 @@ components:
       properties:
         message:
           type: "string"
-          description: "Can not create side new with your Content Type"
-          example: "Can not create side new with your Content Type"
+          description: "Invalid Content-type header"
+          example: "Invalid Content-type header"
       xml:
         name: "SideHeaderContentType"
     CheckUserTier:
