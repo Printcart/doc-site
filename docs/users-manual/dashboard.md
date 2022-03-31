@@ -10,7 +10,7 @@ Ecommerce includes two sections of your dashboard: Projects and Products. It app
 - **Project** Project is a design management feature for the printing requirements of customers. Helping shop owners manage the image they need to print on products for the customers.
 - **Project code** is the order code or request code on the store owner's eCommerce admin page.
 
-The project has three statuses: Accepted, Process, and Reviewing.
+One project can have three statuses: Accepted, Process, and Reviewing.
 - **Process:** This is the state immediately after the customer creates order or requires a design. The customer's printing project will automatically be created and have this state. 
 - **Reviewing:** With this status, the store owner or printers monitor, review and evaluate the customer requests before implementing print.
 - **Accepted:** After Reviewing, The store owner and printers will accept orders and begin printing products.
