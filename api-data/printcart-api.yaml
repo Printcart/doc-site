@@ -146,6 +146,12 @@ paths:
                 anyOf:
                   - $ref: "#/components/schemas/InvalidInput"
                   - $ref: "#/components/schemas/CheckUserTier"
+        "401":
+          description: "Unauthenticated"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Unauthenticated"
       security:
         - BasicAuth: []
     get:
@@ -247,6 +253,43 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/NotFound"
+      security:
+        - BasicAuth: []
+  /stores/shopify:
+    post:
+      tags:
+        - "Store"
+      operationId: "createStoreShopifyPrivateApp"
+      summary: "Create Store Shopify"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/StoreShopifyPrivateApp"
+        required: true
+      responses:
+        "201":
+          description: "Created successfully"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/StoreResponseCreate"
+        "400":
+          description: |
+            - Invalid input
+            - Please upgrade your account.
+          content:
+            application/json:
+              schema:
+                anyOf:
+                  - $ref: "#/components/schemas/InvalidInput"
+                  - $ref: "#/components/schemas/CheckUserTier"
+        "401":
+          description: "Unauthenticated"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Unauthenticated"
       security:
         - BasicAuth: []
   /stores/store-details:
@@ -4360,6 +4403,12 @@ components:
           type: "string"
         integration:
           type: "string"
+          default: null
+          enum:
+            - 'null'
+            - 'shopify_private'
+            - 'magento'
+            - 'woocommerce'
         integration_details:
           type: "json"
         google_font_api:
@@ -4367,6 +4416,26 @@ components:
           example: "AIzaSyBtoM...L3iAPUPrpQ"
       xml:
         name: "Store"
+    StoreShopifyPrivateApp:
+      required:
+        - "shop_url"
+        - "access_token"
+      type: "object"
+      properties:
+        store_name:
+          type: "string"
+          example: "printcart store"
+        shop_url:
+          type: "string"
+          example: "xxx-dex-test-xxx.myshopify.com"
+        access_token:
+          type: "string"
+          example: "shpat_xxxx28a4f80fe3d2f4cxxxxxxxx"
+        google_font_api:
+          type: "string"
+          example: "AIzaSyBtoM...L3iAPUPrpQ"
+      xml:
+        name: "StoreShopifyPrivateApp"
     StoreUpdate:
       type: "object"
       properties:
@@ -4382,6 +4451,8 @@ components:
         google_font_api:
           type: "string"
           example: "AIzaSyBtoM...L3iAPUPrpQ"
+        imported_products:
+          type: "json"
       xml:
         name: "StoreUpdate"
     StoreResponse:
@@ -4409,6 +4480,8 @@ components:
           type: "string"
         integration_type:
           type: "string"
+        imported_products:
+          type: "json"
         created_at:
           type: "string"
           example: "2021-11-16T08:26:30.000000Z"
@@ -6273,6 +6346,9 @@ components:
           type: "string"
           example: "e8304b84-a015-3bd4-a7d3-7a978f465df2"
         name:
+          type: "string"
+          example: "printcart"
+        display_name:
           type: "string"
           example: "printcart"
         url:
