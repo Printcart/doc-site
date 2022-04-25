@@ -17,11 +17,14 @@ tags:
   - name: "Side"
   - name: "Image"
   - name: "Clipart"
+  - name: "Clipart Storage"
   - name: "Font"
   - name: "Design"
   - name: "Template"
+  - name: "TemplateItem"
   - name: "Storage"
   - name: "Project"
+  - name: "Project Folder"
   - name: "Account"
   - name: "Store"
   - name: "Webhook"
@@ -137,13 +140,19 @@ paths:
         "400":
           description: |
             - Invalid input
-            - Please upgrade your account. For more new experiences!
+            - Please upgrade your account.
           content:
             application/json:
               schema:
                 anyOf:
                   - $ref: "#/components/schemas/InvalidInput"
                   - $ref: "#/components/schemas/CheckUserTier"
+        "401":
+          description: "Unauthenticated"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Unauthenticated"
       security:
         - BasicAuth: []
     get:
@@ -247,7 +256,44 @@ paths:
                 $ref: "#/components/schemas/NotFound"
       security:
         - BasicAuth: []
-  /store-details:
+  # /stores/shopify:
+  #   post:
+  #     tags:
+  #       - "Store"
+  #     operationId: "createStoreShopifyPrivateApp"
+  #     summary: "Create Store Shopify"
+  #     requestBody:
+  #       content:
+  #         application/json:
+  #           schema:
+  #             $ref: "#/components/schemas/StoreShopifyPrivateApp"
+  #       required: true
+  #     responses:
+  #       "201":
+  #         description: "Created successfully"
+  #         content:
+  #           application/json:
+  #             schema:
+  #               $ref: "#/components/schemas/StoreResponseCreate"
+  #       "400":
+  #         description: |
+  #           - Invalid input
+  #           - Please upgrade your account.
+  #         content:
+  #           application/json:
+  #             schema:
+  #               anyOf:
+  #                 - $ref: "#/components/schemas/InvalidInput"
+  #                 - $ref: "#/components/schemas/CheckUserTier"
+  #       "401":
+  #         description: "Unauthenticated"
+  #         content:
+  #           application/json:
+  #             schema:
+  #               $ref: "#/components/schemas/Unauthenticated"
+  #     security:
+  #       - BasicAuth: []
+  /stores/store-details:
     get:
       tags:
         - "Store"
@@ -329,7 +375,7 @@ paths:
         "400":
           description: |
             - Invalid input
-            - Please upgrade your account. For more new experiences!
+            - Please upgrade your account.
           content:
             application/json:
               schema:
@@ -523,7 +569,7 @@ paths:
         "400":
           description: |
             - Invalid input
-            - Please upgrade your account. For more new experiences!
+            - Please upgrade your account.
           content:
             application/json:
               schema:
@@ -718,6 +764,52 @@ paths:
                     example: Too many designs by product
       security:
         - BasicStore: []
+  /products/{productId}/templates:
+    get:
+      tags:
+        - "Product"
+      operationId: "getTemplatesByProduct"
+      summary: "Get a list of templates by product"
+      parameters:
+        - name: "productId"
+          in: "path"
+          description: "Product ID"
+          required: true
+          schema:
+            type: "string"
+      responses:
+        "200":
+          description: "Retrieved successfully"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TemplateResponseShowDataArray"
+        "401":
+          description: "Unauthenticated"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Unauthenticated"
+        "404":
+          description: "Not found"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NotFound"
+        "413":
+          description: "Too many templates"
+          content:
+            application/json:
+              schema:
+                type: "object"
+                properties:
+                  error:
+                    type: "string"
+                    description: Too many templates
+                    example: Too many templates
+      security:
+        - BasicStore: []
+        - UnAuthToken: []
   /products/{productId}/sides:
     get:
       tags:
@@ -863,7 +955,7 @@ paths:
         "400":
           description: |
             - Invalid input
-            - Can not side new with your Content Type
+            - Invalid Content-type header
           content:
             application/json:
               schema:
@@ -985,7 +1077,7 @@ paths:
         "400":
           description: |
             - Invalid input
-            - Can not create side new with your Content Type
+            - Invalid Content-type header
           content:
             application/json:
               schema:
@@ -1062,7 +1154,7 @@ paths:
           description: |
             - Invalid input
             - Not found
-            - Can not create side new with your Content Type
+            - Invalid Content-type header
           content:
             application/json:
               schema:
@@ -1122,7 +1214,7 @@ paths:
           description: |
             - Invalid input
             - Not found
-            - Can not sides with your Content Type
+            - Invalid Content-type header
           content:
             application/json:
               schema:
@@ -1209,12 +1301,12 @@ paths:
                     example: Something went wrong while delete sides
       security:
         - BasicStore: []
-  /sides/{sideId}/templates:
+  /sides/{sideId}/template-items:
     get:
       tags:
         - "Side"
-      operationId: "getTemplateBySide"
-      summary: "Get a list of templates by side"
+      operationId: "getTemplateItemsBySide"
+      summary: "Get a list of template items by side"
       parameters:
         - name: "sideId"
           in: "path"
@@ -1228,7 +1320,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/TemplateResponseShowDataArray"
+                $ref: "#/components/schemas/TemplateItemResponseShowDataArray"
         "401":
           description: "Unauthenticated"
           content:
@@ -1242,7 +1334,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/NotFound"
         "413":
-          description: Too many template by side
+          description: Too many template items by side
           content:
             application/json:
               schema:
@@ -1250,8 +1342,8 @@ paths:
                 properties:
                   error:
                     type: "string"
-                    description: Too many template by side
-                    example: Too many template by side
+                    description: Too many template items by side
+                    example: Too many template items by side
       security:
         - BasicStore: []
         - UnAuthToken: []
@@ -1514,7 +1606,7 @@ paths:
           description: |
             - Invalid input
             - File upload missing
-            - Please upgrade your account. For more new experiences!
+            - Please upgrade your account.
           content:
             application/json:
               schema:
@@ -1680,7 +1772,7 @@ paths:
           description: |
             - Invalid input
             - File upload missing
-            - Please upgrade your account. For more new experiences!
+            - Please upgrade your account.
           content:
             application/json:
               schema:
@@ -1942,12 +2034,145 @@ paths:
       security:
         - BasicStore: []
         - UnAuthToken: []
-  /clipart-storages/{storageId}/cliparts:
+  /cliparts/count:
     get:
       tags:
         - "Clipart"
+      operationId: "getCountClipart"
+      summary: "Get a count of cliparts"
+      responses:
+        "200":
+          description: "Retrieved successfully"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ImageCount"
+        "401":
+          description: "Unauthenticated"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Unauthenticated"
+      security:
+        - BasicStore: []
+        - UnAuthToken: []
+  /clipart-storages:
+    post:
+      tags:
+        - "Clipart Storage"
+      operationId: "postClipartStorage"
+      summary: "Create new Clipart - Storage"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ClipartStorage"
+      responses:
+        "201":
+          description: "Retrieved successfully"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CategoryResponseStore"
+        "400":
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidInput"
+        "401":
+          description: "Unauthenticated"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Unauthenticated"
+        "404":
+          description: "Not found"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NotFound"
+      security:
+        - BasicStore: []
+    get:
+      tags:
+        - "Clipart Storage"
+      operationId: "getClipartStorage"
+      summary: "Get a list of Cliparts - Storages"
+      responses:
+        "200":
+          description: "Retrieved successfully"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CategoryResponseShowDataArray"
+        "401":
+          description: "Unauthenticated"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Unauthenticated"
+        "404":
+          description: "Not found"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NotFound"
+        "413":
+          description: "Too many storages"
+          content:
+            application/json:
+              schema:
+                type: "object"
+                properties:
+                  error:
+                    type: "string"
+                    description: "Too many storages"
+                    example: "Too many storages"
+      security:
+        - BasicStore: []
+        - UnAuthToken: []
+  /clipart-storages/{storageId}:
+    delete:
+      tags:
+        - "Clipart Storage"
+      operationId: "deleteClipartStorage"
+      summary: "Delete a Clipart - Storage"
+      parameters:
+        - name: "storageId"
+          in: "path"
+          description: "Storage ID"
+          required: true
+          schema:
+            type: "string"
+      responses:
+        "200":
+          description: "Deleted successfully"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Deleted"
+        "401":
+          description: "Unauthenticated"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Unauthenticated"
+        "404":
+          description: "Not found"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NotFound"
+      security:
+        - BasicStore: []
+  /clipart-storages/{storageId}/cliparts:
+    get:
+      tags:
+        - "Clipart Storage"
       operationId: "getClipartsByStorage"
-      summary: "Get a list of cliparts by storage"
+      summary: "Get a list of Cliparts by Storage"
       parameters:
         - name: "storageId"
           in: "path"
@@ -1987,25 +2212,48 @@ paths:
       security:
         - BasicStore: []
         - UnAuthToken: []
-  /cliparts/count:
+  /clipart-storages/{clipartId}/storages:
     get:
       tags:
-        - "Clipart"
-      operationId: "getCountClipart"
-      summary: "Get a count of cliparts"
+        - "Clipart Storage"
+      operationId: "getStoragesByClipart"
+      summary: "Get a list of Storages by Clipart"
+      parameters:
+        - name: "clipartId"
+          in: "path"
+          description: "Clipart ID"
+          required: true
+          schema:
+            type: "string"
       responses:
         "200":
           description: "Retrieved successfully"
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ImageCount"
+                $ref: "#/components/schemas/CategoryResponseShowDataArray"
         "401":
           description: "Unauthenticated"
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/Unauthenticated"
+        "404":
+          description: "Not found"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NotFound"
+        "413":
+          description: Too many storages
+          content:
+            application/json:
+              schema:
+                properties:
+                  error:
+                    type: "string"
+                    description: Too many storages
+                    example: Too many storages
       security:
         - BasicStore: []
         - UnAuthToken: []
@@ -2035,8 +2283,8 @@ paths:
             - Invalid input
             - Invalid design file
             - Missing design file
-            - Can not upload design file with your Content Type
-            - Please upgrade your account. For more new experiences!
+            - Invalid Content-Type header
+            - Please upgrade your account.
           content:
             application/json:
               schema:
@@ -2044,7 +2292,7 @@ paths:
                   - $ref: "#/components/schemas/InvalidInput"
                   - $ref: "#/components/schemas/InvalidDesignFile"
                   - $ref: "#/components/schemas/MissingDesignFile"
-                  - $ref: "#/components/schemas/MultipartFormData"
+                  - $ref: "#/components/schemas/InvalidContentTypeHeader"
                   - $ref: "#/components/schemas/CheckUserTier"
         "401":
           description: "Unauthenticated"
@@ -2164,15 +2412,15 @@ paths:
           description: |
             - Invalid input
             - Invalid design file
-            - Can not upload design file with your Content Type
-            - Please upgrade your account. For more new experiences!
+            - Invalid Content-Type header
+            - Please upgrade your account.
           content:
             application/json:
               schema:
                 anyOf:
                   - $ref: "#/components/schemas/InvalidInput"
                   - $ref: "#/components/schemas/InvalidDesignFile"
-                  - $ref: "#/components/schemas/MultipartFormData"
+                  - $ref: "#/components/schemas/InvalidContentTypeHeader"
                   - $ref: "#/components/schemas/CheckUserTier"
         "401":
           description: "Unauthenticated"
@@ -2249,8 +2497,8 @@ paths:
             - Invalid input
             - Invalid design file
             - Missing design file
-            - Can not upload design file with your Content Type
-            - Please upgrade your account. For more new experiences!
+            - Invalid Content-Type header
+            - Please upgrade your account.
           content:
             application/json:
               schema:
@@ -2258,7 +2506,7 @@ paths:
                   - $ref: "#/components/schemas/InvalidInput"
                   - $ref: "#/components/schemas/InvalidDesignFile"
                   - $ref: "#/components/schemas/MissingDesignFile"
-                  - $ref: "#/components/schemas/MultipartFormData"
+                  - $ref: "#/components/schemas/InvalidContentTypeHeader"
                   - $ref: "#/components/schemas/CheckUserTier"
         "401":
           description: "Unauthenticated"
@@ -2322,15 +2570,15 @@ paths:
           description: |
             - Invalid input
             - Invalid design file
-            - Can not upload design file with your Content Type
-            - Please upgrade your account. For more new experiences!
+            - Invalid Content-Type header
+            - Please upgrade your account.
           content:
             application/json:
               schema:
                 anyOf:
                   - $ref: "#/components/schemas/InvalidInput"
                   - $ref: "#/components/schemas/InvalidDesignFile"
-                  - $ref: "#/components/schemas/MultipartFormData"
+                  - $ref: "#/components/schemas/InvalidContentTypeHeader"
                   - $ref: "#/components/schemas/CheckUserTier"
         "401":
           description: "Unauthenticated"
@@ -2538,10 +2786,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/TemplateJson"
-          # multipart/form-data:
-          #   schema:
-          #     $ref: "#/components/schemas/Template"
+              $ref: "#/components/schemas/Template"
       responses:
         "201":
           description: "Created successfully"
@@ -2550,19 +2795,11 @@ paths:
               schema:
                 $ref: "#/components/schemas/TemplateResponseStore"
         "400":
-          description: |
-            - Invalid input
-            - Invalid template file
-            - Missing template file
-            - Can not upload template file with your Content Type
+          description: Invalid input
           content:
             application/json:
               schema:
-                anyOf:
-                  - $ref: "#/components/schemas/InvalidInput"
-                  - $ref: "#/components/schemas/InvalidDesignFile"
-                  - $ref: "#/components/schemas/MissingDesignFile"
-                  - $ref: "#/components/schemas/MultipartFormData"
+                $ref: "#/components/schemas/InvalidInput"
         "401":
           description: "Unauthenticated"
           content:
@@ -2581,7 +2818,7 @@ paths:
     get:
       tags:
         - "Template"
-      operationId: "getTemplate"
+      operationId: "getTemplates"
       summary: "Get a list of templates"
       responses:
         "200":
@@ -2615,7 +2852,8 @@ paths:
                     example: "Too many templates"
       security:
         - BasicStore: []
-  /templates/{templateId}:
+        - UnAuthToken: []
+  /templates/{templateID}:
     get:
       tags:
         - "Template"
@@ -2667,10 +2905,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/TemplateUpdateJson"
-          # multipart/form-data:
-          #   schema:
-          #     $ref: "#/components/schemas/TemplateUpdate"
+              $ref: "#/components/schemas/TemplateUpdate"
       responses:
         "200":
           description: "Updated successfully"
@@ -2679,17 +2914,11 @@ paths:
               schema:
                 $ref: "#/components/schemas/TemplateResponseUpdate"
         "400":
-          description: |
-            - Invalid input
-            - Invalid template file
-            - Can not upload template file with your Content Type
+          description: "Invalid input"
           content:
             application/json:
               schema:
-                anyOf:
-                  - $ref: "#/components/schemas/InvalidInput"
-                  - $ref: "#/components/schemas/InvalidDesignFile"
-                  - $ref: "#/components/schemas/MultipartFormData"
+                $ref: "#/components/schemas/InvalidInput"
         "401":
           description: "Unauthenticated"
           content:
@@ -2738,42 +2967,26 @@ paths:
                 $ref: "#/components/schemas/NotFound"
       security:
         - BasicStore: []
-  /templates/batch:
-    post:
+  /templates/{templateID}/template-items:
+    get:
       tags:
         - "Template"
-      operationId: "postTemplatesBatch"
-      summary: "Create batch templates"
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/TemplateBatchJson"
-          # multipart/form-data:
-          #   schema:
-          #     $ref: "#/components/schemas/TemplateBatch"
+      operationId: "getTemplateItemsByTemplate"
+      summary: "Get a list of template items by template"
+      parameters:
+        - name: "templateId"
+          in: "path"
+          description: "Template ID"
+          required: true
+          schema:
+            type: "string"
       responses:
-        "201":
-          description: "Created successfully"
+        "200":
+          description: "Retrieved successfully"
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/TemplateBatchResponse"
-        "400":
-          description: |
-            - Invalid input
-            - Invalid template file
-            - Missing template file
-            - Can not upload template file with your Content Type
-          content:
-            application/json:
-              schema:
-                anyOf:
-                  - $ref: "#/components/schemas/InvalidInput"
-                  - $ref: "#/components/schemas/InvalidDesignFile"
-                  - $ref: "#/components/schemas/MissingDesignFile"
-                  - $ref: "#/components/schemas/MultipartFormData"
+                $ref: "#/components/schemas/TemplateItemResponseShowDataArray"
         "401":
           description: "Unauthenticated"
           content:
@@ -2787,7 +3000,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/NotFound"
         "413":
-          description: "Too many templates"
+          description: Too many template items by template
           content:
             application/json:
               schema:
@@ -2795,33 +3008,307 @@ paths:
                 properties:
                   error:
                     type: "string"
-                    description: "Too many templates"
-                    example: "Too many templates"
-        "500":
-          description: "Something went wrong while create templates"
-          content:
-            application/json:
-              schema:
-                type: "object"
-                properties:
-                  error:
-                    type: "string"
-                    description: "Something went wrong while create templates"
-                    example: "Something went wrong while create templates"
+                    description: Too many template items by template
+                    example: Too many template items by template
       security:
         - BasicStore: []
         - UnAuthToken: []
-    put:
+  /template-items:
+    post:
       tags:
-        - "Template"
-      operationId: "putTemplatesBatch"
-      summary: "Update batch templates"
+        - "TemplateItem"
+      operationId: "postTemplateItem"
+      summary: "Create new template item"
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/TemplateBatchUpdateJson"
+              $ref: "#/components/schemas/TemplateItemJson"
+          # multipart/form-data:
+          #   schema:
+          #     $ref: "#/components/schemas/Template"
+      responses:
+        "201":
+          description: "Created successfully"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TemplateItemResponseStore"
+        "400":
+          description: |
+            - Invalid input
+            - Invalid template file
+            - Missing template file
+            - Invalid Content-Type header
+          content:
+            application/json:
+              schema:
+                anyOf:
+                  - $ref: "#/components/schemas/InvalidInput"
+                  - $ref: "#/components/schemas/InvalidDesignFile"
+                  - $ref: "#/components/schemas/MissingDesignFile"
+                  - $ref: "#/components/schemas/InvalidContentTypeHeader"
+        "401":
+          description: "Unauthenticated"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Unauthenticated"
+        "404":
+          description: "Not found"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NotFound"
+      security:
+        - BasicStore: []
+        - UnAuthToken: []
+    get:
+      tags:
+        - "TemplateItem"
+      operationId: "getTemplateItems"
+      summary: "Get a list of template items"
+      responses:
+        "200":
+          description: "Retrieved successfully"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TemplateItemResponseShowDataArray"
+        "401":
+          description: "Unauthenticated"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Unauthenticated"
+        "404":
+          description: "Not found"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NotFound"
+        "413":
+          description: "Too many template items"
+          content:
+            application/json:
+              schema:
+                type: "object"
+                properties:
+                  error:
+                    type: "string"
+                    description: "Too many template items"
+                    example: "Too many template items"
+      security:
+        - BasicStore: []
+        - UnAuthToken: []
+  /template-items/{templateItemId}:
+    get:
+      tags:
+        - "TemplateItem"
+      operationId: "getTemplateItemById"
+      summary: "Get template item details"
+      parameters:
+        - name: "templateItemId"
+          in: "path"
+          description: "Template Item ID"
+          required: true
+          schema:
+            type: "string"
+      responses:
+        "200":
+          description: "Retrieved successfully"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TemplateItemResponseShowDataObject"
+        "401":
+          description: "Unauthenticated"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Unauthenticated"
+        "404":
+          description: "Not found"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NotFound"
+      security:
+        - BasicStore: []
+        - UnAuthToken: []
+    put:
+      tags:
+        - "TemplateItem"
+      operationId: "updateTemplateItem"
+      summary: "Update template item details"
+      parameters:
+        - name: "templateItemId"
+          in: "path"
+          description: "Template Item ID"
+          required: true
+          schema:
+            type: "string"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/TemplateItemUpdateJson"
+          # multipart/form-data:
+          #   schema:
+          #     $ref: "#/components/schemas/TemplateUpdate"
+      responses:
+        "200":
+          description: "Updated successfully"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TemplateItemResponseUpdate"
+        "400":
+          description: |
+            - Invalid input
+            - Invalid template file
+            - Invalid Content-Type header
+          content:
+            application/json:
+              schema:
+                anyOf:
+                  - $ref: "#/components/schemas/InvalidInput"
+                  - $ref: "#/components/schemas/InvalidDesignFile"
+                  - $ref: "#/components/schemas/InvalidContentTypeHeader"
+        "401":
+          description: "Unauthenticated"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Unauthenticated"
+        "404":
+          description: "Not found"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NotFound"
+      security:
+        - BasicStore: []
+        - UnAuthToken: []
+    delete:
+      tags:
+        - "TemplateItem"
+      operationId: "deleteTemplateItem"
+      summary: "Delete a template item"
+      parameters:
+        - name: "templateItemId"
+          in: "path"
+          description: "Template item ID"
+          required: true
+          schema:
+            type: "string"
+      responses:
+        "200":
+          description: "Deleted successfully"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Deleted"
+        "401":
+          description: "Unauthenticated"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Unauthenticated"
+        "404":
+          description: "Not found"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NotFound"
+      security:
+        - BasicStore: []
+  /template-items/batch:
+    post:
+      tags:
+        - "TemplateItem"
+      operationId: "postTemplateItemsBatch"
+      summary: "Create batch template items"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/TemplateItemsBatchJson"
+          # multipart/form-data:
+          #   schema:
+          #     $ref: "#/components/schemas/TemplateBatch"
+      responses:
+        "201":
+          description: "Created successfully"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TemplateItemsBatchResponse"
+        "400":
+          description: |
+            - Invalid input
+            - Invalid template file
+            - Missing template file
+            - Invalid Content-Type header
+          content:
+            application/json:
+              schema:
+                anyOf:
+                  - $ref: "#/components/schemas/InvalidInput"
+                  - $ref: "#/components/schemas/InvalidDesignFile"
+                  - $ref: "#/components/schemas/MissingDesignFile"
+                  - $ref: "#/components/schemas/InvalidContentTypeHeader"
+        "401":
+          description: "Unauthenticated"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Unauthenticated"
+        "404":
+          description: "Not found"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NotFound"
+        "413":
+          description: "Too many template items"
+          content:
+            application/json:
+              schema:
+                type: "object"
+                properties:
+                  error:
+                    type: "string"
+                    description: "Too many template items"
+                    example: "Too many template items"
+        "500":
+          description: "Something went wrong while create template items"
+          content:
+            application/json:
+              schema:
+                type: "object"
+                properties:
+                  error:
+                    type: "string"
+                    description: "Something went wrong while create template items"
+                    example: "Something went wrong while create template items"
+      security:
+        - BasicStore: []
+        - UnAuthToken: []
+    put:
+      tags:
+        - "TemplateItem"
+      operationId: "putTemplateItemsBatch"
+      summary: "Update batch template items"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/TemplateItemsBatchUpdateJson"
           # multipart/form-data:
           #   schema:
           #     $ref: "#/components/schemas/TemplateBatchUpdate"
@@ -2831,19 +3318,19 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/TemplateBatchUpdateResponse"
+                $ref: "#/components/schemas/TemplateItemsBatchUpdateResponse"
         "400":
           description: |
             - Invalid input
             - Invalid template file
-            - Can not upload template file with your Content Type
+            - Invalid Content-Type header
           content:
             application/json:
               schema:
                 anyOf:
                   - $ref: "#/components/schemas/InvalidInput"
                   - $ref: "#/components/schemas/InvalidDesignFile"
-                  - $ref: "#/components/schemas/MultipartFormData"
+                  - $ref: "#/components/schemas/InvalidContentTypeHeader"
         "401":
           description: "Unauthenticated"
           content:
@@ -2861,7 +3348,7 @@ paths:
                   - $ref: "#/components/schemas/NotFound"
                   - $ref: "#/components/schemas/DesignError"
         "413":
-          description: "Too many templates"
+          description: "Too many template items"
           content:
             application/json:
               schema:
@@ -2869,10 +3356,10 @@ paths:
                 properties:
                   error:
                     type: "string"
-                    description: "Too many templates"
-                    example: "Too many templates"
+                    description: "Too many template items"
+                    example: "Too many template items"
         "500":
-          description: "Something went wrong while update templates"
+          description: "Something went wrong while update template items"
           content:
             application/json:
               schema:
@@ -2880,22 +3367,22 @@ paths:
                 properties:
                   error:
                     type: "string"
-                    description: "Something went wrong while update templates"
-                    example: "Something went wrong while update templates"
+                    description: "Something went wrong while update template items"
+                    example: "Something went wrong while update template items"
       security:
         - BasicStore: []
         - UnAuthToken: []
     delete:
       tags:
-        - "Template"
-      operationId: "deleteTemplatesBatch"
-      summary: "Delete batch templates"
+        - "TemplateItem"
+      operationId: "deleteTemplateItemsBatch"
+      summary: "Delete batch template items"
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/TemplateBatchDelete"
+              $ref: "#/components/schemas/TemplateItemsBatchDelete"
       responses:
         "200":
           description: "Deleted successfully"
@@ -2920,18 +3407,29 @@ paths:
                     type: "string"
                     description: "Can't find template with id"
                     example: "Can't find template with id: cce4dc71-6757-4a1c-a259-6b66a4304c14"
+        "500":
+          description: "Something went wrong while delete template items"
+          content:
+            application/json:
+              schema:
+                type: "object"
+                properties:
+                  error:
+                    type: "string"
+                    description: "Something went wrong while delete template items"
+                    example: "Something went wrong while delete template items"
       security:
         - BasicStore: []
-  /templates/{templateId}/fonts:
+  /template-items/{templateId}/fonts:
     get:
       tags:
-        - "Template"
-      operationId: "getFontsInLayersTemplateById"
-      summary: "Get list fonts layer by template"
+        - "TemplateItem"
+      operationId: "getFontsInLayersTemplateItemById"
+      summary: "Get list fonts layer by template item"
       parameters:
-        - name: "templateId"
+        - name: "templateItemId"
           in: "path"
-          description: "Template ID"
+          description: "Template item ID"
           required: true
           schema:
             type: "string"
@@ -2968,12 +3466,12 @@ paths:
       security:
         - BasicStore: []
         - UnAuthToken: []
-  /templates/count:
+  /template-items/count:
     get:
       tags:
-        - "Template"
-      operationId: "getCountTemplate"
-      summary: "Get a count of templates"
+        - "TemplateItem"
+      operationId: "getCountTemplateItems"
+      summary: "Get a count of template items"
       responses:
         "200":
           description: "Retrieved successfully"
@@ -3146,116 +3644,6 @@ paths:
                 $ref: "#/components/schemas/NotFound"
       security:
         - BasicStore: []
-    delete:
-      tags:
-        - "Storage"
-      operationId: "deleteCategory"
-      summary: "Delete a Storage"
-      parameters:
-        - name: "storageId"
-          in: "path"
-          description: "Storage ID"
-          required: true
-          schema:
-            type: "string"
-      responses:
-        "200":
-          description: "Deleted successfully"
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Deleted"
-        "401":
-          description: "Unauthenticated"
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Unauthenticated"
-        "404":
-          description: "Not found"
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/NotFound"
-      security:
-        - BasicStore: []
-  /clipart-storages:
-    post:
-      tags:
-        - "Storage"
-      operationId: "postClipartStorage"
-      summary: "Create new Clipart - Storage"
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/ImageClipartStorage"
-      responses:
-        "201":
-          description: "Retrieved successfully"
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/CategoryResponseStore"
-        "400":
-          description: Invalid input
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/InvalidInput"
-        "401":
-          description: "Unauthenticated"
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Unauthenticated"
-        "404":
-          description: "Not found"
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/NotFound"
-      security:
-        - BasicStore: []
-    get:
-      tags:
-        - "Storage"
-      operationId: "getStorageByClipart"
-      summary: "Get a list of storages by clipart"
-      responses:
-        "200":
-          description: "Retrieved successfully"
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/CategoryResponseShowDataArray"
-        "401":
-          description: "Unauthenticated"
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Unauthenticated"
-        "404":
-          description: "Not found"
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/NotFound"
-        "413":
-          description: "Too many cliparts"
-          content:
-            application/json:
-              schema:
-                type: "object"
-                properties:
-                  error:
-                    type: "string"
-                    description: "Too many cliparts"
-                    example: "Too many cliparts"
-      security:
-        - BasicStore: []
-        - UnAuthToken: []
   /storages/count:
     get:
       tags:
@@ -3299,7 +3687,7 @@ paths:
         "400":
           description: |
             - Invalid input
-            - Please upgrade your account. For more new experiences!
+            - Please upgrade your account.
             - Design id: ... already belong to another project
           content:
             application/json:
@@ -3494,7 +3882,7 @@ paths:
         "400":
           description: |
             - Invalid input
-            - Please upgrade your account. For more new experiences!
+            - Please upgrade your account.
           content:
             application/json:
               schema:
@@ -3802,6 +4190,207 @@ paths:
                 $ref: "#/components/schemas/Unauthenticated"
       security:
         - BasicStore: []
+  /project-folder:
+    post:
+      tags:
+        - "Project Folder"
+      operationId: "postProjectFolder"
+      summary: "Create new Project Folder"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ProjectFolder"
+      responses:
+        "201":
+          description: "Retrieved successfully"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CategoryResponseStore"
+        "400":
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidInput"
+        "401":
+          description: "Unauthenticated"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Unauthenticated"
+        "404":
+          description: "Not found"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NotFound"
+      security:
+        - BasicStore: []
+    get:
+      tags:
+        - "Project Folder"
+      operationId: "getProjectFolder"
+      summary: "Get a list of Projects Folders"
+      responses:
+        "200":
+          description: "Retrieved successfully"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CategoryResponseShowDataArray"
+        "401":
+          description: "Unauthenticated"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Unauthenticated"
+        "404":
+          description: "Not found"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NotFound"
+        "413":
+          description: "Too many storages"
+          content:
+            application/json:
+              schema:
+                type: "object"
+                properties:
+                  error:
+                    type: "string"
+                    description: "Too many storages"
+                    example: "Too many storages"
+      security:
+        - BasicStore: []
+        - UnAuthToken: []
+  /project-folder/{storageId}:
+    delete:
+      tags:
+        - "Project Folder"
+      operationId: "deleteProjectFolder"
+      summary: "Delete a Project Folder"
+      parameters:
+        - name: "storageId"
+          in: "path"
+          description: "Storage ID"
+          required: true
+          schema:
+            type: "string"
+      responses:
+        "200":
+          description: "Deleted successfully"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Deleted"
+        "401":
+          description: "Unauthenticated"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Unauthenticated"
+        "404":
+          description: "Not found"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NotFound"
+      security:
+        - BasicStore: []
+  /project-folder/{storageId}/projects:
+    get:
+      tags:
+        - "Project Folder"
+      operationId: "getProjectByFolder"
+      summary: "Get a list of Projects by Folder"
+      parameters:
+        - name: "storageId"
+          in: "path"
+          description: "Storage ID"
+          required: true
+          schema:
+            type: "string"
+      responses:
+        "200":
+          description: "Retrieved successfully"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProjectResponseShowDataArray"
+        "401":
+          description: "Unauthenticated"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Unauthenticated"
+        "404":
+          description: "Not found"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NotFound"
+        "413":
+          description: Too many projects folder
+          content:
+            application/json:
+              schema:
+                properties:
+                  error:
+                    type: "string"
+                    description: Too many projects folder
+                    example: Too many projects folder
+      security:
+        - BasicStore: []
+        - UnAuthToken: []
+  /project-folder/{projectId}/folders:
+    get:
+      tags:
+        - "Project Folder"
+      operationId: "getFolderByProject"
+      summary: "Get a list of Folders by Project"
+      parameters:
+        - name: "projectId"
+          in: "path"
+          description: "Project ID"
+          required: true
+          schema:
+            type: "string"
+      responses:
+        "200":
+          description: "Retrieved successfully"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CategoryResponseShowDataArray"
+        "401":
+          description: "Unauthenticated"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Unauthenticated"
+        "404":
+          description: "Not found"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NotFound"
+        "413":
+          description: Too many folders by project
+          content:
+            application/json:
+              schema:
+                properties:
+                  error:
+                    type: "string"
+                    description: Too many folders by project
+                    example: Too many folders by project
+      security:
+        - BasicStore: []
+        - UnAuthToken: []
   /webhooks:
     post:
       tags:
@@ -4035,10 +4624,6 @@ components:
           format: "email"
           description: The email address for the customer.
           example: "printcart@gamil.com"
-        password:
-          type: "string"
-          description: Customer password.
-          example: "printcart"
       xml:
         name: "AccountUpdate"
     AccountResponse:
@@ -4111,6 +4696,12 @@ components:
           type: "string"
         integration:
           type: "string"
+          default: null
+          enum:
+            - 'null'
+            - 'shopify_private'
+            - 'magento'
+            - 'woocommerce'
         integration_details:
           type: "json"
         google_font_api:
@@ -4118,6 +4709,26 @@ components:
           example: "AIzaSyBtoM...L3iAPUPrpQ"
       xml:
         name: "Store"
+    # StoreShopifyPrivateApp:
+    #   required:
+    #     - "shop_url"
+    #     - "access_token"
+    #   type: "object"
+    #   properties:
+    #     store_name:
+    #       type: "string"
+    #       example: "printcart store"
+    #     shop_url:
+    #       type: "string"
+    #       example: "xxx-dex-test-xxx.myshopify.com"
+    #     access_token:
+    #       type: "string"
+    #       example: "shpat_xxxx28a4f80fe3d2f4cxxxxxxxx"
+    #     google_font_api:
+    #       type: "string"
+    #       example: "AIzaSyBtoM...L3iAPUPrpQ"
+    #   xml:
+    #     name: "StoreShopifyPrivateApp"
     StoreUpdate:
       type: "object"
       properties:
@@ -4133,6 +4744,8 @@ components:
         google_font_api:
           type: "string"
           example: "AIzaSyBtoM...L3iAPUPrpQ"
+        imported_products:
+          type: "json"
       xml:
         name: "StoreUpdate"
     StoreResponse:
@@ -4160,6 +4773,8 @@ components:
           type: "string"
         integration_type:
           type: "string"
+        imported_products:
+          type: "json"
         created_at:
           type: "string"
           example: "2021-11-16T08:26:30.000000Z"
@@ -4757,7 +5372,7 @@ components:
         bg_color_value:
           type: "string"
           example: "red"
-        img_overlay:
+        img_overlay_id:
           type: "string"
           description: Image ID
           example: "e8304b84-a015-3bd4-a7d3-7a978f465df2"
@@ -4954,7 +5569,7 @@ components:
         bg_color_value:
           type: "string"
           example: "red"
-        img_overlay:
+        img_overlay_id:
           type: "string"
           description: Image ID
           example: "e8304b84-a015-3bd4-a7d3-7a978f465df2"
@@ -5193,7 +5808,7 @@ components:
               bg_color_value:
                 type: "string"
                 example: "red"
-              img_overlay:
+              img_overlay_id:
                 type: "string"
                 description: Image ID
                 example: "e8304b84-a015-3bd4-a7d3-7a978f465df2"
@@ -6001,7 +6616,7 @@ components:
           example: "Retrieved successfully"
       xml:
         name: "FontCount"
-    ImageClipartStorage:
+    ClipartStorage:
       type: "object"
       required:
         - "category_id"
@@ -6016,7 +6631,7 @@ components:
           description: Image ID
           example: "e8304b84-a015-3bd4-a7d3-7a978fxxxxxx"
       xml:
-        name: "ImageClipartStorage"
+        name: "ClipartStorage"
     ImageResponse:
       type: "object"
       properties:
@@ -6024,6 +6639,9 @@ components:
           type: "string"
           example: "e8304b84-a015-3bd4-a7d3-7a978f465df2"
         name:
+          type: "string"
+          example: "printcart"
+        display_name:
           type: "string"
           example: "printcart"
         url:
@@ -6163,10 +6781,10 @@ components:
         note:
           type: "string"
           example: "printcart"
-        is_template:
-          type: "boolean"
-          default: false
-          example: false
+        template_id:
+          type: "string"
+          default: null
+          example: null
         layers:
           type: "json"
           description: "Lorem ipsum..."
@@ -6244,10 +6862,10 @@ components:
         note:
           type: "string"
           example: "printcart"
-        is_template:
-          type: "boolean"
-          default: false
-          example: false
+        template_id:
+          type: "string"
+          default: null
+          example: null
         layers:
           type: "json"
           description: "Lorem ipsum..."
@@ -6466,7 +7084,7 @@ components:
           type: "array"
           items:
             type: "object"
-            $ref: "#/components/schemas/DesignResponse"
+            $ref: "#/components/schemas/DesignLayerResponse"
         message:
           type: "string"
           description: "Created successfully"
@@ -7347,57 +7965,6 @@ components:
             updated_at:
               type: "string"
               example: "2021-11-16T08:26:30.000000Z"
-        layers:
-          type: "array"
-          items:
-            type: "object"
-            properties:
-              top:
-                type: "number"
-                example: 38.9832354205
-              left:
-                type: "number"
-                example: 329.6631024663
-              text:
-                type: "string"
-                example: "Heading"
-              width:
-                type: "integer"
-                format: "int64"
-                example: 158
-              height:
-                type: "integer"
-                format: "int64"
-                example: 47.46
-              originX:
-                type: "string"
-                example: "left"
-              originY:
-                type: "string"
-                example: "top"
-              fontSize:
-                type: "integer"
-                format: "int64"
-                example: 42
-              minWidth:
-                type: "integer"
-                format: "int64"
-                example: 20
-              fontStyle:
-                type: "string"
-                example: "normal"
-              textAlign:
-                type: "string"
-                example: "left"
-              underline:
-                type: "boolean"
-                example: false,
-              fontFamily:
-                type: "string"
-                example: "Roboto"
-              fontWeight:
-                type: "string"
-                example: "normal"
         viewport_width:
           type: "number"
           format: "float"
@@ -7414,380 +7981,7 @@ components:
           example: "2021-11-16T08:26:30.000000Z"
       xml:
         name: "DesignResponse"
-    DesignResponseShowDataObject:
-      type: "object"
-      properties:
-        data:
-          type: "object"
-          $ref: "#/components/schemas/DesignResponse"
-        message:
-          type: "string"
-          description: "Retrieved successfully"
-          example: "Retrieved successfully"
-      xml:
-        name: "DesignResponseShowDataObject"
-    DesignResponseShowDataArray:
-      type: "object"
-      properties:
-        data:
-          type: "array"
-          items:
-            type: "object"
-            $ref: "#/components/schemas/DesignResponse"
-        message:
-          type: "string"
-          description: "Retrieved successfully"
-          example: "Retrieved successfully"
-      xml:
-        name: "DesignResponseShowDataArray"
-    DesignResponseStore:
-      type: "object"
-      properties:
-        data:
-          type: "object"
-          $ref: "#/components/schemas/DesignResponse"
-        message:
-          type: "string"
-          description: "Created successfully"
-          example: "Created successfully"
-      xml:
-        name: "DesignResponseStore"
-    DesignResponseUpdate:
-      type: "object"
-      properties:
-        data:
-          type: "object"
-          $ref: "#/components/schemas/DesignResponse"
-        message:
-          type: "string"
-          description: "Updated successfully"
-          example: "Updated successfully"
-      xml:
-        name: "DesignResponseUpdate"
-    DesignFont:
-      type: "object"
-      properties:
-        data:
-          type: "array"
-          items:
-            $ref: "#/components/schemas/FontResponse"
-        message:
-          type: "string"
-          description: "Retrieved successfully"
-          example: "Retrieved successfully"
-      xml:
-        name: "DesignFont"
-    Template:
-      type: "object"
-      required:
-        - "side_id"
-      properties:
-        project_id:
-          type: "string"
-          description: Project ID
-          example: "4419934f-8e1b-4cf0-b432-01ef9258a812"
-        side_id:
-          type: "string"
-          description: Side ID
-          example: "c5661a1e-8147-4dc3-8600-00fdc81ed14b"
-        design_ratio:
-          type: "number"
-          format: "float"
-          example: 50.50
-        pdf_url:
-          type: "string"
-          description: Lorem ipsum...
-        preview_image_id:
-          type: "string"
-          description: Image ID
-          example: "e8304b84-a015-3bd4-a7d3-7a978f465df2"
-        design_file:
-          type: "string"
-          description: "Image file"
-          format: binary
-        quantity:
-          type: "integer"
-          format: "int64"
-          example: 50
-        note:
-          type: "string"
-          example: "printcart"
-        is_template:
-          type: "boolean"
-          default: true
-          example: true
-        layers:
-          type: "json"
-          description: "Lorem ipsum..."
-          example:
-            [
-              {
-                "top": 183.5025,
-                "left": 195.79,
-                "text": "Blackbird",
-                "width": 68.33984375,
-                "height": 22.6,
-                "originX": "left",
-                "originY": "top",
-                "fontSize": 20,
-                "fontStyle": "normal",
-                "textAlign": "left",
-                "fontFamily": "Yellowtail",
-                "fontWeight": "normal",
-              },
-            ]
-        viewport_width:
-          type: "number"
-          format: "float"
-          example: 50.50
-        viewport_height:
-          type: "number"
-          format: "float"
-          example: 50.50
-      xml:
-        name: "Template"
-    TemplateJson:
-      type: "object"
-      required:
-        - "side_id"
-      properties:
-        project_id:
-          type: "string"
-          description: Project ID
-          example: "4419934f-8e1b-4cf0-b432-01ef9258a812"
-        side_id:
-          type: "string"
-          description: Side ID
-          example: "c5661a1e-8147-4dc3-8600-00fdc81ed14b"
-        design_ratio:
-          type: "number"
-          format: "float"
-          example: 50.50
-        pdf_url:
-          type: "string"
-          description: Lorem ipsum...
-        preview_image_id:
-          type: "string"
-          description: Image ID
-          example: "e8304b84-a015-3bd4-a7d3-7a978f465df2"
-        design_image_id:
-          type: "string"
-          description: Image ID
-          example: "e8304b84-a015-3bd4-a7d3-7a978f465df2"
-        quantity:
-          type: "integer"
-          format: "int64"
-          example: 50
-        note:
-          type: "string"
-          example: "printcart"
-        is_template:
-          type: "boolean"
-          default: true
-          example: true
-        layers:
-          type: "json"
-          description: "Lorem ipsum..."
-          example:
-            [
-              {
-                "top": 183.5025,
-                "left": 195.79,
-                "text": "Blackbird",
-                "width": 68.33984375,
-                "height": 22.6,
-                "originX": "left",
-                "originY": "top",
-                "fontSize": 20,
-                "fontStyle": "normal",
-                "textAlign": "left",
-                "fontFamily": "Yellowtail",
-                "fontWeight": "normal",
-              },
-            ]
-        viewport_width:
-          type: "number"
-          format: "float"
-          example: 50.50
-        viewport_height:
-          type: "number"
-          format: "float"
-          example: 50.50
-      xml:
-        name: "TemplateJson"
-    TemplateBatch:
-      type: "object"
-      required:
-        - "side_id"
-      properties:
-        templates:
-          type: "array"
-          items:
-            type: "array"
-            $ref: "#/components/schemas/Template"
-      xml:
-        name: "TemplateBatch"
-    TemplateBatchJson:
-      type: "object"
-      required:
-        - "side_id"
-      properties:
-        templates:
-          type: "array"
-          items:
-            type: "array"
-            $ref: "#/components/schemas/TemplateJson"
-      xml:
-        name: "TemplateBatchJson"
-    TemplateBatchUpdate:
-      type: "object"
-      properties:
-        templates:
-          type: "array"
-          items:
-            type: "object"
-            required:
-              - "id"
-            properties:
-              id:
-                type: "string"
-                description: Template ID
-                example: "cce4dc71-6757-4a1c-a259-6b66a4304c14"
-              project_id:
-                type: "string"
-                description: Project ID
-                example: "4419934f-8e1b-4cf0-b432-01ef9258a812"
-              side_id:
-                type: "string"
-                description: Side ID
-                example: "c5661a1e-8147-4dc3-8600-00fdc81ed14b"
-              design_ratio:
-                type: "number"
-                format: "float"
-                example: 50.50
-              pdf_url:
-                type: "string"
-                description: Lorem ipsum...
-              preview_image_id:
-                type: "string"
-                description: Image ID
-                example: "e8304b84-a015-3bd4-a7d3-7a978f465df2"
-              design_file:
-                type: "string"
-                description: "Image file"
-                format: binary
-              quantity:
-                type: "integer"
-                format: "int64"
-                example: 50
-              note:
-                type: "string"
-                example: "printcart"
-              layers:
-                type: "application/json"
-                description: "Lorem ipsum..."
-                example:
-                  [
-                    {
-                      "top": 183.5025,
-                      "left": 195.79,
-                      "text": "Blackbird",
-                      "width": 68.33984375,
-                      "height": 22.6,
-                      "originX": "left",
-                      "originY": "top",
-                      "fontSize": 20,
-                      "fontStyle": "normal",
-                      "textAlign": "left",
-                      "fontFamily": "Yellowtail",
-                      "fontWeight": "normal",
-                    },
-                  ]
-              viewport_width:
-                type: "number"
-                format: "float"
-                example: 50.50
-              viewport_height:
-                type: "number"
-                format: "float"
-                example: 50.50
-      xml:
-        name: "TemplateBatchUpdate"
-    TemplateBatchUpdateJson:
-      type: "object"
-      properties:
-        templates:
-          type: "array"
-          items:
-            type: "object"
-            required:
-              - "id"
-            properties:
-              id:
-                type: "string"
-                description: Template ID
-                example: "cce4dc71-6757-4a1c-a259-6b66a4304c14"
-              project_id:
-                type: "string"
-                description: Project ID
-                example: "4419934f-8e1b-4cf0-b432-01ef9258a812"
-              side_id:
-                type: "string"
-                description: Side ID
-                example: "c5661a1e-8147-4dc3-8600-00fdc81ed14b"
-              design_ratio:
-                type: "number"
-                format: "float"
-                example: 50.50
-              pdf_url:
-                type: "string"
-                description: Lorem ipsum...
-              preview_image_id:
-                type: "string"
-                description: Image ID
-                example: "e8304b84-a015-3bd4-a7d3-7a978f465df2"
-              design_image_id:
-                type: "string"
-                description: Image ID
-                example: "e8304b84-a015-3bd4-a7d3-7a978f465df2"
-              quantity:
-                type: "integer"
-                format: "int64"
-                example: 50
-              note:
-                type: "string"
-                example: "printcart"
-              layers:
-                type: "application/json"
-                description: "Lorem ipsum..."
-                example:
-                  [
-                    {
-                      "top": 183.5025,
-                      "left": 195.79,
-                      "text": "Blackbird",
-                      "width": 68.33984375,
-                      "height": 22.6,
-                      "originX": "left",
-                      "originY": "top",
-                      "fontSize": 20,
-                      "fontStyle": "normal",
-                      "textAlign": "left",
-                      "fontFamily": "Yellowtail",
-                      "fontWeight": "normal",
-                    },
-                  ]
-              viewport_width:
-                type: "number"
-                format: "float"
-                example: 50.50
-              viewport_height:
-                type: "number"
-                format: "float"
-                example: 50.50
-      xml:
-        name: "TemplateBatchUpdateJson"
-    TemplateResponse:
+    DesignLayerResponse:
       type: "object"
       properties:
         id:
@@ -7931,6 +8125,854 @@ components:
         preview_image:
           $ref: "#/components/schemas/ImageResponse"
         design_image:
+          $ref: "#/components/schemas/ImageResponse"
+        quantity:
+          type: "integer"
+          format: "int64"
+          example: 50
+        note:
+          type: "string"
+          example: "printcart note"
+        status:
+          type: "string"
+          enum:
+            - "accepted"
+            - "processing"
+            - "declined"
+            - "trashed"
+            - "deleted"
+          example: "accepted"
+        original_output_options:
+          type: "object"
+          properties:
+            dpi:
+              type: "integer"
+              format: "int64"
+              example: 500
+            dimension_unit:
+              type: "string"
+              enum:
+                - "inch"
+                - "cm"
+              example: "inch"
+        original_side:
+          type: "object"
+          properties:
+            id:
+              type: "string"
+              example: "c5661a1e-8147-4dc3-8600-00fdc81ed14b"
+            product:
+              $ref: "#/components/schemas/ProductResponse"
+            name:
+              type: "string"
+              example: "printcart"
+            bg_type:
+              type: "string"
+              enum:
+                - "color"
+                - "image"
+                - "transparent"
+              example: "image"
+            bg_color_value:
+              type: "string"
+              example: "red"
+            img_top_pos:
+              type: "number"
+              format: "float"
+              example: 50.5
+            img_left_pos:
+              type: "number"
+              format: "float"
+              example: 50.5
+            img_bottom_pos:
+              type: "number"
+              format: "float"
+              example: 50.5
+            img_right_pos:
+              type: "number"
+              format: "float"
+              example: 50.5
+            img_overlay:
+              $ref: "#/components/schemas/ImageResponse"
+            version:
+              type: "string"
+              example: "version 1.0.0"
+            ratio:
+              type: "integer"
+              format: "int64"
+              example: 100
+            background_included:
+              type: "boolean"
+              example: true
+            show_overlay:
+              type: "boolean"
+              example: true
+            include_overlay:
+              type: "boolean"
+              example: true
+            product_width:
+              type: "number"
+              format: "float"
+              example: 50
+            product_height:
+              type: "number"
+              format: "float"
+              example: 50
+            real_width:
+              type: "number"
+              format: "float"
+              example: 50
+            real_height:
+              type: "number"
+              format: "float"
+              example: 50
+            real_top:
+              type: "number"
+              format: "float"
+              example: 50
+            real_left:
+              type: "number"
+              format: "float"
+              example: 50
+            area_design_width:
+              type: "number"
+              format: "float"
+              example: 50
+            area_design_height:
+              type: "number"
+              format: "float"
+              example: 50
+            area_design_left:
+              type: "number"
+              format: "float"
+              example: 50
+            area_design_top:
+              type: "number"
+              format: "float"
+              example: 50
+            show_bleed:
+              type: "boolean"
+              example: true
+            bleed_top_bottom:
+              type: "number"
+              format: "float"
+              example: 50.50
+            bleed_left_right:
+              type: "number"
+              format: "float"
+              example: 50.50
+            show_safe_zone:
+              type: "boolean"
+              example: true
+            margin_top_bottom:
+              type: "number"
+              format: "float"
+              example: 50
+            margin_left_right:
+              type: "number"
+              format: "float"
+              example: 50
+            background_img:
+              $ref: "#/components/schemas/ImageResponse"
+            created_at:
+              type: "string"
+              example: "2021-11-16T08:26:30.000000Z"
+            updated_at:
+              type: "string"
+              example: "2021-11-16T08:26:30.000000Z"
+        layers:
+          type: "array"
+          items:
+            type: "object"
+            properties:
+              top:
+                type: "number"
+                example: 38.9832354205
+              left:
+                type: "number"
+                example: 329.6631024663
+              text:
+                type: "string"
+                example: "Heading"
+              width:
+                type: "integer"
+                format: "int64"
+                example: 158
+              height:
+                type: "integer"
+                format: "int64"
+                example: 47.46
+              originX:
+                type: "string"
+                example: "left"
+              originY:
+                type: "string"
+                example: "top"
+              fontSize:
+                type: "integer"
+                format: "int64"
+                example: 42
+              minWidth:
+                type: "integer"
+                format: "int64"
+                example: 20
+              fontStyle:
+                type: "string"
+                example: "normal"
+              textAlign:
+                type: "string"
+                example: "left"
+              underline:
+                type: "boolean"
+                example: false,
+              fontFamily:
+                type: "string"
+                example: "Roboto"
+              fontWeight:
+                type: "string"
+                example: "normal"
+        viewport_width:
+          type: "number"
+          format: "float"
+          example: 50.50
+        viewport_height:
+          type: "number"
+          format: "float"
+          example: 50.50
+        created_at:
+          type: "string"
+          example: "2021-11-16T08:26:30.000000Z"
+        updated_at:
+          type: "string"
+          example: "2021-11-16T08:26:30.000000Z"
+      xml:
+        name: "DesignLayerResponse"
+    DesignResponseShowDataObject:
+      type: "object"
+      properties:
+        data:
+          type: "object"
+          $ref: "#/components/schemas/DesignLayerResponse"
+        message:
+          type: "string"
+          description: "Retrieved successfully"
+          example: "Retrieved successfully"
+      xml:
+        name: "DesignResponseShowDataObject"
+    DesignResponseShowDataArray:
+      type: "object"
+      properties:
+        data:
+          type: "array"
+          items:
+            type: "object"
+            $ref: "#/components/schemas/DesignResponse"
+        message:
+          type: "string"
+          description: "Retrieved successfully"
+          example: "Retrieved successfully"
+      xml:
+        name: "DesignResponseShowDataArray"
+    DesignResponseStore:
+      type: "object"
+      properties:
+        data:
+          type: "object"
+          $ref: "#/components/schemas/DesignLayerResponse"
+        message:
+          type: "string"
+          description: "Created successfully"
+          example: "Created successfully"
+      xml:
+        name: "DesignResponseStore"
+    DesignResponseUpdate:
+      type: "object"
+      properties:
+        data:
+          type: "object"
+          $ref: "#/components/schemas/DesignLayerResponse"
+        message:
+          type: "string"
+          description: "Updated successfully"
+          example: "Updated successfully"
+      xml:
+        name: "DesignResponseUpdate"
+    DesignFont:
+      type: "object"
+      properties:
+        data:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/FontResponse"
+        message:
+          type: "string"
+          description: "Retrieved successfully"
+          example: "Retrieved successfully"
+      xml:
+        name: "DesignFont"
+    Template:
+      type: "object"
+      required:
+        - "product_id"
+      properties:
+        product_id:
+          type: "string"
+          description: Product ID
+          example: "962af342-a2c9-4665-bb5d-cb208258d958"
+      xml:
+          name: "Template"
+    TemplateUpdate:
+      properties:
+        product_id:
+          type: "string"
+          description: Product ID
+          example: "962af342-a2c9-4665-bb5d-cb208258d958"
+      xml:
+        name: "TemplateUpdate"
+    TemplateResponse:
+      type: "object"
+      properties:
+        id:
+          type: "string"
+          example: "791da349-3774-46c6-932e-9456212e6ec0"
+        product:
+          $ref: "#/components/schemas/ProductResponse"
+        created_at:
+          type: "string"
+          example: "2021-11-16T08:26:30.000000Z"
+        updated_at:
+          type: "string"
+          example: "2021-11-16T08:26:30.000000Z"
+      xml:
+        name: "TemplateResponse"
+    TemplateResponseStore:
+      type: "object"
+      properties:
+        data:
+          type: "object"
+          $ref: "#/components/schemas/TemplateResponse"
+        message:
+          type: "string"
+          description: "Created successfully"
+          example: "Created successfully"
+      xml:
+        name: "TemplateResponseStore"
+    TemplateResponseShowDataObject:
+      type: "object"
+      properties:
+        data:
+          type: "object"
+          $ref: "#/components/schemas/TemplateResponse"
+        message:
+          type: "string"
+          description: "Retrieved successfully"
+          example: "Retrieved successfully"
+      xml:
+        name: "TemplateResponseShowDataObject"
+    TemplateResponseShowDataArray:
+      type: "object"
+      properties:
+        data:
+          type: "array"
+          items:
+            type: "object"
+            $ref: "#/components/schemas/TemplateResponse"
+        message:
+          type: "string"
+          description: "Retrieved successfully"
+          example: "Retrieved successfully"
+      xml:
+        name: "TemplateResponseShowDataArray"
+    TemplateResponseUpdate:
+      type: "object"
+      properties:
+        data:
+          type: "object"
+          $ref: "#/components/schemas/TemplateResponse"
+        message:
+          type: "string"
+          description: "Updated successfully"
+          example: "Updated successfully"
+      xml:
+        name: "TemplateResponseUpdate"
+    TemplateItem:
+      type: "object"
+      required:
+        - "side_id"
+        - "template_id"
+      properties:
+        project_id:
+          type: "string"
+          description: Project ID
+          example: "4419934f-8e1b-4cf0-b432-01ef9258a812"
+        side_id:
+          type: "string"
+          description: Side ID
+          example: "c5661a1e-8147-4dc3-8600-00fdc81ed14b"
+        template_id:
+          type: "string"
+          description: Template ID
+          example: "cc761a1e-8147-4dc3-8600-00fdcaudl23e"
+        template_ratio:
+          type: "number"
+          format: "float"
+          example: 50.50
+        pdf_url:
+          type: "string"
+          description: Lorem ipsum...
+        preview_image_id:
+          type: "string"
+          description: Image ID
+          example: "e8304b84-a015-3bd4-a7d3-7a978f465df2"
+        template_file:
+          type: "string"
+          description: "Image file"
+          format: binary
+        quantity:
+          type: "integer"
+          format: "int64"
+          default: 1
+          example: 50
+        note:
+          type: "string"
+          example: "printcart"
+        layers:
+          type: "json"
+          description: "Lorem ipsum..."
+          example:
+            [
+              {
+                "top": 183.5025,
+                "left": 195.79,
+                "text": "Blackbird",
+                "width": 68.33984375,
+                "height": 22.6,
+                "originX": "left",
+                "originY": "top",
+                "fontSize": 20,
+                "fontStyle": "normal",
+                "textAlign": "left",
+                "fontFamily": "Yellowtail",
+                "fontWeight": "normal",
+              },
+            ]
+        viewport_width:
+          type: "number"
+          format: "float"
+          example: 50.50
+        viewport_height:
+          type: "number"
+          format: "float"
+          example: 50.50
+      xml:
+        name: "TemplateItem"
+    TemplateItemJson:
+      type: "object"
+      required:
+        - "template_id"
+        - "side_id"
+      properties:
+        project_id:
+          type: "string"
+          description: Project ID
+          example: "4419934f-8e1b-4cf0-b432-01ef9258a812"
+        side_id:
+          type: "string"
+          description: Side ID
+          example: "c5661a1e-8147-4dc3-8600-00fdc81ed14b"
+        template_id:
+          type: "string"
+          description: Template ID
+          example: "cc761a1e-8147-4dc3-8600-00fdcaudl23e"
+        template_ratio:
+          type: "number"
+          format: "float"
+          example: 50.50
+        pdf_url:
+          type: "string"
+          description: Lorem ipsum...
+        preview_image_id:
+          type: "string"
+          description: Image ID
+          example: "e8304b84-a015-3bd4-a7d3-7a978f465df2"
+        template_image_id:
+          type: "string"
+          description: Image ID
+          example: "e8304b84-a015-3bd4-a7d3-7a978f465df2"
+        quantity:
+          type: "integer"
+          format: "int64"
+          default: 1
+          example: 50
+        note:
+          type: "string"
+          example: "printcart"
+        layers:
+          type: "json"
+          description: "Lorem ipsum..."
+          example:
+            [
+              {
+                "top": 183.5025,
+                "left": 195.79,
+                "text": "Blackbird",
+                "width": 68.33984375,
+                "height": 22.6,
+                "originX": "left",
+                "originY": "top",
+                "fontSize": 20,
+                "fontStyle": "normal",
+                "textAlign": "left",
+                "fontFamily": "Yellowtail",
+                "fontWeight": "normal",
+              },
+            ]
+        viewport_width:
+          type: "number"
+          format: "float"
+          example: 50.50
+        viewport_height:
+          type: "number"
+          format: "float"
+          example: 50.50
+      xml:
+        name: "TemplateItemJson"
+    TemplateItemsBatch:
+      type: "object"
+      required:
+        - "template_id"
+        - "side_id"
+      properties:
+        template_items:
+          type: "array"
+          items:
+            type: "array"
+            $ref: "#/components/schemas/TemplateItem"
+      xml:
+        name: "TemplateItemsBatch"
+    TemplateItemsBatchJson:
+      type: "object"
+      required:
+        - "template_id"
+        - "side_id"
+      properties:
+        template_items:
+          type: "array"
+          items:
+            type: "array"
+            $ref: "#/components/schemas/TemplateItemJson"
+      xml:
+        name: "TemplateItemsBatchJson"
+    TemplateItemsBatchUpdate:
+      type: "object"
+      properties:
+        template_items:
+          type: "array"
+          items:
+            type: "object"
+            required:
+              - "id"
+            properties:
+              id:
+                type: "string"
+                description: Template ID
+                example: "cce4dc71-6757-4a1c-a259-6b66a4304c14"
+              project_id:
+                type: "string"
+                description: Project ID
+                example: "4419934f-8e1b-4cf0-b432-01ef9258a812"
+              side_id:
+                type: "string"
+                description: Side ID
+                example: "c5661a1e-8147-4dc3-8600-00fdc81ed14b"
+              template_id:
+                type: "string"
+                description: Template ID
+                example: "cc761a1e-8147-4dc3-8600-00fdcaudl23e"
+              template_ratio:
+                type: "number"
+                format: "float"
+                example: 50.50
+              pdf_url:
+                type: "string"
+                description: Lorem ipsum...
+              preview_image_id:
+                type: "string"
+                description: Image ID
+                example: "e8304b84-a015-3bd4-a7d3-7a978f465df2"
+              template_file:
+                type: "string"
+                description: "Image file"
+                format: binary
+              quantity:
+                type: "integer"
+                format: "int64"
+                example: 50
+              note:
+                type: "string"
+                example: "printcart"
+              layers:
+                type: "application/json"
+                description: "Lorem ipsum..."
+                example:
+                  [
+                    {
+                      "top": 183.5025,
+                      "left": 195.79,
+                      "text": "Blackbird",
+                      "width": 68.33984375,
+                      "height": 22.6,
+                      "originX": "left",
+                      "originY": "top",
+                      "fontSize": 20,
+                      "fontStyle": "normal",
+                      "textAlign": "left",
+                      "fontFamily": "Yellowtail",
+                      "fontWeight": "normal",
+                    },
+                  ]
+              viewport_width:
+                type: "number"
+                format: "float"
+                example: 50.50
+              viewport_height:
+                type: "number"
+                format: "float"
+                example: 50.50
+      xml:
+        name: "TemplateItemsBatchUpdate"
+    TemplateItemsBatchUpdateJson:
+      type: "object"
+      properties:
+        template_items:
+          type: "array"
+          items:
+            type: "object"
+            required:
+              - "id"
+            properties:
+              id:
+                type: "string"
+                description: Template ID
+                example: "cce4dc71-6757-4a1c-a259-6b66a4304c14"
+              project_id:
+                type: "string"
+                description: Project ID
+                example: "4419934f-8e1b-4cf0-b432-01ef9258a812"
+              side_id:
+                type: "string"
+                description: Side ID
+                example: "c5661a1e-8147-4dc3-8600-00fdc81ed14b"
+              template_id:
+                type: "string"
+                description: Template ID
+                example: "cc761a1e-8147-4dc3-8600-00fdcaudl23e"
+              template_ratio:
+                type: "number"
+                format: "float"
+                example: 50.50
+              pdf_url:
+                type: "string"
+                description: Lorem ipsum...
+              preview_image_id:
+                type: "string"
+                description: Image ID
+                example: "e8304b84-a015-3bd4-a7d3-7a978f465df2"
+              template_image_id:
+                type: "string"
+                description: Image ID
+                example: "e8304b84-a015-3bd4-a7d3-7a978f465df2"
+              quantity:
+                type: "integer"
+                format: "int64"
+                example: 50
+              note:
+                type: "string"
+                example: "printcart"
+              layers:
+                type: "application/json"
+                description: "Lorem ipsum..."
+                example:
+                  [
+                    {
+                      "top": 183.5025,
+                      "left": 195.79,
+                      "text": "Blackbird",
+                      "width": 68.33984375,
+                      "height": 22.6,
+                      "originX": "left",
+                      "originY": "top",
+                      "fontSize": 20,
+                      "fontStyle": "normal",
+                      "textAlign": "left",
+                      "fontFamily": "Yellowtail",
+                      "fontWeight": "normal",
+                    },
+                  ]
+              viewport_width:
+                type: "number"
+                format: "float"
+                example: 50.50
+              viewport_height:
+                type: "number"
+                format: "float"
+                example: 50.50
+      xml:
+        name: "TemplateItemsBatchUpdateJson"
+    TemplateItemResponse:
+      type: "object"
+      properties:
+        id:
+          type: "string"
+          example: "cce4dc71-6757-4a1c-a259-6b66a4304c14"
+        project:
+          $ref: "#/components/schemas/ProjectResponse"
+        side:
+          type: "object"
+          properties:
+            id:
+              type: "string"
+              example: "c5661a1e-8147-4dc3-8600-00fdc81ed14b"
+            name:
+              type: "string"
+              example: "printcart"
+            bg_type:
+              type: "string"
+              enum:
+                - "color"
+                - "image"
+                - "transparent"
+              example: "image"
+            bg_color_value:
+              type: "string"
+              example: "red"
+            img_top_pos:
+              type: "number"
+              format: "float"
+              example: 50.5
+            img_left_pos:
+              type: "number"
+              format: "float"
+              example: 50.5
+            img_bottom_pos:
+              type: "number"
+              format: "float"
+              example: 50.5
+            img_right_pos:
+              type: "number"
+              format: "float"
+              example: 50.5
+            img_overlay:
+              $ref: "#/components/schemas/ImageResponse"
+            version:
+              type: "string"
+              example: "version 1.0.0"
+            ratio:
+              type: "integer"
+              format: "int64"
+              example: 100
+            background_included:
+              type: "boolean"
+              example: true
+            show_overlay:
+              type: "boolean"
+              example: true
+            include_overlay:
+              type: "boolean"
+              example: true
+            product_width:
+              type: "number"
+              format: "float"
+              example: 50
+            product_height:
+              type: "number"
+              format: "float"
+              example: 50
+            real_width:
+              type: "number"
+              format: "float"
+              example: 50
+            real_height:
+              type: "number"
+              format: "float"
+              example: 50
+            real_top:
+              type: "number"
+              format: "float"
+              example: 50
+            real_left:
+              type: "number"
+              format: "float"
+              example: 50
+            area_design_width:
+              type: "number"
+              format: "float"
+              example: 50
+            area_design_height:
+              type: "number"
+              format: "float"
+              example: 50
+            area_design_left:
+              type: "number"
+              format: "float"
+              example: 50
+            area_design_top:
+              type: "number"
+              format: "float"
+              example: 50
+            show_bleed:
+              type: "boolean"
+              example: true
+            bleed_top_bottom:
+              type: "number"
+              format: "float"
+              example: 50.50
+            bleed_left_right:
+              type: "number"
+              format: "float"
+              example: 50.50
+            show_safe_zone:
+              type: "boolean"
+              example: true
+            margin_top_bottom:
+              type: "number"
+              format: "float"
+              example: 50
+            margin_left_right:
+              type: "number"
+              format: "float"
+              example: 50
+            background_img:
+              $ref: "#/components/schemas/ImageResponse"
+            created_at:
+              type: "string"
+              example: "2021-11-16T08:26:30.000000Z"
+            updated_at:
+              type: "string"
+              example: "2021-11-16T08:26:30.000000Z"
+        template:
+          type: "object"
+          properties:
+            id:
+              type: "string"
+              example: "cc761a1e-8147-4dc3-8600-00fdcaudl23e"
+            created_at:
+              type: "string"
+              example: "2021-11-16T08:26:30.000000Z"
+            updated_at:
+              type: "string"
+              example: "2021-11-16T08:26:30.000000Z"
+        template_ratio:
+          type: "number"
+          format: "float"
+          example: 50.50
+        pdf_url:
+          type: "string"
+        product:
+          $ref: "#/components/schemas/ProductResponse"
+        preview_image:
+          $ref: "#/components/schemas/ImageResponse"
+        template_image:
           $ref: "#/components/schemas/ImageResponse"
         quantity:
           type: "integer"
@@ -8143,22 +9185,22 @@ components:
           type: "string"
           example: "2021-11-16T08:26:30.000000Z"
       xml:
-        name: "TemplateResponse"
-    TemplateBatchResponse:
+        name: "TemplateItemResponse"
+    TemplateItemsBatchResponse:
       type: "object"
       properties:
         data:
           type: "array"
           items:
             type: "object"
-            $ref: "#/components/schemas/TemplateResponse"
+            $ref: "#/components/schemas/TemplateItemResponse"
         message:
           type: "string"
           description: "Created successfully"
           example: "Created successfully"
       xml:
-        name: "TemplateBatchResponse"
-    TemplateBatchUpdateResponse:
+        name: "TemplateItemsBatchResponse"
+    TemplateItemsBatchUpdateResponse:
       type: "object"
       properties:
         data:
@@ -8177,8 +9219,6 @@ components:
                   id:
                     type: "string"
                     example: "c5661a1e-8147-4dc3-8600-00fdc81ed14b"
-                  product:
-                    $ref: "#/components/schemas/ProductResponse"
                   name:
                     type: "string"
                     example: "printcart"
@@ -8296,7 +9336,19 @@ components:
                   updated_at:
                     type: "string"
                     example: "2021-11-16T08:26:30.000000Z"
-              design_ratio:
+              template:
+                type: "object"
+                properties:
+                  id:
+                    type: "string"
+                    example: "cc761a1e-8147-4dc3-8600-00fdcaudl23e"
+                  created_at:
+                    type: "string"
+                    example: "2021-11-16T08:26:30.000000Z"
+                  updated_at:
+                    type: "string"
+                    example: "2021-11-16T08:26:30.000000Z"
+              template_ratio:
                 type: "number"
                 format: "float"
                 example: 50.50
@@ -8306,7 +9358,7 @@ components:
                 $ref: "#/components/schemas/ProductResponse"
               preview_image:
                 $ref: "#/components/schemas/ImageResponse"
-              design_image:
+              template_image:
                 $ref: "#/components/schemas/ImageResponse"
               quantity:
                 type: "integer"
@@ -8472,11 +9524,11 @@ components:
           description: "Updated successfully"
           example: "Updated successfully"
       xml:
-        name: "TemplateBatchUpdateResponse"
-    TemplateBatchDelete:
+        name: "TemplateItemsBatchUpdateResponse"
+    TemplateItemsBatchDelete:
       type: "object"
       properties:
-        templates:
+        template_items:
           type: "array"
           items:
             type: "object"
@@ -8488,58 +9540,58 @@ components:
                 description: Template ID
                 example: "cce4dc71-6757-4a1c-a259-6b66a4304c14"
       xml:
-        name: "TemplateBatchDelete"
-    TemplateResponseStore:
+        name: "TemplateItemsBatchDelete"
+    TemplateItemResponseStore:
       type: "object"
       properties:
         data:
           type: "object"
-          $ref: "#/components/schemas/TemplateResponse"
+          $ref: "#/components/schemas/TemplateItemResponse"
         message:
           type: "string"
           description: "Created successfully"
           example: "Created successfully"
       xml:
-        name: "TemplateResponseStore"
-    TemplateResponseShowDataObject:
+        name: "TemplateItemResponseStore"
+    TemplateItemResponseShowDataObject:
       type: "object"
       properties:
         data:
           type: "object"
-          $ref: "#/components/schemas/TemplateResponse"
+          $ref: "#/components/schemas/TemplateItemResponse"
         message:
           type: "string"
           description: "Retrieved successfully"
           example: "Retrieved successfully"
       xml:
-        name: "TemplateResponseShowDataObject"
-    TemplateResponseShowDataArray:
+        name: "TemplateItemResponseShowDataObject"
+    TemplateItemResponseShowDataArray:
       type: "object"
       properties:
         data:
           type: "array"
           items:
             type: "object"
-            $ref: "#/components/schemas/TemplateResponse"
+            $ref: "#/components/schemas/TemplateItemResponse"
         message:
           type: "string"
           description: "Retrieved successfully"
           example: "Retrieved successfully"
       xml:
-        name: "TemplateResponseShowDataArray"
-    TemplateResponseUpdate:
+        name: "TemplateItemResponseShowDataArray"
+    TemplateItemResponseUpdate:
       type: "object"
       properties:
         data:
           type: "object"
-          $ref: "#/components/schemas/TemplateResponse"
+          $ref: "#/components/schemas/TemplateItemResponse"
         message:
           type: "string"
           description: "Updated successfully"
           example: "Updated successfully"
       xml:
-        name: "TemplateResponseUpdate"
-    TemplateUpdate:
+        name: "TemplateItemResponseUpdate"
+    TemplateItemUpdate:
       type: "object"
       properties:
         project_id:
@@ -8550,7 +9602,11 @@ components:
           type: "string"
           description: Side ID
           example: "c5661a1e-8147-4dc3-8600-00fdc81ed14b"
-        design_ratio:
+        template_id:
+          type: "string"
+          description: Template ID
+          example: "cc761a1e-8147-4dc3-8600-00fdcaudl23e"
+        template_ratio:
           type: "number"
           format: "float"
           example: 50.50
@@ -8561,7 +9617,7 @@ components:
           type: "string"
           description: Image ID
           example: "e8304b84-a015-3bd4-a7d3-7a978f465df2"
-        design_file:
+        template_file:
           type: "file"
           description: "Image file"
           format: binary
@@ -8601,8 +9657,8 @@ components:
           format: "float"
           example: 50.50
       xml:
-        name: "TemplateUpdate"
-    TemplateUpdateJson:
+        name: "TemplateItemUpdate"
+    TemplateItemUpdateJson:
       type: "object"
       properties:
         project_id:
@@ -8613,7 +9669,11 @@ components:
           type: "string"
           description: Side ID
           example: "c5661a1e-8147-4dc3-8600-00fdc81ed14b"
-        design_ratio:
+        template_id:
+          type: "string"
+          description: Template ID
+          example: "cc761a1e-8147-4dc3-8600-00fdcaudl23e"
+        template_ratio:
           type: "number"
           format: "float"
           example: 50.50
@@ -8624,7 +9684,7 @@ components:
           type: "string"
           description: Image ID
           example: "e8304b84-a015-3bd4-a7d3-7a978f465df2"
-        design_image_id:
+        template_image_id:
           type: "string"
           description: Image ID
           example: "e8304b84-a015-3bd4-a7d3-7a978f465df2"
@@ -8664,7 +9724,7 @@ components:
           format: "float"
           example: 50.50
       xml:
-        name: "TemplateUpdateJson"
+        name: "TemplateItemUpdateJson"
     Category:
       type: "object"
       required:
@@ -9059,6 +10119,21 @@ components:
           example: "Updated successfully"
       xml:
         name: "ProjectResponseUpdate"
+    ProjectFolder:
+      type: "object"
+      required:
+        - "category_id"
+      properties:
+        category_id:
+          type: "string"
+          description: Storage ID
+          example: "57eea14b-4e8d-4b7b-b864-b31cb8e6ac62"
+        project_id:
+          type: "string"
+          description: Project ID
+          example: "e8304b84-a015-3bd4-a7d3-7a978fxxxxxx"
+      xml:
+        name: "ProjectFolder"
     Webhook:
       type: "object"
       required:
@@ -9255,15 +10330,15 @@ components:
           example: "Invalid avatar file"
       xml:
         name: "InvalidAvatarFile"
-    MultipartFormData:
+    InvalidContentTypeHeader:
       type: "object"
       properties:
         message:
           type: "string"
-          description: "Can not upload design file with your Content Type"
-          example: "Can not upload design file with your Content Type"
+          description: "Invalid Content-Type header"
+          example: "Invalid Content-Type header"
       xml:
-        name: "MultipartFormData"
+        name: "InvalidContentTypeHeader"
     MissingDesignFile:
       type: "object"
       properties:
@@ -9368,16 +10443,16 @@ components:
       properties:
         message:
           type: "string"
-          description: "Can not create side new with your Content Type"
-          example: "Can not create side new with your Content Type"
+          description: "Invalid Content-type header"
+          example: "Invalid Content-type header"
       xml:
         name: "SideHeaderContentType"
     CheckUserTier:
       properties:
         message:
           type: "string"
-          description: "Please upgrade your account. For more new experiences!"
-          example: "Please upgrade your account. For more new experiences!"
+          description: "Please upgrade your account."
+          example: "Please upgrade your account."
       xml:
         name: "CheckUserTier"
     MissingImage:
@@ -9389,3 +10464,5 @@ components:
 externalDocs:
   description: "Find out more about Swagger"
   url: "http://swagger.io"
+
+# endpoint 104
