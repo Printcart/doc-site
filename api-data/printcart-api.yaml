@@ -8564,10 +8564,6 @@ components:
           type: "number"
           format: "float"
           example: 50.50
-        status:
-          type: "string"
-          default: null
-          description: Template status
       xml:
         name: "TemplateItem"
     TemplateItemJson:
@@ -8639,10 +8635,6 @@ components:
           type: "number"
           format: "float"
           example: 50.50
-        status:
-          type: "string"
-          default: null
-          description: Template status
       xml:
         name: "TemplateItemJson"
     TemplateItemsBatch:
