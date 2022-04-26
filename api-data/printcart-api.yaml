@@ -355,7 +355,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/NotFound"
       security:
-        - BasicAuth: []
+        - BasicStore: []
   /products:
     post:
       tags:
