@@ -3,7 +3,6 @@ import Layout from "@theme/Layout";
 import Link from "@docusaurus/Link";
 import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
 import styles from "./index.module.css";
-import {Helmet} from "react-helmet";
 
 const Home = () => {
   const { siteConfig } = useDocusaurusContext();
@@ -19,11 +18,6 @@ const Home = () => {
           Printcart Documentation - Click here
         </Link>
       </div>
-      <div className="application">
-            <Helmet>
-            <meta name="google-site-verification" content="RzTnumetMgziVbmhTrqIb2OheZR7su-PexdhyMgVCzc" />
-            </Helmet>
-        </div>
     </Layout>
     
   );
