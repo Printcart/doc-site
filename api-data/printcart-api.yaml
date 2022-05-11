@@ -10473,8 +10473,8 @@ components:
       properties:
         message:
           type: "string"
-          description: File upload missing
-          example: File upload missing
+          description: File upload missing.
+          example: File upload missing.
 externalDocs:
   description: "Find out more about Swagger"
   url: "http://swagger.io"
