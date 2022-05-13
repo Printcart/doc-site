@@ -5188,6 +5188,9 @@ components:
           example: false
         product_image:
           $ref: "#/components/schemas/ImageResponse"
+        integration_product_id:
+          type: "string"
+          example: 4227378361xxxx
         created_at:
           type: "string"
           example: "2021-11-16T08:26:30.000000Z"
@@ -5333,6 +5336,9 @@ components:
                 example: false
               product_image:
                 $ref: "#/components/schemas/ImageResponse"
+              integration_product_id:
+                type: "string"
+                example: 4227378361xxxx
               created_at:
                 type: "string"
                 example: "2021-11-16T08:26:30.000000Z"
