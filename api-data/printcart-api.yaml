@@ -579,12 +579,14 @@ paths:
                 $ref: "#/components/schemas/ProductBatchResponse"
         "400":
           description: |
+            - No data
             - Invalid input
             - Please upgrade your account.
           content:
             application/json:
               schema:
                 anyOf:
+                  - $ref: "#/components/schemas/NoData"
                   - $ref: "#/components/schemas/InvalidInput"
                   - $ref: "#/components/schemas/CheckUserTier"
         "401":
@@ -642,11 +644,15 @@ paths:
               schema:
                 $ref: "#/components/schemas/ProductBatchUpdateResponse"
         "400":
-          description: "Invalid input"
+          description: |
+            - No data
+            - Invalid input
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/InvalidInput"
+                anyOf:
+                  - $ref: "#/components/schemas/NoData"
+                  - $ref: "#/components/schemas/InvalidInput"
         "401":
           description: "Unauthenticated"
           content:
@@ -706,11 +712,15 @@ paths:
               schema:
                 $ref: "#/components/schemas/Deleted"
         "400":
-          description: Invalid input
+          description: |
+            - No data
+            - Invalid input
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/InvalidInput"
+                anyOf:
+                  - $ref: "#/components/schemas/NoData"
+                  - $ref: "#/components/schemas/InvalidInput"
         "401":
           description: "Unauthenticated"
           content:
@@ -718,11 +728,15 @@ paths:
               schema:
                 $ref: "#/components/schemas/Unauthenticated"
         "404":
-          description: "Can't find product with id"
+          description: |
+            - Not found
+            - Can't find product with id
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ProductError"
+                anyOf:
+                  - $ref: "#/components/schemas/NotFound"
+                  - $ref: "#/components/schemas/ProductError"
         "500":
           description: "Something went wrong while delete products"
           content:
@@ -1290,15 +1304,17 @@ paths:
                 $ref: "#/components/schemas/SideBatchResponse"
         "400":
           description: |
-            - Invalid input
+            - No data
             - Not found
+            - Invalid input
             - Invalid Content-type header
           content:
             application/json:
               schema:
                 anyOf:
-                  - $ref: "#/components/schemas/InvalidInput"
+                  - $ref: "#/components/schemas/NoData"
                   - $ref: "#/components/schemas/NotFound"
+                  - $ref: "#/components/schemas/InvalidInput"
                   - $ref: "#/components/schemas/SideHeaderContentType"
         "401":
           description: "Unauthenticated"
@@ -1350,6 +1366,7 @@ paths:
                 $ref: "#/components/schemas/SideBatchUpdateResponse"
         "400":
           description: |
+            - No data
             - Invalid input
             - Not found
             - Invalid Content-type header
@@ -1357,6 +1374,7 @@ paths:
             application/json:
               schema:
                 anyOf:
+                  - $ref: "#/components/schemas/NoData"
                   - $ref: "#/components/schemas/InvalidInput"
                   - $ref: "#/components/schemas/NotFound"
                   - $ref: "#/components/schemas/SideHeaderContentType"
@@ -1415,11 +1433,15 @@ paths:
               schema:
                 $ref: "#/components/schemas/Deleted"
         "400":
-          description: Invalid input
+          description: |
+            - No data
+            - Invalid input
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/InvalidInput"
+                anyOf:
+                  - $ref: "#/components/schemas/NoData"
+                  - $ref: "#/components/schemas/InvalidInput"
         "401":
           description: "Unauthenticated"
           content:
@@ -1427,22 +1449,15 @@ paths:
               schema:
                 $ref: "#/components/schemas/Unauthenticated"
         "404":
-          description: " Can't find side with id"
+          description: |
+            - Not found
+            - Can't find side with id
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/SideError"
-        "500":
-          description: Something went wrong while delete sides
-          content:
-            application/json:
-              schema:
-                type: "object"
-                properties:
-                  error:
-                    type: "string"
-                    description: Something went wrong while delete sides
-                    example: Something went wrong while delete sides
+                anyOf:
+                  - $ref: "#/components/schemas/NotFound"
+                  - $ref: "#/components/schemas/SideError"
       security:
         - BasicStore: []
   /sides/{sideId}/template-items:
@@ -1550,6 +1565,44 @@ paths:
         - "Font"
       operationId: "getFonts"
       summary: "Get a list of fonts"
+      responses:
+        "200":
+          description: "Retrieved successfully"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/FontResponseShowDataArray"
+        "401":
+          description: "Unauthenticated"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Unauthenticated"
+        "404":
+          description: "Not found"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NotFound"
+        "413":
+          description: Too many fonts
+          content:
+            application/json:
+              schema:
+                properties:
+                  error:
+                    type: "string"
+                    description: Too many fonts
+                    example: Too many fonts
+      security:
+        - BasicStore: []
+        - UnAuthToken: []
+  /fonts/default:
+    get:
+      tags:
+        - "Font"
+      operationId: "getFontsDefault"
+      summary: "Get a list of fonts default"
       responses:
         "200":
           description: "Retrieved successfully"
@@ -2022,8 +2075,46 @@ paths:
     get:
       tags:
         - "Clipart"
-      operationId: "getClipart"
+      operationId: "getCliparts"
       summary: "Get a list of cliparts"
+      responses:
+        "200":
+          description: "Retrieved successfully"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ImageResponseShowDataArray"
+        "401":
+          description: "Unauthenticated"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Unauthenticated"
+        "404":
+          description: "Not found"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NotFound"
+        "413":
+          description: Too many cliparts
+          content:
+            application/json:
+              schema:
+                properties:
+                  error:
+                    type: "string"
+                    description: Too many cliparts
+                    example: Too many cliparts
+      security:
+        - BasicStore: []
+        - UnAuthToken: []
+  /cliparts/default:
+    get:
+      tags:
+        - "Clipart"
+      operationId: "getClipartsDefault"
+      summary: "Get a list of cliparts default"
       responses:
         "200":
           description: "Retrieved successfully"
@@ -2638,6 +2729,7 @@ paths:
                 $ref: "#/components/schemas/DesignBatchResponse"
         "400":
           description: |
+            - No data
             - Invalid input
             - Invalid design file
             - Missing design file
@@ -2647,6 +2739,7 @@ paths:
             application/json:
               schema:
                 anyOf:
+                  - $ref: "#/components/schemas/NoData"
                   - $ref: "#/components/schemas/InvalidInput"
                   - $ref: "#/components/schemas/InvalidDesignFile"
                   - $ref: "#/components/schemas/MissingDesignFile"
@@ -2712,6 +2805,7 @@ paths:
                 $ref: "#/components/schemas/DesignBatchUpdateResponse"
         "400":
           description: |
+            - No data
             - Invalid input
             - Invalid design file
             - Invalid Content-Type header
@@ -2720,6 +2814,7 @@ paths:
             application/json:
               schema:
                 anyOf:
+                  - $ref: "#/components/schemas/NoData"
                   - $ref: "#/components/schemas/InvalidInput"
                   - $ref: "#/components/schemas/InvalidDesignFile"
                   - $ref: "#/components/schemas/InvalidContentTypeHeader"
@@ -2783,6 +2878,16 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Deleted"
+        "400":
+          description: |
+             - No data
+             - Invalid input
+          content:  
+            application/json:
+              schema:
+                anyOf:
+                  - $ref: "#/components/schemas/NoData"
+                  - $ref: "#/components/schemas/InvalidInput"
         "401":
           description: "Unauthenticated"
           content:
@@ -2790,27 +2895,15 @@ paths:
               schema:
                 $ref: "#/components/schemas/Unauthenticated"
         "404":
-          description: "Can't find design with id"
+          description: 
+            - Not found
+            - Can't find design with id
           content:
             application/json:
               schema:
-                type: "object"
-                properties:
-                  error:
-                    type: "string"
-                    description: "Can't find design with id"
-                    example: "Can't find design with id: cce4dc71-6757-4a1c-a259-6b66a4304c14"
-        "500":
-          description: "Something went wrong while delete designs"
-          content:
-            application/json:
-              schema:
-                type: "object"
-                properties:
-                  error:
-                    type: "string"
-                    description: "Something went wrong while delete designs"
-                    example: "Something went wrong while delete designs"
+                anyOf:
+                  - $ref: "#/components/schemas/NotFound"
+                  - $ref: "#/components/schemas/DesignError"
       security:
         - BasicStore: []
   /designs/{designId}/fonts:
@@ -3654,6 +3747,7 @@ paths:
                 $ref: "#/components/schemas/TemplateItemsBatchResponse"
         "400":
           description: |
+            - No data
             - Invalid input
             - Invalid template file
             - Missing template file
@@ -3662,6 +3756,7 @@ paths:
             application/json:
               schema:
                 anyOf:
+                  - $ref: "#/components/schemas/NoData"
                   - $ref: "#/components/schemas/InvalidInput"
                   - $ref: "#/components/schemas/InvalidDesignFile"
                   - $ref: "#/components/schemas/MissingDesignFile"
@@ -3726,6 +3821,7 @@ paths:
                 $ref: "#/components/schemas/TemplateItemsBatchUpdateResponse"
         "400":
           description: |
+            - No data
             - Invalid input
             - Invalid template file
             - Invalid Content-Type header
@@ -3733,6 +3829,7 @@ paths:
             application/json:
               schema:
                 anyOf:
+                  - $ref: "#/components/schemas/NoData"
                   - $ref: "#/components/schemas/InvalidInput"
                   - $ref: "#/components/schemas/InvalidDesignFile"
                   - $ref: "#/components/schemas/InvalidContentTypeHeader"
@@ -3796,11 +3893,15 @@ paths:
               schema:
                 $ref: "#/components/schemas/Deleted"
         "400":
-          description: Invalid input
+          description: |
+            - No data
+            - Invalid input
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/InvalidInput"
+                anyOf:
+                  - $ref: "#/components/schemas/NoData"
+                  - $ref: "#/components/schemas/InvalidInput"
         "401":
           description: "Unauthenticated"
           content:
@@ -3808,27 +3909,15 @@ paths:
               schema:
                 $ref: "#/components/schemas/Unauthenticated"
         "404":
-          description: "Can't find template with id"
+          description: |
+            - Not found
+            - Can't find template with id
           content:
             application/json:
               schema:
-                type: "object"
-                properties:
-                  error:
-                    type: "string"
-                    description: "Can't find template with id"
-                    example: "Can't find template with id: cce4dc71-6757-4a1c-a259-6b66a4304c14"
-        "500":
-          description: "Something went wrong while delete template items"
-          content:
-            application/json:
-              schema:
-                type: "object"
-                properties:
-                  error:
-                    type: "string"
-                    description: "Something went wrong while delete template items"
-                    example: "Something went wrong while delete template items"
+                anyOf:
+                  - $ref: "#/components/schemas/NotFound"
+                  - $ref: "#/components/schemas/TemplateItemError"
       security:
         - BasicStore: []
   /template-items/{templateId}/fonts:
@@ -4292,12 +4381,14 @@ paths:
                 $ref: "#/components/schemas/ProjectBatchResponse"
         "400":
           description: |
+            - No data
             - Invalid input
             - Please upgrade your account.
           content:
             application/json:
               schema:
                 anyOf:
+                  - $ref: "#/components/schemas/NoData"
                   - $ref: "#/components/schemas/InvalidInput"
                   - $ref: "#/components/schemas/CheckUserTier"
         "401":
@@ -4350,11 +4441,15 @@ paths:
               schema:
                 $ref: "#/components/schemas/ProjectBatchUpdateResponse"
         "400":
-          description: "Invalid input"
+          description: |
+            - No data
+            - Invalid input
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/InvalidInput"
+                anyOf:
+                  - $ref: "#/components/schemas/NoData"
+                  - $ref: "#/components/schemas/InvalidInput"
         "401":
           description: "Unauthenticated"
           content:
@@ -4362,11 +4457,15 @@ paths:
               schema:
                 $ref: "#/components/schemas/Unauthenticated"
         "404":
-          description: " Can't find project with id"
+          description: |
+            - Not found
+            - Can't find project with id
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ProjectError"
+                anyOf:
+                  - $ref: "#/components/schemas/NotFound"
+                  - $ref: "#/components/schemas/ProjectError"
         "413":
           description: "Too many projects"
           content:
@@ -4378,17 +4477,6 @@ paths:
                     type: "string"
                     description: "Too many projects"
                     example: "Too many projects"
-        "500":
-          description: "Something went wrong while update projects"
-          content:
-            application/json:
-              schema:
-                type: "object"
-                properties:
-                  error:
-                    type: "string"
-                    description: "Something went wrong while update projects"
-                    example: "Something went wrong while update projects"
       security:
         - BasicStore: []
     delete:
@@ -5124,6 +5212,12 @@ components:
         google_font_api:
           type: "string"
           example: "AIzaSyBtoM...L3iAPUPrpQ"
+        unsplash:
+          type: "string"
+        pixabay:
+          type: "string"
+        pexels:
+          type: "string"
       xml:
         name: "Store"
     # StoreShopifyPrivateApp:
@@ -5168,6 +5262,14 @@ components:
           example: "AIzaSyBtoM...L3iAPUPrpQ"
         imported_products:
           type: "json"
+        unsplash:
+          type: "string"
+        pixabay:
+          type: "string"
+        pexels:
+          type: "string"
+        timezone:
+          type: "string"
       xml:
         name: "StoreUpdate"
     StoreResponse:
@@ -5188,7 +5290,7 @@ components:
         unauth_token:
           type: "string"
           example: "b20dd13e142d5202aeda6c7365cef5420a82bbf6ad4dc3d16c05711af3a22184"
-        google_font_api:
+        google_font_api_key:
           type: "string"
           example: "AIzaSyBtoM...L3iAPUPrpQ"
         shop_url:
@@ -5197,6 +5299,14 @@ components:
           type: "string"
         imported_products:
           type: "json"
+        unsplash_key:
+          type: "string"
+        pixabay_key:
+          type: "string"
+        pexels_key:
+          type: "string"
+        timezone:
+          type: "string"
         created_at:
           type: "string"
           example: "2021-11-16T08:26:30.000000Z"
@@ -10934,6 +11044,25 @@ components:
           type: "string"
           description: File upload missing.
           example: File upload missing.
+      xml: 
+        name: "MissingImage"
+    NoData:
+      properties:
+        message:
+          type: "string"
+          description: No data
+          example: No data
+      xml: 
+        name: "NoData"
+    TemplateItemError:
+      type: "object"
+      properties:
+        error:
+          type: "string"
+          description: "Can't find template item with id"
+          example: "Can't find template item with id: 248f7975-a9f5-3466-b014-69abae9xxxxx"
+      xml:
+        name: "TemplateItemError"
 externalDocs:
   description: "Find out more about Swagger"
   url: "http://swagger.io"
