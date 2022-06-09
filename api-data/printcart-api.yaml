@@ -2931,6 +2931,45 @@ paths:
       security:
         - BasicStore: []
         - UnAuthToken: []
+  /templates/template-default:
+    get:
+      tags:
+        - "Template"
+      operationId: "getTemplatesDefault"
+      summary: "Get a list of templates default"
+      responses:
+        "200":
+          description: "Retrieved successfully"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TemplateDefaultResponse"
+        "401":
+          description: "Unauthenticated"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Unauthenticated"
+        "404":
+          description: "Not found"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NotFound"
+        "413":
+          description: "Too many templates"
+          content:
+            application/json:
+              schema:
+                type: "object"
+                properties:
+                  error:
+                    type: "string"
+                    description: "Too many templates"
+                    example: "Too many templates"
+      security:
+        - BasicStore: []
+        - UnAuthToken: []
   /templates/{templateId}:
     get:
       tags:
@@ -9319,6 +9358,132 @@ components:
           example: "Retrieved successfully"
       xml:
         name: "TemplateResponseShowDataArray"
+    TemplateDefaultResponse:
+      type: "object"
+      properties:
+        data:
+          type: "array"
+          items:
+            type: "object"
+            properties:
+              id:
+                type: "string"
+                example: "cce4dc71-6757-4a1c-a259-6b66a4304c14"
+              project:
+                type: "object"
+                default: null
+                example: null
+              side:
+                type: "object"
+                default: null
+                example: null
+              is_template:
+                type: "boolean"
+                default: true
+                example: true
+              template_ratio:
+                type: "number"
+                format: "float"
+                example: 50.50
+              pdf_url:
+                type: "string"
+              product:
+                type: "object"
+                default: null
+                example: null
+              preview_image:
+                type: "object"
+                default: null
+                example: null
+              template_image:
+                $ref: "#/components/schemas/ImageResponse"
+              quantity:
+                type: "integer"
+                format: "int64"
+                default: 1
+                example: 1
+              note:
+                type: "string"
+                example: "printcart note"
+              original_output_options:
+                type: "object"
+                default: null
+                example: null
+              original_side:
+                type: "object"
+                default: null
+                example: null
+              layers:
+                type: "array"
+                items:
+                  type: "object"
+                  properties:
+                    top:
+                      type: "number"
+                      example: 38.9832354205
+                    left:
+                      type: "number"
+                      example: 329.6631024663
+                    text:
+                      type: "string"
+                      example: "Heading"
+                    width:
+                      type: "integer"
+                      format: "int64"
+                      example: 158
+                    height:
+                      type: "integer"
+                      format: "int64"
+                      example: 47.46
+                    originX:
+                      type: "string"
+                      example: "left"
+                    originY:
+                      type: "string"
+                      example: "top"
+                    fontSize:
+                      type: "integer"
+                      format: "int64"
+                      example: 42
+                    minWidth:
+                      type: "integer"
+                      format: "int64"
+                      example: 20
+                    fontStyle:
+                      type: "string"
+                      example: "normal"
+                    textAlign:
+                      type: "string"
+                      example: "left"
+                    underline:
+                      type: "boolean"
+                      example: false,
+                    fontFamily:
+                      type: "string"
+                      example: "Roboto"
+                    fontWeight:
+                      type: "string"
+                      example: "normal"
+              viewport_width:
+                type: "number"
+                format: "float"
+                example: 50.50
+              viewport_height:
+                type: "number"
+                format: "float"
+                example: 50.50
+              created_at:
+                type: "string"
+                example: "2021-11-16T08:26:30.000000Z"
+              updated_at:
+                type: "string"
+                example: "2021-11-16T08:26:30.000000Z"
+        message:
+          type: "string"
+          description: "Retrieved successfully"
+          example: "Retrieved successfully"
+      xml:
+        name: "TemplateDefaultResponse"
     TemplateResponseUpdate:
       type: "object"
       properties:
