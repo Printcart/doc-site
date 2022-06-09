@@ -20,14 +20,11 @@ tags:
   - name: "Font"
   - name: "Design"
   - name: "Template"
-  - name: "Template Item"
   - name: "Storage"
   - name: "Project"
   - name: "Account"
   - name: "Store"
   - name: "Webhook"
-  - name: "Product Template"
-  - name: "Template Category"
   - name: "Clipart Storage"
   - name: "Project Folder"
 paths:
@@ -918,173 +915,6 @@ paths:
                 $ref: "#/components/schemas/Unauthenticated"
       security:
         - BasicStore: []
-  /product-template:
-    post:
-      tags:
-        - "Product Template"
-      operationId: "postProductTemplate"
-      summary: "Create new product template"
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/ProductTemplate"
-        required: true
-      responses:
-        "201":
-          description: "Created successfully"
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ProductResponseStore"
-        "400":
-          description: Invalid input
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/InvalidInput"
-        "401":
-          description: "Unauthenticated"
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Unauthenticated"
-        "404":
-          description: "Not found"
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/NotFound"
-      security:
-        - BasicStore: []
-    get:
-      tags:
-        - "Product Template"
-      operationId: "getProductTemplate"
-      summary: "Get a list of Products - Templates"
-      responses:
-        "200":
-          description: "Retrieved successfully"
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ProductResponseShowDataArray"
-        "401":
-          description: "Unauthenticated"
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Unauthenticated"
-        "404":
-          description: "Not found"
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/NotFound"
-        "413":
-          description: "Too many products"
-          content:
-            application/json:
-              schema:
-                type: "object"
-                properties:
-                  error:
-                    type: "string"
-                    description: "Too many products"
-                    example: "Too many products"
-      security:
-        - BasicStore: []
-        - UnAuthToken: []
-  /product-template/{productId}/templates:
-    get:
-      tags:
-        - "Product Template"
-      operationId: "getTemplatesByProduct"
-      summary: "Get a list of Templates By Product"
-      parameters:
-        - name: "productId"
-          in: "path"
-          description: "Product ID"
-          required: true
-          schema:
-            type: "string"
-      responses:
-        "200":
-          description: "Retrieved successfully"
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/TemplateResponseShowDataArray"
-        "401":
-          description: "Unauthenticated"
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Unauthenticated"
-        "404":
-          description: "Not found"
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/NotFound"
-        "413":
-          description: Too many templates
-          content:
-            application/json:
-              schema:
-                properties:
-                  error:
-                    type: "string"
-                    description: Too many templates
-                    example: Too many templates
-      security:
-        - BasicStore: []
-        - UnAuthToken: []
-  /product-template/{templateId}/products:
-    get:
-      tags:
-        - "Product Template"
-      operationId: "getProductsByTemplate"
-      summary: "Get a list of Products By Template"
-      parameters:
-        - name: "templateId"
-          in: "path"
-          description: "Template ID"
-          required: true
-          schema:
-            type: "string"
-      responses:
-        "200":
-          description: "Retrieved successfully"
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ProductResponseShowDataArray"
-        "401":
-          description: "Unauthenticated"
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Unauthenticated"
-        "404":
-          description: "Not found"
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/NotFound"
-        "413":
-          description: Too many products by template
-          content:
-            application/json:
-              schema:
-                properties:
-                  error:
-                    type: "string"
-                    description: Too many products by template
-                    example: Too many products by template
-      security:
-        - BasicStore: []
-        - UnAuthToken: []
   /sides:
     post:
       tags:
@@ -1460,12 +1290,12 @@ paths:
                   - $ref: "#/components/schemas/SideError"
       security:
         - BasicStore: []
-  /sides/{sideId}/template-items:
+  /sides/{sideId}/templates:
     get:
       tags:
         - "Side"
-      operationId: "getTemplateItemsBySide"
-      summary: "Get a list of template items by side"
+      operationId: "getTemplatesBySide"
+      summary: "Get a list of templates by side"
       parameters:
         - name: "sideId"
           in: "path"
@@ -1479,7 +1309,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/TemplateItemResponseShowDataArray"
+                $ref: "#/components/schemas/TemplateResponseShowDataArray"
         "401":
           description: "Unauthenticated"
           content:
@@ -1493,7 +1323,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/NotFound"
         "413":
-          description: Too many template items by side
+          description: Too many templates by side
           content:
             application/json:
               schema:
@@ -1501,8 +1331,8 @@ paths:
                 properties:
                   error:
                     type: "string"
-                    description: Too many template items by side
-                    example: Too many template items by side
+                    description: Too many templates by side
+                    example: Too many templates by side
       security:
         - BasicStore: []
         - UnAuthToken: []
@@ -3023,7 +2853,10 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/Template"
+              $ref: "#/components/schemas/TemplateJson"
+          # multipart/form-data:
+          #   schema:
+          #     $ref: "#/components/schemas/Template"
       responses:
         "201":
           description: "Created successfully"
@@ -3032,11 +2865,19 @@ paths:
               schema:
                 $ref: "#/components/schemas/TemplateResponseStore"
         "400":
-          description: Invalid input
+          description: |
+            - Invalid input
+            - Invalid template file
+            - Missing template file
+            - Invalid Content-Type header
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/InvalidInput"
+                anyOf:
+                  - $ref: "#/components/schemas/InvalidInput"
+                  - $ref: "#/components/schemas/InvalidDesignFile"
+                  - $ref: "#/components/schemas/MissingDesignFile"
+                  - $ref: "#/components/schemas/InvalidContentTypeHeader"
         "401":
           description: "Unauthenticated"
           content:
@@ -3090,46 +2931,7 @@ paths:
       security:
         - BasicStore: []
         - UnAuthToken: []
-  /templates/template-default:
-    get:
-      tags:
-        - "Template"
-      operationId: "getTemplatesDefault"
-      summary: "Get a list of templates default"
-      responses:
-        "200":
-          description: "Retrieved successfully"
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/TemplateResponseShowDataArray"
-        "401":
-          description: "Unauthenticated"
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Unauthenticated"
-        "404":
-          description: "Not found"
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/NotFound"
-        "413":
-          description: "Too many templates"
-          content:
-            application/json:
-              schema:
-                type: "object"
-                properties:
-                  error:
-                    type: "string"
-                    description: "Too many templates"
-                    example: "Too many templates"
-      security:
-        - BasicStore: []
-        - UnAuthToken: []
-  /templates/{templateID}:
+  /templates/{templateId}:
     get:
       tags:
         - "Template"
@@ -3164,52 +2966,61 @@ paths:
       security:
         - BasicStore: []
         - UnAuthToken: []
-    # put:
-    #   tags:
-    #     - "Template"
-    #   operationId: "updateTemplate"
-    #   summary: "Update template details"
-    #   parameters:
-    #     - name: "templateId"
-    #       in: "path"
-    #       description: "Template ID"
-    #       required: true
-    #       schema:
-    #         type: "string"
-    #   requestBody:
-    #     required: true
-    #     content:
-    #       application/json:
-    #         schema:
-    #           $ref: "#/components/schemas/TemplateUpdate"
-    #   responses:
-    #     "200":
-    #       description: "Updated successfully"
-    #       content:
-    #         application/json:
-    #           schema:
-    #             $ref: "#/components/schemas/TemplateResponseUpdate"
-    #     "400":
-    #       description: "Invalid input"
-    #       content:
-    #         application/json:
-    #           schema:
-    #             $ref: "#/components/schemas/InvalidInput"
-    #     "401":
-    #       description: "Unauthenticated"
-    #       content:
-    #         application/json:
-    #           schema:
-    #             $ref: "#/components/schemas/Unauthenticated"
-    #     "404":
-    #       description: "Not found"
-    #       content:
-    #         application/json:
-    #           schema:
-    #             $ref: "#/components/schemas/NotFound"
-    #   security:
-    #     - BasicStore: []
-    #     - UnAuthToken: []
+    put:
+      tags:
+        - "Template"
+      operationId: "updateTemplate"
+      summary: "Update template details"
+      parameters:
+        - name: "templateId"
+          in: "path"
+          description: "Template ID"
+          required: true
+          schema:
+            type: "string"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/TemplateUpdateJson"
+          # multipart/form-data:
+          #   schema:
+          #     $ref: "#/components/schemas/TemplateUpdate"
+      responses:
+        "200":
+          description: "Updated successfully"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TemplateResponseUpdate"
+        "400":
+          description: |
+            - Invalid input
+            - Invalid template file
+            - Invalid Content-Type header
+          content:
+            application/json:
+              schema:
+                anyOf:
+                  - $ref: "#/components/schemas/InvalidInput"
+                  - $ref: "#/components/schemas/InvalidDesignFile"
+                  - $ref: "#/components/schemas/InvalidContentTypeHeader"
+        "401":
+          description: "Unauthenticated"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Unauthenticated"
+        "404":
+          description: "Not found"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NotFound"
+      security:
+        - BasicStore: []
+        - UnAuthToken: []
     delete:
       tags:
         - "Template"
@@ -3243,498 +3054,18 @@ paths:
                 $ref: "#/components/schemas/NotFound"
       security:
         - BasicStore: []
-  /templates/{templateID}/template-items:
-    get:
+  /templates/batch:
+    post:
       tags:
         - "Template"
-      operationId: "getTemplateItemsByTemplate"
-      summary: "Get a list of template items by template"
-      parameters:
-        - name: "templateId"
-          in: "path"
-          description: "Template ID"
-          required: true
-          schema:
-            type: "string"
-      responses:
-        "200":
-          description: "Retrieved successfully"
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/TemplateItemResponseShowDataArray"
-        "401":
-          description: "Unauthenticated"
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Unauthenticated"
-        "404":
-          description: "Not found"
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/NotFound"
-        "413":
-          description: Too many template items by template
-          content:
-            application/json:
-              schema:
-                type: "object"
-                properties:
-                  error:
-                    type: "string"
-                    description: Too many template items by template
-                    example: Too many template items by template
-      security:
-        - BasicStore: []
-        - UnAuthToken: []
-  /templates/count:
-    get:
-      tags:
-        - "Template"
-      operationId: "getCountTemplate"
-      summary: "Get a count of templates"
-      responses:
-        "200":
-          description: "Retrieved successfully"
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/TemplateCount"
-        "401":
-          description: "Unauthenticated"
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Unauthenticated"
-      security:
-        - BasicStore: []
-  /template-category:
-    post:
-      tags:
-        - "Template Category"
-      operationId: "postTemplateCategory"
-      summary: "Create new Template - Category"
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/TemplateCategory"
-        required: true
-      responses:
-        "201":
-          description: "Created successfully"
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/CategoryResponseStore"
-        "400":
-          description: Invalid input
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/InvalidInput"
-        "401":
-          description: "Unauthenticated"
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Unauthenticated"
-        "404":
-          description: "Not found"
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/NotFound"
-      security:
-        - BasicStore: []
-    get:
-      tags:
-        - "Template Category"
-      operationId: "getTemplateCategory"
-      summary: "Get a list of Templates - Categories"
-      responses:
-        "200":
-          description: "Retrieved successfully"
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/CategoryResponseShowDataArray"
-        "401":
-          description: "Unauthenticated"
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Unauthenticated"
-        "404":
-          description: "Not found"
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/NotFound"
-        "413":
-          description: "Too many storages"
-          content:
-            application/json:
-              schema:
-                type: "object"
-                properties:
-                  error:
-                    type: "string"
-                    description: "Too many storages"
-                    example: "Too many storages"
-      security:
-        - BasicStore: []
-        - UnAuthToken: []
-  /template-category/{categoryId}:
-    delete:
-      tags:
-        - "Template Category"
-      operationId: "deleteTemplateCategory"
-      summary: "Delete a Template - Category"
-      parameters:
-        - name: "categoryId"
-          in: "path"
-          description: "Category ID"
-          required: true
-          schema:
-            type: "string"
-      responses:
-        "200":
-          description: "Deleted successfully"
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Deleted"
-        "401":
-          description: "Unauthenticated"
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Unauthenticated"
-        "404":
-          description: "Not found"
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/NotFound"
-      security:
-        - BasicStore: []
-  /template-category/{categoryId}/templates:
-    get:
-      tags:
-        - "Template Category"
-      operationId: "getTemplatesByCategory"
-      summary: "Get a list of Templates By Category"
-      parameters:
-        - name: "categoryId"
-          in: "path"
-          description: "Category ID"
-          required: true
-          schema:
-            type: "string"
-      responses:
-        "200":
-          description: "Retrieved successfully"
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/TemplateResponseShowDataArray"
-        "401":
-          description: "Unauthenticated"
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Unauthenticated"
-        "404":
-          description: "Not found"
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/NotFound"
-        "413":
-          description: Too many templates by category
-          content:
-            application/json:
-              schema:
-                properties:
-                  error:
-                    type: "string"
-                    description: Too many templates by category
-                    example: Too many templates by category
-      security:
-        - BasicStore: []
-        - UnAuthToken: []
-  /template-category/{templateId}/categories:
-    get:
-      tags:
-        - "Template Category"
-      operationId: "getCategoriesByTemplate"
-      summary: "Get a list of Categories By Template"
-      parameters:
-        - name: "templateId"
-          in: "path"
-          description: "Template ID"
-          required: true
-          schema:
-            type: "string"
-      responses:
-        "200":
-          description: "Retrieved successfully"
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/CategoryResponseShowDataArray"
-        "401":
-          description: "Unauthenticated"
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Unauthenticated"
-        "404":
-          description: "Not found"
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/NotFound"
-        "413":
-          description: Too many categories by template
-          content:
-            application/json:
-              schema:
-                properties:
-                  error:
-                    type: "string"
-                    description: Too many categories by template
-                    example: Too many categories by template
-      security:
-        - BasicStore: []
-        - UnAuthToken: []
-  /template-items:
-    post:
-      tags:
-        - "Template Item"
-      operationId: "postTemplateItem"
-      summary: "Create new template item"
+      operationId: "postTemplatesBatch"
+      summary: "Create batch templates"
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/TemplateItemJson"
-          # multipart/form-data:
-          #   schema:
-          #     $ref: "#/components/schemas/Template"
-      responses:
-        "201":
-          description: "Created successfully"
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/TemplateItemResponseStore"
-        "400":
-          description: |
-            - Invalid input
-            - Invalid template file
-            - Missing template file
-            - Invalid Content-Type header
-          content:
-            application/json:
-              schema:
-                anyOf:
-                  - $ref: "#/components/schemas/InvalidInput"
-                  - $ref: "#/components/schemas/InvalidDesignFile"
-                  - $ref: "#/components/schemas/MissingDesignFile"
-                  - $ref: "#/components/schemas/InvalidContentTypeHeader"
-        "401":
-          description: "Unauthenticated"
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Unauthenticated"
-        "404":
-          description: "Not found"
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/NotFound"
-      security:
-        - BasicStore: []
-        - UnAuthToken: []
-    get:
-      tags:
-        - "Template Item"
-      operationId: "getTemplateItems"
-      summary: "Get a list of template items"
-      responses:
-        "200":
-          description: "Retrieved successfully"
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/TemplateItemResponseShowDataArray"
-        "401":
-          description: "Unauthenticated"
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Unauthenticated"
-        "404":
-          description: "Not found"
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/NotFound"
-        "413":
-          description: "Too many template items"
-          content:
-            application/json:
-              schema:
-                type: "object"
-                properties:
-                  error:
-                    type: "string"
-                    description: "Too many template items"
-                    example: "Too many template items"
-      security:
-        - BasicStore: []
-        - UnAuthToken: []
-  /template-items/{templateItemId}:
-    get:
-      tags:
-        - "Template Item"
-      operationId: "getTemplateItemById"
-      summary: "Get template item details"
-      parameters:
-        - name: "templateItemId"
-          in: "path"
-          description: "Template Item ID"
-          required: true
-          schema:
-            type: "string"
-      responses:
-        "200":
-          description: "Retrieved successfully"
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/TemplateItemResponseShowDataObject"
-        "401":
-          description: "Unauthenticated"
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Unauthenticated"
-        "404":
-          description: "Not found"
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/NotFound"
-      security:
-        - BasicStore: []
-        - UnAuthToken: []
-    put:
-      tags:
-        - "Template Item"
-      operationId: "updateTemplateItem"
-      summary: "Update template item details"
-      parameters:
-        - name: "templateItemId"
-          in: "path"
-          description: "Template Item ID"
-          required: true
-          schema:
-            type: "string"
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/TemplateItemUpdateJson"
-          # multipart/form-data:
-          #   schema:
-          #     $ref: "#/components/schemas/TemplateUpdate"
-      responses:
-        "200":
-          description: "Updated successfully"
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/TemplateItemResponseUpdate"
-        "400":
-          description: |
-            - Invalid input
-            - Invalid template file
-            - Invalid Content-Type header
-          content:
-            application/json:
-              schema:
-                anyOf:
-                  - $ref: "#/components/schemas/InvalidInput"
-                  - $ref: "#/components/schemas/InvalidDesignFile"
-                  - $ref: "#/components/schemas/InvalidContentTypeHeader"
-        "401":
-          description: "Unauthenticated"
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Unauthenticated"
-        "404":
-          description: "Not found"
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/NotFound"
-      security:
-        - BasicStore: []
-        - UnAuthToken: []
-    delete:
-      tags:
-        - "Template Item"
-      operationId: "deleteTemplateItem"
-      summary: "Delete a template item"
-      parameters:
-        - name: "templateItemId"
-          in: "path"
-          description: "Template item ID"
-          required: true
-          schema:
-            type: "string"
-      responses:
-        "200":
-          description: "Deleted successfully"
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Deleted"
-        "401":
-          description: "Unauthenticated"
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Unauthenticated"
-        "404":
-          description: "Not found"
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/NotFound"
-      security:
-        - BasicStore: []
-  /template-items/batch:
-    post:
-      tags:
-        - "Template Item"
-      operationId: "postTemplateItemsBatch"
-      summary: "Create batch template items"
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/TemplateItemsBatchJson"
+              $ref: "#/components/schemas/TemplatesBatchJson"
           # multipart/form-data:
           #   schema:
           #     $ref: "#/components/schemas/TemplateBatch"
@@ -3744,7 +3075,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/TemplateItemsBatchResponse"
+                $ref: "#/components/schemas/TemplatesBatchResponse"
         "400":
           description: |
             - No data
@@ -3774,7 +3105,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/NotFound"
         "413":
-          description: "Too many template items"
+          description: "Too many templates"
           content:
             application/json:
               schema:
@@ -3782,10 +3113,10 @@ paths:
                 properties:
                   error:
                     type: "string"
-                    description: "Too many template items"
-                    example: "Too many template items"
+                    description: "Too many templates"
+                    example: "Too many templates"
         "500":
-          description: "Something went wrong while create template items"
+          description: "Something went wrong while create templates"
           content:
             application/json:
               schema:
@@ -3793,22 +3124,22 @@ paths:
                 properties:
                   error:
                     type: "string"
-                    description: "Something went wrong while create template items"
-                    example: "Something went wrong while create template items"
+                    description: "Something went wrong while create templates"
+                    example: "Something went wrong while create templates"
       security:
         - BasicStore: []
         - UnAuthToken: []
     put:
       tags:
-        - "Template Item"
-      operationId: "putTemplateItemsBatch"
-      summary: "Update batch template items"
+        - "Template"
+      operationId: "putTemplatesBatch"
+      summary: "Update batch templates"
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/TemplateItemsBatchUpdateJson"
+              $ref: "#/components/schemas/TemplatesBatchUpdateJson"
           # multipart/form-data:
           #   schema:
           #     $ref: "#/components/schemas/TemplateBatchUpdate"
@@ -3818,7 +3149,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/TemplateItemsBatchUpdateResponse"
+                $ref: "#/components/schemas/TemplatesBatchUpdateResponse"
         "400":
           description: |
             - No data
@@ -3850,7 +3181,7 @@ paths:
                   - $ref: "#/components/schemas/NotFound"
                   - $ref: "#/components/schemas/DesignError"
         "413":
-          description: "Too many template items"
+          description: "Too many templates"
           content:
             application/json:
               schema:
@@ -3858,10 +3189,10 @@ paths:
                 properties:
                   error:
                     type: "string"
-                    description: "Too many template items"
-                    example: "Too many template items"
+                    description: "Too many templates"
+                    example: "Too many templates"
         "500":
-          description: "Something went wrong while update template items"
+          description: "Something went wrong while update templates"
           content:
             application/json:
               schema:
@@ -3869,22 +3200,22 @@ paths:
                 properties:
                   error:
                     type: "string"
-                    description: "Something went wrong while update template items"
-                    example: "Something went wrong while update template items"
+                    description: "Something went wrong while update templates"
+                    example: "Something went wrong while update templates"
       security:
         - BasicStore: []
         - UnAuthToken: []
     delete:
       tags:
-        - "Template Item"
-      operationId: "deleteTemplateItemsBatch"
-      summary: "Delete batch template items"
+        - "Template"
+      operationId: "deleteTemplatesBatch"
+      summary: "Delete batch templates"
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/TemplateItemsBatchDelete"
+              $ref: "#/components/schemas/TemplatesBatchDelete"
       responses:
         "200":
           description: "Deleted successfully"
@@ -3917,19 +3248,19 @@ paths:
               schema:
                 anyOf:
                   - $ref: "#/components/schemas/NotFound"
-                  - $ref: "#/components/schemas/TemplateItemError"
+                  - $ref: "#/components/schemas/TemplateError"
       security:
         - BasicStore: []
-  /template-items/{templateId}/fonts:
+  /templates/{templateId}/fonts:
     get:
       tags:
-        - "Template Item"
-      operationId: "getFontsInLayersTemplateItemById"
-      summary: "Get list fonts layer by template item"
+        - "Template"
+      operationId: "getFontsInLayersTemplateById"
+      summary: "Get list fonts layer by template"
       parameters:
-        - name: "templateItemId"
+        - name: "templateId"
           in: "path"
-          description: "Template item ID"
+          description: "Template ID"
           required: true
           schema:
             type: "string"
@@ -3966,12 +3297,12 @@ paths:
       security:
         - BasicStore: []
         - UnAuthToken: []
-  /template-items/count:
+  /templates/count:
     get:
       tags:
-        - "Template Item"
-      operationId: "getCountTemplateItems"
-      summary: "Get a count of template items"
+        - "Template"
+      operationId: "getCountTemplates"
+      summary: "Get a count of templates"
       responses:
         "200":
           description: "Retrieved successfully"
@@ -5885,22 +5216,6 @@ components:
           example: "Retrieved successfully"
       xml:
         name: "ProductCount"
-    ProductTemplate:
-      type: "object"
-      required:
-        - "product_id"
-        - "template_id"
-      properties:
-        product_id:
-          type: "string"
-          description: Product ID
-          example: "962af342-a2c9-4665-bb5d-cb208258d958"
-        template_id:
-          type: "string"
-          description: Template ID
-          example: "791da349-3774-46c6-932e-9456212e6ec0"
-      xml:
-        name: "ProductTemplate"
     Side:
       type: "object"
       required:
@@ -7335,10 +6650,6 @@ components:
         note:
           type: "string"
           example: "printcart"
-        template_id:
-          type: "string"
-          default: null
-          example: null
         layers:
           type: "json"
           description: "Lorem ipsum..."
@@ -7416,10 +6727,6 @@ components:
         note:
           type: "string"
           example: "printcart"
-        template_id:
-          type: "string"
-          default: null
-          example: null
         layers:
           type: "json"
           description: "Lorem ipsum..."
@@ -8966,123 +8273,8 @@ components:
         name: "DesignFont"
     Template:
       type: "object"
-      properties:
-        preview_image_id:
-          type: "string"
-          description: Image ID
-          example: "e8304b84-a015-3bd4-a7d3-7a978f465df2"
-      xml:
-          name: "Template"
-    TemplateUpdate:
-      properties:
-        preview_image_id:
-          type: "string"
-          description: Image ID
-          example: "e8304b84-a015-3bd4-a7d3-7a978f465df2"
-      xml:
-        name: "TemplateUpdate"
-    TemplateResponse:
-      type: "object"
-      properties:
-        id:
-          type: "string"
-          example: "791da349-3774-46c6-932e-9456212e6ec0"
-        preview_image:
-          $ref: "#/components/schemas/ImageResponse"
-        created_at:
-          type: "string"
-          example: "2021-11-16T08:26:30.000000Z"
-        updated_at:
-          type: "string"
-          example: "2021-11-16T08:26:30.000000Z"
-      xml:
-        name: "TemplateResponse"
-    TemplateResponseStore:
-      type: "object"
-      properties:
-        data:
-          type: "object"
-          $ref: "#/components/schemas/TemplateResponse"
-        message:
-          type: "string"
-          description: "Created successfully"
-          example: "Created successfully"
-      xml:
-        name: "TemplateResponseStore"
-    TemplateResponseShowDataObject:
-      type: "object"
-      properties:
-        data:
-          type: "object"
-          $ref: "#/components/schemas/TemplateResponse"
-        message:
-          type: "string"
-          description: "Retrieved successfully"
-          example: "Retrieved successfully"
-      xml:
-        name: "TemplateResponseShowDataObject"
-    TemplateResponseShowDataArray:
-      type: "object"
-      properties:
-        data:
-          type: "array"
-          items:
-            type: "object"
-            $ref: "#/components/schemas/TemplateResponse"
-        message:
-          type: "string"
-          description: "Retrieved successfully"
-          example: "Retrieved successfully"
-      xml:
-        name: "TemplateResponseShowDataArray"
-    TemplateResponseUpdate:
-      type: "object"
-      properties:
-        data:
-          type: "object"
-          $ref: "#/components/schemas/TemplateResponse"
-        message:
-          type: "string"
-          description: "Updated successfully"
-          example: "Updated successfully"
-      xml:
-        name: "TemplateResponseUpdate"
-    TemplateCount:
-      type: "object"
-      properties:
-        data:
-          type: "object"
-          properties:
-            count:
-              type: "integer"
-              format: "int64"
-              example: 10
-        message:
-          type: "string"
-          description: "Retrieved successfully"
-          example: "Retrieved successfully"
-      xml:
-        name: "TemplateCount"
-    TemplateCategory:
-      type: "object"
-      required:
-        - "category_id"
-      properties:
-        category_id:
-          type: "string"
-          description: Category ID
-          example: "57eea14b-4e8d-4b7b-b864-b31cb8e6ac62"
-        template_id:
-          type: "string"
-          description: Template ID
-          example: "791da349-3774-46c6-932e-9456212e6ec0"
-      xml:
-        name: "TemplateCategory"
-    TemplateItem:
-      type: "object"
       required:
         - "side_id"
-        - "template_id"
       properties:
         project_id:
           type: "string"
@@ -9092,10 +8284,6 @@ components:
           type: "string"
           description: Side ID
           example: "c5661a1e-8147-4dc3-8600-00fdc81ed14b"
-        template_id:
-          type: "string"
-          description: Template ID
-          example: "cc761a1e-8147-4dc3-8600-00fdcaudl23e"
         template_ratio:
           type: "number"
           format: "float"
@@ -9148,11 +8336,10 @@ components:
           format: "float"
           example: 50.50
       xml:
-        name: "TemplateItem"
-    TemplateItemJson:
+        name: "Template"
+    TemplateJson:
       type: "object"
       required:
-        - "template_id"
         - "side_id"
       properties:
         project_id:
@@ -9163,10 +8350,6 @@ components:
           type: "string"
           description: Side ID
           example: "c5661a1e-8147-4dc3-8600-00fdc81ed14b"
-        template_id:
-          type: "string"
-          description: Template ID
-          example: "cc761a1e-8147-4dc3-8600-00fdcaudl23e"
         template_ratio:
           type: "number"
           format: "float"
@@ -9219,37 +8402,35 @@ components:
           format: "float"
           example: 50.50
       xml:
-        name: "TemplateItemJson"
-    TemplateItemsBatch:
+        name: "TemplateJson"
+    TemplatesBatch:
       type: "object"
       required:
-        - "template_id"
         - "side_id"
       properties:
         template_items:
           type: "array"
           items:
             type: "array"
-            $ref: "#/components/schemas/TemplateItem"
+            $ref: "#/components/schemas/Template"
       xml:
-        name: "TemplateItemsBatch"
-    TemplateItemsBatchJson:
+        name: "TemplatesBatch"
+    TemplatesBatchJson:
       type: "object"
       required:
-        - "template_id"
         - "side_id"
       properties:
-        template_items:
+        templates:
           type: "array"
           items:
             type: "array"
-            $ref: "#/components/schemas/TemplateItemJson"
+            $ref: "#/components/schemas/TemplateJson"
       xml:
-        name: "TemplateItemsBatchJson"
-    TemplateItemsBatchUpdate:
+        name: "TemplatesBatchJson"
+    TemplatesBatchUpdate:
       type: "object"
       properties:
-        template_items:
+        templates:
           type: "array"
           items:
             type: "object"
@@ -9268,10 +8449,6 @@ components:
                 type: "string"
                 description: Side ID
                 example: "c5661a1e-8147-4dc3-8600-00fdc81ed14b"
-              template_id:
-                type: "string"
-                description: Template ID
-                example: "cc761a1e-8147-4dc3-8600-00fdcaudl23e"
               template_ratio:
                 type: "number"
                 format: "float"
@@ -9323,11 +8500,11 @@ components:
                 format: "float"
                 example: 50.50
       xml:
-        name: "TemplateItemsBatchUpdate"
-    TemplateItemsBatchUpdateJson:
+        name: "TemplatesBatchUpdate"
+    TemplatesBatchUpdateJson:
       type: "object"
       properties:
-        template_items:
+        templates:
           type: "array"
           items:
             type: "object"
@@ -9346,10 +8523,6 @@ components:
                 type: "string"
                 description: Side ID
                 example: "c5661a1e-8147-4dc3-8600-00fdc81ed14b"
-              template_id:
-                type: "string"
-                description: Template ID
-                example: "cc761a1e-8147-4dc3-8600-00fdcaudl23e"
               template_ratio:
                 type: "number"
                 format: "float"
@@ -9401,8 +8574,8 @@ components:
                 format: "float"
                 example: 50.50
       xml:
-        name: "TemplateItemsBatchUpdateJson"
-    TemplateItemResponse:
+        name: "TemplatesBatchUpdateJson"
+    TemplateResponse:
       type: "object"
       properties:
         id:
@@ -9533,18 +8706,10 @@ components:
             updated_at:
               type: "string"
               example: "2021-11-16T08:26:30.000000Z"
-        template:
-          type: "object"
-          properties:
-            id:
-              type: "string"
-              example: "cc761a1e-8147-4dc3-8600-00fdcaudl23e"
-            created_at:
-              type: "string"
-              example: "2021-11-16T08:26:30.000000Z"
-            updated_at:
-              type: "string"
-              example: "2021-11-16T08:26:30.000000Z"
+        is_template:
+          type: "boolean"
+          default: true
+          example: true
         template_ratio:
           type: "number"
           format: "float"
@@ -9768,22 +8933,22 @@ components:
           type: "string"
           example: "2021-11-16T08:26:30.000000Z"
       xml:
-        name: "TemplateItemResponse"
-    TemplateItemsBatchResponse:
+        name: "TemplateResponse"
+    TemplatesBatchResponse:
       type: "object"
       properties:
         data:
           type: "array"
           items:
             type: "object"
-            $ref: "#/components/schemas/TemplateItemResponse"
+            $ref: "#/components/schemas/TemplateResponse"
         message:
           type: "string"
           description: "Created successfully"
           example: "Created successfully"
       xml:
-        name: "TemplateItemsBatchResponse"
-    TemplateItemsBatchUpdateResponse:
+        name: "TemplatesBatchResponse"
+    TemplatesBatchUpdateResponse:
       type: "object"
       properties:
         data:
@@ -9913,18 +9078,6 @@ components:
                     example: 50
                   background_img:
                     $ref: "#/components/schemas/ImageResponse"
-                  created_at:
-                    type: "string"
-                    example: "2021-11-16T08:26:30.000000Z"
-                  updated_at:
-                    type: "string"
-                    example: "2021-11-16T08:26:30.000000Z"
-              template:
-                type: "object"
-                properties:
-                  id:
-                    type: "string"
-                    example: "cc761a1e-8147-4dc3-8600-00fdcaudl23e"
                   created_at:
                     type: "string"
                     example: "2021-11-16T08:26:30.000000Z"
@@ -10096,6 +9249,10 @@ components:
                 type: "number"
                 format: "float"
                 example: 50.50
+              is_template:
+                type: "boolean"
+                default: true
+                example: true
               created_at:
                 type: "string"
                 example: "2021-11-16T08:26:30.000000Z"
@@ -10107,8 +9264,8 @@ components:
           description: "Updated successfully"
           example: "Updated successfully"
       xml:
-        name: "TemplateItemsBatchUpdateResponse"
-    TemplateItemsBatchDelete:
+        name: "TemplatesBatchUpdateResponse"
+    TemplatesBatchDelete:
       type: "object"
       properties:
         template_items:
@@ -10123,58 +9280,58 @@ components:
                 description: Template ID
                 example: "cce4dc71-6757-4a1c-a259-6b66a4304c14"
       xml:
-        name: "TemplateItemsBatchDelete"
-    TemplateItemResponseStore:
+        name: "TemplatesBatchDelete"
+    TemplateResponseStore:
       type: "object"
       properties:
         data:
           type: "object"
-          $ref: "#/components/schemas/TemplateItemResponse"
+          $ref: "#/components/schemas/TemplateResponse"
         message:
           type: "string"
           description: "Created successfully"
           example: "Created successfully"
       xml:
-        name: "TemplateItemResponseStore"
-    TemplateItemResponseShowDataObject:
+        name: "TemplateResponseStore"
+    TemplateResponseShowDataObject:
       type: "object"
       properties:
         data:
           type: "object"
-          $ref: "#/components/schemas/TemplateItemResponse"
+          $ref: "#/components/schemas/TemplateResponse"
         message:
           type: "string"
           description: "Retrieved successfully"
           example: "Retrieved successfully"
       xml:
-        name: "TemplateItemResponseShowDataObject"
-    TemplateItemResponseShowDataArray:
+        name: "TemplateResponseShowDataObject"
+    TemplateResponseShowDataArray:
       type: "object"
       properties:
         data:
           type: "array"
           items:
             type: "object"
-            $ref: "#/components/schemas/TemplateItemResponse"
+            $ref: "#/components/schemas/TemplateResponse"
         message:
           type: "string"
           description: "Retrieved successfully"
           example: "Retrieved successfully"
       xml:
-        name: "TemplateItemResponseShowDataArray"
-    TemplateItemResponseUpdate:
+        name: "TemplateResponseShowDataArray"
+    TemplateResponseUpdate:
       type: "object"
       properties:
         data:
           type: "object"
-          $ref: "#/components/schemas/TemplateItemResponse"
+          $ref: "#/components/schemas/TemplateResponse"
         message:
           type: "string"
           description: "Updated successfully"
           example: "Updated successfully"
       xml:
-        name: "TemplateItemResponseUpdate"
-    TemplateItemUpdate:
+        name: "TemplateResponseUpdate"
+    TemplateUpdate:
       type: "object"
       properties:
         project_id:
@@ -10185,10 +9342,6 @@ components:
           type: "string"
           description: Side ID
           example: "c5661a1e-8147-4dc3-8600-00fdc81ed14b"
-        template_id:
-          type: "string"
-          description: Template ID
-          example: "cc761a1e-8147-4dc3-8600-00fdcaudl23e"
         template_ratio:
           type: "number"
           format: "float"
@@ -10240,8 +9393,8 @@ components:
           format: "float"
           example: 50.50
       xml:
-        name: "TemplateItemUpdate"
-    TemplateItemUpdateJson:
+        name: "TemplateUpdate"
+    TemplateUpdateJson:
       type: "object"
       properties:
         project_id:
@@ -10252,10 +9405,6 @@ components:
           type: "string"
           description: Side ID
           example: "c5661a1e-8147-4dc3-8600-00fdc81ed14b"
-        template_id:
-          type: "string"
-          description: Template ID
-          example: "cc761a1e-8147-4dc3-8600-00fdcaudl23e"
         template_ratio:
           type: "number"
           format: "float"
@@ -10307,7 +9456,7 @@ components:
           format: "float"
           example: 50.50
       xml:
-        name: "TemplateItemUpdateJson"
+        name: "TemplateUpdateJson"
     Category:
       type: "object"
       required:
@@ -11054,17 +10203,15 @@ components:
           example: No data
       xml: 
         name: "NoData"
-    TemplateItemError:
+    TemplateError:
       type: "object"
       properties:
         error:
           type: "string"
-          description: "Can't find template item with id"
-          example: "Can't find template item with id: 248f7975-a9f5-3466-b014-69abae9xxxxx"
+          description: "Can't find template with id"
+          example: "Can't find template with id: 248f7975-a9f5-3466-b014-69abae9xxxxx"
       xml:
-        name: "TemplateItemError"
+        name: "TemplateError"
 externalDocs:
   description: "Find out more about Swagger"
   url: "http://swagger.io"
-
-# endpoint 1
