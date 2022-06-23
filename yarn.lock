@@ -402,6 +402,11 @@
   resolved "https://registry.yarnpkg.com/@babel/helper-plugin-utils/-/helper-plugin-utils-7.16.7.tgz#aa3a8ab4c3cceff8e65eb9e73d87dc4ff320b2f5"
   integrity sha512-Qg3Nk7ZxpgMrsox6HreY1ZNKdBq7K72tDSliA6dCl5f007jR4ne8iD5UzuNnCJH2xBf2BEEVGr+/OL6Gdp7RxA==
 
+"@babel/helper-plugin-utils@^7.17.12":
+  version "7.17.12"
+  resolved "https://registry.yarnpkg.com/@babel/helper-plugin-utils/-/helper-plugin-utils-7.17.12.tgz#86c2347da5acbf5583ba0a10aed4c9bf9da9cf96"
+  integrity sha512-JDkf04mqtN3y4iAbO1hv9U2ARpPyPL1zqyWs/2WG1pgSq9llHFjStX5jdxb84himgJm+8Ng+x0oiWF/nw/XQKA==
+
 "@babel/helper-remap-async-to-generator@^7.16.8":
   version "7.16.8"
   resolved "https://registry.yarnpkg.com/@babel/helper-remap-async-to-generator/-/helper-remap-async-to-generator-7.16.8.tgz#29ffaade68a367e2ed09c90901986918d25e57e3"
@@ -694,6 +699,13 @@
   integrity sha512-MXf5laXo6c1IbEbegDmzGPwGNTsHZmEy6QGznu5Sh2UCWvueywb2ee+CCE4zQiZstxU9BMoQO9i6zUFSY0Kj0Q==
   dependencies:
     "@babel/helper-plugin-utils" "^7.8.3"
+
+"@babel/plugin-syntax-import-assertions@^7.17.12":
+  version "7.17.12"
+  resolved "https://registry.yarnpkg.com/@babel/plugin-syntax-import-assertions/-/plugin-syntax-import-assertions-7.17.12.tgz#58096a92b11b2e4e54b24c6a0cc0e5e607abcedd"
+  integrity sha512-n/loy2zkq9ZEM8tEOwON9wTQSTNDTDEz6NujPtJGLU7qObzT1N4c4YZZf8E6ATB2AjNQg/Ib2AIpO03EZaCehw==
+  dependencies:
+    "@babel/helper-plugin-utils" "^7.17.12"
 
 "@babel/plugin-syntax-json-strings@^7.8.3":
   version "7.8.3"
@@ -3930,11 +3942,6 @@ dns-txt@^2.0.2:
   integrity sha1-uR2Ab10nGI5Ks+fRB9iBocxGQrY=
   dependencies:
     buffer-indexof "^1.0.0"
-
-docusaurus-gtm-plugin@^0.0.2:
-  version "0.0.2"
-  resolved "https://registry.yarnpkg.com/docusaurus-gtm-plugin/-/docusaurus-gtm-plugin-0.0.2.tgz#f39864b54ca594e3281902c23b6df0763761602b"
-  integrity sha512-Xx/df0Ppd5SultlzUj9qlQk2lX9mNVfTb41juyBUPZ1Nc/5dNx+uN0VuLyF4JEObkDRrUY1EFo9fEUDo8I6QOQ==
 
 docusaurus-plugin-redoc@^0.9.0:
   version "0.9.0"

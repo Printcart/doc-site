@@ -1,6 +1,6 @@
 ---
 sidebar_position: 3
-title: Printcart Design Tool SDK
+title: Design Tool SDK
 ---
 
 Printcart Design Tool overview here

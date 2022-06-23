@@ -5,14 +5,6 @@ const darkCodeTheme = require("prism-react-renderer/themes/dracula");
 /** @type {import('@docusaurus/types').DocusaurusConfig} */
 (
   module.exports = {
-    plugins: [
-      [
-        require.resolve('docusaurus-gtm-plugin'),
-        {
-          id: 'GTM-5XPFNVS', // GTM Container ID
-        }
-      ]
-    ],
     title: "Printcart",
     tagline: "Web-to-print API",
     url: "https://your-docusaurus-test-site.com",
@@ -22,7 +14,6 @@ const darkCodeTheme = require("prism-react-renderer/themes/dracula");
     favicon: "img/logo-printcart.png",
     organizationName: "Printcart", // Usually your GitHub org/user name.
     projectName: "Printcart", // Usually your repo name.
-    
    
     presets: [
       [
@@ -99,11 +90,12 @@ const darkCodeTheme = require("prism-react-renderer/themes/dracula");
               position: "left",
               label: "Developer Guide",
             },
-            // {
-            //   type: "rest-api-reference",
-            //   position: "left",
-            //   label: "Rest API Reference",
-            // },
+            {
+              type: "doc",
+              docId: 'reference/rest-api',
+              position: "left",
+              label: "API",
+            },
           ],
         },
         footer: {
