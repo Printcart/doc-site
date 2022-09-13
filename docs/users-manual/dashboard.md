@@ -1,13 +1,13 @@
 # Printcart Dashboard
 Using the Printcart dashboard lets you quickly and efficiently manage products, orders, and designs.
 ## Ecommerce
-Ecommerce includes two sections of your dashboard: Projects and Products. It appears as soon as when you log in to the system. Besides, Ecommerce gives you a quick overview of some recent activities in your store: customers' design requests and basic information about products. Refresh your browser to update the information.
+Ecommerce includes two sections of your dashboard: Projects and Products. It appears as soon as when you log in to the system. Besides, Ecommerce gives you a quick overview of some recent activities in your store: customers' design requests and basic information about products. Regularly refresh your browser to update the information.
 
 ### Project section
 
 #### Intro Project
 
-- **Project** Project is a design management feature for the printing requirements of customers. Helping shop owners manage the image they need to print on products for the customers.
+- **Project** is a design management feature for the printing requirements of customers. This section helps shop owners manage images that need to print on products for their customers.
 - **Project code** is the order code or request code on the store owner's eCommerce admin page.
 
 One project can have three statuses: Accepted, Process, and Reviewing.
@@ -15,7 +15,7 @@ One project can have three statuses: Accepted, Process, and Reviewing.
 - **Reviewing:** With this status, the store owner or printers monitor, review and evaluate the customer requests before implementing print.
 - **Accepted:** After Reviewing, The store owner and printers will accept orders and begin printing products.
 
-With the Project section, shop owners can get a list and the total number of projects (design and print requests) following the orders on the store and the status of projects. Besides, customers in the process of ordering can change design requirements.
+With the Project section, shop owners can get a list and the total number of projects (design and print requests). Besides, they can follow the orders on the store and the status of projects. Overmore, customers in the process of ordering can change design requirements.
 
 Administrators can also update and edit the designs according to each customer's changes until the design is chosen. Click `Edit design` Button to change the design in this project.
 

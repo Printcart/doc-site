@@ -1,7 +1,7 @@
 # Getting Started
 
 ## Printcart Dashboard
-Getting Printcart is very simple. Before you use the solution, we recommend that you try out our demo store to get a feel for the user experience.
+Getting Printcart is simple. Before you use the solution, we advise you to try out our demo to experience.
 
 Try it now at: 
 https://dashboard.printcart.com/signin
