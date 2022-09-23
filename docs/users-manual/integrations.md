@@ -74,9 +74,35 @@ Then download a pdf file.
 Finally, you print this pdf file and proceed to print it on your customer's product.
 
 ![PDF file for Print!](15.png "PDF file for Print")
-## WordPress
-<div align="center">**Coming Soon**</div>
+## WordPress- tutorial Woocommerce Integration
 
+### 1. Install Printcart Plugin on Woocommerce Website
+
+**Step 1: Install & Activate Printcart**
+
+Log in to your WooCommerce account and go to the admin panel. There, open *Plugins.
+In Plugins, click on Add new.
+
+![Add new Plugin!](Woocommerce-1.png "Add new plugin")
+
+In the search box, search "Printcart" for WooCommerce. Choose Install to install this plugin, and when the installation is complete, the Install button will turn into Activate, click on it.
+
+![Install and active!](Woocommerce-2.png "Install and active")
+
+**Step 2: Connect the Printcart Dashboard to your site**
+
+After activating, Printcart will be shown in your WordPress dashboard, click on Connect to Dashboard
+
+![Connect to dashboard!](Woocommerce-3.png "Connect to dashboard")
+
+Afterward, you will be required to enter your WooCommerce store name. When it is done, you can start publishing your products from Printcart to WooCommerce.
+
+![WooCommerce store name!](Woocommerce-4.png "WooCommerce store name")
+
+### 2. Define a Design Area in Printcart Dashboard
+[Same Shopify](#2--define-a-design-area-in-printcart)
+### 3. How Printcart works on your Woocommerce Website
+[Same Shopify](#3-how-printcart-works-on-your-website)
 ## Magento
 ### How to install & upgrade Printcart_Design
 
