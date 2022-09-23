@@ -74,7 +74,7 @@ Then download a pdf file.
 Finally, you print this pdf file and proceed to print it on your customer's product.
 
 ![PDF file for Print!](15.png "PDF file for Print")
-## WordPress- tutorial Woocommerce Integration
+## WordPress
 
 ### 1. Install Printcart Plugin on Woocommerce Website
 
