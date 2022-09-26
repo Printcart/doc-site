@@ -7467,10 +7467,9 @@ components:
         note:
           type: "string"
           example: "printcart"
-        template_id:
-          type: "string"
-          default: null
-          example: null
+        is_template:
+          type: "boolean"
+          default: false
         layers:
           type: "json"
           description: "Lorem ipsum..."
@@ -7547,10 +7546,9 @@ components:
         note:
           type: "string"
           example: "printcart"
-        template_id:
-          type: "string"
-          default: null
-          example: null
+        is_template:
+          type: "boolean"
+          default: false
         layers:
           type: "json"
           description: "Lorem ipsum..."
