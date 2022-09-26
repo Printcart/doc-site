@@ -7470,6 +7470,9 @@ components:
         is_template:
           type: "boolean"
           default: false
+        is_uploader:
+          type: "boolean"
+          default: false
         layers:
           type: "json"
           description: "Lorem ipsum..."
@@ -7547,6 +7550,9 @@ components:
           type: "string"
           example: "printcart"
         is_template:
+          type: "boolean"
+          default: false
+        is_uploader:
           type: "boolean"
           default: false
         layers:
