@@ -14,7 +14,7 @@ const darkCodeTheme = require("prism-react-renderer/themes/dracula");
     favicon: "img/logo-printcart.png",
     organizationName: "Printcart", // Usually your GitHub org/user name.
     projectName: "Printcart", // Usually your repo name.
-   
+
     presets: [
       [
         "@docusaurus/preset-classic",
@@ -43,7 +43,7 @@ const darkCodeTheme = require("prism-react-renderer/themes/dracula");
           specs: [
             {
               spec: "./api-data/printcart-api.yaml",
-              route: '/rest-api-reference/',
+              route: "/rest-api-reference/",
             },
           ],
         },
@@ -59,7 +59,7 @@ const darkCodeTheme = require("prism-react-renderer/themes/dracula");
             src: "img/Logo-PrintCart-1.png",
           },
           items: [
-            { 
+            {
               // to: 'docs/dashboard-manual/introduce',
               type: "doc",
               docId: "welcome",
@@ -72,7 +72,7 @@ const darkCodeTheme = require("prism-react-renderer/themes/dracula");
             //   position: "left",
             //   label: "Quickstart Guides",
             // },
-            { 
+            {
               type: "doc",
               docId: "users-manual/get-started",
               position: "left",
@@ -92,7 +92,7 @@ const darkCodeTheme = require("prism-react-renderer/themes/dracula");
             },
             {
               type: "doc",
-              docId: 'reference/rest-api',
+              docId: "reference/design-tool-sdk",
               position: "left",
               label: "API",
             },
