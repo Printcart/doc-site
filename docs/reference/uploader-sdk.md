@@ -4,18 +4,42 @@ title: Uploader SDK
 
 ## Installation
 
+Using npm:
+
+```bash
+npm install @printcart/uploader-sdk
+```
+
+Using yarn:
+
+```bash
+yarn add @printcart/uploader-sdk
+```
+
 Using unpkg:
 
 ```
-<script src="https://sdk.printcart.com/uploader/1.0.0/main.umd.js"></script>
+<script src="https://unpkg.com/@printcart/uploader-sdk@1.0.4/dist/main.js"></script>
 ```
 
 ## Usage
 
+Using package:
+
+```js
+import PrintcartUploader from "@printcart/uploader-sdk";
+
+const designer = new PrintcartUploader({
+  token: "your-printcart-unauth-token",
+  productId: "your-product-id",
+  options: {},
+});
+```
+
 Using CDN-hosted copy of the library:
 
 ```html
-<script src="https://sdk.printcart.com/uploader/1.0.0/main.umd.js"></script>
+<script src="https://unpkg.com/@printcart/uploader-sdk@1.0.4/dist/main.js"></script>
 
 <script>
   const uploader = new PrintcartUploader({
