@@ -3,15 +3,17 @@ sidebar_position: 3
 title: Design Tool SDK
 ---
 
-Printcart Design Tool overview here
+### Coming soon
 
-## Integrate
+<!-- Printcart Design Tool overview here -->
+
+<!-- ## Integrate
 
 ## Display preview thumbnail
 
 ## Translate
 
-## Config
+## Config -->
 
 <!-- Design tool overview
 

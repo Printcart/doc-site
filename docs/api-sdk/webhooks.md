@@ -3,7 +3,9 @@ sidebar_position: 5
 title: Printcart Webhooks
 ---
 
-## How to use
+### Coming soon
+
+<!-- ## How to use
 
 ### Callback url
 
@@ -11,4 +13,4 @@ title: Printcart Webhooks
 
 ## Best practices
 
-https://shopify.dev/apps/webhooks
+https://shopify.dev/apps/webhooks -->
