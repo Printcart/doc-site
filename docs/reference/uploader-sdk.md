@@ -1,26 +1,53 @@
 ---
-sidebar_position: 4
 title: Uploader SDK
 ---
 
-## Initialization
+## Installation
 
-To add an Printcart Uploader to your application:
+Using npm:
 
-1. Include Printcart's Uploader Javascript SDK file
-
-```
-<script type="text/javascript" src="https://sdk.printcart.com/uploader/1.0.0/main.umd.js"></script>
+```bash
+npm install @printcart/uploader-sdk
 ```
 
-2. Initialize a new Printcart Uploader instance
+Using yarn:
+
+```bash
+yarn add @printcart/uploader-sdk
+```
+
+Using unpkg:
+
+```
+<script src="https://unpkg.com/@printcart/uploader-sdk@1.0.4/dist/main.js"></script>
+```
+
+## Usage
+
+Using package:
 
 ```js
-const uploader = new PrintcartUploader({
+import PrintcartUploader from "@printcart/uploader-sdk";
+
+const designer = new PrintcartUploader({
   token: "your-printcart-unauth-token",
-  sideId: "your-side-id",
-  locale: {},
+  productId: "your-product-id",
+  options: {},
 });
+```
+
+Using CDN-hosted copy of the library:
+
+```html
+<script src="https://unpkg.com/@printcart/uploader-sdk@1.0.4/dist/main.js"></script>
+
+<script>
+  const uploader = new PrintcartUploader({
+    token: "your-printcart-unauth-token",
+    sideId: "your-side-id",
+    locale: {},
+  });
+</script>
 ```
 
 ## Parameters
