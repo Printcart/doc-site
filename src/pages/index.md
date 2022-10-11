@@ -13,9 +13,9 @@ Here you'll find everything you need to start working with Printcart.
 
 <CardGrid home>
 
-[**User Manual** Learn how to How to setup and use Printcart dashboard.](users-manual/get-started.md)
+[**User Manual** Learn how to setup and use Printcart dashboard.](docs/users-manual/get-started)
 
-[**Online Design App** Learn how to How to use Printcart Online Design App.](users-manual/online-design.md)
+[**Online Design App** Learn how to use Printcart Design Tool.](docs/users-manual/online-design)
 
 <!-- [**Quickstart Guide** Learn how to make the most of your Printcart.](guides/quickstart.md) -->
 </CardGrid>
@@ -24,6 +24,8 @@ Here you'll find everything you need to start working with Printcart.
 
 <CardGrid home>
 
-[**Developer Guide** Learn how to make the most of your Printcart.](api-sdk/intro.md)
+[**Developer Guide** Learn how to make the most of Printcart.](docs/api-sdk/intro)
+
+[**API Reference** Start building with Printcart with API and SDK.](docs/api-sdk/intro)
 
 </CardGrid>
