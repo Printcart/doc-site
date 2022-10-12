@@ -39,13 +39,15 @@ const designer = new PrintcartDesigner({
 Using CDN-hosted copy of the library:
 
 ```html
-<script src="https://unpkg.com/@printcart/design-tool-sdk/dist/main.js"></script>
+<script defer src="https://unpkg.com/@printcart/design-tool-sdk@1.4.1/dist/main.js"></script>
 
 <script>
-  const designer = new PrintcartDesigner({
-    token: "your-printcart-unauth-token",
-    productId: "your-product-id",
-    options: {},
+  window.addEventListener("DOMContentLoaded", function () {
+    const designer = new PrintcartDesigner({
+      token: "your-printcart-unauth-token",
+      productId: "your-product-id",
+      options: {},
+    });
   });
 </script>
 ```
@@ -92,7 +94,7 @@ const designer = new PrintcartDesigner({
   productId: "your-product-id",
 });
 
-var openDesignerButton = document.getElementById("your-button-id");
+const openDesignerButton = document.getElementById("your-button-id");
 
 openDesignerButton.addEventListener("click", function () {
   designer.render();

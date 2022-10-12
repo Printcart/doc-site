@@ -39,13 +39,15 @@ const designer = new PrintcartUploader({
 Using CDN-hosted copy of the library:
 
 ```html
-<script src="https://unpkg.com/@printcart/uploader-sdk@1.0.4/dist/main.js"></script>
+<script defer src="https://unpkg.com/@printcart/uploader-sdk@1.0.6/dist/main.js"></script>
 
 <script>
-  const uploader = new PrintcartUploader({
-    token: "your-printcart-unauth-token",
-    sideId: "your-side-id",
-    locale: {},
+  window.addEventListener("DOMContentLoaded", function () {
+    const uploader = new PrintcartUploader({
+      token: "your-printcart-unauth-token",
+      sideId: "your-side-id",
+      locale: {},
+    });
   });
 </script>
 ```
@@ -93,12 +95,12 @@ Render and display Uploader.
 **Example**
 
 ```js
-var uploader = new PrintcartUploader({
+const uploader = new PrintcartUploader({
   token: "your-printcart-unauth-token",
   sideId: "your-side-id",
 });
 
-var openUploaderButton = document.getElementById("your-button-id");
+const openUploaderButton = document.getElementById("your-button-id");
 
 openUploaderButton.addEventListener("click", function () {
   uploader.open();
