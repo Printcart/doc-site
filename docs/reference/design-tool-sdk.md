@@ -19,7 +19,7 @@ yarn add @printcart/design-tool-sdk
 Using unpkg:
 
 ```
-<script src="https://unpkg.com/@printcart/design-tool-sdk"></script>
+<script src="https://unpkg.com/@printcart/design-tool-sdk@1.4.2/dist/main.js"></script>
 ```
 
 ## Usage
@@ -39,7 +39,7 @@ const designer = new PrintcartDesigner({
 Using CDN-hosted copy of the library:
 
 ```html
-<script defer src="https://unpkg.com/@printcart/design-tool-sdk@1.4.1/dist/main.js"></script>
+<script defer src="https://unpkg.com/@printcart/design-tool-sdk@1.4.2/dist/main.js"></script>
 
 <script>
   window.addEventListener("DOMContentLoaded", function () {
