@@ -10228,6 +10228,4 @@ components:
           example: "No data"
       xml:
         name: "NoData"
-externalDocs:
-  description: "Find out more about Swagger"
-  url: "http://swagger.io"
+        
