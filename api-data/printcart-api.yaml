@@ -31,7 +31,7 @@ tags:
   - name: Font
   - name: Webhook
   - name: Clipart Storage
-  - name: "Project Folder"
+  - name: Project Folder
 paths:
   /account:
     post:
@@ -194,6 +194,7 @@ paths:
           schema:
             type: integer
             description: The numbers of items to return
+            default: 20
         - in: query
           name: sort
           schema:
@@ -447,6 +448,7 @@ paths:
           schema:
             type: integer
             description: The numbers of items to return
+            default: 20
         - in: query
           name: sort
           schema:
@@ -766,15 +768,11 @@ paths:
               schema:
                 $ref: "#/components/schemas/Deleted"
         "400":
-          description: |
-            - No Data
-            - Invalid input
+          description: Invalid input
           content:
             application/json:
               schema:
-                anyOf:
-                  - $ref: "#/components/schemas/NoData"
-                  - $ref: "#/components/schemas/InvalidInput"
+                $ref: "#/components/schemas/InvalidInput"
         "401":
           description: "Unauthenticated"
           content:
@@ -850,6 +848,7 @@ paths:
           schema:
             type: integer
             description: The numbers of items to return
+            default: 20
         - in: query
           name: sort
           schema:
@@ -869,13 +868,12 @@ paths:
           name: status
           schema:
             type: "string"
+            description: Product status
             default: "publish"
             enum:
               - "publish"
               - "draft"
               - "trashed"
-          required: false
-          description: Product status
       responses:
         "200":
           description: "Retrieved successfully"
@@ -1066,13 +1064,13 @@ paths:
         "400":
           description: |
             - Invalid input
-            - Invalid Content-Type header
+            - Side image can not svg
           content:
             application/json:
               schema:
                 anyOf:
                   - $ref: "#/components/schemas/InvalidInput"
-                  - $ref: "#/components/schemas/SideHeaderContentType"
+                  - $ref: "#/components/schemas/SideImageCanNotSVG"
         "401":
           description: "Unauthenticated"
           content:
@@ -1104,6 +1102,7 @@ paths:
           schema:
             type: integer
             description: The numbers of items to return
+            default: 20
         - in: query
           name: sort
           schema:
@@ -1121,6 +1120,8 @@ paths:
             # description: The numbers of items to re turn
         - in: query
           name: status
+          required: false
+          description: Side status
           schema:
             type: "string"
             default: "publish"
@@ -1128,8 +1129,6 @@ paths:
               - "publish"
               - "draft"
               - "trashed"
-          required: false
-          description: Side status
       responses:
         "200":
           description: "Retrieved successfully"
@@ -1233,13 +1232,13 @@ paths:
         "400":
           description: |
             - Invalid input
-            - Invalid Content-type header
+            - Side image can not svg
           content:
             application/json:
               schema:
                 anyOf:
                   - $ref: "#/components/schemas/InvalidInput"
-                  - $ref: "#/components/schemas/SideHeaderContentType"
+                  - $ref: "#/components/schemas/SideImageCanNotSVG"
         "401":
           description: "Unauthenticated"
           content:
@@ -1320,21 +1319,25 @@ paths:
         "400":
           description: |
             - Invalid input
-            - Not found
-            - Invalid Content-type header
+            - Side image can not svg
           content:
             application/json:
               schema:
                 anyOf:
                   - $ref: "#/components/schemas/InvalidInput"
-                  - $ref: "#/components/schemas/NotFound"
-                  - $ref: "#/components/schemas/SideHeaderContentType"
+                  - $ref: "#/components/schemas/SideImageCanNotSVG"
         "401":
           description: "Unauthenticated"
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/Unauthenticated"
+        "404":
+          description: "Not found"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NotFound"
         "413":
           description: Too many sides
           content:
@@ -1370,15 +1373,13 @@ paths:
         "400":
           description: |
             - Invalid input
-            - Not found
-            - Invalid Content-type header
+            - Side image can not svg
           content:
             application/json:
               schema:
                 anyOf:
                   - $ref: "#/components/schemas/InvalidInput"
-                  - $ref: "#/components/schemas/NotFound"
-                  - $ref: "#/components/schemas/SideHeaderContentType"
+                  - $ref: "#/components/schemas/SideImageCanNotSVG"
         "401":
           description: "Unauthenticated"
           content:
@@ -1386,11 +1387,15 @@ paths:
               schema:
                 $ref: "#/components/schemas/Unauthenticated"
         "404":
-          description: "Can't find side with id"
+          description: |
+            - Can't find side with id
+            - Not found
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/SideError"
+                anyOf:
+                  - $ref: "#/components/schemas/SideError"
+                  - $ref: "#/components/schemas/NotFound"
         "413":
           description: Too many sides
           content:
@@ -1424,15 +1429,11 @@ paths:
               schema:
                 $ref: "#/components/schemas/Deleted"
         "400":
-          description: |
-            - No data
-            - Invalid input
+          description: Invalid input
           content:
             application/json:
               schema:
-                anyOf:
-                  - $ref: "#/components/schemas/NoData"
-                  - $ref: "#/components/schemas/InvalidInput"
+                $ref: "#/components/schemas/InvalidInput"
         "401":
           description: "Unauthenticated"
           content:
@@ -1482,6 +1483,7 @@ paths:
           schema:
             type: integer
             description: The numbers of items to return
+            default: 20
         - in: query
           name: sort
           schema:
@@ -1631,9 +1633,10 @@ paths:
       parameters:
         - in: query
           name: limit
+          default: 20
+          description: The numbers of items to return
           schema:
             type: integer
-            description: The numbers of items to return
         - in: query
           name: sort
           schema:
@@ -1906,9 +1909,10 @@ paths:
       parameters:
         - in: query
           name: limit
+          default: 20
+          description: The numbers of items to return
           schema:
             type: integer
-            description: The numbers of items to return
         - in: query
           name: sort
           schema:
@@ -1967,9 +1971,10 @@ paths:
       parameters:
         - in: query
           name: limit
+          default: 20
+          description: The numbers of items to return
           schema:
             type: integer
-            description: The numbers of items to return
         - in: query
           name: sort
           schema:
@@ -2085,6 +2090,12 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ClipartResponseUpdate"
+        "400":
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidInput"
         "401":
           description: "Unauthenticated"
           content:
@@ -2280,7 +2291,6 @@ paths:
           description: |
             - Invalid input
             - Invalid design file
-            - Missing design file
             - File Upload Missing
             - Invalid Content-Type header
             - Please upgrade your account.
@@ -2290,7 +2300,6 @@ paths:
                 anyOf:
                   - $ref: "#/components/schemas/InvalidInput"
                   - $ref: "#/components/schemas/InvalidDesignFile"
-                  - $ref: "#/components/schemas/MissingDesignFile"
                   - $ref: "#/components/schemas/MissingImage"
                   - $ref: "#/components/schemas/InvalidContentTypeHeader"
                   - $ref: "#/components/schemas/CheckUserTier"
@@ -2323,6 +2332,7 @@ paths:
       parameters:
         - in: query
           name: limit
+          default: 20
           schema:
             type: integer
             description: The numbers of items to return
@@ -2444,9 +2454,6 @@ paths:
           application/json:
             schema:
               $ref: "#/components/schemas/DesignUpdateJson"
-          # multipart/form-data:
-          #   schema:
-          #     $ref: "#/components/schemas/DesignUpdate"
       responses:
         "200":
           description: "Updated successfully"
@@ -2455,19 +2462,11 @@ paths:
               schema:
                 $ref: "#/components/schemas/DesignResponseUpdate"
         "400":
-          description: |
-            - Invalid input
-            - Invalid design file
-            - Invalid Content-Type header
-            - Please upgrade your account.
+          description: Invalid input
           content:
             application/json:
               schema:
-                anyOf:
-                  - $ref: "#/components/schemas/InvalidInput"
-                  - $ref: "#/components/schemas/InvalidDesignFile"
-                  - $ref: "#/components/schemas/InvalidContentTypeHeader"
-                  - $ref: "#/components/schemas/CheckUserTier"
+                $ref: "#/components/schemas/InvalidInput"
         "401":
           description: "Unauthenticated"
           content:
@@ -2606,9 +2605,6 @@ paths:
           application/json:
             schema:
               $ref: "#/components/schemas/DesignBatchUpdateJson"
-          # multipart/form-data:
-          #   schema:
-          #     $ref: "#/components/schemas/DesignBatchUpdate"
       responses:
         "200":
           description: "Updated successfully"
@@ -2617,19 +2613,11 @@ paths:
               schema:
                 $ref: "#/components/schemas/DesignBatchUpdateResponse"
         "400":
-          description: |
-            - Invalid input
-            - Invalid design file
-            - Invalid Content-Type header
-            - Please upgrade your account.
+          description: Invalid input
           content:
             application/json:
               schema:
-                anyOf:
-                  - $ref: "#/components/schemas/InvalidInput"
-                  - $ref: "#/components/schemas/InvalidDesignFile"
-                  - $ref: "#/components/schemas/InvalidContentTypeHeader"
-                  - $ref: "#/components/schemas/CheckUserTier"
+                $ref: "#/components/schemas/InvalidInput"
         "401":
           description: "Unauthenticated"
           content:
@@ -2773,6 +2761,7 @@ paths:
           name: limit
           schema:
             type: integer
+            default: 20
             description: The numbers of items to return
         - in: query
           name: sort
@@ -2918,6 +2907,7 @@ paths:
           name: limit
           schema:
             type: integer
+            default: 20
             description: The numbers of items to return
         - in: query
           name: sort
@@ -2979,6 +2969,7 @@ paths:
           name: limit
           schema:
             type: integer
+            default: 20
             description: The numbers of items to return
         - in: query
           name: sort
@@ -3190,7 +3181,6 @@ paths:
                 $ref: "#/components/schemas/TemplateBatchResponse"
         "400":
           description: |
-            - No data
             - Invalid input
             - Invalid template file
             - Missing template file
@@ -3201,7 +3191,6 @@ paths:
             application/json:
               schema:
                 anyOf:
-                  - $ref: "#/components/schemas/NoData"
                   - $ref: "#/components/schemas/InvalidInput"
                   - $ref: "#/components/schemas/InvalidTemplateFile"
                   - $ref: "#/components/schemas/MissingTemplateFile"
@@ -3317,15 +3306,11 @@ paths:
               schema:
                 $ref: "#/components/schemas/Deleted"
         "400":
-          description: |
-            - No data
-            - Invalid input
+          description: Invalid input
           content:
             application/json:
               schema:
-                anyOf:
-                  - $ref: "#/components/schemas/NoData"
-                  - $ref: "#/components/schemas/InvalidInput"
+                $ref: "#/components/schemas/InvalidInput"
         "401":
           description: "Unauthenticated"
           content:
@@ -3511,6 +3496,7 @@ paths:
           name: limit
           schema:
             type: integer
+            default: 20
             description: The numbers of items to return
         - in: query
           name: sort
@@ -3881,6 +3867,7 @@ paths:
           name: limit
           schema:
             type: integer
+            default: 20
             description: The numbers of items to return
         - in: query
           name: sort
@@ -3958,6 +3945,7 @@ paths:
           name: limit
           schema:
             type: integer
+            default: 20
             description: The numbers of items to return
         - in: query
           name: sort
@@ -4168,6 +4156,7 @@ paths:
           name: limit
           schema:
             type: integer
+            default: 20
             description: The numbers of items to return
         - in: query
           name: sort
@@ -4229,6 +4218,7 @@ paths:
           name: limit
           schema:
             type: integer
+            default: 20
             description: The numbers of items to return
         - in: query
           name: sort
@@ -4447,6 +4437,7 @@ paths:
           name: limit
           schema:
             type: integer
+            default: 20
             description: The numbers of items to return
         - in: query
           name: sort
@@ -4508,6 +4499,7 @@ paths:
           name: limit
           schema:
             type: integer
+            default: 20
             description: The numbers of items to return
         - in: query
           name: sort
@@ -4792,6 +4784,7 @@ paths:
           name: limit
           schema:
             type: integer
+            default: 20
             description: The numbers of items to return
         - in: query
           name: sort
@@ -5026,6 +5019,7 @@ paths:
           name: limit
           schema:
             type: integer
+            default: 20
             description: The numbers of items to return
         - in: query
           name: sort
@@ -5087,6 +5081,7 @@ paths:
           name: limit
           schema:
             type: integer
+            default: 20
             description: The numbers of items to return
         - in: query
           name: sort
@@ -5194,6 +5189,7 @@ paths:
           name: limit
           schema:
             type: integer
+            default: 20
             description: The numbers of items to return
         - in: query
           name: sort
@@ -5261,6 +5257,7 @@ paths:
           name: limit
           schema:
             type: integer
+            default: 20
             description: The numbers of items to return
         - in: query
           name: sort
@@ -5328,6 +5325,7 @@ paths:
           name: limit
           schema:
             type: integer
+            default: 20
             description: The numbers of items to return
         - in: query
           name: sort
@@ -5395,6 +5393,7 @@ paths:
           name: limit
           schema:
             type: integer
+            default: 20
             description: The numbers of items to return
         - in: query
           name: sort
@@ -5554,6 +5553,7 @@ paths:
           name: limit
           schema:
             type: integer
+            default: 20
             description: The numbers of items to return
         - in: query
           name: sort
@@ -5661,6 +5661,7 @@ paths:
           name: limit
           schema:
             type: integer
+            default: 20
             description: The numbers of items to return
         - in: query
           name: sort
@@ -5728,6 +5729,7 @@ paths:
           name: limit
           schema:
             type: integer
+            default: 20
             description: The numbers of items to return
         - in: query
           name: sort
@@ -5811,7 +5813,11 @@ components:
           example: "admin@example.com"
         password:
           type: string
-          description: Customer password
+          description: |
+            - Require at least 8 characters
+            - Require at least one number
+            - Require at least one symbol
+            - Require at least one uppercase and one lowercase letter
           example: Password1234@
       xml:
         name: Account
@@ -5949,12 +5955,16 @@ components:
           example: "Store Example"
         google_font_api:
           type: string
+          description: API Key Google Font
         unsplash:
           type: string
+          description: API Key Unsplash
         pixabay:
           type: string
+          description: API Key Pixabay
         pexels:
           type: string
+          description: API Key Pexels
       xml:
         name: "Store"
     StoreUpdate:
@@ -5966,12 +5976,16 @@ components:
           example: "Store Example"
         google_font_api:
           type: string
+          description: API Key Google Font
         unsplash:
           type: string
+          description: API Key Unsplash
         pixabay:
           type: string
+          description: API Key Pixabay
         pexels:
           type: string
+          description: API Key Pexels
       xml:
         name: "StoreUpdate"
     StoreResponse:
@@ -5985,13 +5999,13 @@ components:
           example: "printcart store"
         sid:
           type: "string"
-          example: "pcsia_b9a7d6fa332b74bdd0e539ed3b361aca0c2f7b9bbfe68343xxxx"
+          example: "pcsia_xxxxx6fa332b74bdd0exxxxx3b361aca0c2f7b9bbfe68343xxxx"
         secret:
           type: "string"
-          example: "pcsup_02be5f225e8ddb1ff446c60928394902ab2f193fcd5bfc2xxxx"
+          example: "pcsup_xxxxx225e8ddb1ff446c6xxxxx94902ab2f193fcd5bfc2xxxx"
         unauth_token:
           type: "string"
-          example: "b20dd13e142d5202aeda6c7365ce0a82bbf6c05711af3a2xxxx"
+          example: "xxxxx13e142d5202aedaxxxxx5ce0a82bbf6c05711af3a2xxxx"
         google_font_api:
           type: "string"
         shop_url:
@@ -6101,9 +6115,12 @@ components:
     StoreTokenRevokeResponse:
       type: "object"
       properties:
-        unauth_token:
-          type: "string"
-          example: "22d23e41e296c45b0c6c9cd722398b90a3cc906301bdebfaac4751cf2dowmar3"
+        data:
+          type: "object"
+          properties:
+            unauth_token:
+              type: "string"
+              example: "22d23e41e296c45b0c6c9cd722398b90a3cc906301bdebfaac4751cf2dowmar3"
         message:
           type: "string"
           description: "Updated successfully"
@@ -6114,9 +6131,14 @@ components:
       type: object
       properties:
         error:
-          type: "string"
-          description: Too many stores
-          example: Too many stores
+          type: "object"
+          properties:
+            message:
+              type: "string"
+              description: Too many stores
+              example: Too many stores
+      xml:
+        name: "TooManyStores"
     Product:
       type: "object"
       required:
@@ -6164,11 +6186,15 @@ components:
               - "png"
               - "ai"
               - "pdf"
-              # - "ps"
+              - "svg"
+              - "ps"
               # - "bmp"
               # - "iddd"
           example: ["jpg", "png", "ai", "pdf"]
         enable_design:
+          type: "boolean"
+          example: false
+        enable_upload:
           type: "boolean"
           example: false
         product_image_id:
@@ -6185,6 +6211,30 @@ components:
           format: "int64"
           default: 0
           example: 500
+        type_id:
+          type: "string"
+          enum:
+            - simple
+            - variant
+            - variant_option
+          example: simple
+        description:
+          type: "string"
+          description: Product description
+          example: null
+        category_ids:
+          type: "array"
+          description: Category ID (Storage ID)
+          items:
+            type: "string"
+        parent_id:
+          type: "string"
+          description: Product ID
+          example: null
+        upload_max_filesize:
+          type: "integer"
+          description: Limit file upload size
+          example: null
       xml:
         name: "Product"
     ProductUpdate:
@@ -6225,7 +6275,6 @@ components:
             - "publish"
             - "draft"
             - "trashed"
-            - "deleted"
           description: Product status
           example: "publish"
         allowed_file_types:
@@ -6237,7 +6286,7 @@ components:
               - "png"
               - "ai"
               - "pdf"
-              # - "ps"
+              - "ps"
               # - "bmp"
               # - "iddd"
           example: ["jpg", "png", "ai", "pdf"]
@@ -6252,10 +6301,26 @@ components:
         enable_design:
           type: "boolean"
           example: false
+        enable_upload:
+          type: "boolean"
+          example: false
         product_image_id:
           type: "string"
           description: Image ID.
           example: "e8304b84-a015-3bd4-a7d3-7a978f465df2"
+        description:
+          type: "string"
+          description: Product description
+          example: null
+        category_ids:
+          type: "array"
+          description: Category ID (Storage ID)
+          items:
+            type: "string"
+        upload_max_filesize:
+          type: "integer"
+          description: Limit file upload size
+          example: null
       xml:
         name: "ProductUpdate"
     ProductBatch:
@@ -6330,7 +6395,7 @@ components:
                     - "png"
                     - "ai"
                     - "pdf"
-                    # - "ps"
+                    - "ps"
                     # - "bmp"
                     # - "iddd"
                 example: ["jpg", "png", "ai", "pdf"]
@@ -6345,10 +6410,21 @@ components:
               enable_design:
                 type: "boolean"
                 example: false
+              enable_upload:
+                type: "boolean"
+                example: false
               product_image_id:
                 type: "string"
                 description: Image ID
                 example: "e8304b84-a015-3bd4-a7d3-7a978f465df2"
+              description:
+                type: "string"
+                description: Product description
+                example: null
+              upload_max_filesize:
+                type: "integer"
+                description: Limit file upload size
+                example: null
       xml:
         name: "ProductBatchUpdate"
     ProductBatchDelete:
@@ -6417,7 +6493,8 @@ components:
               - "png"
               - "ai"
               - "pdf"
-              # - "ps"
+              - "ps"
+              - "svg"
               # - "bmp"
               # - "iddd"
           example: ["jpg", "png", "ai", "pdf"]
@@ -6432,6 +6509,15 @@ components:
         enable_design:
           type: "boolean"
           example: false
+        enable_upload:
+          type: "boolean"
+          example: true
+        upload_max_filesize:
+          type: "integer"
+          example: null
+        integration_product_id:
+          type: "integer"
+          example: null
         product_image:
           $ref: "#/components/schemas/ImageResponse"
         created_at:
@@ -6548,9 +6634,12 @@ components:
       type: "object"
       properties:
         error:
-          type: "string"
-          description: "Can't find product with id"
-          example: "Can't find product with id: 962af342-a2c9-4665-bb5d-cb208258d958"
+          type: "object"
+          properties:
+            message:
+              type: "string"
+              description: "Can't find product with id"
+              example: "Can't find product with id: 962af342-a2c9-4665-bb5d-cb208258d958"
       xml:
         name: "ProductError"
     ProductCount:
@@ -6571,37 +6660,49 @@ components:
         name: "ProductCount"
     DuplicateProduct:
       properties:
-        message:
-          type: "string"
-          description: "Duplicate Product"
-          example: "Duplicate Product"
+        error:
+          type: "object"
+          properties:
+            message:
+              type: "string"
+              description: "Duplicate Product"
+              example: "Duplicate Product"
       xml:
         name: "DuplicateProduct"
     TooManyProducts:
       type: object
       properties:
         error:
-          type: "string"
-          description: Too many products
-          example: Too many products
+          type: "object"
+          properties:
+            message:
+              type: "string"
+              description: Too many products
+              example: Too many products
       xml:
         name: "TooManyProducts"
     TooManyDesignsByProduct:
       type: object
       properties:
         error:
-          type: "string"
-          description: Too many designs by product
-          example: Too many designs by product
+          type: "object"
+          properties:
+            message:
+              type: "string"
+              description: Too many designs by product
+              example: Too many designs by product
       xml:
         name: "TooManyDesignsByProduct"
     TooManySidesByProduct:
       type: object
       properties:
         error:
-          type: "string"
-          description: Too many sides by product
-          example: Too many sides by product
+          type: "object"
+          properties:
+            message:
+              type: "string"
+              description: Too many sides by product
+              example: Too many sides by product
       xml:
         name: "TooManySidesByProduct"
     Side:
@@ -6650,11 +6751,11 @@ components:
         side_image_size:
           type: "object"
           properties:
-            product_width:
+            width:
               type: "number"
               format: "float"
               example: 50
-            product_height:
+            height:
               type: "number"
               format: "float"
               example: 50
@@ -6756,11 +6857,11 @@ components:
         side_image_size:
           type: "object"
           properties:
-            product_width:
+            width:
               type: "number"
               format: "float"
               example: 50
-            product_height:
+            height:
               type: "number"
               format: "float"
               example: 50
@@ -7272,7 +7373,7 @@ components:
         name:
           type: "string"
           example: "Side Example"
-        ratio:
+        scale:
           type: "number"
           format: "double"
           example: 72
@@ -7482,20 +7583,23 @@ components:
       type: "object"
       properties:
         error:
-          type: "string"
-          description: "Can't find side with id"
-          example: "Can't find side with id: c5661a1e-8147-4dc3-8600-00fdc81ed14b"
+          type: "object"
+          properties:
+            message:
+              type: "string"
+              description: "Can't find side with id"
+              example: "Can't find side with id: c5661a1e-8147-4dc3-8600-00fdc81ed14b"
       xml:
         name: "SideError"
-    SideHeaderContentType:
+    SideImageCanNotSVG:
       type: "object"
       properties:
         message:
           type: "string"
-          description: "Invalid Content-type header"
-          example: "Invalid Content-type header"
+          description: Side image can not svg
+          example: Side image can not svg
       xml:
-        name: "SideHeaderContentType"
+        name: "SideImageCanNotSVG"
     SideCount:
       type: "object"
       properties:
@@ -7516,18 +7620,24 @@ components:
       type: object
       properties:
         error:
-          type: "string"
-          description: Too many sides
-          example: Too many sides
+          type: "object"
+          properties:
+            message:
+              type: "string"
+              description: Too many sides
+              example: Too many sides
       xml:
         name: "TooManySides"
     TooManyTemplatesBySide:
       type: object
       properties:
         error:
-          type: "string"
-          description: Too many templates by side
-          example: Too many templates by side
+          type: "object"
+          properties:
+            message:
+              type: "string"
+              description: Too many templates by side
+              example: Too many templates by side
       xml:
         name: "TooManyTemplatesBySide"
     ImageResponse:
@@ -7581,8 +7691,8 @@ components:
           $ref: "#/components/schemas/ImageResponse"
         message:
           type: "string"
-          description: "Created successfully"
-          example: "Created successfully"
+          description: "File successfully uploaded"
+          example: "File successfully uploaded"
       xml:
         name: "ImageResponseStore"
     ImageResponseShowDataArray:
@@ -7657,8 +7767,8 @@ components:
             $ref: "#/components/schemas/ImageResponse"
         message:
           type: "string"
-          description: "Created successfully"
-          example: "Created successfully"
+          description: "File successfully uploaded"
+          example: "File successfully uploaded"
       xml:
         name: "ImageResponseStoreBatch"
     ImageCount:
@@ -7680,28 +7790,37 @@ components:
     UnsupportedMediaType:
       type: "object"
       properties:
-        message:
-          type: "string"
-          description: "Unsupported Media Type"
-          example: "Unsupported Media Type"
+        error:
+          type: "object"
+          properties:
+            message:
+              type: "string"
+              description: "Unsupported Media Type"
+              example: "Unsupported Media Type"
       xml:
         name: UnsupportedMediaType
     MissingImage:
       type: object
       properties:
-        message:
-          type: "string"
-          description: File upload missing
-          example: File upload missing
+        error:
+          type: "object"
+          properties:
+            message:
+              type: "string"
+              description: File upload missing
+              example: File upload missing
       xml:
         name: "MissingImage"
     TooManyImages:
       type: object
       properties:
         error:
-          type: "string"
-          description: Too many images
-          example: Too many images
+          type: "object"
+          properties:
+            message:
+              type: "string"
+              description: Too many images
+              example: Too many images
       xml:
         name: TooManyImages
     ClipartUpdate:
@@ -7709,7 +7828,11 @@ components:
       properties:
         storages:
           type: "array"
-          example: ["e8304b84-a015-3bd4-a7d3-7a978f463a6v", e5610b84-a015-3bd4-a7d3-7a978f465df2]
+          example:
+            [
+              "e8304b84-a015-3bd4-a7d3-7a978f463a6v",
+              e5610b84-a015-3bd4-a7d3-7a978f465df2,
+            ]
           description: Storage ID
       xml:
         name: ClipartUpdate
@@ -7764,8 +7887,8 @@ components:
           $ref: "#/components/schemas/ClipartResponse"
         message:
           type: "string"
-          description: "Created successfully"
-          example: "Created successfully"
+          description: "File successfully uploaded"
+          example: "File successfully uploaded"
       xml:
         name: "ClipartResponseStore"
     ClipartResponseShowDataArray:
@@ -7840,8 +7963,8 @@ components:
             $ref: "#/components/schemas/ClipartResponse"
         message:
           type: "string"
-          description: "Created successfully"
-          example: "Created successfully"
+          description: "File successfully uploaded"
+          example: "File successfully uploaded"
       xml:
         name: "ClipartResponseStoreBatch"
     ClipartCount:
@@ -7864,9 +7987,12 @@ components:
       type: object
       properties:
         error:
-          type: "string"
-          description: Too many cliparts
-          example: Too many cliparts
+          type: "object"
+          properties:
+            message:
+              type: "string"
+              description: Too many cliparts
+              example: Too many cliparts
       xml:
         name: TooManyCliparts
     DesignJson:
@@ -7901,7 +8027,21 @@ components:
           items:
             type: object
           description: "Lorem ipsum..."
-          example: [{ "top": 183.5025, "left": 195.79, "text": "Blackbird", "width": 68.33984375, "height": 22.6, "originX": "left", "originY": "top", "fontSize": 20, "fontStyle": "normal", "textAlign": "left", "fontFamily": "Yellowtail", "fontWeight": "normal" }]
+          example:
+            {
+              "top": 183.5025,
+              "left": 195.79,
+              "text": "Blackbird",
+              "width": 68.33984375,
+              "height": 22.6,
+              "originX": "left",
+              "originY": "top",
+              "fontSize": 20,
+              "fontStyle": "normal",
+              "textAlign": "left",
+              "fontFamily": "Yellowtail",
+              "fontWeight": "normal",
+            }
         status:
           type: "string"
           default: "processing"
@@ -7910,7 +8050,6 @@ components:
             - "processing"
             - "declined"
             - "trashed"
-            - "deleted"
           description: Design status
           example: "accepted"
         viewport_width:
@@ -7953,7 +8092,21 @@ components:
           items:
             type: object
           description: "Lorem ipsum..."
-          example: [{ "top": 183.5025, "left": 195.79, "text": "Blackbird", "width": 68.33984375, "height": 22.6, "originX": "left", "originY": "top", "fontSize": 20, "fontStyle": "normal", "textAlign": "left", "fontFamily": "Yellowtail", "fontWeight": "normal" }]
+          example:
+            {
+              "top": 183.5025,
+              "left": 195.79,
+              "text": "Blackbird",
+              "width": 68.33984375,
+              "height": 22.6,
+              "originX": "left",
+              "originY": "top",
+              "fontSize": 20,
+              "fontStyle": "normal",
+              "textAlign": "left",
+              "fontFamily": "Yellowtail",
+              "fontWeight": "normal",
+            }
         status:
           type: "string"
           default: "processing"
@@ -7962,7 +8115,6 @@ components:
             - "processing"
             - "declined"
             - "trashed"
-            - "deleted"
           description: Design status
           example: "accepted"
         viewport_width:
@@ -8027,8 +8179,22 @@ components:
                 type: "array"
                 items:
                   type: object
-                description: "Lorem ipsum..."
-                example: [{ "top": 183.5025, "left": 195.79, "text": "Blackbird", "width": 68.33984375, "height": 22.6, "originX": "left", "originY": "top", "fontSize": 20, "fontStyle": "normal", "textAlign": "left", "fontFamily": "Yellowtail", "fontWeight": "normal" }]
+                  description: "Lorem ipsum..."
+                  example:
+                    {
+                      "top": 183.5025,
+                      "left": 195.79,
+                      "text": "Blackbird",
+                      "width": 68.33984375,
+                      "height": 22.6,
+                      "originX": "left",
+                      "originY": "top",
+                      "fontSize": 20,
+                      "fontStyle": "normal",
+                      "textAlign": "left",
+                      "fontFamily": "Yellowtail",
+                      "fontWeight": "normal",
+                    }
               status:
                 type: "string"
                 default: "processing"
@@ -8579,9 +8745,12 @@ components:
       type: "object"
       properties:
         error:
-          type: "string"
-          description: "Can't find design with id"
-          example: "Can't find design with id: cce4dc71-6757-4a1c-a259-6b66a4304c14"
+          type: "object"
+          properties:
+            message:
+              type: "string"
+              description: "Can't find design with id"
+              example: "Can't find design with id: cce4dc71-6757-4a1c-a259-6b66a4304c14"
       xml:
         name: "DesignError"
     DesignFont:
@@ -8609,10 +8778,13 @@ components:
     InvalidContentTypeHeader:
       type: "object"
       properties:
-        message:
-          type: "string"
-          description: "Invalid Content-Type header"
-          example: "Invalid Content-Type header"
+        error:
+          type: "object"
+          properties:
+            message:
+              type: "string"
+              description: "Invalid Content-Type header"
+              example: "Invalid Content-Type header"
       xml:
         name: "InvalidContentTypeHeader"
     MissingDesignFile:
@@ -8628,9 +8800,12 @@ components:
       type: object
       properties:
         error:
-          type: "string"
-          description: Too many designs
-          example: Too many designs
+          type: "object"
+          properties:
+            message:
+              type: "string"
+              description: Too many designs
+              example: Too many designs
       xml:
         name: TooManyDesigns
     TemplateJson:
@@ -8662,7 +8837,21 @@ components:
           description: "Lorem ipsum..."
           items:
             type: object
-          example: [{ "top": 183.5025, "left": 195.79, "text": "Blackbird", "width": 68.33984375, "height": 22.6, "originX": "left", "originY": "top", "fontSize": 20, "fontStyle": "normal", "textAlign": "left", "fontFamily": "Yellowtail", "fontWeight": "normal" }]
+            example:
+              {
+                "top": 183.5025,
+                "left": 195.79,
+                "text": "Blackbird",
+                "width": 68.33984375,
+                "height": 22.6,
+                "originX": "left",
+                "originY": "top",
+                "fontSize": 20,
+                "fontStyle": "normal",
+                "textAlign": "left",
+                "fontFamily": "Yellowtail",
+                "fontWeight": "normal",
+              }
         viewport_width:
           type: "number"
           format: "float"
@@ -8700,7 +8889,21 @@ components:
           items:
             type: object
           description: "Lorem ipsum..."
-          example: [{ "top": 183.5025, "left": 195.79, "text": "Blackbird", "width": 68.33984375, "height": 22.6, "originX": "left", "originY": "top", "fontSize": 20, "fontStyle": "normal", "textAlign": "left", "fontFamily": "Yellowtail", "fontWeight": "normal" }]
+          example:
+            {
+              "top": 183.5025,
+              "left": 195.79,
+              "text": "Blackbird",
+              "width": 68.33984375,
+              "height": 22.6,
+              "originX": "left",
+              "originY": "top",
+              "fontSize": 20,
+              "fontStyle": "normal",
+              "textAlign": "left",
+              "fontFamily": "Yellowtail",
+              "fontWeight": "normal",
+            }
         viewport_width:
           type: "number"
           format: "float"
@@ -8761,7 +8964,21 @@ components:
                 items:
                   type: object
                 description: "Lorem ipsum..."
-                example: [{ "top": 183.5025, "left": 195.79, "text": "Blackbird", "width": 68.33984375, "height": 22.6, "originX": "left", "originY": "top", "fontSize": 20, "fontStyle": "normal", "textAlign": "left", "fontFamily": "Yellowtail", "fontWeight": "normal" }]
+                example:
+                  {
+                    "top": 183.5025,
+                    "left": 195.79,
+                    "text": "Blackbird",
+                    "width": 68.33984375,
+                    "height": 22.6,
+                    "originX": "left",
+                    "originY": "top",
+                    "fontSize": 20,
+                    "fontStyle": "normal",
+                    "textAlign": "left",
+                    "fontFamily": "Yellowtail",
+                    "fontWeight": "normal",
+                  }
               viewport_width:
                 type: "number"
                 format: "float"
@@ -9305,27 +9522,36 @@ components:
       type: object
       properties:
         error:
-          type: "string"
-          description: Too many templates
-          example: Too many templates
+          type: "object"
+          properties:
+            message:
+              type: "string"
+              description: Too many templates
+              example: Too many templates
       xml:
         name: TooManyTemplates
     InvalidTemplateFile:
       type: "object"
       properties:
-        message:
-          type: "string"
-          description: "Invalid template file"
-          example: "Invalid template file"
+        error:
+          type: "object"
+          properties:
+            message:
+              type: "string"
+              description: "Invalid template file"
+              example: "Invalid template file"
       xml:
         name: "InvalidTemplateFile"
     MissingTemplateFile:
       type: "object"
       properties:
-        message:
-          type: "string"
-          description: "Missing template file"
-          example: "Missing template file"
+        error:
+          type: "object"
+          properties:
+            message:
+              type: "string"
+              description: "Missing template file"
+              example: "Missing template file"
       xml:
         name: "MissingTemplateFile"
     Project:
@@ -9345,7 +9571,6 @@ components:
             - "reviewing"
             - "accepted"
             - "trashed"
-            - "deleted"
           description: Project status
           example: "processing"
         note:
@@ -9368,7 +9593,6 @@ components:
             - "reviewing"
             - "accepted"
             - "trashed"
-            - "deleted"
           description: Project status
           example: "processing"
         note:
@@ -9411,7 +9635,6 @@ components:
                   - "reviewing"
                   - "accepted"
                   - "trashed"
-                  - "deleted"
                 description: Project status
                 example: "processing"
               note:
@@ -9451,7 +9674,6 @@ components:
             - "reviewing"
             - "accepted"
             - "trashed"
-            - "deleted"
           example: "processing"
         note:
           type: "string"
@@ -9586,36 +9808,48 @@ components:
       type: "object"
       properties:
         error:
-          type: "string"
-          description: "Too many projects"
-          example: "Too many projects"
+          type: "object"
+          properties:
+            message:
+              type: "string"
+              description: "Too many projects"
+              example: "Too many projects"
       xml:
         name: TooManyProjects
     ProjectError:
       type: "object"
       properties:
         error:
-          type: "string"
-          description: "Can't find project with id"
-          example: "Can't find project with id: 4419934f-8e1b-4cf0-b432-01ef9258a812"
+          type: "object"
+          properties:
+            message:
+              type: "string"
+              description: "Can't find project with id"
+              example: "Can't find project with id: 4419934f-8e1b-4cf0-b432-01ef9258a812"
       xml:
         name: "ProjectError"
     TooManyDesignsByProject:
       type: "object"
       properties:
         error:
-          type: "string"
-          description: "Too many designs by project"
-          example: "Too many designs by project"
+          type: "object"
+          properties:
+            message:
+              type: "string"
+              description: "Too many designs by project"
+              example: "Too many designs by project"
       xml:
         name: TooManyDesignsByProject
     TooManyProductsByProject:
       type: "object"
       properties:
         error:
-          type: "string"
-          description: "Too many products by project"
-          example: "Too many products by project"
+          type: "object"
+          properties:
+            message:
+              type: "string"
+              description: "Too many products by project"
+              example: "Too many products by project"
       xml:
         name: TooManyProductsByProject
     Category:
@@ -9760,9 +9994,12 @@ components:
       type: "object"
       properties:
         error:
-          type: "string"
-          description: "Too many storages"
-          example: "Too many storages"
+          type: "object"
+          properties:
+            message:
+              type: "string"
+              description: "Too many storages"
+              example: "Too many storages"
       xml:
         name: TooManyCategories
     Font:
@@ -9770,8 +10007,6 @@ components:
       required:
         - "name"
         - "alias"
-        - "url"
-        - "type"
         - "subset"
       properties:
         name:
@@ -9938,9 +10173,12 @@ components:
       type: object
       properties:
         error:
-          type: "string"
-          description: Too many fonts
-          example: Too many fonts
+          type: "object"
+          properties:
+            message:
+              type: "string"
+              description: Too many fonts
+              example: Too many fonts
       xml:
         name: TooManyFonts
     Webhook:
@@ -10107,9 +10345,12 @@ components:
       type: object
       properties:
         error:
-          type: "string"
-          description: Too many webhooks
-          example: Too many webhooks
+          type: "object"
+          properties:
+            message:
+              type: "string"
+              description: Too many webhooks
+              example: Too many webhooks
       xml:
         name: TooManyFonts
     ClipartStorage:
@@ -10146,18 +10387,24 @@ components:
       type: object
       properties:
         error:
-          type: "string"
-          description: Too many projects folder
-          example: Too many projects folder
+          type: "object"
+          properties:
+            message:
+              type: "string"
+              description: Too many projects folder
+              example: Too many projects folder
       xml:
         name: TooManyProjectsFolder
     TooManyFoldersByProject:
       type: object
       properties:
         error:
-          type: "string"
-          description: Too many folders by project
-          example: Too many folders by project
+          type: "object"
+          properties:
+            message:
+              type: "string"
+              description: Too many folders by project
+              example: Too many folders by project
       xml:
         name: TooManyFoldersByProject
     Deleted:
@@ -10172,10 +10419,13 @@ components:
     Unauthenticated:
       type: "object"
       properties:
-        message:
-          type: "string"
-          description: "Unauthenticated"
-          example: "Unauthenticated"
+        error:
+          type: "object"
+          properties:
+            message:
+              type: "string"
+              description: "Unauthenticated"
+              example: "Unauthenticated"
       xml:
         name: "Unauthenticated"
     InvalidInput:
@@ -10214,6 +10464,7 @@ components:
       xml:
         name: "InternalServerError"
     CheckUserTier:
+      type: "object"
       properties:
         message:
           type: "string"
@@ -10222,6 +10473,7 @@ components:
       xml:
         name: "CheckUserTier"
     NoData:
+      type: "object"
       properties:
         message:
           type: "string"
