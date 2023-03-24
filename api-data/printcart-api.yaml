@@ -6928,210 +6928,8 @@ components:
         sides:
           type: "array"
           items:
-            type: object
-            required:
-              - "name"
-              - "product_id"
-              - "bg_img_id"
-            properties:
-              product_id:
-                type: "string"
-                description: Product ID
-                example: "962af342-a2c9-4665-bb5d-cb208258d958"
-              name:
-                type: "string"
-                description: The name given to a side
-                example: "printcart"
-              bg_type:
-                type: "string"
-                default: "image"
-                enum:
-                  - "color"
-                  - "image"
-                  - "transparent"
-                example: "image"
-              bg_color_value:
-                type: "string"
-                example: "red"
-              img_overlay_id:
-                type: "string"
-                description: Image ID
-                example: "e8304b84-a015-3bd4-a7d3-7a978f465df2"
-              ratio:
-                type: "number"
-                format: "double"
-                example: 100
-              background_included:
-                type: "boolean"
-                example: true
-              show_overlay:
-                type: "boolean"
-                example: true
-              include_overlay:
-                type: "boolean"
-                example: true
-              show_bleed:
-                type: "boolean"
-                example: true
-              show_safe_zone:
-                type: "boolean"
-                example: true
-              ratio_image:
-                type: "number"
-                format: "double"
-                example: 100
-              bg_img_id:
-                type: "string"
-                description: Image ID
-                example: "e8304b84-a015-3bd4-a7d3-7a978f465df2"
-              status:
-                type: "string"
-                default: "publish"
-                enum: ["publish", "draft", "trashed"]
-                description: Side status
-              product_size:
-                type: "object"
-                properties:
-                  input:
-                    type: "number"
-                    format: "double"
-                    example: 100
-                  width:
-                    type: "number"
-                    format: "float"
-                    example: 50
-                  height:
-                    type: "number"
-                    format: "float"
-                    example: 50
-              design_size:
-                type: "object"
-                properties:
-                  width:
-                    type: "number"
-                    format: "float"
-                    example: 50
-                  height:
-                    type: "number"
-                    format: "float"
-                    example: 50
-                  top:
-                    type: "number"
-                    format: "float"
-                    example: 50
-                  left:
-                    type: "number"
-                    format: "float"
-                    example: 50
-              design_position:
-                type: "object"
-                properties:
-                  width:
-                    type: "number"
-                    format: "float"
-                    example: 50
-                  height:
-                    type: "number"
-                    format: "float"
-                    example: 50
-                  left:
-                    type: "number"
-                    format: "float"
-                    example: 50
-                  top:
-                    type: "number"
-                    format: "float"
-                    example: 50
-              bleed_size:
-                type: "object"
-                properties:
-                  top_bottom:
-                    type: "number"
-                    format: "float"
-                    example: 50.50
-                  left_right:
-                    type: "number"
-                    format: "float"
-                    example: 50.50
-              margin_size:
-                type: "object"
-                properties:
-                  top_bottom:
-                    type: "number"
-                    format: "float"
-                    example: 50
-                  left_right:
-                    type: "number"
-                    format: "float"
-                    example: 50
-              background_size:
-                type: "object"
-                properties:
-                  width:
-                    type: "number"
-                    format: "double"
-                    example: 100
-                  height:
-                    type: "number"
-                    format: "double"
-                    example: 100
-              bleed_position:
-                type: "object"
-                properties:
-                  width:
-                    type: "number"
-                    format: "double"
-                    example: 100
-                  height:
-                    type: "number"
-                    format: "double"
-                    example: 100
-                  top:
-                    type: "number"
-                    format: "double"
-                    example: 100
-                  left:
-                    type: "number"
-                    format: "double"
-                    example: 100
-              margin_position:
-                type: "object"
-                properties:
-                  width:
-                    type: "number"
-                    format: "double"
-                    example: 100
-                  height:
-                    type: "number"
-                    format: "double"
-                    example: 100
-                  top:
-                    type: "number"
-                    format: "double"
-                    example: 100
-                  left:
-                    type: "number"
-                    format: "double"
-                    example: 100
-              measure_size:
-                type: "object"
-                properties:
-                  width:
-                    type: "number"
-                    format: "double"
-                    example: 100
-                  height:
-                    type: "number"
-                    format: "double"
-                    example: 100
-                  top:
-                    type: "number"
-                    format: "double"
-                    example: 100
-                  left:
-                    type: "number"
-                    format: "double"
-                    example: 100
+            type: "array"
+            $ref: "#/components/schemas/Side"
       xml:
         name: "SideBatch"
     SideBatchUpdate:
@@ -7148,14 +6946,10 @@ components:
                 type: "string"
                 description: Side ID
                 example: "c5661a1e-8147-4dc3-8600-00fdc81ed14b"
-              product_id:
-                type: "string"
-                description: Product ID
-                example: "962af342-a2c9-4665-bb5d-cb208258d958"
               name:
                 type: "string"
                 description: The name given to a side
-                example: "printcart"
+                example: "Side Example"
               bg_type:
                 type: "string"
                 default: "image"
@@ -7169,9 +6963,8 @@ components:
                 example: "red"
               img_overlay_id:
                 type: "string"
-                description: Image ID
                 example: "e8304b84-a015-3bd4-a7d3-7a978f465df2"
-              ratio:
+              scale:
                 type: "number"
                 format: "double"
                 example: 100
@@ -7184,168 +6977,72 @@ components:
               include_overlay:
                 type: "boolean"
                 example: true
-              show_bleed:
+              side_image_size:
+                type: "object"
+                properties:
+                  width:
+                    type: "number"
+                    format: "float"
+                    example: 50
+                  height:
+                    type: "number"
+                    format: "float"
+                    example: 50
+              design_area:
+                type: "object"
+                properties:
+                  width:
+                    type: "number"
+                    format: "float"
+                    example: 50
+                  height:
+                    type: "number"
+                    format: "float"
+                    example: 50
+                  top:
+                    type: "number"
+                    format: "float"
+                    example: 50
+                  left:
+                    type: "number"
+                    format: "float"
+                    example: 50
+              show_cut_line:
                 type: "boolean"
                 example: true
+              cut_line_margin:
+                type: "object"
+                properties:
+                  x:
+                    type: "number"
+                    format: "float"
+                    example: 50
+                  y:
+                    type: "number"
+                    format: "float"
+                    example: 50
               show_safe_zone:
                 type: "boolean"
                 example: true
-              ratio_image:
-                type: "number"
-                format: "double"
-                example: 100
-              bg_img_id:
+              safe_zone_margin:
+                type: "object"
+                properties:
+                  x:
+                    type: "number"
+                    format: "float"
+                    example: 50
+                  y:
+                    type: "number"
+                    format: "float"
+                    example: 50
+              side_image_id:
                 type: "string"
-                description: Image ID
                 example: "e8304b84-a015-3bd4-a7d3-7a978f465df2"
               status:
                 type: "string"
                 default: "publish"
                 enum: ["publish", "draft", "trashed"]
                 description: Side status
-              product_size:
-                type: "object"
-                properties:
-                  input:
-                    type: "number"
-                    format: "double"
-                    example: 100
-                  width:
-                    type: "number"
-                    format: "float"
-                    example: 50
-                  height:
-                    type: "number"
-                    format: "float"
-                    example: 50
-              design_size:
-                type: "object"
-                properties:
-                  width:
-                    type: "number"
-                    format: "float"
-                    example: 50
-                  height:
-                    type: "number"
-                    format: "float"
-                    example: 50
-                  top:
-                    type: "number"
-                    format: "float"
-                    example: 50
-                  left:
-                    type: "number"
-                    format: "float"
-                    example: 50
-              design_position:
-                type: "object"
-                properties:
-                  width:
-                    type: "number"
-                    format: "float"
-                    example: 50
-                  height:
-                    type: "number"
-                    format: "float"
-                    example: 50
-                  left:
-                    type: "number"
-                    format: "float"
-                    example: 50
-                  top:
-                    type: "number"
-                    format: "float"
-                    example: 50
-              bleed_size:
-                type: "object"
-                properties:
-                  top_bottom:
-                    type: "number"
-                    format: "float"
-                    example: 50.50
-                  left_right:
-                    type: "number"
-                    format: "float"
-                    example: 50.50
-              margin_size:
-                type: "object"
-                properties:
-                  top_bottom:
-                    type: "number"
-                    format: "float"
-                    example: 50
-                  left_right:
-                    type: "number"
-                    format: "float"
-                    example: 50
-              background_size:
-                type: "object"
-                properties:
-                  width:
-                    type: "number"
-                    format: "double"
-                    example: 100
-                  height:
-                    type: "number"
-                    format: "double"
-                    example: 100
-              bleed_position:
-                type: "object"
-                properties:
-                  width:
-                    type: "number"
-                    format: "double"
-                    example: 100
-                  height:
-                    type: "number"
-                    format: "double"
-                    example: 100
-                  top:
-                    type: "number"
-                    format: "double"
-                    example: 100
-                  left:
-                    type: "number"
-                    format: "double"
-                    example: 100
-              margin_position:
-                type: "object"
-                properties:
-                  width:
-                    type: "number"
-                    format: "double"
-                    example: 100
-                  height:
-                    type: "number"
-                    format: "double"
-                    example: 100
-                  top:
-                    type: "number"
-                    format: "double"
-                    example: 100
-                  left:
-                    type: "number"
-                    format: "double"
-                    example: 100
-              measure_size:
-                type: "object"
-                properties:
-                  width:
-                    type: "number"
-                    format: "double"
-                    example: 100
-                  height:
-                    type: "number"
-                    format: "double"
-                    example: 100
-                  top:
-                    type: "number"
-                    format: "double"
-                    example: 100
-                  left:
-                    type: "number"
-                    format: "double"
-                    example: 100
       xml:
         name: "SideBatchUpdate"
     SideBatchDelete:
