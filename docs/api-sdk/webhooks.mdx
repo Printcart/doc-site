@@ -9,6 +9,21 @@ For example, you can rely on a webhook to trigger an action in your app when a n
 
 For more information on how to create a webhook and the data returned by the event topic, refer to the [Webhook API](/rest-api-reference#tag/Webhook) and the [Webhook event topic](/docs/api-sdk/webhooks#event-topics)
 
+## Verify the signature
+
+Verify the signature for each webhook to check that it was sent by Printcart, you need to add a valid webhook secret that is unique to your app and doesn't change.
+
+:::info
+
+`base64_encode(sid:secret)` is a formula for encoding the `sid` and `secret` values into a secret string that is used to authenticate webhooks. 
+
+The `sid` and `secret` values represent a specific store on Printcart, and this key pair is generated when you [create a new store](/rest-api-reference#tag/Store/operation/createStore).
+You can find the key pair in the **Settings** section of your [Printcart Dashboard](https://dashboard.printcart.com/). 
+
+For security reasons, you should not publicly share the `sid` and `secret` key pair information anywhere.
+
+:::
+
 ## The Webhook subscription object
 
 ### Properties
@@ -326,7 +341,7 @@ Date and time when the webhook subscription was updated. The API returns this va
       }
     ]
   },
-  "message": "Created successfully",
+  "message": "Created successfully"
 }
 ```
 
@@ -617,7 +632,7 @@ Date and time when the webhook subscription was updated. The API returns this va
       }
     ]
   },
-  "message": "Updated successfully",
+  "message": "Updated successfully"
 }
 ```
 
@@ -1471,7 +1486,7 @@ Date and time when the webhook subscription was updated. The API returns this va
       ]
     }
   ],
-  "message": "Created successfully",
+  "message": "Created successfully"
 }
 ```
 
@@ -2848,7 +2863,7 @@ Date and time when the webhook subscription was updated. The API returns this va
       "updated_at": "2023-03-12T09:20:58.000000Z"
     }
   ],
-  "message": "Created successfully",
+  "message": "Created successfully"
 }
 ```
 
@@ -2931,7 +2946,7 @@ Date and time when the webhook subscription was updated. The API returns this va
       "updated_at": "2023-03-12T09:20:58.000000Z"
     }
   ],
-  "message": "Updated successfully",
+  "message": "Updated successfully"
 }
 ```
 
@@ -3043,7 +3058,7 @@ Date and time when the webhook subscription was updated. The API returns this va
     "created_at": "2021-11-16T08:26:30.000000Z",
     "updated_at": "2021-11-16T08:26:30.000000Z"
   },
-  "message": "Created successfully",
+  "message": "Created successfully"
 }
 ```
 
@@ -3070,7 +3085,7 @@ Date and time when the webhook subscription was updated. The API returns this va
     "created_at": "2021-11-16T08:26:30.000000Z",
     "updated_at": "2021-11-16T08:26:30.000000Z"
   },
-  "message": "Updated successfully",
+  "message": "Updated successfully"
 }
 ```
 
@@ -3134,7 +3149,7 @@ Date and time when the webhook subscription was updated. The API returns this va
       "updated_at": "2021-11-16T08:26:30.000000Z"
     }
   ],
-  "message": "Created successfully",
+  "message": "Created successfully"
 }
 ```
 
@@ -3171,7 +3186,7 @@ Date and time when the webhook subscription was updated. The API returns this va
       "updated_at": "2021-11-16T08:26:30.000000Z"
     }
   ],
-  "message": "Updated successfully",
+  "message": "Updated successfully"
 }
 ```
 
@@ -3328,7 +3343,7 @@ Date and time when the webhook subscription was updated. The API returns this va
     "created_at": "2021-11-16T08:26:30.000000Z",
     "updated_at": "2021-11-16T08:26:30.000000Z"
   },
-  "message": "Created successfully",
+  "message": "Created successfully"
 }
 ```
 
@@ -3446,7 +3461,7 @@ Date and time when the webhook subscription was updated. The API returns this va
     "created_at": "2021-11-16T08:26:30.000000Z",
     "updated_at": "2021-11-16T08:26:30.000000Z"
   },
-  "message": "Updated successfully",
+  "message": "Updated successfully"
 }
 ```
 
@@ -3783,7 +3798,7 @@ Date and time when the webhook subscription was updated. The API returns this va
       "updated_at": "2021-11-16T08:26:30.000000Z"
     }
   ],
-  "message": "Created successfully",
+  "message": "Created successfully"
 }
 ```
 
@@ -4002,7 +4017,7 @@ Date and time when the webhook subscription was updated. The API returns this va
       "updated_at": "2021-11-16T08:26:30.000000Z"
     }
   ],
-  "message": "Updated successfully",
+  "message": "Updated successfully"
 }
 ```
 
@@ -4511,7 +4526,7 @@ Date and time when the webhook subscription was updated. The API returns this va
     "created_at": "2021-11-16T08:26:30.000000Z",
     "updated_at": "2021-11-16T08:26:30.000000Z"
   },
-  "message": "Created successfully",
+  "message": "Created successfully"
 }
 ```
 
@@ -4799,7 +4814,7 @@ Date and time when the webhook subscription was updated. The API returns this va
     "created_at": "2021-11-16T08:26:30.000000Z",
     "updated_at": "2021-11-16T08:26:30.000000Z"
   },
-  "message": "Updated successfully",
+  "message": "Updated successfully"
 }
 ```
 
@@ -5646,7 +5661,7 @@ Date and time when the webhook subscription was updated. The API returns this va
       "updated_at": "2021-11-16T08:26:30.000000Z"
     }
   ],
-  "message": "Created successfully",
+  "message": "Created successfully"
 }
 ```
 
@@ -6205,7 +6220,7 @@ Date and time when the webhook subscription was updated. The API returns this va
       "updated_at": "2021-11-16T08:26:30.000000Z"
     }
   ],
-  "message": "Updated successfully",
+  "message": "Updated successfully"
 }
 ```
 
@@ -6769,12 +6784,3 @@ Date and time when the webhook subscription was updated. The API returns this va
 ```
 
 </details>
-
-<!-- ## How to use
-
-### Callback url
-
-
-## Best practices
-
-https://shopify.dev/apps/webhooks -->
