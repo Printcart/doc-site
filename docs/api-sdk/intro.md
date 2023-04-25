@@ -19,6 +19,6 @@ Whether you're integrating your storefront or looking for ways to extend Printca
 
 [**Rest API** Learn how to make the most of your printcart dashboard.](api-sdk/api-overview.md)
 
-[**Webhooks** Learn how to make the most of your printcart dashboard.](api-sdk/webhooks.md)
+[**Webhooks** Learn how to make the most of your printcart dashboard.](api-sdk/webhooks.mdx)
 
 </CardGrid>

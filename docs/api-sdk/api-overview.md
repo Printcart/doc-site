@@ -114,6 +114,6 @@ Now you had basic understanding about Printcart API, we recommnend you to read t
 
 <CardGrid>
 
-[**Webhooks** Learn more about Printcart Webhooks.](api-sdk/webhooks.md)
+[**Webhooks** Learn more about Printcart Webhooks.](api-sdk/webhooks.mdx)
 
 </CardGrid>
