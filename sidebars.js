@@ -22,18 +22,20 @@ module.exports = {
       "users-manual/integrations",
     ],
   },
-  developer: {
-    "Developer's Guide": [
-      "api-sdk/intro",
-      "api-sdk/design-tool",
-      "api-sdk/api-overview",
-      "api-sdk/webhooks",
-    ],
-  },
-  api: [
-    "reference/design-tool-sdk",
-    "reference/uploader-sdk",
-    "reference/rest-api",
+  apiReference: [
+    "api-reference/intro",
+    "api-reference/api-overview",
+    "api-reference/webhooks",
+    {
+      type: "link",
+      label: "REST API Reference",
+      href: "/rest-api-reference",
+    },
+  ],
+  sdkReference: [
+    "sdk-reference/intro",
+    "sdk-reference/design-tool-sdk",
+    "sdk-reference/uploader-sdk",
   ],
   //   "Online Design tool": {
   //     "Intro online design tool": [
