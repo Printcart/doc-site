@@ -24,8 +24,8 @@ Here you'll find everything you need to start working with Printcart.
 
 <CardGrid home>
 
-[**Developer Guide** Learn how to make the most of Printcart.](docs/api-sdk/intro)
+[**APIs Reference** Start building with Printcart with API.](docs/api-reference/intro.md)
 
-[**API Reference** Start building with Printcart with API and SDK.](docs/api-sdk/intro)
+[**SDKs Reference** Start building with Printcart with SDK.](docs/sdk-reference/intro.md)
 
 </CardGrid>
