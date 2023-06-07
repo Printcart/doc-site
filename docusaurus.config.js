@@ -14,7 +14,7 @@ const darkCodeTheme = require("prism-react-renderer/themes/dracula");
     // Set the /<baseUrl>/ pathname under which your site is served
     // For GitHub pages deployment, it is often '/<projectName>/'
     baseUrl: "/",
-    
+
     onBrokenLinks: "throw",
     onBrokenMarkdownLinks: "warn",
 
@@ -27,8 +27,8 @@ const darkCodeTheme = require("prism-react-renderer/themes/dracula");
     // metadata like html lang. For example, if your site is Chinese, you may want
     // to replace "en" with "zh-Hans".
     i18n: {
-      defaultLocale: 'en',
-      locales: ['en'],
+      defaultLocale: "en",
+      locales: ["en"],
     },
 
     presets: [
@@ -83,15 +83,15 @@ const darkCodeTheme = require("prism-react-renderer/themes/dracula");
             // },
             {
               type: "doc",
-              docId: "api-sdk/intro",
+              docId: "api-reference/intro",
               position: "left",
-              label: "Developer Guide",
+              label: "APIs and reference",
             },
             {
               type: "doc",
-              docId: "reference/design-tool-sdk",
+              docId: "sdk-reference/intro",
               position: "left",
-              label: "API Reference",
+              label: "SDKs and reference",
             },
           ],
         },

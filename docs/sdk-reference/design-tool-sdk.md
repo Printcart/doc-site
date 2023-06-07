@@ -1,4 +1,5 @@
 ---
+sidebar_position: 3
 title: Design Tool SDK
 ---
 
@@ -54,21 +55,21 @@ Using CDN-hosted copy of the library:
 
 ## Options
 
-### `token`
+### <span style={{ color: `var(--ifm-color-primary)` }}> `token` </span>
 
 - Required
 - Type: `string`
 
 Your Printcart Unauth Token. You can get your token from your [Printcart Dashboard](https://dashboard.printcart.com/settings).
 
-### `productId`
+### <span style={{ color: `var(--ifm-color-primary)` }}> `productId` </span>
 
 - Required
 - Type: `string`
 
 The Product ID that you want to assign the designer to.
 
-### `options`
+### <span style={{ color: `var(--ifm-color-primary)` }}> `options` </span>
 
 - Optional
 - Type: `object | undefined`
@@ -82,7 +83,7 @@ Provide options to config the Designer UI and locale.
 
 ## Methods
 
-### `render`
+### <span style={{ color: `var(--ifm-color-primary)` }}> `render` </span>
 
 Render and display Designer.
 
@@ -101,7 +102,7 @@ openDesignerButton.addEventListener("click", function () {
 });
 ```
 
-### `close`
+### <span style={{ color: `var(--ifm-color-primary)` }}> `close` </span>
 
 Unmount and hide Designer.
 
@@ -111,7 +112,7 @@ Unmount and hide Designer.
 designer.close();
 ```
 
-### `on`
+### <span style={{ color: `var(--ifm-color-primary)` }}> `on` </span>
 
 Subscribe to a Design Tool event. See [below](#events) for full list of events.
 
@@ -125,7 +126,7 @@ designer.on("upload-success", callback);
 
 Exposed events that you can subscribe in your app:
 
-### `rendered`
+### <span style={{ color: `var(--ifm-color-primary)` }}> `rendered` </span>
 
 Fired when Designer finish render and displayed to the screen.
 
@@ -137,7 +138,7 @@ designer.on("rendered", function () {
 });
 ```
 
-### `closed`
+### <span style={{ color: `var(--ifm-color-primary)` }}> `closed` </span>
 
 Fired when Designer closed.
 
@@ -149,7 +150,7 @@ designer.on("closed", function () {
 });
 ```
 
-### `render-finish`
+### <span style={{ color: `var(--ifm-color-primary)` }}> `render-finish` </span>
 
 Fired when Designer fully loaded.
 
@@ -161,7 +162,7 @@ designer.on("render-finish", function () {
 });
 ```
 
-### `upload-success`
+### <span style={{ color: `var(--ifm-color-primary)` }}> `upload-success` </span>
 
 **Parameters**:
 
@@ -177,7 +178,7 @@ designer.on("upload-success", function (response) {
 });
 ```
 
-### `upload-error`
+### <span style={{ color: `var(--ifm-color-primary)` }}> `upload-error` </span>
 
 **Parameters**:
 
@@ -191,7 +192,7 @@ designer.on("upload-error", function (error) {
 });
 ```
 
-### `edit-success`
+### <span style={{ color: `var(--ifm-color-primary)` }}> `edit-success` </span>
 
 **Parameters**:
 
@@ -205,7 +206,7 @@ designer.on("edit-success", function (response) {
 });
 ```
 
-### `edit`
+### <span style={{ color: `var(--ifm-color-primary)` }}> `edit` </span>
 
 Fired when Designer enter edit mode.
 
@@ -216,3 +217,4 @@ designer.on("edit", function () {
   console.log("Designer on edit mode");
 });
 ```
+

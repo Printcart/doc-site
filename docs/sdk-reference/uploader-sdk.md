@@ -54,21 +54,21 @@ Using CDN-hosted copy of the library:
 
 ## Parameters
 
-### `token` {#token}
+### <span style={{ color: `var(--ifm-color-primary)` }}> `token` </span> {#token}
 
 - Required
 - Type: `string`
 
 Your Printcart Unauth Token. You can get your token from your [Printcart Dashboard](https://dashboard.printcart.com/settings).
 
-### `sideId` {#sideId}
+### <span style={{ color: `var(--ifm-color-primary)` }}> `sideId` </span> {#sideId}
 
 - Required
 - Type: `string`
 
 The Product Side ID that you want to assign the design uploaded to.
 
-### `locale` {#locale}
+### <span style={{ color: `var(--ifm-color-primary)` }}> `locale` </span> {#locale}
 
 - Optional
 - Type: `object | undefined`
@@ -88,7 +88,7 @@ Key - value pairs of text to override the Uploader's default text labels. Defaul
 
 ## Methods
 
-### `open`
+### <span style={{ color: `var(--ifm-color-primary)` }}> `open` </span>
 
 Render and display Uploader.
 
@@ -107,7 +107,7 @@ openUploaderButton.addEventListener("click", function () {
 });
 ```
 
-### `close`
+### <span style={{ color: `var(--ifm-color-primary)` }}> `close` </span>
 
 Unmount and hide Uploader.
 
@@ -117,7 +117,7 @@ Unmount and hide Uploader.
 uploader.close();
 ```
 
-### `locale`
+### <span style={{ color: `var(--ifm-color-primary)` }}> `locale` </span>
 
 Get all localization text labels.
 
@@ -136,7 +136,7 @@ console.log(text);
 // }
 ```
 
-### `on`
+### <span style={{ color: `var(--ifm-color-primary)` }}> `on` </span>
 
 Subscribe to an Uploader event. See below for full list of events.
 
@@ -148,7 +148,7 @@ uploader.on("event", actionCallback);
 
 Exposed events that you can subscribe in your app:
 
-### `open`
+### <span style={{ color: `var(--ifm-color-primary)` }}> `open` </span>
 
 Fired when Uploader render finish and displayed to the screen.
 
@@ -160,7 +160,7 @@ uploader.on("open", function () {
 });
 ```
 
-### `onload`
+### <span style={{ color: `var(--ifm-color-primary)` }}> `onload` </span>
 
 Fired when Uploader render finish but before displayed to the screen.
 
@@ -172,7 +172,7 @@ uploader.on("onload", function () {
 });
 ```
 
-### `upload-success`
+### <span style={{ color: `var(--ifm-color-primary)` }}> `upload-success` </span>
 
 **Parameters**:
 
@@ -190,7 +190,7 @@ uploader.on("upload-success", function (response, file) {
 });
 ```
 
-### `upload-error`
+### <span style={{ color: `var(--ifm-color-primary)` }}> `upload-error` </span>
 
 **Parameters**:
 
