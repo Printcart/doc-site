@@ -6197,6 +6197,11 @@ components:
         enable_upload:
           type: "boolean"
           example: false
+        enable_pod:
+          type: "boolean"
+          default: false
+          example: false
+          description: True if you want the product to be published on our POD page
         product_image_id:
           type: "string"
           description: Image ID.
@@ -6235,6 +6240,10 @@ components:
           type: "integer"
           description: Limit file upload size
           example: null
+        metadata:
+          type: "array"
+          items:
+            type: ""
       xml:
         name: "Product"
     ProductUpdate:
@@ -6304,6 +6313,10 @@ components:
         enable_upload:
           type: "boolean"
           example: false
+        enable_pod:
+          type: "boolean"
+          example: false
+          description: True if you want the product to be published on our POD page
         product_image_id:
           type: "string"
           description: Image ID.
@@ -6321,6 +6334,10 @@ components:
           type: "integer"
           description: Limit file upload size
           example: null
+        metadata:
+          type: "array"
+          items:
+            type: ""
       xml:
         name: "ProductUpdate"
     ProductBatch:
@@ -6413,6 +6430,10 @@ components:
               enable_upload:
                 type: "boolean"
                 example: false
+              enable_pod:
+                type: "boolean"
+                example: false
+                description: True if you want the product to be published on our POD page
               product_image_id:
                 type: "string"
                 description: Image ID
@@ -6425,6 +6446,10 @@ components:
                 type: "integer"
                 description: Limit file upload size
                 example: null
+              metadata:
+                type: "array"
+                items:
+                  type: ""
       xml:
         name: "ProductBatchUpdate"
     ProductBatchDelete:
@@ -6512,6 +6537,9 @@ components:
         enable_upload:
           type: "boolean"
           example: true
+        enable_pod:
+          type: "boolean"
+          example: false
         upload_max_filesize:
           type: "integer"
           example: null
@@ -6526,6 +6554,8 @@ components:
         updated_at:
           type: "string"
           example: "2021-11-16T08:26:30.000000Z"
+        metadata:
+          example: null
       xml:
         name: "ProductResponse"
     ProductResponseStore:
