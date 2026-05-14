@@ -1,0 +1,2316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>SignEdge Graphics — Custom Quote</title>
+<style>
+  :root {
+    --pc-brand: #2563eb;
+    --pc-brand-pressed: #1d4ed8;
+    --pc-brand-soft: #dbeafe;
+    --pc-brand-gradient: linear-gradient(135deg, #2563eb, #1e40af);
+    --pc-accent: #fbbf24;
+    --text: #1f2937;
+    --text-soft: #4b5563;
+    --text-mute: #9ca3af;
+    --border: #e5e7eb;
+    --border-light: #f3f4f6;
+    --bg: #ffffff;
+    --bg-soft: #f9fafb;
+    --bg-page: #f3f4f6;
+    --success: #16a34a;
+    --success-soft: #dcfce7;
+    --warning: #d97706;
+    --warning-soft: #fef3c7;
+    --error: #dc2626;
+    --error-soft: #fee2e2;
+    --radius-sm: 4px;
+    --radius-md: 6px;
+    --radius-lg: 10px;
+    --shadow-sm: 0 1px 2px rgba(0,0,0,0.06);
+    --shadow-md: 0 2px 8px rgba(0,0,0,0.08);
+    --shadow-lg: 0 8px 24px rgba(0,0,0,0.12);
+    --shadow-xl: 0 16px 40px rgba(0,0,0,0.15);
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; font-size: 14px; line-height: 1.5; color: var(--text); background: var(--bg-page); }
+  button, input, select, textarea { font: inherit; color: inherit; }
+  button { cursor: pointer; border: none; background: none; }
+  a { color: var(--pc-brand); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  code { font-family: monospace; font-size: 0.92em; }
+  hr { border: none; border-top: 1px solid var(--border-light); margin: 16px 0; }
+
+  /* Topbar */
+  .se-topbar { background: #fff; border-bottom: 1px solid var(--border); height: 64px; display: flex; align-items: center; padding: 0 32px; gap: 24px; position: sticky; top: 0; z-index: 50; }
+  .se-logo { font-size: 18px; font-weight: 800; color: var(--text); display: flex; align-items: center; gap: 8px; }
+  .se-logo-mark { width: 32px; height: 32px; background: var(--pc-brand-gradient); border-radius: 8px; color: #fff; display: grid; place-items: center; font-weight: 800; }
+  .se-nav { display: flex; gap: 28px; flex: 1; align-items: center; font-size: 14px; }
+  .se-nav a { color: var(--text); font-weight: 500; }
+  .se-nav a.is-active { color: var(--pc-brand); font-weight: 600; }
+  .se-topbar-right { display: flex; align-items: center; gap: 12px; }
+  .se-icon-btn { width: 36px; height: 36px; border-radius: 50%; display: grid; place-items: center; color: var(--text-soft); position: relative; }
+  .se-icon-btn:hover { background: var(--bg-soft); color: var(--pc-brand); }
+  .se-icon-btn svg { width: 18px; height: 18px; stroke: currentColor; stroke-width: 2; fill: none; }
+  .se-icon-badge { position: absolute; top: 4px; right: 4px; min-width: 16px; height: 16px; background: var(--error); color: #fff; border-radius: 8px; font-size: 10px; font-weight: 700; display: grid; place-items: center; padding: 0 4px; border: 2px solid #fff; }
+  .se-user { display: flex; align-items: center; gap: 8px; padding: 4px 12px 4px 4px; border-radius: 9999px; background: var(--bg-soft); font-size: 13px; font-weight: 500; }
+  .se-avatar { width: 28px; height: 28px; border-radius: 50%; background: linear-gradient(135deg, #dc2626, #991b1b); color: #fff; display: grid; place-items: center; font-size: 11px; font-weight: 700; }
+
+  /* Layout */
+  .container { max-width: 1280px; margin: 0 auto; padding: 32px; }
+  .breadcrumb { display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--text-soft); margin-bottom: 16px; }
+  .breadcrumb a { color: var(--text-soft); }
+  .breadcrumb svg { width: 12px; height: 12px; stroke: currentColor; stroke-width: 2; fill: none; }
+  .page-title { font-size: 28px; font-weight: 700; margin: 0 0 8px; letter-spacing: -0.02em; }
+  .page-sub { color: var(--text-soft); font-size: 15px; margin: 0 0 24px; }
+
+  /* Page system */
+  .page { display: none; }
+  .page.is-active { display: block; }
+
+  /* Cards */
+  .card { background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius-lg); box-shadow: var(--shadow-sm); margin-bottom: 16px; overflow: hidden; }
+  .card-head { padding: 16px 20px; border-bottom: 1px solid var(--border-light); display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+  .card-head.brand { background: linear-gradient(135deg, var(--pc-brand-soft), #eff6ff); }
+  .card-head.success { background: linear-gradient(135deg, var(--success-soft), #ecfdf5); }
+  .card-head.warning { background: linear-gradient(135deg, var(--warning-soft), #fffbeb); }
+  .card-title { font-size: 16px; font-weight: 700; display: flex; align-items: center; gap: 8px; }
+  .card-title svg { width: 18px; height: 18px; stroke: var(--pc-brand); stroke-width: 2; fill: none; }
+  .card-head.success .card-title svg { stroke: var(--success); }
+  .card-head.warning .card-title svg { stroke: var(--warning); }
+  .card-body { padding: 20px; }
+  .card-body.flush { padding: 0; }
+
+  /* Form */
+  .form-grid { display: grid; grid-template-columns: 200px 1fr; gap: 16px 24px; align-items: start; }
+  .form-grid label { font-size: 14px; font-weight: 600; padding-top: 8px; }
+  .label-sub { font-size: 12px; font-weight: 400; color: var(--text-soft); margin-top: 2px; }
+  .req { color: var(--error); margin-left: 2px; }
+  .input, .select, .textarea { width: 100%; height: 38px; padding: 0 12px; background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius-md); font-size: 14px; transition: all 0.15s; color: var(--text); }
+  .textarea { height: auto; min-height: 80px; padding: 10px 12px; line-height: 1.5; resize: vertical; font-family: inherit; }
+  .input:focus, .select:focus, .textarea:focus { outline: none; border-color: var(--pc-brand); box-shadow: 0 0 0 3px rgba(37,99,235,0.1); }
+  .select { appearance: none; background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%236b7280' d='M6 8L0 0h12z'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 12px center; padding-right: 36px; }
+  .input--narrow { width: 100px; }
+  .input--medium { max-width: 300px; }
+  .input-row { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+
+  /* Radio cards */
+  .radio-cards { display: grid; gap: 8px; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); }
+  .radio-card { background: var(--bg); border: 1.5px solid var(--border); border-radius: var(--radius-md); padding: 12px; cursor: pointer; transition: all 0.15s; position: relative; }
+  .radio-card input[type="radio"] { position: absolute; opacity: 0; }
+  .radio-card:hover { border-color: var(--pc-brand); }
+  .radio-card.active { border-color: var(--pc-brand); background: var(--pc-brand-soft); }
+  .radio-card-title { font-size: 14px; font-weight: 700; }
+  .radio-card-desc { font-size: 11px; color: var(--text-soft); margin-top: 2px; line-height: 1.4; }
+
+  .checkbox { display: flex; align-items: center; gap: 8px; font-size: 13px; cursor: pointer; }
+
+  /* Upload */
+  .upload-zone { border: 2px dashed var(--border); background: var(--bg-soft); border-radius: var(--radius-md); padding: 24px; text-align: center; cursor: pointer; }
+  .upload-zone:hover { border-color: var(--pc-brand); background: var(--pc-brand-soft); }
+  .upload-icon { width: 40px; height: 40px; background: var(--bg); border: 1px solid var(--border); border-radius: 50%; display: grid; place-items: center; margin: 0 auto 8px; color: var(--pc-brand); }
+  .upload-icon svg { width: 18px; height: 18px; stroke: currentColor; stroke-width: 2; fill: none; }
+  .upload-title { font-size: 14px; font-weight: 600; margin-bottom: 4px; }
+  .upload-desc { font-size: 12px; color: var(--text-soft); }
+  .file-item { display: flex; align-items: center; gap: 10px; padding: 10px 12px; background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius-md); margin-top: 8px; }
+  .file-item-icon { width: 36px; height: 36px; background: var(--pc-brand-soft); color: var(--pc-brand); border-radius: var(--radius-sm); display: grid; place-items: center; }
+  .file-item-icon svg { width: 18px; height: 18px; stroke: currentColor; stroke-width: 2; fill: none; }
+  .file-item-info { flex: 1; }
+  .file-item-name { font-size: 13px; font-weight: 600; }
+  .file-item-meta { font-size: 11px; color: var(--text-soft); }
+
+  /* Buttons */
+  .btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; height: 40px; padding: 0 18px; border-radius: var(--radius-md); font-size: 14px; font-weight: 600; transition: all 0.15s; white-space: nowrap; cursor: pointer; border: 1px solid transparent; }
+  .btn--lg { height: 48px; padding: 0 24px; font-size: 15px; }
+  .btn--sm { height: 32px; padding: 0 12px; font-size: 13px; }
+  .btn svg { width: 14px; height: 14px; stroke: currentColor; stroke-width: 2; fill: none; }
+  .btn-primary { background: var(--pc-brand); color: #fff; }
+  .btn-primary:hover { background: var(--pc-brand-pressed); text-decoration: none; }
+  .btn-success { background: var(--success); color: #fff; }
+  .btn-success:hover { background: #15803d; text-decoration: none; }
+  .btn-secondary { background: #fff; color: var(--pc-brand); border-color: var(--pc-brand); }
+  .btn-secondary:hover { background: var(--pc-brand-soft); text-decoration: none; }
+  .btn-tertiary { background: #fff; color: var(--text); border-color: var(--border); }
+  .btn-tertiary:hover { background: var(--bg-soft); text-decoration: none; }
+  .btn-danger { background: #fff; color: var(--error); border-color: var(--error); }
+  .btn-danger:hover { background: var(--error-soft); text-decoration: none; }
+
+  /* Stepper */
+  .stepper { display: flex; align-items: center; gap: 8px; padding: 16px 24px; background: #fff; border: 1px solid var(--border); border-radius: var(--radius-lg); box-shadow: var(--shadow-sm); margin-bottom: 16px; position: relative; }
+  .stepper-line { position: absolute; top: 50%; left: 60px; right: 60px; height: 2px; background: var(--border); z-index: 0; }
+  .stepper-line-fill { position: absolute; top: 50%; left: 60px; height: 2px; background: var(--success); z-index: 0; }
+  .stepper-item { display: flex; flex-direction: column; align-items: center; gap: 6px; flex: 1; position: relative; z-index: 1; }
+  .stepper-dot { width: 32px; height: 32px; border-radius: 50%; background: var(--bg); border: 2px solid var(--border); display: grid; place-items: center; font-size: 13px; font-weight: 700; color: var(--text-mute); }
+  .stepper-item[data-state="done"] .stepper-dot { background: var(--success); border-color: var(--success); color: #fff; }
+  .stepper-item[data-state="active"] .stepper-dot { background: var(--pc-brand); border-color: var(--pc-brand); color: #fff; box-shadow: 0 0 0 4px rgba(37,99,235,0.15); }
+  .stepper-label { font-size: 12px; font-weight: 600; color: var(--text-soft); text-align: center; }
+  .stepper-item[data-state="active"] .stepper-label { color: var(--pc-brand); font-weight: 700; }
+
+  /* Quote hero (customer view) */
+  .quote-hero { background: var(--pc-brand-gradient); border-radius: var(--radius-lg); padding: 32px; color: #fff; margin-bottom: 16px; position: relative; overflow: hidden; }
+  .quote-hero::before { content: ""; position: absolute; top: -100px; right: -50px; width: 300px; height: 300px; background: rgba(255,255,255,0.05); border-radius: 50%; }
+  .quote-hero-eyebrow { font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; opacity: 0.85; margin-bottom: 8px; }
+  .quote-hero-title { font-size: 32px; font-weight: 800; margin: 0 0 12px; }
+  .quote-hero-meta { font-size: 14px; opacity: 0.95; line-height: 1.6; }
+  .quote-validity { display: inline-flex; align-items: center; gap: 6px; padding: 4px 10px; background: rgba(255,255,255,0.18); border-radius: 9999px; font-size: 12px; font-weight: 600; margin-top: 16px; }
+  .quote-validity svg { width: 12px; height: 12px; stroke: currentColor; stroke-width: 2.5; fill: none; }
+  .quote-hero-total { margin-top: 24px; padding-top: 24px; border-top: 1px solid rgba(255,255,255,0.2); display: flex; align-items: baseline; gap: 16px; }
+  .quote-hero-total-value { font-size: 36px; font-weight: 800; color: var(--pc-accent); }
+
+  /* Action bar */
+  .action-bar { background: linear-gradient(135deg, #fff, var(--pc-brand-soft)); border: 1px solid var(--pc-brand); border-radius: var(--radius-lg); padding: 24px; box-shadow: var(--shadow-md); margin-bottom: 16px; display: flex; align-items: center; gap: 24px; justify-content: space-between; flex-wrap: wrap; position: sticky; top: 80px; z-index: 10; }
+  .action-bar-msg { font-size: 15px; flex: 1; }
+
+  /* Items table */
+  .items-table { width: 100%; border-collapse: collapse; font-size: 14px; }
+  .items-table th { text-align: left; padding: 12px 16px; background: var(--bg-soft); border-bottom: 2px solid var(--border); font-size: 12px; font-weight: 600; color: var(--text-soft); text-transform: uppercase; letter-spacing: 0.04em; }
+  .items-table td { padding: 16px; border-bottom: 1px solid var(--border-light); vertical-align: top; }
+  .items-table .col-num { text-align: right; width: 100px; }
+  .items-total { padding: 16px; background: var(--bg-soft); display: flex; flex-direction: column; gap: 6px; }
+  .total-row { display: flex; justify-content: space-between; padding: 4px 0; }
+  .total-row.grand { font-size: 22px; font-weight: 800; color: var(--pc-brand); border-top: 2px solid var(--border); margin-top: 8px; padding-top: 12px; }
+
+  /* Layout 2-col */
+  .layout-2col { display: grid; grid-template-columns: 1fr 360px; gap: 24px; align-items: start; }
+  @media (max-width: 1023px) { .layout-2col { grid-template-columns: 1fr; } }
+
+  /* Notice */
+  .notice { padding: 14px 16px; border-radius: var(--radius-md); display: flex; align-items: flex-start; gap: 12px; font-size: 13px; line-height: 1.5; margin-bottom: 16px; border-left: 4px solid; }
+  .notice svg { width: 18px; height: 18px; stroke: currentColor; stroke-width: 2; fill: none; flex-shrink: 0; margin-top: 1px; }
+  .notice-info { background: var(--pc-brand-soft); color: #1e3a8a; border-color: var(--pc-brand); }
+  .notice-warning { background: var(--warning-soft); color: #78350f; border-color: var(--warning); }
+  .notice-success { background: var(--success-soft); color: #14532d; border-color: var(--success); }
+
+  /* Modal */
+  .modal-bg { position: fixed; inset: 0; background: rgba(0,0,0,0.5); display: none; align-items: center; justify-content: center; z-index: 100; padding: 16px; }
+  .modal-bg.open { display: flex; }
+  .modal { background: #fff; border-radius: var(--radius-lg); box-shadow: var(--shadow-xl); max-width: 540px; width: 100%; max-height: 90vh; overflow-y: auto; }
+  .modal-head { padding: 20px; border-bottom: 1px solid var(--border-light); display: flex; align-items: center; justify-content: space-between; }
+  .modal-title { font-size: 18px; font-weight: 700; }
+  .modal-close { width: 32px; height: 32px; border-radius: 50%; color: var(--text-mute); display: grid; place-items: center; }
+  .modal-close:hover { background: var(--bg-soft); color: var(--text); }
+  .modal-close svg { width: 16px; height: 16px; stroke: currentColor; stroke-width: 2; fill: none; }
+  .modal-body { padding: 20px; }
+  .modal-foot { padding: 16px 20px; background: var(--bg-soft); border-top: 1px solid var(--border-light); display: flex; justify-content: flex-end; gap: 12px; }
+
+  /* Confirmation */
+  .confirm { text-align: center; padding: 40px 20px; }
+  .confirm-icon { width: 64px; height: 64px; background: var(--success); color: #fff; border-radius: 50%; display: grid; place-items: center; margin: 0 auto 16px; }
+  .confirm-icon svg { width: 28px; height: 28px; stroke: currentColor; stroke-width: 2.5; fill: none; }
+  .confirm-title { font-size: 24px; font-weight: 800; margin: 0 0 8px; }
+  .confirm-sub { font-size: 15px; color: var(--text-soft); max-width: 480px; margin: 0 auto 24px; line-height: 1.6; }
+
+  /* Status timeline (sidebar) */
+  .status-item { display: flex; gap: 10px; align-items: flex-start; padding: 8px 0; }
+  .status-dot { width: 22px; height: 22px; border-radius: 50%; background: var(--bg); border: 2px solid var(--border); display: grid; place-items: center; flex-shrink: 0; font-size: 11px; font-weight: 700; color: var(--text-mute); }
+  .status-dot svg { width: 12px; height: 12px; stroke: currentColor; stroke-width: 2.5; fill: none; }
+  .status-item[data-state="done"] .status-dot { background: var(--success); border-color: var(--success); color: #fff; }
+  .status-item[data-state="active"] .status-dot { background: var(--pc-brand); border-color: var(--pc-brand); color: #fff; box-shadow: 0 0 0 4px rgba(37,99,235,0.15); }
+  .status-item[data-state="pending"] { opacity: 0.5; }
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<header class="se-topbar">
+  <a class="se-logo" href="#"><span class="se-logo-mark">SE</span> SignEdge Graphics</a>
+  <nav class="se-nav">
+    <a href="#">Products</a>
+    <a href="#">Templates</a>
+    <a href="#" class="is-active">Custom quote</a>
+    <a href="#">Help</a>
+  </nav>
+  <div class="se-topbar-right">
+    <!-- AI Status Pill -->
+    <button onclick="openAIModal('ai-modal-preflight')" style="background: linear-gradient(135deg, #2563eb, #1e40af); color: #fff; border: none; padding: 6px 12px; border-radius: 9999px; font-size: 12px; font-weight: 600; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; box-shadow: 0 2px 6px rgba(37, 99, 235, 0.3);" title="AI Quality Status">
+      <span style="display: inline-block; width: 8px; height: 8px; background: #fbbf24; border-radius: 50%; box-shadow: 0 0 8px #fbbf24; animation: ai-pulse 2s infinite;"></span>
+      <span>⚡ AI active</span>
+      <span style="background: rgba(255,255,255,0.2); padding: 1px 6px; border-radius: 9999px; font-size: 10px;">47/200</span>
+    </button>
+    <style>@keyframes ai-pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }</style>
+    <button class="se-icon-btn" title="Notifications">
+      <svg viewBox="0 0 24 24"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 01-3.46 0"/></svg>
+      <span class="se-icon-badge">2</span>
+    </button>
+    <div class="se-user"><div class="se-avatar">RL</div>Rachel Liu</div>
+  </div>
+</header>
+
+<!-- ============ PAGE 1: REQUEST FORM ============ -->
+<section class="page is-active" data-page="request-form">
+  <div class="container">
+    <div class="breadcrumb">
+      <a href="#">Home</a>
+      <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+      <a href="#">Custom quote</a>
+      <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+      <span style="color: var(--text);">Request a quote</span>
+    </div>
+    <h1 class="page-title">Request a custom quote</h1>
+    <p class="page-sub">Tell us about your project. We'll respond within 24 hours with a detailed quote. For standard items, please use the <a href="#">online designer</a> instead.</p>
+
+    <div class="stepper">
+      <div class="stepper-line"></div>
+      <div class="stepper-line-fill" style="width: 8%;"></div>
+      <div class="stepper-item" data-state="active"><div class="stepper-dot">1</div><div class="stepper-label">Your project</div></div>
+      <div class="stepper-item"><div class="stepper-dot">2</div><div class="stepper-label">Details & files</div></div>
+      <div class="stepper-item"><div class="stepper-dot">3</div><div class="stepper-label">Your info</div></div>
+      <div class="stepper-item"><div class="stepper-dot">4</div><div class="stepper-label">Submit</div></div>
+    </div>
+
+    <div class="layout-2col">
+      <div>
+        <!-- Section 1: Project type -->
+        <div class="card">
+          <div class="card-head brand">
+            <h2 class="card-title">
+              <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
+              1. What are you ordering?
+            </h2>
+          </div>
+          <div class="card-body">
+            <div class="form-grid">
+              <label>Project type <span class="req">*</span><div class="label-sub">Best match for your needs</div></label>
+              <div>
+                <div class="radio-cards" style="grid-template-columns: repeat(3, 1fr);">
+                  <label class="radio-card active"><input type="radio" name="proj" checked /><div class="radio-card-title">📐 Custom size</div><div class="radio-card-desc">Non-standard dimensions</div></label>
+                  <label class="radio-card"><input type="radio" name="proj" /><div class="radio-card-title">📦 Bulk order</div><div class="radio-card-desc">50+ identical items</div></label>
+                  <label class="radio-card"><input type="radio" name="proj" /><div class="radio-card-title">🎯 Multi-product</div><div class="radio-card-desc">Event/campaign package</div></label>
+                  <label class="radio-card"><input type="radio" name="proj" /><div class="radio-card-title">🏗️ Installation</div><div class="radio-card-desc">Sign + install service</div></label>
+                  <label class="radio-card"><input type="radio" name="proj" /><div class="radio-card-title">🎨 Special material</div><div class="radio-card-desc">Mesh, fabric, rigid, etc.</div></label>
+                  <label class="radio-card"><input type="radio" name="proj" /><div class="radio-card-title">💡 Not sure?</div><div class="radio-card-desc">We'll help you decide</div></label>
+                </div>
+              </div>
+
+              <label>Project name <span class="req">*</span><div class="label-sub">For reference</div></label>
+              <input class="input" type="text" value="Fall event backdrops 2026" />
+
+              <label>Product category <span class="req">*</span></label>
+              <select class="select input--medium">
+                <option>Choose a category…</option>
+                <option selected>Banners (vinyl, fabric, mesh)</option>
+                <option>Yard signs & A-frames</option>
+                <option>Rigid signs (foam, aluminum, PVC)</option>
+                <option>Decals & stickers</option>
+                <option>Step & repeat backdrops</option>
+                <option>Trade show displays</option>
+                <option>Vehicle wraps</option>
+                <option>Other / multiple</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- Section 2: Quantity & specs -->
+        <div class="card">
+          <div class="card-head">
+            <h2 class="card-title">
+              <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+              2. Quantity & specs
+            </h2>
+          </div>
+          <div class="card-body">
+            <div class="form-grid">
+              <label>Quantity <span class="req">*</span></label>
+              <div class="input-row">
+                <input class="input input--narrow" type="number" value="50" />
+                <span style="font-size:13px;color:var(--text-soft);">units</span>
+              </div>
+
+              <label>Dimensions <span class="req">*</span><div class="label-sub">Per unit · custom size</div></label>
+              <div class="input-row">
+                <input class="input input--narrow" type="number" value="8" />
+                <select class="select" style="width: 80px;"><option selected>ft</option><option>inches</option><option>cm</option></select>
+                <span style="color:var(--text-soft);">×</span>
+                <input class="input input--narrow" type="number" value="8" />
+                <select class="select" style="width: 80px;"><option selected>ft</option><option>inches</option><option>cm</option></select>
+              </div>
+
+              <label>Material preference<div class="label-sub">Optional</div></label>
+              <select class="select input--medium">
+                <option>Not sure / let us recommend</option>
+                <option selected>Wrinkle-resistant fabric (matte)</option>
+                <option>15oz vinyl (standard)</option>
+                <option>18oz vinyl (heavy duty)</option>
+                <option>Mesh (wind-resistant)</option>
+              </select>
+
+              <label>Sides printed</label>
+              <div class="radio-cards" style="grid-template-columns: repeat(3, 1fr); max-width: 420px;">
+                <label class="radio-card active"><input type="radio" name="sides" checked /><div class="radio-card-title">Single</div></label>
+                <label class="radio-card"><input type="radio" name="sides" /><div class="radio-card-title">Double</div></label>
+                <label class="radio-card"><input type="radio" name="sides" /><div class="radio-card-title">Multi-panel</div></label>
+              </div>
+
+              <label>Finishing options</label>
+              <div style="display: flex; flex-direction: column; gap: 6px;">
+                <label class="checkbox"><input type="checkbox" checked /> Grommets (corners + every 24")</label>
+                <label class="checkbox"><input type="checkbox" checked /> Hemmed edges (reinforced)</label>
+                <label class="checkbox"><input type="checkbox" /> Pole pockets (top & bottom)</label>
+                <label class="checkbox"><input type="checkbox" checked /> Carry bag included</label>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Section 3: Timing & files -->
+        <div class="card">
+          <div class="card-head">
+            <h2 class="card-title">
+              <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+              3. Timing & design
+            </h2>
+          </div>
+          <div class="card-body">
+            <div class="form-grid">
+              <label>Need by <span class="req">*</span><div class="label-sub">Delivery date</div></label>
+              <div class="input-row">
+                <input class="input" type="date" value="2026-08-15" style="max-width: 200px;" />
+                <span style="font-size:13px;color:var(--text-soft);">· event date</span>
+              </div>
+
+              <label>Budget range</label>
+              <div class="radio-cards" style="grid-template-columns: repeat(4, 1fr); max-width: 540px;">
+                <label class="radio-card"><input type="radio" name="budget" /><div class="radio-card-title">$1K – $5K</div></label>
+                <label class="radio-card"><input type="radio" name="budget" /><div class="radio-card-title">$5K – $10K</div></label>
+                <label class="radio-card active"><input type="radio" name="budget" checked /><div class="radio-card-title">$10K – $15K</div></label>
+                <label class="radio-card"><input type="radio" name="budget" /><div class="radio-card-title">$15K+</div></label>
+              </div>
+
+              <label>Design status <span class="req">*</span></label>
+              <div>
+                <div class="radio-cards" style="grid-template-columns: repeat(3, 1fr);">
+                  <label class="radio-card active"><input type="radio" name="design" checked /><div class="radio-card-title">✓ Have files</div><div class="radio-card-desc">Print-ready</div></label>
+                  <label class="radio-card"><input type="radio" name="design" /><div class="radio-card-title">📝 Draft only</div><div class="radio-card-desc">Need help finalizing</div></label>
+                  <label class="radio-card"><input type="radio" name="design" /><div class="radio-card-title">🎨 Need design</div><div class="radio-card-desc">Design service +$$</div></label>
+                </div>
+              </div>
+
+              <label>Upload files<div class="label-sub">Brand guidelines, references, logos</div></label>
+              <div>
+                <!-- Upload zone with AI-active indicator -->
+                <div class="upload-zone" style="position: relative; border-color: #2563eb; background: linear-gradient(135deg, #eff6ff, #f0f9ff);">
+                  <!-- AI ribbon -->
+                  <div style="position: absolute; top: -1px; right: -1px; background: linear-gradient(135deg, #2563eb, #1e40af); color: #fff; padding: 4px 12px; border-radius: 0 8px 0 8px; font-size: 11px; font-weight: 700; letter-spacing: 0.04em;">
+                    ⚡ AI AUTO-CHECK ON
+                  </div>
+                  <div class="upload-icon" style="background: linear-gradient(135deg, #2563eb, #1e40af); color: #fff; border: none;">
+                    <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M17 8l-5-5-5 5M12 3v12"/></svg>
+                  </div>
+                  <div class="upload-title" style="color: #1e40af;">Drag files here, or click to browse</div>
+                  <div class="upload-desc">PDF, AI, PSD, PNG, JPG up to 100 MB · <strong style="color: #2563eb;">AI quality check runs automatically</strong></div>
+                  <div style="margin-top: 10px; display: inline-flex; gap: 14px; font-size: 11px; color: #1e40af; flex-wrap: wrap; justify-content: center;">
+                    <span>✓ Free defect detection</span>
+                    <span>✓ ~15s instant feedback</span>
+                    <span>✓ 99.2% accuracy</span>
+                  </div>
+                </div>
+                <div class="file-item">
+                  <div class="file-item-icon">
+                    <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                  </div>
+                  <div class="file-item-info">
+                    <div class="file-item-name">
+                      brand-guidelines.pdf
+                      <span style="display: inline-flex; align-items: center; gap: 4px; font-size: 10px; background: #fef3c7; color: #92400e; padding: 2px 8px; border-radius: 9999px; font-weight: 600; margin-left: 6px; cursor: pointer;" onclick="openAIModal('ai-modal-preflight')">⚠ 2 warnings · review</span>
+                    </div>
+                    <div class="file-item-meta">2.4 MB · uploaded just now · <a href="#" onclick="event.preventDefault(); openAIModal('ai-modal-upscale');">Upscale</a> · <a href="#" onclick="event.preventDefault(); openAIModal('ai-modal-bg-remove');">Remove BG</a></div>
+                  </div>
+                </div>
+                <div class="file-item">
+                  <div class="file-item-icon">
+                    <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="M21 15l-5-5L5 21"/></svg>
+                  </div>
+                  <div class="file-item-info">
+                    <div class="file-item-name">
+                      reference-photo.jpg
+                      <span style="display: inline-flex; align-items: center; gap: 4px; font-size: 10px; background: #dcfce7; color: #14532d; padding: 2px 8px; border-radius: 9999px; font-weight: 600; margin-left: 6px;">✓ AI preflight passed</span>
+                    </div>
+                    <div class="file-item-meta">1.8 MB · uploaded just now · <a href="#" onclick="event.preventDefault(); openAIModal('ai-modal-upscale');">Upscale</a> · <a href="#" onclick="event.preventDefault(); openAIModal('ai-modal-bg-remove');">Remove BG</a></div>
+                  </div>
+                </div>
+              </div>
+
+              <label>Project notes<div class="label-sub">Anything else?</div></label>
+              <textarea class="textarea">We're hosting 25 events across Texas this fall. Each location needs 2 identical backdrops. Brand consistency is critical — all backdrops must match perfectly. We can pick up from Fort Pierce or pay for ground shipping. Net-30 payment preferred for our corporate account.</textarea>
+            </div>
+          </div>
+        </div>
+
+        <!-- Section 4: Contact info -->
+        <div class="card">
+          <div class="card-head">
+            <h2 class="card-title">
+              <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+              4. Your contact info
+            </h2>
+          </div>
+          <div class="card-body">
+            <div class="form-grid">
+              <label>Company name <span class="req">*</span></label>
+              <input class="input input--medium" type="text" value="Big Events Co." />
+
+              <label>Contact name <span class="req">*</span></label>
+              <input class="input input--medium" type="text" value="Rachel Liu" />
+
+              <label>Email <span class="req">*</span></label>
+              <input class="input input--medium" type="email" value="rachel@bigevents.co" />
+
+              <label>Phone</label>
+              <input class="input input--medium" type="tel" value="(512) 555-9123" />
+
+              <label>Industry</label>
+              <select class="select input--medium">
+                <option>Choose…</option>
+                <option selected>Event management</option>
+                <option>Marketing agency</option>
+                <option>Real estate</option>
+                <option>Retail / restaurant</option>
+                <option>Auto dealer</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- 🚨 AI QUALITY GATE — Prominent pre-submit checkpoint -->
+        <div style="background: linear-gradient(135deg, #fff, #eff6ff); border: 2px solid #2563eb; border-radius: 14px; padding: 24px; margin-bottom: 16px; box-shadow: 0 8px 24px rgba(37, 99, 235, 0.12); position: relative; overflow: hidden;">
+          <!-- Decorative gradient blob -->
+          <div style="position: absolute; top: -60px; right: -60px; width: 200px; height: 200px; background: radial-gradient(circle, rgba(37,99,235,0.15), transparent); border-radius: 50%;"></div>
+
+          <div style="display: flex; gap: 20px; align-items: center; position: relative; z-index: 1;">
+            <!-- Big icon -->
+            <div style="flex-shrink: 0; width: 80px; height: 80px; background: linear-gradient(135deg, #2563eb, #1e40af); border-radius: 18px; display: grid; place-items: center; box-shadow: 0 8px 16px rgba(37, 99, 235, 0.3);">
+              <span style="font-size: 38px;">⚡</span>
+            </div>
+
+            <div style="flex: 1;">
+              <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 4px;">
+                <h3 style="margin: 0; font-size: 20px; font-weight: 800; color: #1e3a8a;">AI Quality Pre-check</h3>
+                <span style="background: linear-gradient(135deg, #fbbf24, #f59e0b); color: #78350f; padding: 3px 10px; border-radius: 9999px; font-size: 11px; font-weight: 700; letter-spacing: 0.04em;">✨ POWERED BY PRINTCART AI</span>
+              </div>
+              <p style="margin: 0; font-size: 14px; color: #1e40af; line-height: 1.5;">Your files have been automatically verified for print quality. <strong>1 file needs review</strong> before we accept your order.</p>
+            </div>
+
+            <!-- Quality score circle -->
+            <div style="flex-shrink: 0; text-align: center;">
+              <div style="width: 72px; height: 72px; border-radius: 50%; background: conic-gradient(#16a34a 0% 88%, #e5e7eb 88% 100%); display: grid; place-items: center; position: relative;">
+                <div style="width: 56px; height: 56px; background: #fff; border-radius: 50%; display: grid; place-items: center;">
+                  <span style="font-size: 18px; font-weight: 800; color: #16a34a;">88<span style="font-size: 11px;">/100</span></span>
+                </div>
+              </div>
+              <div style="font-size: 10px; color: #6b7280; margin-top: 4px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em;">Quality score</div>
+            </div>
+          </div>
+
+          <!-- File quality breakdown -->
+          <div style="margin-top: 16px; padding-top: 16px; border-top: 1px solid #dbeafe;">
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+              <div style="display: flex; align-items: center; gap: 10px; padding: 10px 12px; background: #fef3c7; border: 1px solid #fcd34d; border-radius: 8px;">
+                <div style="width: 28px; height: 28px; background: #d97706; color: #fff; border-radius: 6px; display: grid; place-items: center; flex-shrink: 0;">⚠</div>
+                <div style="flex: 1; min-width: 0;">
+                  <div style="font-size: 13px; font-weight: 700; color: #78350f;">brand-guidelines.pdf</div>
+                  <div style="font-size: 11px; color: #92400e;">2 warnings · Bleed margin, Text near edge</div>
+                </div>
+                <button onclick="openAIModal('ai-modal-preflight')" style="background: #d97706; color: #fff; border: none; padding: 5px 10px; border-radius: 6px; font-size: 11px; font-weight: 700; cursor: pointer; white-space: nowrap;">Review</button>
+              </div>
+
+              <div style="display: flex; align-items: center; gap: 10px; padding: 10px 12px; background: #dcfce7; border: 1px solid #86efac; border-radius: 8px;">
+                <div style="width: 28px; height: 28px; background: #16a34a; color: #fff; border-radius: 6px; display: grid; place-items: center; flex-shrink: 0;">✓</div>
+                <div style="flex: 1; min-width: 0;">
+                  <div style="font-size: 13px; font-weight: 700; color: #14532d;">reference-photo.jpg</div>
+                  <div style="font-size: 11px; color: #166534;">Production-ready · all 7 checks passed</div>
+                </div>
+                <span style="font-size: 11px; color: #16a34a; font-weight: 600;">100/100</span>
+              </div>
+            </div>
+
+            <!-- Action row -->
+            <div style="margin-top: 12px; display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap;">
+              <div style="font-size: 12px; color: #6b7280; display: flex; align-items: center; gap: 12px; flex-wrap: wrap;">
+                <span><strong style="color: #1f2937;">📊 47</strong> files checked this month</span>
+                <span>·</span>
+                <span><strong style="color: #16a34a;">$1,847 saved</strong> in rework</span>
+                <span>·</span>
+                <span><strong>99.2%</strong> accuracy</span>
+              </div>
+              <div style="display: flex; gap: 8px;">
+                <button onclick="openAIModal('ai-modal-upscale')" style="background: #2563eb; color: #fff; border: none; padding: 8px 14px; border-radius: 7px; font-size: 13px; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; gap: 6px;">
+                  ✨ Auto-fix issues with AI
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Subtle skip option -->
+          <details style="margin-top: 12px;">
+            <summary style="font-size: 11px; color: #6b7280; cursor: pointer; user-select: none;">Don't want AI to check my files?</summary>
+            <div style="margin-top: 6px; padding: 10px 12px; background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 12px; color: #4b5563; line-height: 1.5;">
+              <label style="display: flex; align-items: flex-start; gap: 8px; cursor: pointer;">
+                <input type="checkbox" id="skip-ai-checkbox" style="margin-top: 2px;" />
+                <div>
+                  <strong>Skip AI quality check for this submission.</strong><br/>
+                  <span style="font-size: 11px; color: #6b7280;">I'll accept files as-is and take responsibility for print quality. <strong style="color: #dc2626;">⚠ This disables free defect prevention.</strong></span>
+                </div>
+              </label>
+            </div>
+          </details>
+        </div>
+
+        <div class="notice notice-info">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+          <div>We'll review your request and respond within <strong>24 business hours</strong>. By submitting, you agree to our <a href="#">Privacy Policy</a> and <a href="#">Terms</a>.</div>
+        </div>
+
+        <div style="display: flex; gap: 12px; justify-content: space-between; flex-wrap: wrap;">
+          <button class="btn btn-tertiary btn--lg">Save as draft</button>
+          <div style="display: flex; gap: 12px;">
+            <button class="btn btn-secondary btn--lg" onclick="goPage('confirmation')">Preview</button>
+            <button class="btn btn-primary btn--lg" onclick="handleSubmitWithAIGate()">
+              <svg viewBox="0 0 24 24"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg>
+              Submit request
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <aside>
+        <div class="card">
+          <div class="card-head brand">
+            <h3 class="card-title">
+              <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+              How it works
+            </h3>
+          </div>
+          <div class="card-body">
+            <div style="display: flex; flex-direction: column; gap: 14px;">
+              <div style="display: flex; gap: 12px;">
+                <div style="width: 28px; height: 28px; background: var(--pc-brand); color: #fff; border-radius: 50%; display: grid; place-items: center; font-size: 12px; font-weight: 700; flex-shrink: 0;">1</div>
+                <div style="font-size: 13px;"><strong>Submit your request</strong><br/><span style="color: var(--text-soft);">Takes ~5 min</span></div>
+              </div>
+              <div style="display: flex; gap: 12px;">
+                <div style="width: 28px; height: 28px; background: var(--pc-brand); color: #fff; border-radius: 50%; display: grid; place-items: center; font-size: 12px; font-weight: 700; flex-shrink: 0;">2</div>
+                <div style="font-size: 13px;"><strong>We review & quote</strong><br/><span style="color: var(--text-soft);">Within 24 business hours</span></div>
+              </div>
+              <div style="display: flex; gap: 12px;">
+                <div style="width: 28px; height: 28px; background: var(--pc-brand); color: #fff; border-radius: 50%; display: grid; place-items: center; font-size: 12px; font-weight: 700; flex-shrink: 0;">3</div>
+                <div style="font-size: 13px;"><strong>Review your quote</strong><br/><span style="color: var(--text-soft);">Accept, decline, or counter</span></div>
+              </div>
+              <div style="display: flex; gap: 12px;">
+                <div style="width: 28px; height: 28px; background: var(--pc-brand); color: #fff; border-radius: 50%; display: grid; place-items: center; font-size: 12px; font-weight: 700; flex-shrink: 0;">4</div>
+                <div style="font-size: 13px;"><strong>Production starts</strong><br/><span style="color: var(--text-soft);">After accept + deposit</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-head">
+            <h3 class="card-title">Need help?</h3>
+          </div>
+          <div class="card-body" style="font-size: 13px; line-height: 1.6;">
+            <div>📞 <a href="tel:+17725550142">(772) 555-0142</a></div>
+            <div>📧 <a href="mailto:quotes@signedge.com">quotes@signedge.com</a></div>
+            <div>💬 <a href="#">Live chat (Mon-Fri 9-5 ET)</a></div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-head warning">
+            <h3 class="card-title">
+              <svg viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+              Fast lane
+            </h3>
+          </div>
+          <div class="card-body" style="font-size: 13px;">
+            <strong>Standard size + qty &lt; 50?</strong><br/>
+            Skip the quote — use our <a href="#">online designer</a> for instant pricing.
+          </div>
+        </div>
+
+        <!-- BIG TRUST CARD - Printcart AI -->
+        <div style="position: relative; background: linear-gradient(160deg, #2563eb 0%, #1e40af 100%); border-radius: 14px; padding: 0; overflow: hidden; box-shadow: 0 12px 32px rgba(37, 99, 235, 0.25); margin-bottom: 16px;">
+          <!-- Glow decoration -->
+          <div style="position: absolute; top: -40px; right: -40px; width: 160px; height: 160px; background: radial-gradient(circle, rgba(251, 191, 36, 0.3), transparent); border-radius: 50%;"></div>
+          <div style="position: absolute; bottom: -50px; left: -50px; width: 140px; height: 140px; background: radial-gradient(circle, rgba(255,255,255,0.1), transparent); border-radius: 50%;"></div>
+
+          <div style="position: relative; padding: 20px;">
+            <!-- Header -->
+            <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 12px;">
+              <div style="width: 40px; height: 40px; background: linear-gradient(135deg, #fbbf24, #f59e0b); border-radius: 10px; display: grid; place-items: center; font-size: 22px; box-shadow: 0 4px 8px rgba(251, 191, 36, 0.4);">⚡</div>
+              <div>
+                <div style="font-size: 11px; font-weight: 700; color: #fbbf24; letter-spacing: 0.08em;">POWERED BY</div>
+                <div style="font-size: 17px; font-weight: 800; color: #fff; line-height: 1;">Printcart AI</div>
+              </div>
+            </div>
+
+            <h4 style="color: #fff; font-size: 15px; font-weight: 700; margin: 0 0 8px;">Free print-quality protection</h4>
+            <p style="color: rgba(255,255,255,0.85); font-size: 12px; line-height: 1.5; margin: 0 0 14px;">Every file automatically checked for print defects in <strong style="color: #fbbf24;">~15 seconds</strong>. We catch issues before they become reprint headaches.</p>
+
+            <!-- Stats grid -->
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 14px;">
+              <div style="background: rgba(255,255,255,0.1); border-radius: 8px; padding: 10px; backdrop-filter: blur(8px);">
+                <div style="font-size: 20px; font-weight: 800; color: #fbbf24;">99.2%</div>
+                <div style="font-size: 10px; color: rgba(255,255,255,0.85); font-weight: 600; text-transform: uppercase;">Accuracy</div>
+              </div>
+              <div style="background: rgba(255,255,255,0.1); border-radius: 8px; padding: 10px; backdrop-filter: blur(8px);">
+                <div style="font-size: 20px; font-weight: 800; color: #fbbf24;">12K+</div>
+                <div style="font-size: 10px; color: rgba(255,255,255,0.85); font-weight: 600; text-transform: uppercase;">Defects caught</div>
+              </div>
+            </div>
+
+            <!-- 3 tools -->
+            <div style="display: flex; flex-direction: column; gap: 8px; margin-bottom: 14px;">
+              <div style="display: flex; align-items: center; gap: 10px; background: rgba(255,255,255,0.08); padding: 8px 10px; border-radius: 6px;">
+                <div style="font-size: 18px;">⚡</div>
+                <div style="flex: 1; min-width: 0;">
+                  <div style="font-size: 12px; font-weight: 700; color: #fff;">Preflight checks</div>
+                  <div style="font-size: 10px; color: rgba(255,255,255,0.7);">7-point quality scan</div>
+                </div>
+                <span style="font-size: 10px; padding: 2px 6px; background: #16a34a; color: #fff; border-radius: 9999px; font-weight: 700;">FREE</span>
+              </div>
+              <div style="display: flex; align-items: center; gap: 10px; background: rgba(255,255,255,0.08); padding: 8px 10px; border-radius: 6px;">
+                <div style="font-size: 18px;">🔍</div>
+                <div style="flex: 1; min-width: 0;">
+                  <div style="font-size: 12px; font-weight: 700; color: #fff;">AI upscale 2x-4x</div>
+                  <div style="font-size: 10px; color: rgba(255,255,255,0.7);">Print-ready 300 DPI</div>
+                </div>
+                <span style="font-size: 10px; padding: 2px 6px; background: #16a34a; color: #fff; border-radius: 9999px; font-weight: 700;">FREE</span>
+              </div>
+              <div style="display: flex; align-items: center; gap: 10px; background: rgba(255,255,255,0.08); padding: 8px 10px; border-radius: 6px;">
+                <div style="font-size: 18px;">✂</div>
+                <div style="flex: 1; min-width: 0;">
+                  <div style="font-size: 12px; font-weight: 700; color: #fff;">Background remove</div>
+                  <div style="font-size: 10px; color: rgba(255,255,255,0.7);">Auto-detect subjects</div>
+                </div>
+                <span style="font-size: 10px; padding: 2px 6px; background: #16a34a; color: #fff; border-radius: 9999px; font-weight: 700;">FREE</span>
+              </div>
+            </div>
+
+            <button onclick="openAIModal('ai-modal-preflight')" style="width: 100%; padding: 11px; background: linear-gradient(135deg, #fbbf24, #f59e0b); color: #78350f; border: none; border-radius: 8px; font-size: 13px; font-weight: 800; cursor: pointer; box-shadow: 0 4px 8px rgba(251, 191, 36, 0.3);">
+              See AI in action →
+            </button>
+
+            <!-- Trust badges -->
+            <div style="margin-top: 12px; padding-top: 12px; border-top: 1px solid rgba(255,255,255,0.15); display: flex; gap: 6px; justify-content: center; flex-wrap: wrap; font-size: 9px;">
+              <span style="color: rgba(255,255,255,0.7); display: inline-flex; align-items: center; gap: 3px;">🔒 SOC 2</span>
+              <span style="color: rgba(255,255,255,0.4);">·</span>
+              <span style="color: rgba(255,255,255,0.7); display: inline-flex; align-items: center; gap: 3px;">🛡 GDPR</span>
+              <span style="color: rgba(255,255,255,0.4);">·</span>
+              <span style="color: rgba(255,255,255,0.7); display: inline-flex; align-items: center; gap: 3px;">⚡ Real-time</span>
+            </div>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PAGE 2: CONFIRMATION ============ -->
+<section class="page" data-page="confirmation">
+  <div class="container" style="max-width: 720px;">
+    <div class="card">
+      <div class="confirm">
+        <div class="confirm-icon"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+        <h1 class="confirm-title">Request submitted!</h1>
+        <p class="confirm-sub">Thanks Rachel — we've received your request for <strong>Fall event backdrops 2026</strong>. Our team will review and send your custom quote within <strong>24 business hours</strong>.</p>
+        <div style="background: var(--bg-soft); padding: 16px; border-radius: var(--radius-md); max-width: 360px; margin: 0 auto 24px; text-align: left;">
+          <div style="display: flex; justify-content: space-between; padding: 4px 0; font-size: 13px;"><span style="color: var(--text-soft);">Reference</span><strong><code>Q-2026-0028</code></strong></div>
+          <div style="display: flex; justify-content: space-between; padding: 4px 0; font-size: 13px;"><span style="color: var(--text-soft);">Submitted</span><strong>Just now</strong></div>
+          <div style="display: flex; justify-content: space-between; padding: 4px 0; font-size: 13px;"><span style="color: var(--text-soft);">Expected response</span><strong>By tomorrow 5pm ET</strong></div>
+        </div>
+        <div style="display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;">
+          <button class="btn btn-tertiary" onclick="goPage('request-form')">Submit another</button>
+          <button class="btn btn-primary" onclick="goPage('quote-view')">View example quote →</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PAGE 3: QUOTE VIEW ============ -->
+<section class="page" data-page="quote-view">
+  <div class="container">
+    <div class="breadcrumb">
+      <a href="#">Home</a>
+      <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+      <a href="#">My quotes</a>
+      <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+      <span style="color: var(--text);">Q-2026-0028</span>
+    </div>
+
+    <div class="quote-hero">
+      <div class="quote-hero-eyebrow">Your custom quote · Q-2026-0028</div>
+      <h1 class="quote-hero-title">Fall event backdrops 2026</h1>
+      <div class="quote-hero-meta">
+        Prepared for <strong>Rachel Liu</strong> · Big Events Co.<br/>
+        50 step & repeat backdrops · 8' × 8' · wrinkle-resistant fabric
+      </div>
+      <div class="quote-validity">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        Valid until May 28, 2026 · 14 days remaining
+      </div>
+      <div class="quote-hero-total">
+        <div>
+          <div style="font-size:14px;opacity:0.85;">Total quote amount</div>
+          <div class="quote-hero-total-value">$12,201.43</div>
+        </div>
+        <div style="font-size: 13px; opacity: 0.9; margin-left: auto; text-align: right;">Inclusive of taxes & shipping<br/>~$244 per unit · 50 units</div>
+      </div>
+    </div>
+
+    <!-- 🛡 AI QUALITY GUARANTEE BANNER -->
+    <div style="background: linear-gradient(135deg, #16a34a, #15803d); border-radius: 12px; padding: 18px 20px; margin-bottom: 16px; color: #fff; display: flex; align-items: center; gap: 18px; flex-wrap: wrap; box-shadow: 0 8px 20px rgba(22, 163, 74, 0.2); position: relative; overflow: hidden;">
+      <div style="position: absolute; top: -30px; right: -30px; width: 120px; height: 120px; background: rgba(255,255,255,0.08); border-radius: 50%;"></div>
+      <div style="width: 56px; height: 56px; background: rgba(255,255,255,0.15); border-radius: 14px; display: grid; place-items: center; flex-shrink: 0; backdrop-filter: blur(8px);">
+        <span style="font-size: 28px;">🛡</span>
+      </div>
+      <div style="flex: 1; min-width: 280px;">
+        <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 2px;">
+          <strong style="font-size: 16px;">Files verified by Printcart AI</strong>
+          <span style="background: rgba(255,255,255,0.2); padding: 2px 8px; border-radius: 9999px; font-size: 10px; font-weight: 700; letter-spacing: 0.04em;">✓ PRODUCTION-READY</span>
+        </div>
+        <div style="font-size: 13px; opacity: 0.95;">All 2 files passed AI quality checks · Quality score <strong>94/100</strong> · Print defects prevented</div>
+      </div>
+      <div style="text-align: right; flex-shrink: 0;">
+        <button onclick="openAIModal('ai-modal-preflight')" style="background: #fff; color: #15803d; border: none; padding: 8px 16px; border-radius: 7px; font-size: 13px; font-weight: 700; cursor: pointer;">View AI report →</button>
+      </div>
+    </div>
+
+    <div class="action-bar">
+      <div class="action-bar-msg">Ready to proceed? <strong style="color:var(--pc-brand);">Accept this quote</strong> to start production and lock in pricing.</div>
+      <div style="display: flex; gap: 12px;">
+        <button class="btn btn-tertiary" onclick="openModal('modal-decline')">Decline</button>
+        <button class="btn btn-secondary" onclick="openModal('modal-counter')">Request changes</button>
+        <button class="btn btn-success btn--lg" onclick="openModal('modal-accept')">
+          <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+          Accept quote
+        </button>
+      </div>
+    </div>
+
+    <div class="layout-2col">
+      <div>
+        <div class="card">
+          <div class="card-head">
+            <h2 class="card-title">
+              <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+              Your original request
+            </h2>
+            <a href="#" style="font-size:13px;">View full details →</a>
+          </div>
+          <div class="card-body" style="font-size: 13px; line-height: 1.7; color: var(--text-soft);">
+            <strong style="color:var(--text);">50 step & repeat backdrops</strong> · 8' × 8' each · wrinkle-resistant fabric (matte finish) · brand-locked design · needed by <strong style="color:var(--text);">August 15, 2026</strong> for fall event series across 25 Texas locations.
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-head success">
+            <h2 class="card-title">
+              <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 12l2 2 4-4"/></svg>
+              What's included
+            </h2>
+          </div>
+          <div class="card-body flush">
+            <table class="items-table">
+              <thead>
+                <tr><th>Item</th><th>Qty</th><th class="col-num">Unit</th><th class="col-num">Total</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>Step & Repeat Backdrop — 8'×8'</strong><div style="font-size:12px;color:var(--text-soft);margin-top:2px;">Wrinkle-resistant fabric · matte finish · brand-locked design · grommets + carry bag included</div></td>
+                  <td>50</td><td class="col-num">$195.00</td><td class="col-num"><strong>$9,750.00</strong></td>
+                </tr>
+                <tr>
+                  <td><strong>Setup & color matching</strong><div style="font-size:12px;color:var(--text-soft);margin-top:2px;">One-time · brand consistency QC across all 50 units</div></td>
+                  <td>1</td><td class="col-num">$450.00</td><td class="col-num"><strong>$450.00</strong></td>
+                </tr>
+                <tr>
+                  <td><strong>Rush production</strong><div style="font-size:12px;color:var(--text-soft);margin-top:2px;">Priority slot · 2-week guarantee (vs standard 3-4 weeks)</div></td>
+                  <td>1</td><td class="col-num">$800.00</td><td class="col-num"><strong>$800.00</strong></td>
+                </tr>
+                <tr>
+                  <td><strong>Freight — Texas distribution</strong><div style="font-size:12px;color:var(--text-soft);margin-top:2px;">Split shipment to 25 locations · LTL freight · 5–7 day delivery</div></td>
+                  <td>1</td><td class="col-num">$1,250.00</td><td class="col-num"><strong>$1,250.00</strong></td>
+                </tr>
+              </tbody>
+            </table>
+            <div class="items-total">
+              <div class="total-row"><span>Subtotal</span><span>$12,250.00</span></div>
+              <div class="total-row" style="color: var(--success);"><span>Volume discount (8% off 50+ units)</span><span>−$980.00</span></div>
+              <div class="total-row"><span>Texas state tax (8.25%)</span><span>$931.43</span></div>
+              <div class="total-row grand"><span>Total</span><span>$12,201.43</span></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-head">
+            <h2 class="card-title">
+              <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M9 12l2 2 4-4"/></svg>
+              Quote terms
+            </h2>
+          </div>
+          <div class="card-body">
+            <div style="display: grid; grid-template-columns: 200px 1fr; gap: 12px 24px; font-size: 14px;">
+              <div style="color: var(--text-soft);">Validity</div>
+              <div><strong>14 days</strong> · Expires May 28, 2026</div>
+              <div style="color: var(--text-soft);">Payment terms</div>
+              <div><strong>50/50 split</strong><br/><span style="font-size:12px;color:var(--text-soft);">$6,100.72 deposit on accept · balance due on shipment</span></div>
+              <div style="color: var(--text-soft);">Production time</div>
+              <div><strong>14 business days</strong> from accepted quote & files received</div>
+              <div style="color: var(--text-soft);">Delivery</div>
+              <div><strong>LTL freight</strong> · split shipment to 25 Texas locations<br/><span style="font-size:12px;color:var(--text-soft);">Tracking provided · est. arrival by Aug 10, 2026</span></div>
+              <div style="color: var(--text-soft);">Notes</div>
+              <div style="font-size: 13px; line-height: 1.6; color: var(--text-soft);">Pricing assumes brand-locked design files provided by Aug 1, 2026. Color matching guarantee across all 50 units. 30-day return window for manufacturing defects only.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <aside>
+        <div class="card">
+          <div class="card-head brand">
+            <h3 class="card-title">
+              <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+              Quote status
+            </h3>
+          </div>
+          <div class="card-body" style="font-size: 13px;">
+            <div class="status-item" data-state="done">
+              <div class="status-dot"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+              <div><strong>Request received</strong><div style="font-size:11px;color:var(--text-soft);">2 days ago</div></div>
+            </div>
+            <div class="status-item" data-state="done">
+              <div class="status-dot"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+              <div><strong>Quote prepared</strong><div style="font-size:11px;color:var(--text-soft);">Yesterday by Hoyle Fabrio</div></div>
+            </div>
+            <div class="status-item" data-state="active">
+              <div class="status-dot"></div>
+              <div><strong style="color:var(--pc-brand);">Awaiting your response</strong><div style="font-size:11px;color:var(--text-soft);">Accept, decline, or request changes</div></div>
+            </div>
+            <div class="status-item" data-state="pending">
+              <div class="status-dot">4</div>
+              <div><strong>Production starts</strong><div style="font-size:11px;color:var(--text-soft);">After accept + deposit</div></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-head warning">
+            <h3 class="card-title">
+              <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+              Expires soon
+            </h3>
+          </div>
+          <div class="card-body" style="font-size: 13px;">
+            This quote is valid until <strong>May 28, 2026</strong>.<br/>
+            <span style="color: var(--warning);">14 days remaining</span> · accept to lock in pricing.
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-head"><h3 class="card-title">Actions</h3></div>
+          <div class="card-body" style="display: flex; flex-direction: column; gap: 8px;">
+            <button class="btn btn-tertiary btn--sm" style="justify-content: flex-start; width: 100%;">
+              <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
+              Download PDF
+            </button>
+            <button class="btn btn-tertiary btn--sm" style="justify-content: flex-start; width: 100%;">
+              <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+              Email a copy
+            </button>
+            <button class="btn btn-tertiary btn--sm" style="justify-content: flex-start; width: 100%;">
+              <svg viewBox="0 0 24 24"><path d="M4 12v8a2 2 0 002 2h12a2 2 0 002-2v-8M16 6l-4-4-4 4M12 2v13"/></svg>
+              Share with team
+            </button>
+            <button class="btn btn-tertiary btn--sm" style="justify-content: flex-start; width: 100%;">
+              <svg viewBox="0 0 24 24"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+              Print
+            </button>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PAGE 4: ORDER CONFIRMED ============ -->
+<section class="page" data-page="order-confirmed">
+  <div class="container" style="max-width: 720px;">
+    <div class="card">
+      <div class="confirm">
+        <div class="confirm-icon"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+        <h1 class="confirm-title">Quote accepted!</h1>
+        <p class="confirm-sub">Thanks Rachel — order <strong>#10240</strong> is now in production. Your deposit of <strong>$6,100.72</strong> has been charged to your Visa ending in 4892.</p>
+
+        <div style="background: var(--bg-soft); padding: 20px; border-radius: var(--radius-md); max-width: 420px; margin: 0 auto 24px; text-align: left;">
+          <div style="display: flex; justify-content: space-between; padding: 6px 0; font-size: 13px;"><span style="color: var(--text-soft);">Order number</span><strong>#10240</strong></div>
+          <div style="display: flex; justify-content: space-between; padding: 6px 0; font-size: 13px;"><span style="color: var(--text-soft);">From quote</span><strong>Q-2026-0028</strong></div>
+          <div style="display: flex; justify-content: space-between; padding: 6px 0; font-size: 13px;"><span style="color: var(--text-soft);">Total amount</span><strong>$12,201.43</strong></div>
+          <div style="display: flex; justify-content: space-between; padding: 6px 0; font-size: 13px;"><span style="color: var(--text-soft);">Deposit paid today</span><strong style="color: var(--success);">$6,100.72</strong></div>
+          <div style="display: flex; justify-content: space-between; padding: 6px 0; font-size: 13px;"><span style="color: var(--text-soft);">Balance due on shipment</span><strong>$6,100.71</strong></div>
+          <hr/>
+          <div style="display: flex; justify-content: space-between; padding: 6px 0; font-size: 13px;"><span style="color: var(--text-soft);">Estimated delivery</span><strong>August 10, 2026</strong></div>
+        </div>
+
+        <div style="display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;">
+          <button class="btn btn-tertiary">
+            <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
+            Download receipt
+          </button>
+          <button class="btn btn-primary">View order #10240 →</button>
+        </div>
+
+        <hr style="margin: 32px 0 16px;"/>
+        <div style="font-size: 13px; color: var(--text-soft); line-height: 1.6; text-align: left;">
+          <strong>What happens next:</strong>
+          <ol style="margin: 8px 0; padding-left: 20px;">
+            <li>Confirmation email sent to <strong>rachel@bigevents.co</strong></li>
+            <li>Production team will reach out to confirm design files by Aug 1</li>
+            <li>You'll receive a tracking link when shipped (est. Aug 5–7)</li>
+            <li>Final invoice for $6,100.71 sent upon shipment</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MODAL: SKIP AI CONFIRM -->
+<div class="modal-bg" id="modal-skip-ai-confirm">
+  <div class="modal">
+    <div class="modal-head" style="background: linear-gradient(135deg, #fef2f2, #fee2e2);">
+      <h3 class="modal-title">⚠ Skip AI quality check?</h3>
+      <button class="modal-close" onclick="closeModal('modal-skip-ai-confirm')"><svg viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"/></svg></button>
+    </div>
+    <div class="modal-body">
+      <div style="background: #fee2e2; border-left: 4px solid #dc2626; padding: 14px; border-radius: 6px; margin-bottom: 16px;">
+        <strong style="color: #7f1d1d;">You're choosing to skip AI quality verification.</strong>
+        <p style="margin: 8px 0 0; font-size: 13px; color: #991b1b; line-height: 1.5;">
+          Without AI check, we cannot guarantee print quality. <strong>Reprinting defective files costs $40-200 on average</strong> and adds 5-10 business days to your timeline.
+        </p>
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 10px; margin-bottom: 16px;">
+        <div style="display: flex; gap: 10px; align-items: center; padding: 10px; background: #f9fafb; border-radius: 6px;">
+          <div style="width: 32px; height: 32px; background: #16a34a; color: #fff; border-radius: 50%; display: grid; place-items: center;">✓</div>
+          <div style="flex: 1; font-size: 13px;"><strong>With AI</strong><br/><span style="color: #6b7280;">Defects caught before production · $0 risk</span></div>
+        </div>
+        <div style="display: flex; gap: 10px; align-items: center; padding: 10px; background: #fef2f2; border-radius: 6px;">
+          <div style="width: 32px; height: 32px; background: #dc2626; color: #fff; border-radius: 50%; display: grid; place-items: center;">✕</div>
+          <div style="flex: 1; font-size: 13px;"><strong>Without AI</strong><br/><span style="color: #6b7280;">You assume all reprint costs if file has issues</span></div>
+        </div>
+      </div>
+
+      <p style="font-size: 12px; color: #6b7280;">Are you sure you want to proceed without AI quality verification?</p>
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-primary" onclick="closeModal('modal-skip-ai-confirm'); document.getElementById('skip-ai-checkbox').checked = false;">Use AI check (recommended)</button>
+      <button class="btn btn-danger" onclick="proceedWithSubmit()">Skip & submit anyway</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: AI WARNINGS CONFIRM -->
+<div class="modal-bg" id="modal-ai-warnings-confirm">
+  <div class="modal">
+    <div class="modal-head" style="background: linear-gradient(135deg, #fffbeb, #fef3c7);">
+      <h3 class="modal-title">⚡ AI found 2 warnings in your file</h3>
+      <button class="modal-close" onclick="closeModal('modal-ai-warnings-confirm')"><svg viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"/></svg></button>
+    </div>
+    <div class="modal-body">
+      <p style="margin-top: 0; font-size: 14px; color: #1f2937;">
+        AI detected <strong>2 minor issues</strong> with <code style="background:#f3f4f6; padding:2px 6px; border-radius:3px;">brand-guidelines.pdf</code>:
+      </p>
+
+      <div style="display: flex; flex-direction: column; gap: 8px; margin-bottom: 16px;">
+        <div style="display: flex; align-items: center; gap: 10px; padding: 12px; background: #fef3c7; border-radius: 6px;">
+          <div style="width: 24px; height: 24px; background: #d97706; color: #fff; border-radius: 50%; display: grid; place-items: center; font-size: 12px;">⚠</div>
+          <div style="flex: 1; font-size: 13px;"><strong>Bleed margin too small</strong><br/><span style="color: #6b7280;">1mm currently · needs 3mm to avoid edge cropping</span></div>
+        </div>
+        <div style="display: flex; align-items: center; gap: 10px; padding: 12px; background: #fef3c7; border-radius: 6px;">
+          <div style="width: 24px; height: 24px; background: #d97706; color: #fff; border-radius: 50%; display: grid; place-items: center; font-size: 12px;">⚠</div>
+          <div style="flex: 1; font-size: 13px;"><strong>Text near edge</strong><br/><span style="color: #6b7280;">"Grand Opening" 6mm from edge · safe zone is 12mm</span></div>
+        </div>
+      </div>
+
+      <div style="background: linear-gradient(135deg, #dbeafe, #eff6ff); border-radius: 8px; padding: 14px; margin-bottom: 12px;">
+        <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 8px;">
+          <span style="font-size: 22px;">✨</span>
+          <strong style="color: #1e40af;">Let AI auto-fix these issues</strong>
+        </div>
+        <p style="margin: 0; font-size: 12px; color: #1e40af;">Our AI can resolve both warnings in ~30 seconds. <strong>Free for your B2B plan.</strong></p>
+      </div>
+
+      <p style="font-size: 12px; color: #6b7280; margin: 0;">Choose how to proceed:</p>
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-tertiary" onclick="closeModal('modal-ai-warnings-confirm'); proceedWithSubmit();">Submit with warnings</button>
+      <button class="btn btn-primary" onclick="closeModal('modal-ai-warnings-confirm'); openAIModal('ai-modal-upscale');">
+        ✨ Auto-fix with AI (Recommended)
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: ACCEPT -->
+<div class="modal-bg" id="modal-accept">
+  <div class="modal">
+    <div class="modal-head">
+      <h3 class="modal-title">Accept quote Q-2026-0028</h3>
+      <button class="modal-close" onclick="closeModal('modal-accept')"><svg viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"/></svg></button>
+    </div>
+    <div class="modal-body">
+      <div style="background: var(--success-soft); border-left: 4px solid var(--success); padding: 14px; border-radius: var(--radius-md); margin-bottom: 16px;">
+        <strong style="color: #14532d;">By accepting, you confirm:</strong>
+        <ul style="margin: 8px 0 0; padding-left: 20px; font-size: 13px; line-height: 1.6; color: #14532d;">
+          <li>Total: <strong>$12,201.43</strong></li>
+          <li>50% deposit today: <strong>$6,100.72</strong></li>
+          <li>Production starts within 2 business days</li>
+          <li>Estimated delivery: August 10, 2026</li>
+        </ul>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 12px;">
+        <div>
+          <label style="font-size: 13px; font-weight: 600; display: block; margin-bottom: 6px;">Payment method</label>
+          <select class="select"><option selected>Visa ending in 4892</option><option>Add new card…</option><option>ACH bank transfer</option></select>
+        </div>
+        <div>
+          <label style="font-size: 13px; font-weight: 600; display: block; margin-bottom: 6px;">PO number (optional)</label>
+          <input class="input" type="text" placeholder="Internal PO reference" />
+        </div>
+        <label class="checkbox" style="margin-top: 8px;"><input type="checkbox" /> I agree to the <a href="#">Terms of Service</a> and quote terms above.</label>
+        <label class="checkbox"><input type="checkbox" checked /> Email me production updates</label>
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-tertiary" onclick="closeModal('modal-accept')">Cancel</button>
+      <button class="btn btn-success" onclick="closeModal('modal-accept'); goPage('order-confirmed')">
+        <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+        Confirm & pay deposit
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: COUNTER -->
+<div class="modal-bg" id="modal-counter">
+  <div class="modal">
+    <div class="modal-head">
+      <h3 class="modal-title">Request changes to quote</h3>
+      <button class="modal-close" onclick="closeModal('modal-counter')"><svg viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"/></svg></button>
+    </div>
+    <div class="modal-body">
+      <p style="font-size: 14px; color: var(--text-soft); margin-top: 0;">Tell us what you'd like to adjust. We'll respond within 24 hours.</p>
+      <div style="display: flex; flex-direction: column; gap: 12px;">
+        <div>
+          <label style="font-size: 13px; font-weight: 600; display: block; margin-bottom: 6px;">What needs to change?</label>
+          <div style="display: flex; flex-direction: column; gap: 6px;">
+            <label class="checkbox"><input type="checkbox" /> Reduce quantity</label>
+            <label class="checkbox"><input type="checkbox" /> Different material</label>
+            <label class="checkbox"><input type="checkbox" /> Different dimensions</label>
+            <label class="checkbox"><input type="checkbox" /> Skip rush production</label>
+            <label class="checkbox"><input type="checkbox" /> Change shipping method</label>
+            <label class="checkbox"><input type="checkbox" /> Adjust payment terms (Net-30)</label>
+            <label class="checkbox"><input type="checkbox" /> Other (specify below)</label>
+          </div>
+        </div>
+        <div>
+          <label style="font-size: 13px; font-weight: 600; display: block; margin-bottom: 6px;">Details</label>
+          <textarea class="textarea" placeholder="Tell us what you'd like to change, your target budget, or any concerns…"></textarea>
+        </div>
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-tertiary" onclick="closeModal('modal-counter')">Cancel</button>
+      <button class="btn btn-primary" onclick="closeModal('modal-counter'); alert('Change request sent — admin will respond within 24h');">
+        <svg viewBox="0 0 24 24"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg>
+        Send change request
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: DECLINE -->
+<div class="modal-bg" id="modal-decline">
+  <div class="modal">
+    <div class="modal-head">
+      <h3 class="modal-title">Decline this quote</h3>
+      <button class="modal-close" onclick="closeModal('modal-decline')"><svg viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"/></svg></button>
+    </div>
+    <div class="modal-body">
+      <p style="font-size: 14px; color: var(--text-soft); margin-top: 0;">No worries — let us know why so we can do better next time.</p>
+      <div style="display: flex; flex-direction: column; gap: 12px;">
+        <div>
+          <label style="font-size: 13px; font-weight: 600; display: block; margin-bottom: 6px;">Reason (optional)</label>
+          <select class="select">
+            <option>Choose a reason…</option>
+            <option>Price too high</option>
+            <option>Timeline doesn't work</option>
+            <option>Going with another vendor</option>
+            <option>Project cancelled / postponed</option>
+            <option>Budget changed</option>
+            <option>Other</option>
+          </select>
+        </div>
+        <div>
+          <label style="font-size: 13px; font-weight: 600; display: block; margin-bottom: 6px;">Additional feedback</label>
+          <textarea class="textarea" placeholder="Help us improve…"></textarea>
+        </div>
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-tertiary" onclick="closeModal('modal-decline')">Cancel</button>
+      <button class="btn btn-danger" onclick="closeModal('modal-decline'); alert('Quote declined. Thanks for the feedback!');">Decline quote</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  function goPage(id) {
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('is-active'));
+    const t = document.querySelector(`[data-page="${id}"]`);
+    if (t) t.classList.add('is-active');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+  function openModal(id) { document.getElementById(id).classList.add('open'); }
+  function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+
+  function handleSubmitWithAIGate() {
+    var skipAI = document.getElementById('skip-ai-checkbox');
+    if (skipAI && skipAI.checked) {
+      // Confirm skip
+      openModal('modal-skip-ai-confirm');
+    } else {
+      // Has warnings? Show confirm
+      openModal('modal-ai-warnings-confirm');
+    }
+  }
+  function proceedWithSubmit() {
+    closeModal('modal-skip-ai-confirm');
+    closeModal('modal-ai-warnings-confirm');
+    goPage('confirmation');
+  }
+
+  document.querySelectorAll('.radio-card input[type="radio"]').forEach(input => {
+    input.addEventListener('change', () => {
+      document.querySelectorAll(`.radio-card input[name="${input.name}"]`).forEach(r => {
+        r.closest('.radio-card').classList.toggle('active', r.checked);
+      });
+    });
+  });
+  document.querySelectorAll('.modal-bg').forEach(bd => {
+    bd.addEventListener('click', (e) => { if (e.target === bd) bd.classList.remove('open'); });
+  });
+</script>
+<!-- ============================================================
+     AI TOOLS — Reusable Modals (Preflight, Upscale, BG Remove)
+     Used across: signedge-wp-admin-v3.html, signedge-customer-quote.html,
+                  signedge-canva.html
+     ============================================================ -->
+
+<style>
+/* ===== AI Modals shared styles ===== */
+.ai-modal-backdrop {
+  position: fixed; inset: 0;
+  background: rgba(15, 23, 42, 0.55);
+  backdrop-filter: blur(4px);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  padding: 16px;
+}
+.ai-modal-backdrop.open { display: flex; }
+.ai-modal {
+  background: #fff;
+  border-radius: 14px;
+  box-shadow: 0 32px 80px rgba(0,0,0,0.25);
+  max-height: 92vh;
+  overflow-y: auto;
+  width: 100%;
+}
+.ai-modal--md { max-width: 640px; }
+.ai-modal--lg { max-width: 920px; }
+.ai-modal--xl { max-width: 1120px; }
+
+.ai-modal-head {
+  padding: 18px 24px;
+  border-bottom: 1px solid #e5e7eb;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  background: linear-gradient(135deg, #dbeafe, #eff6ff);
+  border-radius: 14px 14px 0 0;
+}
+.ai-modal-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: #1f2937;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0;
+}
+.ai-modal-title-icon {
+  width: 32px; height: 32px;
+  border-radius: 8px;
+  background: linear-gradient(135deg, #2563eb, #1e40af);
+  color: #fff;
+  display: grid;
+  place-items: center;
+  font-size: 16px;
+  flex-shrink: 0;
+}
+.ai-modal-sub {
+  font-size: 12px;
+  color: #6b7280;
+  margin-top: 2px;
+}
+.ai-modal-close {
+  width: 32px; height: 32px;
+  border: none;
+  background: transparent;
+  border-radius: 50%;
+  cursor: pointer;
+  color: #6b7280;
+  display: grid;
+  place-items: center;
+  font-size: 20px;
+  transition: background 0.15s;
+}
+.ai-modal-close:hover { background: rgba(0,0,0,0.06); color: #1f2937; }
+
+.ai-modal-body {
+  padding: 20px 24px;
+}
+.ai-modal-foot {
+  padding: 16px 24px;
+  background: #f9fafb;
+  border-top: 1px solid #e5e7eb;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 10px;
+  border-radius: 0 0 14px 14px;
+  flex-wrap: wrap;
+}
+.ai-modal-foot-left {
+  margin-right: auto;
+  font-size: 12px;
+  color: #6b7280;
+}
+
+/* === AI Modal buttons === */
+.ai-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 9px 16px;
+  border-radius: 7px;
+  border: 1px solid transparent;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s;
+  white-space: nowrap;
+  font-family: inherit;
+}
+.ai-btn--primary { background: #2563eb; color: #fff; }
+.ai-btn--primary:hover { background: #1d4ed8; }
+.ai-btn--success { background: #16a34a; color: #fff; }
+.ai-btn--success:hover { background: #15803d; }
+.ai-btn--secondary { background: #fff; color: #2563eb; border-color: #2563eb; }
+.ai-btn--secondary:hover { background: #dbeafe; }
+.ai-btn--tertiary { background: #fff; color: #1f2937; border-color: #d1d5db; }
+.ai-btn--tertiary:hover { background: #f3f4f6; }
+.ai-btn--danger { background: #fff; color: #dc2626; border-color: #fecaca; }
+.ai-btn--danger:hover { background: #fee2e2; }
+.ai-btn--sm { padding: 6px 12px; font-size: 12px; }
+.ai-btn--lg { padding: 12px 22px; font-size: 14px; }
+
+/* === Preflight Results Modal === */
+.ai-preflight-hero {
+  text-align: center;
+  padding: 24px;
+  border-radius: 10px;
+  margin-bottom: 20px;
+}
+.ai-preflight-hero--pass { background: linear-gradient(135deg, #dcfce7, #bbf7d0); border: 1px solid #86efac; }
+.ai-preflight-hero--warn { background: linear-gradient(135deg, #fef3c7, #fde68a); border: 1px solid #fcd34d; }
+.ai-preflight-hero--fail { background: linear-gradient(135deg, #fee2e2, #fecaca); border: 1px solid #fca5a5; }
+.ai-preflight-hero-icon {
+  width: 56px; height: 56px;
+  border-radius: 50%;
+  margin: 0 auto 10px;
+  display: grid;
+  place-items: center;
+  font-size: 26px;
+  font-weight: bold;
+  color: #fff;
+}
+.ai-preflight-hero--pass .ai-preflight-hero-icon { background: #16a34a; }
+.ai-preflight-hero--warn .ai-preflight-hero-icon { background: #d97706; }
+.ai-preflight-hero--fail .ai-preflight-hero-icon { background: #dc2626; }
+.ai-preflight-hero-title {
+  font-size: 20px;
+  font-weight: 700;
+  color: #1f2937;
+  margin: 0 0 4px;
+}
+.ai-preflight-hero-sub {
+  font-size: 13px;
+  color: #4b5563;
+}
+
+.ai-preflight-checks {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.ai-check-row {
+  display: grid;
+  grid-template-columns: 32px 1fr auto;
+  gap: 12px;
+  padding: 12px 14px;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  align-items: center;
+  background: #fff;
+  transition: border-color 0.15s;
+}
+.ai-check-row[data-status="pass"] { border-color: #86efac; background: #f0fdf4; }
+.ai-check-row[data-status="warn"] { border-color: #fcd34d; background: #fffbeb; }
+.ai-check-row[data-status="fail"] { border-color: #fca5a5; background: #fef2f2; }
+.ai-check-icon {
+  width: 28px; height: 28px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  color: #fff;
+  font-weight: bold;
+  font-size: 14px;
+}
+.ai-check-row[data-status="pass"] .ai-check-icon { background: #16a34a; }
+.ai-check-row[data-status="warn"] .ai-check-icon { background: #d97706; }
+.ai-check-row[data-status="fail"] .ai-check-icon { background: #dc2626; }
+.ai-check-info { min-width: 0; }
+.ai-check-name {
+  font-size: 13px;
+  font-weight: 600;
+  color: #1f2937;
+}
+.ai-check-detail {
+  font-size: 11px;
+  color: #6b7280;
+  margin-top: 2px;
+  line-height: 1.4;
+}
+.ai-check-action {
+  font-size: 11px;
+  font-weight: 600;
+  color: #2563eb;
+  text-decoration: none;
+  background: none;
+  border: 1px solid #2563eb;
+  padding: 4px 10px;
+  border-radius: 9999px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+.ai-check-action:hover { background: #dbeafe; }
+.ai-check-row[data-status="pass"] .ai-check-action { display: none; }
+
+/* === Upscale Config Form === */
+.ai-form-row {
+  display: grid;
+  grid-template-columns: 140px 1fr;
+  gap: 16px;
+  align-items: start;
+  padding: 12px 0;
+  border-bottom: 1px solid #f3f4f6;
+}
+.ai-form-row:last-child { border-bottom: none; }
+.ai-form-label {
+  font-size: 13px;
+  font-weight: 600;
+  color: #1f2937;
+  padding-top: 8px;
+}
+.ai-form-hint {
+  font-size: 11px;
+  color: #9ca3af;
+  font-weight: 400;
+  margin-top: 2px;
+}
+.ai-form-input,
+.ai-form-select {
+  width: 100%;
+  height: 36px;
+  padding: 0 10px;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  font-size: 13px;
+  background: #fff;
+}
+.ai-form-input:focus,
+.ai-form-select:focus { outline: 2px solid #2563eb; outline-offset: -1px; border-color: #2563eb; }
+
+.ai-radio-cards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+.ai-radio-card {
+  border: 1.5px solid #d1d5db;
+  border-radius: 6px;
+  padding: 10px 12px;
+  cursor: pointer;
+  position: relative;
+  transition: all 0.15s;
+}
+.ai-radio-card input[type="radio"] { position: absolute; opacity: 0; }
+.ai-radio-card:hover { border-color: #2563eb; }
+.ai-radio-card.active {
+  border-color: #2563eb;
+  background: #dbeafe;
+}
+.ai-radio-card-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: #1f2937;
+}
+.ai-radio-card-desc {
+  font-size: 11px;
+  color: #6b7280;
+  margin-top: 2px;
+}
+
+.ai-slider-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.ai-slider-row input[type="range"] { flex: 1; }
+.ai-slider-value {
+  font-size: 13px;
+  font-weight: 600;
+  color: #2563eb;
+  min-width: 32px;
+  text-align: right;
+}
+
+.ai-switch {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  font-size: 13px;
+  user-select: none;
+}
+.ai-switch-track {
+  width: 36px; height: 20px;
+  background: #d1d5db;
+  border-radius: 9999px;
+  position: relative;
+  transition: background 0.2s;
+}
+.ai-switch-track::after {
+  content: "";
+  position: absolute;
+  top: 2px; left: 2px;
+  width: 16px; height: 16px;
+  background: #fff;
+  border-radius: 50%;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+  transition: transform 0.2s;
+}
+.ai-switch input[type="checkbox"] { display: none; }
+.ai-switch input[type="checkbox"]:checked + .ai-switch-track {
+  background: #2563eb;
+}
+.ai-switch input[type="checkbox"]:checked + .ai-switch-track::after {
+  transform: translateX(16px);
+}
+
+/* === Cost Display === */
+.ai-cost-display {
+  background: #f9fafb;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 16px;
+}
+.ai-cost-display--free {
+  background: linear-gradient(135deg, #ecfdf5, #d1fae5);
+  border-color: #86efac;
+}
+.ai-cost-time {
+  font-size: 12px;
+  color: #6b7280;
+}
+.ai-cost-price {
+  font-size: 18px;
+  font-weight: 700;
+  color: #1f2937;
+}
+.ai-cost-display--free .ai-cost-price { color: #16a34a; }
+
+/* === Processing Overlay === */
+.ai-processing {
+  text-align: center;
+  padding: 40px 20px;
+}
+.ai-processing-thumb {
+  width: 96px; height: 96px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #1e40af, #2563eb);
+  margin: 0 auto 16px;
+  position: relative;
+  display: grid;
+  place-items: center;
+  color: #fff;
+  font-size: 32px;
+  overflow: hidden;
+}
+.ai-processing-thumb::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+  animation: ai-shimmer 1.8s infinite;
+}
+@keyframes ai-shimmer {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+.ai-processing-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: #1f2937;
+  margin-bottom: 4px;
+}
+.ai-processing-sub {
+  font-size: 12px;
+  color: #6b7280;
+  margin-bottom: 16px;
+}
+.ai-progress-bar {
+  width: 100%;
+  height: 6px;
+  background: #e5e7eb;
+  border-radius: 9999px;
+  overflow: hidden;
+  margin-bottom: 12px;
+}
+.ai-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #2563eb, #60a5fa);
+  width: 45%;
+  transition: width 0.4s;
+  animation: ai-progress 2.5s ease-in-out infinite;
+}
+@keyframes ai-progress {
+  0% { width: 5%; }
+  50% { width: 75%; }
+  100% { width: 95%; }
+}
+.ai-stages {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+.ai-stage-dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: #d1d5db;
+}
+.ai-stage-dot.done { background: #16a34a; }
+.ai-stage-dot.active {
+  background: #2563eb;
+  box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.2);
+}
+.ai-processing-cancel {
+  font-size: 12px;
+  color: #6b7280;
+  cursor: pointer;
+  text-decoration: underline;
+  background: none;
+  border: none;
+}
+.ai-processing-cancel:hover { color: #dc2626; }
+
+/* === Preview comparison === */
+.ai-preview-stage {
+  background: #1f2937;
+  border-radius: 10px;
+  overflow: hidden;
+  position: relative;
+  min-height: 360px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+.ai-preview-side {
+  position: relative;
+  overflow: hidden;
+  background: repeating-conic-gradient(#374151 0% 25%, #4b5563 0% 50%) 50% / 20px 20px;
+}
+.ai-preview-side--orig::after {
+  content: "BEFORE";
+  position: absolute;
+  top: 10px; left: 10px;
+  background: rgba(0,0,0,0.7);
+  color: #fff;
+  padding: 4px 10px;
+  font-size: 11px;
+  font-weight: 700;
+  border-radius: 4px;
+  letter-spacing: 0.05em;
+}
+.ai-preview-side--new::after {
+  content: "AFTER";
+  position: absolute;
+  top: 10px; left: 10px;
+  background: rgba(37, 99, 235, 0.95);
+  color: #fff;
+  padding: 4px 10px;
+  font-size: 11px;
+  font-weight: 700;
+  border-radius: 4px;
+  letter-spacing: 0.05em;
+}
+.ai-preview-divider {
+  position: absolute;
+  top: 0; bottom: 0; left: 50%;
+  width: 2px;
+  background: #fff;
+  transform: translateX(-50%);
+  pointer-events: none;
+}
+.ai-preview-divider::after {
+  content: "";
+  position: absolute;
+  top: 50%; left: 50%;
+  width: 28px; height: 28px;
+  background: #fff;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+}
+.ai-preview-img-placeholder {
+  width: 100%;
+  height: 100%;
+  display: grid;
+  place-items: center;
+  color: #fff;
+  font-size: 14px;
+  opacity: 0.6;
+}
+
+.ai-preview-meta {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-top: 12px;
+  font-size: 12px;
+}
+.ai-preview-meta-block {
+  background: #f9fafb;
+  padding: 10px 12px;
+  border-radius: 6px;
+  border: 1px solid #e5e7eb;
+}
+.ai-preview-meta-label {
+  font-size: 11px;
+  color: #6b7280;
+  text-transform: uppercase;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+}
+.ai-preview-meta-value {
+  font-size: 14px;
+  font-weight: 700;
+  color: #1f2937;
+  margin-top: 2px;
+}
+.ai-preview-meta-value strong { color: #16a34a; }
+.ai-quality-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 10px;
+  border-radius: 9999px;
+  font-size: 12px;
+  font-weight: 600;
+  background: #fef3c7;
+  color: #92400e;
+  border: 1px solid #fcd34d;
+}
+.ai-quality-badge--good {
+  background: #dcfce7;
+  color: #14532d;
+  border-color: #86efac;
+}
+
+/* === BG Remove modal: 2-column layout === */
+.ai-bg-layout {
+  display: grid;
+  grid-template-columns: 320px 1fr;
+  gap: 0;
+  min-height: 480px;
+}
+@media (max-width: 720px) {
+  .ai-bg-layout { grid-template-columns: 1fr; }
+}
+.ai-bg-controls {
+  border-right: 1px solid #e5e7eb;
+  padding: 16px 20px;
+  background: #f9fafb;
+  overflow-y: auto;
+  max-height: 600px;
+}
+.ai-bg-section {
+  margin-bottom: 16px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid #e5e7eb;
+}
+.ai-bg-section:last-child { border-bottom: none; }
+.ai-bg-section-title {
+  font-size: 11px;
+  font-weight: 700;
+  color: #6b7280;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-bottom: 8px;
+}
+.ai-bg-brush-tools {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px;
+  margin-bottom: 8px;
+}
+.ai-bg-brush-btn {
+  padding: 8px;
+  border: 1.5px solid #d1d5db;
+  background: #fff;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  transition: all 0.15s;
+}
+.ai-bg-brush-btn:hover { border-color: #2563eb; }
+.ai-bg-brush-btn.active {
+  border-color: #2563eb;
+  background: #dbeafe;
+  color: #1e40af;
+}
+.ai-bg-preview {
+  padding: 16px;
+  background: #1f2937;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-height: 480px;
+}
+.ai-bg-preview-canvas {
+  flex: 1;
+  background: repeating-conic-gradient(#374151 0% 25%, #4b5563 0% 50%) 50% / 24px 24px;
+  border-radius: 8px;
+  position: relative;
+  overflow: hidden;
+  display: grid;
+  place-items: center;
+  color: #fff;
+  opacity: 0.85;
+}
+.ai-bg-preview-toolbar {
+  position: absolute;
+  top: 28px; right: 28px;
+  display: flex;
+  gap: 6px;
+  background: rgba(0,0,0,0.5);
+  border-radius: 6px;
+  padding: 4px;
+}
+.ai-bg-preview-toolbtn {
+  width: 28px; height: 28px;
+  background: transparent;
+  border: none;
+  color: #fff;
+  cursor: pointer;
+  font-size: 14px;
+  border-radius: 4px;
+}
+.ai-bg-preview-toolbtn:hover { background: rgba(255,255,255,0.15); }
+.ai-bg-preview-toolbtn.active { background: #2563eb; }
+.ai-bg-detection-info {
+  background: rgba(0,0,0,0.6);
+  color: #fff;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 12px;
+  position: absolute;
+  bottom: 28px;
+  left: 28px;
+  backdrop-filter: blur(8px);
+}
+.ai-bg-detection-info strong { color: #fbbf24; }
+</style>
+
+
+<!-- ============ MODAL 1: PREFLIGHT RESULTS ============ -->
+<div class="ai-modal-backdrop" id="ai-modal-preflight" onclick="if(event.target===this)closeAIModal('ai-modal-preflight')">
+  <div class="ai-modal ai-modal--md">
+    <div class="ai-modal-head">
+      <h3 class="ai-modal-title">
+        <span class="ai-modal-title-icon">⚡</span>
+        AI Preflight Quality Check
+        <span style="font-size: 11px; padding: 3px 8px; background: rgba(37, 99, 235, 0.15); color: #1e40af; border-radius: 9999px; font-weight: 600;">~15s</span>
+      </h3>
+      <button class="ai-modal-close" onclick="closeAIModal('ai-modal-preflight')">×</button>
+    </div>
+    <div class="ai-modal-body">
+      <!-- Hero status -->
+      <div class="ai-preflight-hero ai-preflight-hero--warn">
+        <div class="ai-preflight-hero-icon">⚠</div>
+        <h2 class="ai-preflight-hero-title">2 warnings · 5 passed</h2>
+        <div class="ai-preflight-hero-sub">Your file needs small fixes before optimal print quality</div>
+      </div>
+
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+        <div style="font-size: 13px; font-weight: 600; color: #1f2937;">All 7 checks</div>
+        <button class="ai-btn ai-btn--tertiary ai-btn--sm" onclick="rerunPreflight()">↻ Re-run</button>
+      </div>
+
+      <div class="ai-preflight-checks">
+        <div class="ai-check-row" data-status="pass">
+          <div class="ai-check-icon">✓</div>
+          <div class="ai-check-info">
+            <div class="ai-check-name">Resolution OK</div>
+            <div class="ai-check-detail">300 DPI at print size (16500×20400 px)</div>
+          </div>
+        </div>
+        <div class="ai-check-row" data-status="pass">
+          <div class="ai-check-icon">✓</div>
+          <div class="ai-check-info">
+            <div class="ai-check-name">Color mode CMYK</div>
+            <div class="ai-check-detail">SWOP v2 profile · ready for press</div>
+          </div>
+        </div>
+        <div class="ai-check-row" data-status="pass">
+          <div class="ai-check-icon">✓</div>
+          <div class="ai-check-info">
+            <div class="ai-check-name">Fonts embedded</div>
+            <div class="ai-check-detail">4 fonts: Impact, Helvetica, Arial, Georgia</div>
+          </div>
+        </div>
+        <div class="ai-check-row" data-status="warn">
+          <div class="ai-check-icon">!</div>
+          <div class="ai-check-info">
+            <div class="ai-check-name">Bleed margin too small</div>
+            <div class="ai-check-detail">Currently 1mm · required 3mm for HD vinyl banner</div>
+          </div>
+          <button class="ai-check-action" onclick="closeAIModal('ai-modal-preflight'); setTimeout(function(){openAIModal('ai-modal-upscale')}, 200);">Auto-fix</button>
+        </div>
+        <div class="ai-check-row" data-status="pass">
+          <div class="ai-check-icon">✓</div>
+          <div class="ai-check-info">
+            <div class="ai-check-name">No transparency issues</div>
+            <div class="ai-check-detail">All transparency flattened</div>
+          </div>
+        </div>
+        <div class="ai-check-row" data-status="warn">
+          <div class="ai-check-icon">!</div>
+          <div class="ai-check-info">
+            <div class="ai-check-name">Text near edge</div>
+            <div class="ai-check-detail">"Grand Opening" 6mm from edge · safe zone 12mm</div>
+          </div>
+          <button class="ai-check-action">Highlight</button>
+        </div>
+        <div class="ai-check-row" data-status="pass">
+          <div class="ai-check-icon">✓</div>
+          <div class="ai-check-info">
+            <div class="ai-check-name">File integrity</div>
+            <div class="ai-check-detail">PDF/A-compliant · no corruption detected</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="ai-modal-foot">
+      <div class="ai-modal-foot-left">⚡ Powered by AI · processed in 14.2s</div>
+      <button class="ai-btn ai-btn--tertiary" onclick="closeAIModal('ai-modal-preflight')">Cancel</button>
+      <button class="ai-btn ai-btn--secondary">↻ Re-run checks</button>
+      <button class="ai-btn ai-btn--primary">📥 Download report</button>
+      <button class="ai-btn ai-btn--success" onclick="closeAIModal('ai-modal-preflight')">Approve with warnings →</button>
+    </div>
+  </div>
+</div>
+
+
+<!-- ============ MODAL 2: UPSCALE CONFIG ============ -->
+<div class="ai-modal-backdrop" id="ai-modal-upscale" onclick="if(event.target===this)closeAIModal('ai-modal-upscale')">
+  <div class="ai-modal ai-modal--md">
+    <div class="ai-modal-head">
+      <h3 class="ai-modal-title">
+        <span class="ai-modal-title-icon">🔍</span>
+        AI Image Upscale
+        <span style="font-size: 11px; padding: 3px 8px; background: rgba(37, 99, 235, 0.15); color: #1e40af; border-radius: 9999px; font-weight: 600;">~30s</span>
+      </h3>
+      <button class="ai-modal-close" onclick="closeAIModal('ai-modal-upscale')">×</button>
+    </div>
+    <div class="ai-modal-body">
+      <div style="background: #fef3c7; border-left: 4px solid #d97706; padding: 12px 14px; border-radius: 6px; margin-bottom: 16px; font-size: 13px;">
+        <strong>⚠ Low resolution detected:</strong> Your image is 72 DPI but this product requires 300 DPI for sharp print quality.
+      </div>
+
+      <div class="ai-form-row">
+        <div class="ai-form-label">
+          Scale multiplier
+          <div class="ai-form-hint">How much to enlarge</div>
+        </div>
+        <div>
+          <div class="ai-radio-cards">
+            <label class="ai-radio-card">
+              <input type="radio" name="upscale-multi" />
+              <div class="ai-radio-card-title">2×</div>
+              <div class="ai-radio-card-desc">Doubles resolution</div>
+            </label>
+            <label class="ai-radio-card active">
+              <input type="radio" name="upscale-multi" checked />
+              <div class="ai-radio-card-title">4×</div>
+              <div class="ai-radio-card-desc">Best for 72→300 DPI</div>
+            </label>
+            <label class="ai-radio-card">
+              <input type="radio" name="upscale-multi" />
+              <div class="ai-radio-card-title">Custom</div>
+              <div class="ai-radio-card-desc">1.5× to 8×</div>
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <div class="ai-form-row">
+        <div class="ai-form-label">Target DPI</div>
+        <div>
+          <input class="ai-form-input" type="number" value="300" style="max-width: 120px;" />
+          <span style="font-size: 11px; color: #6b7280; margin-left: 8px;">Product needs 300 DPI</span>
+        </div>
+      </div>
+
+      <div class="ai-form-row">
+        <div class="ai-form-label">Output format</div>
+        <div>
+          <select class="ai-form-select" style="max-width: 200px;">
+            <option>Same as input (PDF)</option>
+            <option>PNG (lossless)</option>
+            <option>JPG (smaller file)</option>
+            <option>TIFF (print-ready)</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="ai-form-row">
+        <div class="ai-form-label">
+          Sharpening
+          <div class="ai-form-hint">Edge enhancement</div>
+        </div>
+        <div>
+          <div class="ai-radio-cards" style="grid-template-columns: repeat(4, 1fr);">
+            <label class="ai-radio-card"><input type="radio" name="sharpen" /><div class="ai-radio-card-title">Off</div></label>
+            <label class="ai-radio-card"><input type="radio" name="sharpen" /><div class="ai-radio-card-title">Light</div></label>
+            <label class="ai-radio-card active"><input type="radio" name="sharpen" checked /><div class="ai-radio-card-title">Medium</div></label>
+            <label class="ai-radio-card"><input type="radio" name="sharpen" /><div class="ai-radio-card-title">Strong</div></label>
+          </div>
+        </div>
+      </div>
+
+      <div class="ai-form-row">
+        <div class="ai-form-label">Options</div>
+        <div>
+          <label class="ai-switch">
+            <input type="checkbox" />
+            <span class="ai-switch-track"></span>
+            <span>Preserve transparency (PNG only)</span>
+          </label>
+        </div>
+      </div>
+
+      <div class="ai-cost-display ai-cost-display--free">
+        <div>
+          <div style="font-size: 13px; font-weight: 600; color: #14532d;">⚡ Estimated time: ~30s</div>
+          <div class="ai-cost-time">Output: 32,000 × 39,400 px · ~16 MB · 300 DPI</div>
+        </div>
+        <div>
+          <div class="ai-cost-price">FREE</div>
+          <div class="ai-cost-time" style="text-align: right;">B2B Premium</div>
+        </div>
+      </div>
+    </div>
+    <div class="ai-modal-foot">
+      <button class="ai-btn ai-btn--tertiary" onclick="closeAIModal('ai-modal-upscale')">Cancel</button>
+      <button class="ai-btn ai-btn--primary" onclick="closeAIModal('ai-modal-upscale'); setTimeout(function(){openAIModal('ai-modal-processing')}, 200);">
+        ⚡ Upscale image
+      </button>
+    </div>
+  </div>
+</div>
+
+
+<!-- ============ MODAL 3: PROCESSING ============ -->
+<div class="ai-modal-backdrop" id="ai-modal-processing">
+  <div class="ai-modal ai-modal--md">
+    <div class="ai-modal-body">
+      <div class="ai-processing">
+        <div class="ai-processing-thumb">🖼</div>
+        <div class="ai-processing-title">Upscaling your image...</div>
+        <div class="ai-processing-sub">design-final.pdf · 4× upscale · 72 → 300 DPI</div>
+        <div class="ai-progress-bar"><div class="ai-progress-fill"></div></div>
+        <div class="ai-stages">
+          <div class="ai-stage-dot done"></div>
+          <div class="ai-stage-dot done"></div>
+          <div class="ai-stage-dot active"></div>
+          <div class="ai-stage-dot"></div>
+        </div>
+        <div style="font-size: 12px; color: #6b7280; margin-bottom: 16px;">Stage 3 of 4: Sharpening · ~12s remaining</div>
+        <button class="ai-processing-cancel" onclick="closeAIModal('ai-modal-processing'); setTimeout(function(){openAIModal('ai-modal-preview')}, 200);">View result preview (demo) →</button>
+        <div style="margin-top: 12px;"><button class="ai-processing-cancel" onclick="closeAIModal('ai-modal-processing')">Cancel</button></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ============ MODAL 4: PREVIEW (Accept/Reject) ============ -->
+<div class="ai-modal-backdrop" id="ai-modal-preview" onclick="if(event.target===this)closeAIModal('ai-modal-preview')">
+  <div class="ai-modal ai-modal--xl">
+    <div class="ai-modal-head">
+      <h3 class="ai-modal-title">
+        <span class="ai-modal-title-icon">🔍</span>
+        Review AI upscale result
+        <span class="ai-quality-badge ai-quality-badge--good" style="margin-left: 8px;">⭐⭐⭐⭐ Quality: Excellent</span>
+      </h3>
+      <button class="ai-modal-close" onclick="closeAIModal('ai-modal-preview')">×</button>
+    </div>
+    <div class="ai-modal-body">
+      <div class="ai-preview-stage">
+        <div class="ai-preview-side ai-preview-side--orig">
+          <div class="ai-preview-img-placeholder">
+            <div style="text-align: center;">
+              <div style="font-size: 36px; margin-bottom: 8px;">🖼</div>
+              Original<br/>
+              <span style="font-size: 11px; opacity: 0.6;">800×600 · 72 DPI · pixelated</span>
+            </div>
+          </div>
+        </div>
+        <div class="ai-preview-side ai-preview-side--new">
+          <div class="ai-preview-img-placeholder">
+            <div style="text-align: center;">
+              <div style="font-size: 36px; margin-bottom: 8px;">✨</div>
+              AI Upscaled<br/>
+              <span style="font-size: 11px; opacity: 0.9;">3200×2400 · 300 DPI · sharp</span>
+            </div>
+          </div>
+        </div>
+        <div class="ai-preview-divider"></div>
+      </div>
+      <div class="ai-preview-meta">
+        <div class="ai-preview-meta-block">
+          <div class="ai-preview-meta-label">Before</div>
+          <div class="ai-preview-meta-value">800×600 px · 72 DPI</div>
+          <div style="font-size: 11px; color: #6b7280; margin-top: 2px;">245 KB · JPG</div>
+        </div>
+        <div class="ai-preview-meta-block" style="background: #dbeafe; border-color: #93c5fd;">
+          <div class="ai-preview-meta-label" style="color: #1e40af;">After</div>
+          <div class="ai-preview-meta-value">3200×2400 px · <strong>300 DPI</strong></div>
+          <div style="font-size: 11px; color: #1e40af; margin-top: 2px;">4.2 MB · PNG · <strong>+1316% resolution</strong></div>
+        </div>
+      </div>
+    </div>
+    <div class="ai-modal-foot">
+      <div class="ai-modal-foot-left">Drag the slider above to compare. Original always preserved.</div>
+      <button class="ai-btn ai-btn--tertiary" onclick="closeAIModal('ai-modal-preview'); setTimeout(function(){openAIModal('ai-modal-upscale')}, 200);">↻ Try again</button>
+      <button class="ai-btn ai-btn--danger" onclick="closeAIModal('ai-modal-preview')">Reject</button>
+      <button class="ai-btn ai-btn--success ai-btn--lg" onclick="closeAIModal('ai-modal-preview')">✓ Apply to design</button>
+    </div>
+  </div>
+</div>
+
+
+<!-- ============ MODAL 5: BG REMOVE REFINEMENT ============ -->
+<div class="ai-modal-backdrop" id="ai-modal-bg-remove" onclick="if(event.target===this)closeAIModal('ai-modal-bg-remove')">
+  <div class="ai-modal ai-modal--xl" style="max-height: 92vh;">
+    <div class="ai-modal-head">
+      <h3 class="ai-modal-title">
+        <span class="ai-modal-title-icon" style="background: linear-gradient(135deg, #7c3aed, #5b21b6);">✂</span>
+        Remove background with AI
+        <span class="ai-quality-badge ai-quality-badge--good" style="margin-left: 8px;">⭐⭐⭐⭐⭐ Excellent edges</span>
+      </h3>
+      <button class="ai-modal-close" onclick="closeAIModal('ai-modal-bg-remove')">×</button>
+    </div>
+    <div class="ai-modal-body" style="padding: 0;">
+      <div class="ai-bg-layout">
+        <!-- LEFT: Controls -->
+        <div class="ai-bg-controls">
+          <div class="ai-bg-section">
+            <div class="ai-bg-section-title">Subject type</div>
+            <select class="ai-form-select">
+              <option>🤖 Auto-detect (Person · 94%)</option>
+              <option>👤 Person</option>
+              <option>📦 Product</option>
+              <option>🎨 Logo</option>
+              <option>📝 Text</option>
+              <option>💇 Hair-heavy (slower)</option>
+            </select>
+            <div style="font-size: 10px; color: #6b7280; margin-top: 4px;">AI auto-detected the subject. Change if incorrect.</div>
+          </div>
+
+          <div class="ai-bg-section">
+            <div class="ai-bg-section-title">Manual refinement</div>
+            <div class="ai-bg-brush-tools">
+              <button class="ai-bg-brush-btn active">+ Add</button>
+              <button class="ai-bg-brush-btn">− Remove</button>
+            </div>
+            <div style="font-size: 11px; color: #6b7280; margin-bottom: 6px;">Brush size</div>
+            <div class="ai-slider-row">
+              <input type="range" min="5" max="100" value="30" />
+              <span class="ai-slider-value">30px</span>
+            </div>
+            <div style="display: flex; gap: 6px; margin-top: 8px;">
+              <button class="ai-btn ai-btn--tertiary ai-btn--sm" style="flex: 1;">↶ Undo</button>
+              <button class="ai-btn ai-btn--tertiary ai-btn--sm" style="flex: 1;">↷ Redo</button>
+              <button class="ai-btn ai-btn--tertiary ai-btn--sm" style="flex: 1;">Reset</button>
+            </div>
+          </div>
+
+          <div class="ai-bg-section">
+            <div class="ai-bg-section-title">Edge softness</div>
+            <div class="ai-slider-row">
+              <input type="range" min="0" max="10" value="3" />
+              <span class="ai-slider-value">3</span>
+            </div>
+            <div style="font-size: 10px; color: #6b7280; margin-top: 4px;">0 = hard cut · 10 = feathered</div>
+          </div>
+
+          <div class="ai-bg-section">
+            <div class="ai-bg-section-title">High-detail mode</div>
+            <label class="ai-switch">
+              <input type="checkbox" />
+              <span class="ai-switch-track"></span>
+              <span>For hair/fur (+10s)</span>
+            </label>
+          </div>
+
+          <div class="ai-bg-section">
+            <div class="ai-bg-section-title">Output background</div>
+            <div style="display: flex; flex-direction: column; gap: 6px;">
+              <label class="ai-radio-card active" style="display: flex; align-items: center; gap: 8px;">
+                <input type="radio" name="bg-output" checked />
+                <span style="width: 18px; height: 18px; background: repeating-conic-gradient(#cbd5e1 0% 25%, #fff 0% 50%) 50% / 8px 8px; border-radius: 3px;"></span>
+                <span style="font-size: 13px; font-weight: 600;">Transparent (PNG)</span>
+              </label>
+              <label class="ai-radio-card" style="display: flex; align-items: center; gap: 8px;">
+                <input type="radio" name="bg-output" />
+                <span style="width: 18px; height: 18px; background: #fff; border: 1px solid #d1d5db; border-radius: 3px;"></span>
+                <span style="font-size: 13px; font-weight: 600;">White</span>
+              </label>
+              <label class="ai-radio-card" style="display: flex; align-items: center; gap: 8px;">
+                <input type="radio" name="bg-output" />
+                <input type="color" value="#2563eb" style="width: 18px; height: 18px; border: none; padding: 0; border-radius: 3px; cursor: pointer;" />
+                <span style="font-size: 13px; font-weight: 600;">Custom color</span>
+              </label>
+              <label class="ai-radio-card" style="display: flex; align-items: center; gap: 8px;">
+                <input type="radio" name="bg-output" />
+                <span style="width: 18px; height: 18px; background: linear-gradient(135deg, #fbbf24, #dc2626); border-radius: 3px;"></span>
+                <span style="font-size: 13px; font-weight: 600;">Upload image…</span>
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <!-- RIGHT: Preview canvas -->
+        <div class="ai-bg-preview">
+          <div class="ai-bg-preview-canvas">
+            <div style="text-align: center;">
+              <div style="font-size: 64px; margin-bottom: 12px;">👤</div>
+              <div style="font-size: 13px;">Subject preview (background removed)</div>
+              <div style="font-size: 11px; opacity: 0.6; margin-top: 6px;">Click & drag to brush refine</div>
+            </div>
+          </div>
+          <div class="ai-bg-preview-toolbar">
+            <button class="ai-bg-preview-toolbtn active" title="Zoom fit">⊞</button>
+            <button class="ai-bg-preview-toolbtn" title="Zoom in">+</button>
+            <button class="ai-bg-preview-toolbtn" title="Zoom out">−</button>
+            <button class="ai-bg-preview-toolbtn" title="Show original">👁</button>
+          </div>
+          <div class="ai-bg-detection-info">
+            🤖 Detected: <strong>Person</strong> · 94% confidence
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="ai-modal-foot">
+      <div class="ai-modal-foot-left">⚡ Initial detection FREE · Apply charged $0.30 (B2C) / free (B2B)</div>
+      <button class="ai-btn ai-btn--tertiary" onclick="closeAIModal('ai-modal-bg-remove')">Cancel</button>
+      <button class="ai-btn ai-btn--secondary">↻ Refine more</button>
+      <button class="ai-btn ai-btn--success ai-btn--lg" onclick="closeAIModal('ai-modal-bg-remove')">✓ Apply background</button>
+    </div>
+  </div>
+</div>
+
+
+<!-- ============ Script ============ -->
+<script>
+  function openAIModal(id) {
+    var m = document.getElementById(id);
+    if (m) m.classList.add('open');
+  }
+  function closeAIModal(id) {
+    var m = document.getElementById(id);
+    if (m) m.classList.remove('open');
+  }
+  function rerunPreflight() {
+    closeAIModal('ai-modal-preflight');
+    setTimeout(function(){ openAIModal('ai-modal-processing'); }, 200);
+  }
+  // Radio card active state
+  document.querySelectorAll('.ai-radio-card input[type="radio"]').forEach(function(input){
+    input.addEventListener('change', function(){
+      var name = input.name;
+      document.querySelectorAll('.ai-radio-card input[name="' + name + '"]').forEach(function(r){
+        r.closest('.ai-radio-card').classList.toggle('active', r.checked);
+      });
+    });
+  });
+  // BG brush tool toggle
+  document.querySelectorAll('.ai-bg-brush-btn').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      btn.parentElement.querySelectorAll('.ai-bg-brush-btn').forEach(function(b){
+        b.classList.remove('active');
+      });
+      btn.classList.add('active');
+    });
+  });
+  // Esc closes modals
+  document.addEventListener('keydown', function(e){
+    if (e.key === 'Escape') {
+      document.querySelectorAll('.ai-modal-backdrop.open').forEach(function(m){
+        m.classList.remove('open');
+      });
+    }
+  });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,3609 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>SignEdge Canva — WordPress Admin</title>
+<style>
+  /* =========================================================
+     SignEdge Canva — WP Admin (Modern style)
+     White sidebar 200px + dark topbar + custom content
+     Pages: Products / Customers / Designer / Pricing /
+            Brand Assets / Settings / Reports / License
+     ========================================================= */
+
+  /* ---------- TOKENS ---------- */
+  :root {
+    /* Primary - WP brand blue (modern) */
+    --nbd-mb-primary: #2271b1;
+    --nbd-mb-primary-pressed: #135e96;
+    --nbd-mb-primary-soft: #e6f0f7;
+
+    /* Designer brand (Printcart custom) */
+    --pc-brand: #2563eb;
+    --pc-brand-soft: #dbeafe;
+
+    /* Text */
+    --nbd-mb-text: #1d2327;
+    --nbd-mb-text-soft: #50575e;
+    --nbd-mb-text-mute: #8c8f94;
+
+    /* Surface */
+    --nbd-mb-bg: #ffffff;
+    --nbd-mb-bg-soft: #f6f7f7;       /* WP body bg */
+    --nbd-mb-bg-canvas: #f0f0f1;
+
+    /* WP admin specific */
+    --wp-topbar-bg: #1d2327;          /* WP admin bar */
+    --wp-topbar-text: #f0f0f1;
+    --wp-sidebar-bg: #ffffff;
+    --wp-sidebar-active: #2271b1;
+    --wp-sidebar-hover: #f6f7f7;
+
+    /* Border */
+    --nbd-mb-border: #c3c4c7;
+    --nbd-mb-border-light: #dcdcde;
+    --nbd-mb-border-subtle: #f0f0f1;
+
+    /* Status */
+    --nbd-color-success: #00a32a;
+    --nbd-color-success-soft: #d5e8d6;
+    --nbd-color-warning: #dba617;
+    --nbd-color-warning-soft: #fcf9e8;
+    --nbd-color-error: #d63638;
+    --nbd-color-error-soft: #fcf0f1;
+    --nbd-color-info: #2271b1;
+    --nbd-color-info-soft: #e6f0f7;
+
+    /* Spacing */
+    --nbd-space-1: 4px;
+    --nbd-space-2: 8px;
+    --nbd-space-3: 12px;
+    --nbd-space-4: 16px;
+    --nbd-space-6: 24px;
+    --nbd-space-8: 32px;
+    --nbd-space-12: 48px;
+
+    /* Radius */
+    --nbd-radius-sm: 3px;
+    --nbd-radius-md: 4px;
+    --nbd-radius-lg: 6px;
+    --nbd-radius-xl: 8px;
+    --nbd-radius-full: 9999px;
+
+    /* Shadow */
+    --nbd-shadow-sm: 0 1px 2px 0 rgba(0,0,0,0.05);
+    --nbd-shadow-md: 0 2px 4px 0 rgba(0,0,0,0.08);
+    --nbd-shadow-lg: 0 4px 12px 0 rgba(0,0,0,0.08);
+    --nbd-shadow-xl: 0 8px 24px 0 rgba(0,0,0,0.16);
+    --nbd-shadow-focus: 0 0 0 1px var(--nbd-mb-primary);
+
+    /* Motion */
+    --nbd-duration-fast: 120ms;
+    --nbd-duration-normal: 220ms;
+    --nbd-ease-out: ease-out;
+
+    /* Layout */
+    --wp-topbar-height: 32px;
+    --wp-sidebar-width: 200px;
+    --wp-sidebar-collapsed: 36px;
+
+    /* Font */
+    --wp-font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; min-height: 100%; }
+  body {
+    font-family: var(--wp-font);
+    font-size: 13px;
+    line-height: 1.4em;
+    color: var(--nbd-mb-text);
+    background: var(--nbd-mb-bg-soft);
+    -webkit-font-smoothing: antialiased;
+  }
+  button { font-family: inherit; cursor: pointer; border: none; background: none; padding: 0; color: inherit; }
+  input, select, textarea { font-family: inherit; font-size: inherit; color: inherit; }
+  a { color: var(--nbd-mb-primary); text-decoration: none; }
+  a:hover { color: var(--nbd-mb-primary-pressed); }
+  h1, h2, h3, h4, h5, h6 { margin: 0; }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { transition-duration: 0ms !important; animation-duration: 0ms !important; }
+  }
+
+  /* =========================================================
+     TOPBAR (WP admin bar — 32px dark)
+     ========================================================= */
+  .wp-topbar {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    height: var(--wp-topbar-height);
+    background: var(--wp-topbar-bg);
+    color: var(--wp-topbar-text);
+    display: flex;
+    align-items: center;
+    z-index: 100;
+    font-size: 13px;
+  }
+  .wp-topbar-brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 0 12px;
+    height: 100%;
+    color: #fff;
+    font-weight: 400;
+    font-size: 13px;
+    transition: background var(--nbd-duration-fast);
+  }
+  .wp-topbar-brand:hover { background: #2c3338; color: #72aee6; text-decoration: none; }
+  .wp-topbar-brand svg { width: 20px; height: 20px; fill: currentColor; }
+  .wp-topbar-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 0 10px;
+    height: 100%;
+    color: #c3c4c7;
+    transition: all var(--nbd-duration-fast);
+  }
+  .wp-topbar-item:hover { background: #2c3338; color: #72aee6; text-decoration: none; }
+  .wp-topbar-item svg { width: 16px; height: 16px; fill: currentColor; }
+  .wp-topbar-spacer { flex: 1; }
+  .wp-topbar-search {
+    height: 100%;
+    display: inline-flex;
+    align-items: center;
+    padding: 0 10px;
+    color: #c3c4c7;
+  }
+  .wp-topbar-search:hover { background: #2c3338; color: #72aee6; cursor: pointer; }
+
+  /* =========================================================
+     APP LAYOUT
+     ========================================================= */
+  .wp-app {
+    display: block;
+    min-height: 100vh;
+    padding-top: var(--wp-topbar-height);
+    padding-left: var(--wp-sidebar-width);
+  }
+  @media (max-width: 782px) {
+    .wp-app { padding-left: 0; }
+    .wp-sidebar { transform: translateX(-100%); }
+    .wp-sidebar.is-open { transform: translateX(0); }
+  }
+
+  /* =========================================================
+     SIDEBAR (white WP modern style)
+     ========================================================= */
+  .wp-sidebar {
+    position: fixed;
+    top: var(--wp-topbar-height);
+    left: 0;
+    bottom: 0;
+    width: var(--wp-sidebar-width);
+    background: var(--wp-sidebar-bg);
+    border-right: 1px solid var(--nbd-mb-border-light);
+    overflow-y: auto;
+    z-index: 50;
+    transition: transform var(--nbd-duration-normal);
+  }
+  .wp-sidebar-section {
+    border-bottom: 1px solid var(--nbd-mb-border-subtle);
+    padding: var(--nbd-space-2) 0;
+  }
+  .wp-sidebar-section:last-child { border-bottom: none; }
+  .wp-sidebar-section-label {
+    padding: 6px var(--nbd-space-3);
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--nbd-mb-text-mute);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+
+  .wp-nav-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px var(--nbd-space-3);
+    color: var(--nbd-mb-text);
+    font-size: 13px;
+    font-weight: 400;
+    width: 100%;
+    text-align: left;
+    text-decoration: none;
+    border-left: 3px solid transparent;
+    transition: background var(--nbd-duration-fast);
+    position: relative;
+    cursor: pointer;
+  }
+  .wp-nav-item:hover {
+    background: var(--wp-sidebar-hover);
+    color: var(--nbd-mb-primary);
+    text-decoration: none;
+  }
+  .wp-nav-item:focus-visible {
+    outline: 2px solid var(--nbd-mb-primary);
+    outline-offset: -2px;
+  }
+  .wp-nav-item.is-active {
+    background: var(--nbd-mb-primary-soft);
+    color: var(--nbd-mb-primary);
+    border-left-color: var(--nbd-mb-primary);
+    font-weight: 600;
+  }
+  .wp-nav-item.is-active .wp-nav-icon { color: var(--nbd-mb-primary); }
+  .wp-nav-icon {
+    width: 18px; height: 18px;
+    color: var(--nbd-mb-text-soft);
+    flex-shrink: 0;
+    transition: color var(--nbd-duration-fast);
+  }
+  .wp-nav-icon svg { width: 100%; height: 100%; stroke: currentColor; stroke-width: 1.8; fill: none; }
+  .wp-nav-item:hover .wp-nav-icon { color: var(--nbd-mb-primary); }
+  .wp-nav-label {
+    flex: 1;
+    min-width: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .wp-nav-badge {
+    background: var(--nbd-mb-primary);
+    color: #fff;
+    font-size: 10px;
+    font-weight: 700;
+    padding: 1px 6px;
+    border-radius: var(--nbd-radius-full);
+    flex-shrink: 0;
+    line-height: 1.4;
+  }
+  .wp-nav-badge.is-warning { background: var(--nbd-color-warning); }
+  .wp-nav-badge.is-success { background: var(--nbd-color-success); }
+  .wp-nav-badge.is-new { background: var(--nbd-color-info); }
+
+  /* Sidebar brand at top */
+  .wp-sidebar-brand {
+    padding: var(--nbd-space-3);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border-bottom: 1px solid var(--nbd-mb-border-subtle);
+    background: var(--nbd-mb-bg-soft);
+  }
+  .wp-sidebar-brand-logo {
+    width: 32px; height: 32px;
+    background: var(--pc-brand);
+    color: #fff;
+    border-radius: var(--nbd-radius-md);
+    display: grid;
+    place-items: center;
+    font-size: 16px;
+    font-weight: 800;
+    flex-shrink: 0;
+  }
+  .wp-sidebar-brand-text {
+    min-width: 0;
+    line-height: 1.2;
+  }
+  .wp-sidebar-brand-name {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--nbd-mb-text);
+  }
+  .wp-sidebar-brand-version {
+    font-size: 10px;
+    color: var(--nbd-mb-text-mute);
+    margin-top: 1px;
+  }
+
+  /* =========================================================
+     MAIN CONTENT
+     ========================================================= */
+  .wp-main {
+    padding: var(--nbd-space-4) var(--nbd-space-6) var(--nbd-space-12);
+    min-width: 0;
+  }
+  @media (max-width: 782px) {
+    .wp-main { padding: var(--nbd-space-3); }
+  }
+
+  /* Page heading - WP style */
+  .wp-page-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--nbd-space-4);
+    margin-bottom: var(--nbd-space-4);
+    flex-wrap: wrap;
+  }
+  .wp-page-title-block {
+    display: flex;
+    align-items: center;
+    gap: var(--nbd-space-3);
+    flex-wrap: wrap;
+    min-width: 0;
+    flex: 1;
+  }
+  .wp-page-title {
+    font-size: 23px;
+    font-weight: 400;
+    color: var(--nbd-mb-text);
+    line-height: 1.3;
+    letter-spacing: -0.01em;
+  }
+  .wp-page-add-new {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 0 10px;
+    height: 26px;
+    border: 1px solid var(--nbd-mb-border);
+    border-radius: var(--nbd-radius-sm);
+    background: var(--nbd-mb-bg);
+    color: var(--nbd-mb-text);
+    font-size: 13px;
+    transition: all var(--nbd-duration-fast);
+  }
+  .wp-page-add-new:hover {
+    background: var(--nbd-mb-bg-soft);
+    border-color: var(--nbd-mb-text-soft);
+    color: var(--nbd-mb-primary);
+    text-decoration: none;
+  }
+  .wp-page-actions {
+    display: flex;
+    gap: var(--nbd-space-2);
+    flex-shrink: 0;
+    flex-wrap: wrap;
+  }
+
+  /* Subtitle / description under heading */
+  .wp-page-sub {
+    font-size: 14px;
+    color: var(--nbd-mb-text-soft);
+    line-height: 1.5;
+    margin-bottom: var(--nbd-space-4);
+  }
+
+  /* WP-style notice */
+  .wp-notice {
+    padding: var(--nbd-space-3) var(--nbd-space-4);
+    background: var(--nbd-mb-bg);
+    border-left: 4px solid var(--nbd-mb-primary);
+    box-shadow: var(--nbd-shadow-sm);
+    border-radius: 0 var(--nbd-radius-md) var(--nbd-radius-md) 0;
+    margin-bottom: var(--nbd-space-4);
+    display: flex;
+    align-items: flex-start;
+    gap: var(--nbd-space-3);
+    font-size: 13px;
+    line-height: 1.5;
+  }
+  .wp-notice[data-type="success"] { border-left-color: var(--nbd-color-success); }
+  .wp-notice[data-type="warning"] { border-left-color: var(--nbd-color-warning); }
+  .wp-notice[data-type="error"] { border-left-color: var(--nbd-color-error); }
+  .wp-notice-icon {
+    width: 20px; height: 20px;
+    color: var(--nbd-mb-primary);
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+  .wp-notice[data-type="success"] .wp-notice-icon { color: var(--nbd-color-success); }
+  .wp-notice[data-type="warning"] .wp-notice-icon { color: var(--nbd-color-warning); }
+  .wp-notice[data-type="error"] .wp-notice-icon { color: var(--nbd-color-error); }
+  .wp-notice-icon svg { width: 100%; height: 100%; stroke: currentColor; stroke-width: 2; fill: none; }
+  .wp-notice-body { flex: 1; min-width: 0; color: var(--nbd-mb-text); }
+  .wp-notice-title { font-weight: 600; margin-bottom: 2px; }
+  .wp-notice-close {
+    width: 24px; height: 24px;
+    border-radius: var(--nbd-radius-sm);
+    color: var(--nbd-mb-text-mute);
+    flex-shrink: 0;
+    display: grid;
+    place-items: center;
+  }
+  .wp-notice-close:hover { background: var(--nbd-mb-bg-soft); color: var(--nbd-mb-text); }
+  .wp-notice-close svg { width: 14px; height: 14px; stroke: currentColor; stroke-width: 2; fill: none; }
+
+  /* =========================================================
+     BUTTONS (WP style)
+     ========================================================= */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    height: 30px;
+    padding: 0 var(--nbd-space-3);
+    border-radius: var(--nbd-radius-sm);
+    font-size: 13px;
+    font-weight: 400;
+    transition: all var(--nbd-duration-fast);
+    cursor: pointer;
+    font-family: inherit;
+    white-space: nowrap;
+    border: 1px solid transparent;
+    line-height: 1;
+  }
+  .btn svg { width: 14px; height: 14px; stroke: currentColor; stroke-width: 2; fill: none; flex-shrink: 0; }
+  .btn-primary {
+    background: var(--nbd-mb-primary);
+    color: #fff;
+    border-color: var(--nbd-mb-primary);
+  }
+  .btn-primary:hover {
+    background: var(--nbd-mb-primary-pressed);
+    border-color: var(--nbd-mb-primary-pressed);
+    color: #fff;
+    text-decoration: none;
+  }
+  .btn-secondary {
+    background: var(--nbd-mb-bg);
+    color: var(--nbd-mb-primary);
+    border-color: var(--nbd-mb-primary);
+  }
+  .btn-secondary:hover {
+    background: var(--nbd-mb-primary-soft);
+    color: var(--nbd-mb-primary-pressed);
+    border-color: var(--nbd-mb-primary-pressed);
+    text-decoration: none;
+  }
+  .btn-tertiary {
+    background: var(--nbd-mb-bg);
+    color: var(--nbd-mb-text);
+    border-color: var(--nbd-mb-border);
+  }
+  .btn-tertiary:hover {
+    background: var(--nbd-mb-bg-soft);
+    border-color: var(--nbd-mb-text-soft);
+    color: var(--nbd-mb-primary);
+  }
+  .btn-link {
+    background: transparent;
+    color: var(--nbd-mb-primary);
+    padding: 0 6px;
+    height: 28px;
+  }
+  .btn-link:hover { color: var(--nbd-mb-primary-pressed); background: var(--nbd-mb-primary-soft); text-decoration: none; }
+  .btn-danger {
+    background: var(--nbd-color-error);
+    color: #fff;
+    border-color: var(--nbd-color-error);
+  }
+  .btn-danger:hover { background: #b32d2e; border-color: #b32d2e; color: #fff; }
+  .btn-icon {
+    width: 30px;
+    padding: 0;
+  }
+  .btn-sm { height: 26px; padding: 0 var(--nbd-space-2); font-size: 12px; }
+  .btn-lg { height: 36px; padding: 0 var(--nbd-space-4); font-size: 14px; }
+
+  /* =========================================================
+     CARD / POSTBOX (WP postbox-like)
+     ========================================================= */
+  .wp-card {
+    background: var(--nbd-mb-bg);
+    border: 1px solid var(--nbd-mb-border-light);
+    border-radius: var(--nbd-radius-md);
+    box-shadow: var(--nbd-shadow-sm);
+    overflow: hidden;
+    margin-bottom: var(--nbd-space-4);
+  }
+  .wp-card-head {
+    padding: var(--nbd-space-3) var(--nbd-space-4);
+    background: var(--nbd-mb-bg);
+    border-bottom: 1px solid var(--nbd-mb-border-subtle);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--nbd-space-3);
+  }
+  .wp-card-title {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--nbd-mb-text);
+    line-height: 1.3;
+  }
+  .wp-card-sub {
+    font-size: 12px;
+    color: var(--nbd-mb-text-soft);
+    margin-top: 2px;
+  }
+  .wp-card-body { padding: var(--nbd-space-4); }
+  .wp-card-body.is-flush { padding: 0; }
+  .wp-card-foot {
+    padding: var(--nbd-space-3) var(--nbd-space-4);
+    background: var(--nbd-mb-bg-soft);
+    border-top: 1px solid var(--nbd-mb-border-subtle);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: var(--nbd-space-3);
+  }
+
+  /* =========================================================
+     STATS / SUMMARY CARDS (WP-style)
+     ========================================================= */
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: var(--nbd-space-4);
+    margin-bottom: var(--nbd-space-4);
+  }
+  @media (max-width: 1279px) { .stats-grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 600px) { .stats-grid { grid-template-columns: 1fr; } }
+
+  .stat-card {
+    background: var(--nbd-mb-bg);
+    border: 1px solid var(--nbd-mb-border-light);
+    border-radius: var(--nbd-radius-md);
+    padding: var(--nbd-space-4);
+    box-shadow: var(--nbd-shadow-sm);
+  }
+  .stat-card-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: var(--nbd-space-2);
+  }
+  .stat-label {
+    font-size: 12px;
+    color: var(--nbd-mb-text-soft);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+  .stat-icon {
+    width: 28px; height: 28px;
+    border-radius: var(--nbd-radius-md);
+    background: var(--nbd-mb-primary-soft);
+    color: var(--nbd-mb-primary);
+    display: grid;
+    place-items: center;
+  }
+  .stat-icon svg { width: 14px; height: 14px; stroke: currentColor; stroke-width: 1.8; fill: none; }
+  .stat-icon.success { color: var(--nbd-color-success); background: var(--nbd-color-success-soft); }
+  .stat-icon.warning { color: #92400e; background: var(--nbd-color-warning-soft); }
+  .stat-value {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--nbd-mb-text);
+    line-height: 1.2;
+    font-variant-numeric: tabular-nums;
+    margin-bottom: 4px;
+  }
+  .stat-delta {
+    font-size: 12px;
+    color: var(--nbd-mb-text-soft);
+    display: inline-flex;
+    align-items: center;
+    gap: 2px;
+  }
+  .stat-delta.up { color: var(--nbd-color-success); }
+  .stat-delta.down { color: var(--nbd-color-error); }
+  .stat-delta svg { width: 12px; height: 12px; stroke: currentColor; stroke-width: 2.5; fill: none; }
+
+  /* =========================================================
+     WP LIST TABLE
+     ========================================================= */
+  .wp-list-table-wrap {
+    background: var(--nbd-mb-bg);
+    border: 1px solid var(--nbd-mb-border-light);
+    border-radius: var(--nbd-radius-md);
+    box-shadow: var(--nbd-shadow-sm);
+    overflow: hidden;
+    margin-bottom: var(--nbd-space-4);
+  }
+  /* Table top bar (bulk actions, filters, pagination) */
+  .wp-tablenav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--nbd-space-3);
+    padding: var(--nbd-space-2) var(--nbd-space-3);
+    background: var(--nbd-mb-bg);
+    border-bottom: 1px solid var(--nbd-mb-border-subtle);
+    flex-wrap: wrap;
+  }
+  .wp-tablenav-left, .wp-tablenav-right {
+    display: flex;
+    align-items: center;
+    gap: var(--nbd-space-2);
+    flex-wrap: wrap;
+  }
+  .wp-pagination {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    font-size: 13px;
+    color: var(--nbd-mb-text-soft);
+  }
+  .wp-pagination-info {
+    margin-right: var(--nbd-space-3);
+    font-size: 12px;
+  }
+  .wp-pagination-btn {
+    width: 26px; height: 26px;
+    display: inline-grid;
+    place-items: center;
+    border: 1px solid var(--nbd-mb-border);
+    border-radius: var(--nbd-radius-sm);
+    background: var(--nbd-mb-bg);
+    color: var(--nbd-mb-text-soft);
+    transition: all var(--nbd-duration-fast);
+  }
+  .wp-pagination-btn:hover:not(:disabled) {
+    background: var(--nbd-mb-primary-soft);
+    border-color: var(--nbd-mb-primary);
+    color: var(--nbd-mb-primary);
+  }
+  .wp-pagination-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+  .wp-pagination-btn svg { width: 12px; height: 12px; stroke: currentColor; stroke-width: 2.5; fill: none; }
+
+  .wp-list-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+  }
+  .wp-list-table thead th {
+    padding: 8px var(--nbd-space-3);
+    background: var(--nbd-mb-bg-soft);
+    text-align: left;
+    font-weight: 600;
+    color: var(--nbd-mb-text);
+    border-bottom: 1px solid var(--nbd-mb-border-light);
+    font-size: 13px;
+    line-height: 1.4;
+    white-space: nowrap;
+  }
+  .wp-list-table thead th.sortable {
+    cursor: pointer;
+    user-select: none;
+  }
+  .wp-list-table thead th.sortable:hover { color: var(--nbd-mb-primary); }
+  .wp-list-table thead th.sortable .sort-icon {
+    display: inline-block;
+    width: 10px;
+    margin-left: 2px;
+    color: var(--nbd-mb-text-mute);
+  }
+  .wp-list-table tbody td {
+    padding: 10px var(--nbd-space-3);
+    border-bottom: 1px solid var(--nbd-mb-border-subtle);
+    color: var(--nbd-mb-text);
+    vertical-align: middle;
+  }
+  .wp-list-table tbody tr:last-child td { border-bottom: none; }
+  .wp-list-table tbody tr:hover { background: #fafafa; }
+  .wp-list-table tbody tr.is-selected { background: var(--nbd-mb-primary-soft); }
+  .wp-list-table .col-cb {
+    width: 30px;
+    padding-left: var(--nbd-space-3);
+  }
+  .wp-list-table .col-actions {
+    width: 1%;
+    white-space: nowrap;
+    text-align: right;
+  }
+  .wp-list-table .row-actions {
+    display: flex;
+    gap: 6px;
+    font-size: 12px;
+    margin-top: 4px;
+    visibility: hidden;
+  }
+  .wp-list-table tbody tr:hover .row-actions { visibility: visible; }
+  .wp-list-table .row-actions a {
+    color: var(--nbd-mb-text-mute);
+  }
+  .wp-list-table .row-actions a:hover { color: var(--nbd-mb-primary); }
+  .wp-list-table .row-actions .delete { color: var(--nbd-color-error); }
+  .wp-list-table .row-actions-sep {
+    color: var(--nbd-mb-border);
+  }
+
+  /* Title cell with image + title + secondary */
+  .col-title-cell {
+    display: flex;
+    align-items: center;
+    gap: var(--nbd-space-2);
+  }
+  .col-title-thumb {
+    width: 40px; height: 40px;
+    border-radius: var(--nbd-radius-sm);
+    background: var(--nbd-mb-bg-soft);
+    display: grid;
+    place-items: center;
+    color: #ffe35a;
+    font-size: 9px;
+    font-weight: 800;
+    flex-shrink: 0;
+    overflow: hidden;
+  }
+  .col-title-info { min-width: 0; flex: 1; }
+  .col-title-main {
+    font-weight: 600;
+    color: var(--nbd-mb-text);
+  }
+  .col-title-main a:hover { color: var(--nbd-mb-primary-pressed); }
+  .col-title-sub {
+    font-size: 12px;
+    color: var(--nbd-mb-text-soft);
+    margin-top: 1px;
+  }
+
+  /* Checkbox */
+  input[type="checkbox"] {
+    width: 16px; height: 16px;
+    cursor: pointer;
+    accent-color: var(--nbd-mb-primary);
+  }
+
+  /* Status pill */
+  .status-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 2px 8px;
+    border-radius: var(--nbd-radius-full);
+    font-size: 11px;
+    font-weight: 600;
+    line-height: 1.4;
+  }
+  .status-pill[data-status="active"], .status-pill[data-status="published"] {
+    background: var(--nbd-color-success-soft);
+    color: #155724;
+  }
+  .status-pill[data-status="draft"] {
+    background: var(--nbd-mb-bg-soft);
+    color: var(--nbd-mb-text-soft);
+  }
+  .status-pill[data-status="pending"] {
+    background: var(--nbd-color-warning-soft);
+    color: #92400e;
+  }
+  .status-pill[data-status="disabled"] {
+    background: var(--nbd-color-error-soft);
+    color: #b32d2e;
+  }
+  .status-pill .dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: currentColor;
+  }
+
+  /* =========================================================
+     FORM (WP-style)
+     ========================================================= */
+  .form-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  .form-table th {
+    width: 220px;
+    padding: var(--nbd-space-4) var(--nbd-space-3) var(--nbd-space-4) 0;
+    text-align: left;
+    vertical-align: top;
+    font-weight: 600;
+    color: var(--nbd-mb-text);
+    font-size: 13px;
+  }
+  .form-table th label {
+    display: block;
+    cursor: pointer;
+  }
+  .form-table th .help {
+    font-weight: 400;
+    color: var(--nbd-mb-text-soft);
+    font-size: 12px;
+    margin-top: 2px;
+    line-height: 1.5;
+  }
+  .form-table td {
+    padding: var(--nbd-space-3) 0;
+    vertical-align: top;
+  }
+  .form-table tr {
+    border-bottom: 1px solid var(--nbd-mb-border-subtle);
+  }
+  .form-table tr:last-child { border-bottom: none; }
+  @media (max-width: 782px) {
+    .form-table th, .form-table td { display: block; width: 100%; padding: 4px 0; }
+    .form-table th { padding-top: var(--nbd-space-3); }
+  }
+
+  .form-input, .form-select, .form-textarea {
+    height: 30px;
+    padding: 0 8px;
+    border: 1px solid var(--nbd-mb-border);
+    border-radius: var(--nbd-radius-sm);
+    background: var(--nbd-mb-bg);
+    font-size: 13px;
+    color: var(--nbd-mb-text);
+    transition: all var(--nbd-duration-fast);
+    width: 100%;
+    max-width: 400px;
+  }
+  .form-input:focus, .form-select:focus, .form-textarea:focus {
+    outline: none;
+    border-color: var(--nbd-mb-primary);
+    box-shadow: var(--nbd-shadow-focus);
+  }
+  .form-textarea {
+    height: auto;
+    min-height: 80px;
+    padding: 6px 8px;
+    resize: vertical;
+    font-family: inherit;
+  }
+  .form-input--narrow { max-width: 120px; }
+  .form-input--medium { max-width: 240px; }
+  .form-input--full { max-width: none; }
+  .form-help {
+    font-size: 12px;
+    color: var(--nbd-mb-text-soft);
+    margin-top: 4px;
+    line-height: 1.5;
+  }
+  .form-row-inline {
+    display: flex;
+    align-items: center;
+    gap: var(--nbd-space-2);
+    flex-wrap: wrap;
+  }
+  .form-prefix, .form-suffix {
+    font-size: 13px;
+    color: var(--nbd-mb-text-soft);
+  }
+
+  /* Toggle */
+  .switch {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: var(--nbd-space-2);
+    cursor: pointer;
+  }
+  .switch input { position: absolute; opacity: 0; width: 1px; height: 1px; }
+  .switch-slider {
+    position: relative;
+    width: 32px; height: 18px;
+    background: var(--nbd-mb-border);
+    border-radius: 18px;
+    transition: background var(--nbd-duration-fast);
+    flex-shrink: 0;
+  }
+  .switch-slider::before {
+    content: "";
+    position: absolute;
+    width: 12px; height: 12px;
+    background: #fff;
+    border-radius: 50%;
+    top: 3px;
+    left: 3px;
+    transition: transform var(--nbd-duration-fast);
+    box-shadow: 0 1px 2px rgba(0,0,0,0.2);
+  }
+  .switch input:checked + .switch-slider { background: var(--nbd-mb-primary); }
+  .switch input:checked + .switch-slider::before { transform: translateX(14px); }
+  .switch input:focus-visible + .switch-slider { box-shadow: 0 0 0 2px var(--nbd-mb-primary-soft); }
+  .switch-label {
+    font-size: 13px;
+    color: var(--nbd-mb-text);
+  }
+
+  /* Radio card group */
+  .radio-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: var(--nbd-space-2);
+    max-width: 720px;
+  }
+  .radio-card {
+    display: block;
+    padding: var(--nbd-space-3);
+    border: 1.5px solid var(--nbd-mb-border-light);
+    border-radius: var(--nbd-radius-md);
+    background: var(--nbd-mb-bg);
+    cursor: pointer;
+    transition: all var(--nbd-duration-fast);
+  }
+  .radio-card input { position: absolute; opacity: 0; }
+  .radio-card:hover { border-color: var(--nbd-mb-text-soft); }
+  .radio-card.is-active {
+    border-color: var(--nbd-mb-primary);
+    background: var(--nbd-mb-primary-soft);
+  }
+  .radio-card-title {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--nbd-mb-text);
+    margin-bottom: 4px;
+  }
+  .radio-card-desc {
+    font-size: 11px;
+    color: var(--nbd-mb-text-soft);
+    line-height: 1.4;
+  }
+
+  /* =========================================================
+     TABS (WP nav-tab style)
+     ========================================================= */
+  .wp-tabs {
+    display: flex;
+    gap: 0;
+    border-bottom: 1px solid var(--nbd-mb-border-light);
+    margin-bottom: var(--nbd-space-4);
+    overflow-x: auto;
+  }
+  .wp-tab {
+    padding: 8px var(--nbd-space-4);
+    background: transparent;
+    border: 1px solid transparent;
+    border-bottom: none;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--nbd-mb-text-soft);
+    margin-bottom: -1px;
+    transition: all var(--nbd-duration-fast);
+    white-space: nowrap;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .wp-tab:hover { color: var(--nbd-mb-primary); }
+  .wp-tab.is-active {
+    color: var(--nbd-mb-text);
+    background: var(--nbd-mb-bg);
+    border-color: var(--nbd-mb-border-light);
+    border-bottom: 1px solid var(--nbd-mb-bg);
+  }
+  .wp-tab .count {
+    background: var(--nbd-mb-bg-soft);
+    color: var(--nbd-mb-text-soft);
+    padding: 1px 6px;
+    border-radius: var(--nbd-radius-full);
+    font-size: 11px;
+    font-weight: 700;
+  }
+  .wp-tab.is-active .count {
+    background: var(--nbd-mb-primary-soft);
+    color: var(--nbd-mb-primary);
+  }
+
+  /* Page panel switching */
+  .page { display: none; }
+  .page.is-active { display: block; }
+
+  /* =========================================================
+     META BOXES (form sidebar layout)
+     ========================================================= */
+  .form-layout {
+    display: grid;
+    grid-template-columns: 1fr 280px;
+    gap: var(--nbd-space-4);
+    align-items: start;
+  }
+  @media (max-width: 1023px) { .form-layout { grid-template-columns: 1fr; } }
+
+  /* =========================================================
+     SECTION DIVIDER
+     ========================================================= */
+  .section-divider {
+    margin: var(--nbd-space-6) 0 var(--nbd-space-3);
+    padding-bottom: var(--nbd-space-2);
+    border-bottom: 1px solid var(--nbd-mb-border-light);
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--nbd-mb-text);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+  .section-divider:first-child { margin-top: 0; }
+
+  /* =========================================================
+     FILTER ROW (filters above table)
+     ========================================================= */
+  .filter-row {
+    display: flex;
+    align-items: center;
+    gap: var(--nbd-space-2);
+    flex-wrap: wrap;
+    margin-bottom: var(--nbd-space-3);
+  }
+  .filter-select {
+    height: 30px;
+    padding: 0 28px 0 10px;
+    border: 1px solid var(--nbd-mb-border);
+    border-radius: var(--nbd-radius-sm);
+    background: var(--nbd-mb-bg);
+    font-size: 13px;
+    color: var(--nbd-mb-text);
+    cursor: pointer;
+    appearance: none;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%2350575e' stroke-width='2'><polyline points='6 9 12 15 18 9'/></svg>");
+    background-repeat: no-repeat;
+    background-position: right 8px center;
+  }
+  .filter-input {
+    height: 30px;
+    padding: 0 10px;
+    border: 1px solid var(--nbd-mb-border);
+    border-radius: var(--nbd-radius-sm);
+    background: var(--nbd-mb-bg);
+    font-size: 13px;
+    color: var(--nbd-mb-text);
+    width: 240px;
+    max-width: 100%;
+  }
+  .filter-input:focus, .filter-select:focus {
+    outline: none;
+    border-color: var(--nbd-mb-primary);
+    box-shadow: var(--nbd-shadow-focus);
+  }
+
+  /* Tier-like color label */
+  .tier-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 2px 8px;
+    border-radius: var(--nbd-radius-full);
+    font-size: 11px;
+    font-weight: 600;
+  }
+  .tier-pill[data-tier="b2c"] { background: var(--nbd-mb-bg-soft); color: var(--nbd-mb-text-soft); }
+  .tier-pill[data-tier="b2b-a"] { background: var(--nbd-color-info-soft); color: var(--nbd-mb-primary); }
+  .tier-pill[data-tier="b2b-b"] { background: #fde68a; color: #92400e; }
+  .tier-pill[data-tier="b2b-c"] { background: #c7d2fe; color: #3730a3; }
+  .tier-pill[data-tier="vip"] { background: linear-gradient(135deg, #fde68a, #fbbf24); color: #78350f; }
+
+  /* Progress bar */
+  .progress {
+    height: 6px;
+    background: var(--nbd-mb-bg-soft);
+    border-radius: var(--nbd-radius-full);
+    overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%;
+    background: var(--nbd-mb-primary);
+    transition: width var(--nbd-duration-normal);
+  }
+  .progress-fill.success { background: var(--nbd-color-success); }
+  .progress-fill.warning { background: var(--nbd-color-warning); }
+  .progress-fill.danger { background: var(--nbd-color-error); }
+
+  /* Tags / chips */
+  .tag-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 1px 8px;
+    background: var(--nbd-mb-bg-soft);
+    border: 1px solid var(--nbd-mb-border-light);
+    border-radius: var(--nbd-radius-full);
+    font-size: 11px;
+    color: var(--nbd-mb-text-soft);
+  }
+
+  /* Tooltip / pill helper */
+  .help-tip {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 16px; height: 16px;
+    border-radius: 50%;
+    background: var(--nbd-mb-bg-soft);
+    color: var(--nbd-mb-text-mute);
+    font-size: 10px;
+    font-weight: 700;
+    margin-left: 4px;
+    cursor: help;
+  }
+  .help-tip:hover { background: var(--nbd-mb-primary-soft); color: var(--nbd-mb-primary); }
+
+  /* =========================================================
+     IMAGE GRID (Brand Assets)
+     ========================================================= */
+  .asset-grid {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: var(--nbd-space-3);
+  }
+  @media (max-width: 1279px) { .asset-grid { grid-template-columns: repeat(4, 1fr); } }
+  @media (max-width: 782px) { .asset-grid { grid-template-columns: repeat(3, 1fr); } }
+  @media (max-width: 480px) { .asset-grid { grid-template-columns: repeat(2, 1fr); } }
+
+  .asset-tile {
+    background: var(--nbd-mb-bg);
+    border: 1px solid var(--nbd-mb-border-light);
+    border-radius: var(--nbd-radius-md);
+    overflow: hidden;
+    cursor: pointer;
+    transition: all var(--nbd-duration-fast);
+    box-shadow: var(--nbd-shadow-sm);
+  }
+  .asset-tile:hover {
+    border-color: var(--nbd-mb-primary);
+    box-shadow: var(--nbd-shadow-md);
+    transform: translateY(-2px);
+  }
+  .asset-tile-thumb {
+    aspect-ratio: 1;
+    background: var(--nbd-mb-bg-soft);
+    display: grid;
+    place-items: center;
+    color: #ffe35a;
+    font-size: 11px;
+    font-weight: 800;
+    text-align: center;
+    overflow: hidden;
+    padding: var(--nbd-space-2);
+  }
+  .asset-tile-body { padding: 6px 8px; border-top: 1px solid var(--nbd-mb-border-subtle); }
+  .asset-tile-name {
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--nbd-mb-text);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .asset-tile-meta {
+    font-size: 10px;
+    color: var(--nbd-mb-text-mute);
+    margin-top: 1px;
+  }
+
+  /* Empty state */
+  .empty-state {
+    padding: var(--nbd-space-12) var(--nbd-space-4);
+    text-align: center;
+  }
+  .empty-state-icon {
+    width: 56px; height: 56px;
+    border-radius: 50%;
+    background: var(--nbd-mb-bg-soft);
+    color: var(--nbd-mb-text-mute);
+    display: grid;
+    place-items: center;
+    margin: 0 auto var(--nbd-space-3);
+  }
+  .empty-state-icon svg { width: 24px; height: 24px; stroke: currentColor; stroke-width: 1.5; fill: none; }
+  .empty-state-title { font-size: 16px; font-weight: 600; margin-bottom: 4px; }
+  .empty-state-desc { font-size: 13px; color: var(--nbd-mb-text-soft); max-width: 360px; margin: 0 auto var(--nbd-space-3); }
+
+  /* License key field */
+  .license-input-row {
+    display: flex;
+    gap: var(--nbd-space-2);
+    max-width: 540px;
+  }
+  .license-key-input {
+    flex: 1;
+    height: 36px;
+    padding: 0 12px;
+    border: 1px solid var(--nbd-mb-border);
+    border-radius: var(--nbd-radius-sm);
+    font-family: ui-monospace, Menlo, Consolas, monospace;
+    font-size: 13px;
+    letter-spacing: 0.04em;
+  }
+  .license-key-input:focus { outline: none; border-color: var(--nbd-mb-primary); box-shadow: var(--nbd-shadow-focus); }
+
+  .license-status-card {
+    background: linear-gradient(135deg, #f0f9ff, #e0f2fe);
+    border: 1px solid var(--nbd-mb-primary);
+    border-radius: var(--nbd-radius-md);
+    padding: var(--nbd-space-4);
+    display: flex;
+    align-items: center;
+    gap: var(--nbd-space-4);
+    margin-bottom: var(--nbd-space-4);
+  }
+  .license-status-card.is-expired { background: var(--nbd-color-error-soft); border-color: var(--nbd-color-error); }
+  .license-status-icon {
+    width: 48px; height: 48px;
+    border-radius: 50%;
+    background: var(--nbd-mb-bg);
+    color: var(--nbd-color-success);
+    display: grid;
+    place-items: center;
+    flex-shrink: 0;
+    box-shadow: var(--nbd-shadow-sm);
+  }
+  .license-status-icon svg { width: 24px; height: 24px; stroke: currentColor; stroke-width: 2.5; fill: none; }
+  .license-status-info { flex: 1; min-width: 0; }
+  .license-status-title { font-size: 16px; font-weight: 700; margin-bottom: 4px; }
+  .license-status-meta { font-size: 13px; color: var(--nbd-mb-text-soft); }
+</style>
+</head>
+<body>
+<!-- ========== WP TOPBAR ========== -->
+<header class="wp-topbar">
+  <a href="#" class="wp-topbar-brand">
+    <svg viewBox="0 0 122.5 122.5" fill="currentColor"><path d="M8.7,61.3c0,20.8,12.1,38.7,29.6,47.3L13.2,40.8C10.3,47.1,8.7,54,8.7,61.3z M96.7,58.6c0-6.5-2.3-11-4.3-14.5c-2.7-4.3-5.2-8-5.2-12.3c0-4.8,3.7-9.3,8.9-9.3c0.2,0,0.5,0,0.7,0c-9.4-8.6-21.9-13.9-35.7-13.9c-18.5,0-34.8,9.5-44.2,23.9c1.2,0,2.4,0.1,3.4,0.1c5.5,0,14.1-0.7,14.1-0.7c2.9-0.2,3.2,4,0.4,4.3c0,0-2.9,0.3-6.1,0.5l19.3,57.5l11.6-34.8l-8.3-22.7c-2.9-0.2-5.6-0.5-5.6-0.5c-2.9-0.2-2.5-4.5,0.3-4.3c0,0,8.7,0.7,13.9,0.7c5.5,0,14.1-0.7,14.1-0.7c2.9-0.2,3.2,4,0.4,4.3c0,0-2.9,0.3-6.1,0.5l19.1,57l5.3-17.6C95.3,67.4,96.7,62.6,96.7,58.6z M62.2,65.9l-15.9,46.2c4.7,1.4,9.7,2.2,14.9,2.2c6.2,0,12.1-1.1,17.6-3c-0.1-0.2-0.3-0.5-0.4-0.7L62.2,65.9z M107.5,36c0.2,1.7,0.4,3.5,0.4,5.4c0,5.3-1,11.4-4,18.9l-16.2,46.9c15.8-9.2,26.4-26.3,26.4-45.9C114,52.1,111.6,43.5,107.5,36z M61.3,0C27.5,0,0,27.5,0,61.3s27.5,61.3,61.3,61.3s61.3-27.5,61.3-61.3S95.1,0,61.3,0z M61.3,119.7c-32.2,0-58.4-26.2-58.4-58.4S29.1,2.9,61.3,2.9c32.2,0,58.4,26.2,58.4,58.4S93.5,119.7,61.3,119.7z"/></svg>
+    <span>SignEdge Site</span>
+  </a>
+  <a href="#" class="wp-topbar-item">
+    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 7v13h18V7M3 7V4h7l2 3h9"/></svg>
+    <span>0</span>
+  </a>
+  <a href="#" class="wp-topbar-item">
+    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2"/></svg>
+    <span>New</span>
+  </a>
+  <span class="wp-topbar-spacer"></span>
+  <a href="#" class="wp-topbar-search">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.35-4.35"/></svg>
+  </a>
+  <a href="#" class="wp-topbar-item">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 01-3.46 0"/></svg>
+  </a>
+  <a href="#" class="wp-topbar-item">
+    <span style="display:inline-flex;align-items:center;gap:6px;">
+      <span style="width:20px;height:20px;border-radius:50%;background:linear-gradient(135deg,#2563eb,#1e40af);color:#fff;display:grid;place-items:center;font-size:10px;font-weight:700;">HF</span>
+      <span>Hoyle</span>
+    </span>
+  </a>
+</header>
+
+<!-- ========== APP ========== -->
+<div class="wp-app">
+
+  <!-- ===== SIDEBAR ===== -->
+  <aside class="wp-sidebar">
+    <div class="wp-sidebar-brand">
+      <div class="wp-sidebar-brand-logo">S</div>
+      <div class="wp-sidebar-brand-text">
+        <div class="wp-sidebar-brand-name">SignEdge Canva</div>
+        <div class="wp-sidebar-brand-version">v2.4.9 · Pro</div>
+      </div>
+    </div>
+
+    <div class="wp-sidebar-section">
+      <button class="wp-nav-item is-active" data-nav="products">
+        <span class="wp-nav-icon"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg></span>
+        <span class="wp-nav-label">Products</span>
+        <span class="wp-nav-badge">24</span>
+      </button>
+      <button class="wp-nav-item" data-nav="customers">
+        <span class="wp-nav-icon"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg></span>
+        <span class="wp-nav-label">Customers</span>
+        <span class="wp-nav-badge">847</span>
+      </button>
+      <button class="wp-nav-item" data-nav="pricing">
+        <span class="wp-nav-icon"><svg viewBox="0 0 24 24"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg></span>
+        <span class="wp-nav-label">Pricing rules</span>
+      </button>
+    </div>
+
+    <div class="wp-sidebar-section">
+      <div class="wp-sidebar-section-label">Library</div>
+      <button class="wp-nav-item" data-nav="assets">
+        <span class="wp-nav-icon"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="M21 15l-5-5L5 21"/></svg></span>
+        <span class="wp-nav-label">Brand assets</span>
+      </button>
+    </div>
+
+    <div class="wp-sidebar-section">
+      <div class="wp-sidebar-section-label">Configuration</div>
+      <button class="wp-nav-item" data-nav="designer">
+        <span class="wp-nav-icon"><svg viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.12 2.12 0 113 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></span>
+        <span class="wp-nav-label">Designer</span>
+      </button>
+      <button class="wp-nav-item" data-nav="settings">
+        <span class="wp-nav-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 01-2.83 2.83l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09a1.65 1.65 0 00-1-1.51 1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06a1.65 1.65 0 00.33-1.82 1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09a1.65 1.65 0 001.51-1 1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06a1.65 1.65 0 001.82.33H9a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06a1.65 1.65 0 00-.33 1.82V9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg></span>
+        <span class="wp-nav-label">Settings</span>
+      </button>
+    </div>
+
+    <div class="wp-sidebar-section">
+      <div class="wp-sidebar-section-label">Reporting</div>
+      <button class="wp-nav-item" data-nav="reports">
+        <span class="wp-nav-icon"><svg viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></span>
+        <span class="wp-nav-label">Reports</span>
+      </button>
+    </div>
+
+    <div class="wp-sidebar-section">
+      <button class="wp-nav-item" data-nav="license">
+        <span class="wp-nav-icon"><svg viewBox="0 0 24 24"><path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg></span>
+        <span class="wp-nav-label">License</span>
+        <span class="wp-nav-badge is-success">PRO</span>
+      </button>
+    </div>
+  </aside>
+
+  <!-- ===== MAIN ===== -->
+  <main class="wp-main">
+    <!-- ================ PRODUCTS PAGE ================ -->
+    <section class="page is-active" data-page="products">
+      <div class="wp-page-head">
+        <div class="wp-page-title-block">
+          <h1 class="wp-page-title">Products</h1>
+          <a href="#" class="wp-page-add-new">Add new</a>
+        </div>
+        <div class="wp-page-actions">
+          <button class="btn btn-tertiary btn-sm">
+            <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
+            Import CSV
+          </button>
+          <button class="btn btn-tertiary btn-sm">
+            <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M17 8l-5-5-5 5M12 3v12"/></svg>
+            Export
+          </button>
+        </div>
+      </div>
+
+      <div class="wp-notice" data-type="info">
+        <div class="wp-notice-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg></div>
+        <div class="wp-notice-body">
+          <div class="wp-notice-title">Product templates power your Online Designer</div>
+          Each product defines size, material options, sides, finishing & pricing rules. Customers will see these on your store page.
+        </div>
+        <button class="wp-notice-close"><svg viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"/></svg></button>
+      </div>
+
+      <!-- Stats overview -->
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-card-head">
+            <div class="stat-label">Total products</div>
+            <div class="stat-icon"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg></div>
+          </div>
+          <div class="stat-value">24</div>
+          <div class="stat-delta">19 active · 5 draft</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-card-head">
+            <div class="stat-label">Most ordered</div>
+            <div class="stat-icon success"><svg viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div>
+          </div>
+          <div class="stat-value">HD Banner</div>
+          <div class="stat-delta">847 orders this year</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-card-head">
+            <div class="stat-label">Avg margin</div>
+            <div class="stat-icon"><svg viewBox="0 0 24 24"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg></div>
+          </div>
+          <div class="stat-value">42%</div>
+          <div class="stat-delta up"><svg viewBox="0 0 24 24"><polyline points="18 15 12 9 6 15"/></svg>+3% vs last quarter</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-card-head">
+            <div class="stat-label">Out of stock</div>
+            <div class="stat-icon warning"><svg viewBox="0 0 24 24"><path d="M10.3 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><path d="M12 9v4M12 17h.01"/></svg></div>
+          </div>
+          <div class="stat-value">2</div>
+          <div class="stat-delta down">Action needed</div>
+        </div>
+      </div>
+
+      <!-- Filter bar -->
+      <div class="filter-row">
+        <select class="filter-select">
+          <option>All categories</option>
+          <option>Banners (8)</option>
+          <option>Yard signs (5)</option>
+          <option>Rigid signs (4)</option>
+          <option>Apparel (3)</option>
+          <option>Stickers (2)</option>
+          <option>Other (2)</option>
+        </select>
+        <select class="filter-select">
+          <option>Any status</option>
+          <option>Active</option>
+          <option>Draft</option>
+          <option>Disabled</option>
+        </select>
+        <select class="filter-select">
+          <option>Designer: All</option>
+          <option>Enabled</option>
+          <option>Disabled</option>
+        </select>
+        <input class="filter-input" type="text" placeholder="Search products…" />
+        <button class="btn btn-secondary btn-sm">Filter</button>
+        <button class="btn btn-link btn-sm">Reset</button>
+      </div>
+
+      <!-- Tabs -->
+      <div class="wp-tabs">
+        <button class="wp-tab is-active">All <span class="count">24</span></button>
+        <button class="wp-tab">Active <span class="count">19</span></button>
+        <button class="wp-tab">Draft <span class="count">5</span></button>
+        <button class="wp-tab">Disabled <span class="count">0</span></button>
+        <button class="wp-tab">Designer enabled <span class="count">21</span></button>
+      </div>
+
+      <!-- LIST TABLE -->
+      <div class="wp-list-table-wrap">
+        <div class="wp-tablenav">
+          <div class="wp-tablenav-left">
+            <select class="filter-select">
+              <option>Bulk actions</option>
+              <option>Activate</option>
+              <option>Set as draft</option>
+              <option>Enable Designer</option>
+              <option>Duplicate</option>
+              <option>Delete permanently</option>
+            </select>
+            <button class="btn btn-tertiary btn-sm">Apply</button>
+          </div>
+          <div class="wp-tablenav-right">
+            <span class="wp-pagination">
+              <span class="wp-pagination-info">1–10 of 24</span>
+              <button class="wp-pagination-btn" disabled><svg viewBox="0 0 24 24"><polyline points="11 17 6 12 11 7"/><polyline points="18 17 13 12 18 7"/></svg></button>
+              <button class="wp-pagination-btn" disabled><svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg></button>
+              <span style="padding:0 6px;">1 of 3</span>
+              <button class="wp-pagination-btn"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></button>
+              <button class="wp-pagination-btn"><svg viewBox="0 0 24 24"><polyline points="13 17 18 12 13 7"/><polyline points="6 17 11 12 6 7"/></svg></button>
+            </span>
+          </div>
+        </div>
+
+        <table class="wp-list-table">
+          <thead>
+            <tr>
+              <th class="col-cb"><input type="checkbox" /></th>
+              <th class="sortable">Product <span class="sort-icon">↕</span></th>
+              <th>Category</th>
+              <th>SKU</th>
+              <th class="sortable">Base price <span class="sort-icon">↕</span></th>
+              <th>Designer</th>
+              <th>Status</th>
+              <th class="sortable">Orders <span class="sort-icon">↓</span></th>
+              <th class="col-actions"></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="col-cb"><input type="checkbox" /></td>
+              <td>
+                <div class="col-title-cell">
+                  <div class="col-title-thumb" style="background:linear-gradient(135deg,#2b3a8a,#1a1547);">HD<br/>VINYL</div>
+                  <div class="col-title-info">
+                    <div class="col-title-main"><a href="#">HD Vinyl Banner</a></div>
+                    <div class="col-title-sub">15oz vinyl · 5 size presets</div>
+                    <div class="row-actions">
+                      <a href="#">Edit</a><span class="row-actions-sep">|</span>
+                      <a href="#">Duplicate</a><span class="row-actions-sep">|</span>
+                      <a href="#">View on site</a><span class="row-actions-sep">|</span>
+                      <a href="#" class="delete">Trash</a>
+                    </div>
+                  </div>
+                </div>
+              </td>
+              <td>Banners</td>
+              <td><code>BAN-HD-VIN</code></td>
+              <td>$45.45</td>
+              <td><span style="color:var(--nbd-color-success);font-weight:600;">✓ Enabled</span></td>
+              <td><span class="status-pill" data-status="active"><span class="dot"></span>Active</span></td>
+              <td>847</td>
+              <td class="col-actions"><button class="btn-link btn btn-sm">Edit →</button></td>
+            </tr>
+            <tr>
+              <td class="col-cb"><input type="checkbox" /></td>
+              <td>
+                <div class="col-title-cell">
+                  <div class="col-title-thumb" style="background:linear-gradient(135deg,#475569,#1e293b);color:#fff;">MESH</div>
+                  <div class="col-title-info">
+                    <div class="col-title-main"><a href="#">Mesh Banner</a></div>
+                    <div class="col-title-sub">9oz mesh · wind-resistant</div>
+                    <div class="row-actions">
+                      <a href="#">Edit</a><span class="row-actions-sep">|</span>
+                      <a href="#">Duplicate</a><span class="row-actions-sep">|</span>
+                      <a href="#">View on site</a><span class="row-actions-sep">|</span>
+                      <a href="#" class="delete">Trash</a>
+                    </div>
+                  </div>
+                </div>
+              </td>
+              <td>Banners</td>
+              <td><code>BAN-MESH</code></td>
+              <td>$38.95</td>
+              <td><span style="color:var(--nbd-color-success);font-weight:600;">✓ Enabled</span></td>
+              <td><span class="status-pill" data-status="active"><span class="dot"></span>Active</span></td>
+              <td>312</td>
+              <td class="col-actions"><button class="btn-link btn btn-sm">Edit →</button></td>
+            </tr>
+            <tr>
+              <td class="col-cb"><input type="checkbox" /></td>
+              <td>
+                <div class="col-title-cell">
+                  <div class="col-title-thumb" style="background:linear-gradient(135deg,#7c2d12,#431407);color:#fed7aa;">FAB<br/>RIC</div>
+                  <div class="col-title-info">
+                    <div class="col-title-main"><a href="#">Fabric Banner</a></div>
+                    <div class="col-title-sub">Premium polyester · indoor</div>
+                    <div class="row-actions">
+                      <a href="#">Edit</a><span class="row-actions-sep">|</span>
+                      <a href="#">Duplicate</a><span class="row-actions-sep">|</span>
+                      <a href="#">View on site</a><span class="row-actions-sep">|</span>
+                      <a href="#" class="delete">Trash</a>
+                    </div>
+                  </div>
+                </div>
+              </td>
+              <td>Banners</td>
+              <td><code>BAN-FAB</code></td>
+              <td>$62.30</td>
+              <td><span style="color:var(--nbd-color-success);font-weight:600;">✓ Enabled</span></td>
+              <td><span class="status-pill" data-status="active"><span class="dot"></span>Active</span></td>
+              <td>156</td>
+              <td class="col-actions"><button class="btn-link btn btn-sm">Edit →</button></td>
+            </tr>
+            <tr>
+              <td class="col-cb"><input type="checkbox" /></td>
+              <td>
+                <div class="col-title-cell">
+                  <div class="col-title-thumb" style="background:linear-gradient(135deg,#047857,#064e3b);color:#fff;">RET</div>
+                  <div class="col-title-info">
+                    <div class="col-title-main"><a href="#">Retractable Banner</a></div>
+                    <div class="col-title-sub">Pull-up with carry case · 33×80″</div>
+                    <div class="row-actions">
+                      <a href="#">Edit</a><span class="row-actions-sep">|</span>
+                      <a href="#">Duplicate</a><span class="row-actions-sep">|</span>
+                      <a href="#">View on site</a><span class="row-actions-sep">|</span>
+                      <a href="#" class="delete">Trash</a>
+                    </div>
+                  </div>
+                </div>
+              </td>
+              <td>Banners</td>
+              <td><code>BAN-RET</code></td>
+              <td>$129.00</td>
+              <td><span style="color:var(--nbd-color-success);font-weight:600;">✓ Enabled</span></td>
+              <td><span class="status-pill" data-status="active"><span class="dot"></span>Active</span></td>
+              <td>89</td>
+              <td class="col-actions"><button class="btn-link btn btn-sm">Edit →</button></td>
+            </tr>
+            <tr>
+              <td class="col-cb"><input type="checkbox" /></td>
+              <td>
+                <div class="col-title-cell">
+                  <div class="col-title-thumb" style="background:#dc2626;color:#fff;font-size:10px;">YARD</div>
+                  <div class="col-title-info">
+                    <div class="col-title-main"><a href="#">Yard Sign — Corrugated</a></div>
+                    <div class="col-title-sub">4mm corrugated plastic · 18×24″</div>
+                    <div class="row-actions">
+                      <a href="#">Edit</a><span class="row-actions-sep">|</span>
+                      <a href="#">Duplicate</a><span class="row-actions-sep">|</span>
+                      <a href="#">View on site</a><span class="row-actions-sep">|</span>
+                      <a href="#" class="delete">Trash</a>
+                    </div>
+                  </div>
+                </div>
+              </td>
+              <td>Yard signs</td>
+              <td><code>YARD-COR</code></td>
+              <td>$8.50</td>
+              <td><span style="color:var(--nbd-color-success);font-weight:600;">✓ Enabled</span></td>
+              <td><span class="status-pill" data-status="active"><span class="dot"></span>Active</span></td>
+              <td>1,247</td>
+              <td class="col-actions"><button class="btn-link btn btn-sm">Edit →</button></td>
+            </tr>
+            <tr>
+              <td class="col-cb"><input type="checkbox" /></td>
+              <td>
+                <div class="col-title-cell">
+                  <div class="col-title-thumb" style="background:linear-gradient(135deg,#15803d,#14532d);color:#fff;font-size:10px;">SOLD</div>
+                  <div class="col-title-info">
+                    <div class="col-title-main"><a href="#">Real Estate Rider — Aluminum</a></div>
+                    <div class="col-title-sub">Aluminum · 6×24″ · drilled holes</div>
+                    <div class="row-actions">
+                      <a href="#">Edit</a><span class="row-actions-sep">|</span>
+                      <a href="#">Duplicate</a><span class="row-actions-sep">|</span>
+                      <a href="#">View on site</a><span class="row-actions-sep">|</span>
+                      <a href="#" class="delete">Trash</a>
+                    </div>
+                  </div>
+                </div>
+              </td>
+              <td>Rigid signs</td>
+              <td><code>RIG-RIDER</code></td>
+              <td>$12.00</td>
+              <td><span style="color:var(--nbd-color-text-soft);">— Disabled</span></td>
+              <td><span class="status-pill" data-status="active"><span class="dot"></span>Active</span></td>
+              <td>536</td>
+              <td class="col-actions"><button class="btn-link btn btn-sm">Edit →</button></td>
+            </tr>
+            <tr>
+              <td class="col-cb"><input type="checkbox" /></td>
+              <td>
+                <div class="col-title-cell">
+                  <div class="col-title-thumb" style="background:linear-gradient(135deg,#9333ea,#581c87);color:#fff;font-size:10px;">EVENT</div>
+                  <div class="col-title-info">
+                    <div class="col-title-main"><a href="#">Step & Repeat Backdrop</a></div>
+                    <div class="col-title-sub">8×8′ fabric · pole pocket</div>
+                    <div class="row-actions">
+                      <a href="#">Edit</a><span class="row-actions-sep">|</span>
+                      <a href="#">Duplicate</a><span class="row-actions-sep">|</span>
+                      <a href="#">View on site</a><span class="row-actions-sep">|</span>
+                      <a href="#" class="delete">Trash</a>
+                    </div>
+                  </div>
+                </div>
+              </td>
+              <td>Banners</td>
+              <td><code>BAN-STEP</code></td>
+              <td>$295.00</td>
+              <td><span style="color:var(--nbd-color-success);font-weight:600;">✓ Enabled</span></td>
+              <td><span class="status-pill" data-status="active"><span class="dot"></span>Active</span></td>
+              <td>34</td>
+              <td class="col-actions"><button class="btn-link btn btn-sm">Edit →</button></td>
+            </tr>
+            <tr>
+              <td class="col-cb"><input type="checkbox" /></td>
+              <td>
+                <div class="col-title-cell">
+                  <div class="col-title-thumb" style="background:#1e40af;color:#fbbf24;font-size:9px;">DECAL</div>
+                  <div class="col-title-info">
+                    <div class="col-title-main"><a href="#">Window Decal — Perforated</a></div>
+                    <div class="col-title-sub">One-way vision vinyl · custom sizes</div>
+                    <div class="row-actions">
+                      <a href="#">Edit</a><span class="row-actions-sep">|</span>
+                      <a href="#">Duplicate</a><span class="row-actions-sep">|</span>
+                      <a href="#">View on site</a><span class="row-actions-sep">|</span>
+                      <a href="#" class="delete">Trash</a>
+                    </div>
+                  </div>
+                </div>
+              </td>
+              <td>Stickers</td>
+              <td><code>STK-PERF</code></td>
+              <td>$24.00</td>
+              <td><span style="color:var(--nbd-color-success);font-weight:600;">✓ Enabled</span></td>
+              <td><span class="status-pill" data-status="active"><span class="dot"></span>Active</span></td>
+              <td>198</td>
+              <td class="col-actions"><button class="btn-link btn btn-sm">Edit →</button></td>
+            </tr>
+            <tr>
+              <td class="col-cb"><input type="checkbox" /></td>
+              <td>
+                <div class="col-title-cell">
+                  <div class="col-title-thumb" style="background:linear-gradient(135deg,#7c2d12,#92400e);color:#fef3c7;font-size:9px;">TEAM<br/>SHIRT</div>
+                  <div class="col-title-info">
+                    <div class="col-title-main"><a href="#">DTG T-shirt — Cotton</a></div>
+                    <div class="col-title-sub">100% cotton · sizes S–XXL · DTG print</div>
+                    <div class="row-actions">
+                      <a href="#">Edit</a><span class="row-actions-sep">|</span>
+                      <a href="#">Duplicate</a><span class="row-actions-sep">|</span>
+                      <a href="#">View on site</a><span class="row-actions-sep">|</span>
+                      <a href="#" class="delete">Trash</a>
+                    </div>
+                  </div>
+                </div>
+              </td>
+              <td>Apparel</td>
+              <td><code>APP-DTG</code></td>
+              <td>$18.00</td>
+              <td><span style="color:var(--nbd-color-success);font-weight:600;">✓ Enabled</span></td>
+              <td><span class="status-pill" data-status="active"><span class="dot"></span>Active</span></td>
+              <td>248</td>
+              <td class="col-actions"><button class="btn-link btn btn-sm">Edit →</button></td>
+            </tr>
+            <tr>
+              <td class="col-cb"><input type="checkbox" /></td>
+              <td>
+                <div class="col-title-cell">
+                  <div class="col-title-thumb" style="background:#374151;color:#9ca3af;font-size:9px;">RIGID</div>
+                  <div class="col-title-info">
+                    <div class="col-title-main"><a href="#">Aluminum Composite Sign</a></div>
+                    <div class="col-title-sub">3mm ACP · cut to size · NEW</div>
+                    <div class="row-actions">
+                      <a href="#">Edit</a><span class="row-actions-sep">|</span>
+                      <a href="#">Duplicate</a><span class="row-actions-sep">|</span>
+                      <a href="#">View on site</a><span class="row-actions-sep">|</span>
+                      <a href="#" class="delete">Trash</a>
+                    </div>
+                  </div>
+                </div>
+              </td>
+              <td>Rigid signs</td>
+              <td><code>RIG-ACP</code></td>
+              <td>$95.00</td>
+              <td><span style="color:var(--nbd-color-text-soft);">— Disabled</span></td>
+              <td><span class="status-pill" data-status="draft"><span class="dot"></span>Draft</span></td>
+              <td>0</td>
+              <td class="col-actions"><button class="btn-link btn btn-sm">Edit →</button></td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="wp-tablenav">
+          <div class="wp-tablenav-left">
+            <select class="filter-select">
+              <option>Bulk actions</option>
+              <option>Activate</option>
+              <option>Set as draft</option>
+              <option>Enable Designer</option>
+              <option>Duplicate</option>
+              <option>Delete permanently</option>
+            </select>
+            <button class="btn btn-tertiary btn-sm">Apply</button>
+          </div>
+          <div class="wp-tablenav-right">
+            <span class="wp-pagination">
+              <span class="wp-pagination-info">1–10 of 24</span>
+              <button class="wp-pagination-btn" disabled><svg viewBox="0 0 24 24"><polyline points="11 17 6 12 11 7"/><polyline points="18 17 13 12 18 7"/></svg></button>
+              <button class="wp-pagination-btn" disabled><svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg></button>
+              <span style="padding:0 6px;">1 of 3</span>
+              <button class="wp-pagination-btn"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></button>
+              <button class="wp-pagination-btn"><svg viewBox="0 0 24 24"><polyline points="13 17 18 12 13 7"/><polyline points="6 17 11 12 6 7"/></svg></button>
+            </span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================ CUSTOMERS PAGE ================ -->
+    <section class="page" data-page="customers">
+      <div class="wp-page-head">
+        <div class="wp-page-title-block">
+          <h1 class="wp-page-title">Customers</h1>
+          <a href="#" class="wp-page-add-new">Add new</a>
+        </div>
+        <div class="wp-page-actions">
+          <button class="btn btn-tertiary btn-sm">
+            <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M17 8l-5-5-5 5M12 3v12"/></svg>
+            Export
+          </button>
+          <button class="btn btn-secondary btn-sm">
+            <svg viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="8.5" cy="7" r="4"/><line x1="20" y1="8" x2="20" y2="14"/><line x1="23" y1="11" x2="17" y2="11"/></svg>
+            Approve B2B
+          </button>
+        </div>
+      </div>
+
+      <!-- Stats -->
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-card-head">
+            <div class="stat-label">Total customers</div>
+            <div class="stat-icon"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/></svg></div>
+          </div>
+          <div class="stat-value">847</div>
+          <div class="stat-delta up"><svg viewBox="0 0 24 24"><polyline points="18 15 12 9 6 15"/></svg>+34 this month</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-card-head">
+            <div class="stat-label">B2B accounts</div>
+            <div class="stat-icon success"><svg viewBox="0 0 24 24"><path d="M3 21h18M5 21V7l8-4v18M19 21V11l-6-4"/></svg></div>
+          </div>
+          <div class="stat-value">128</div>
+          <div class="stat-delta">15% of total</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-card-head">
+            <div class="stat-label">Pending approval</div>
+            <div class="stat-icon warning"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
+          </div>
+          <div class="stat-value">7</div>
+          <div class="stat-delta down">Awaiting review</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-card-head">
+            <div class="stat-label">Avg LTV (B2B)</div>
+            <div class="stat-icon success"><svg viewBox="0 0 24 24"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg></div>
+          </div>
+          <div class="stat-value">$3,247</div>
+          <div class="stat-delta up"><svg viewBox="0 0 24 24"><polyline points="18 15 12 9 6 15"/></svg>+12% YoY</div>
+        </div>
+      </div>
+
+      <!-- Filter -->
+      <div class="filter-row">
+        <select class="filter-select">
+          <option>All tiers</option>
+          <option>B2C (719)</option>
+          <option>B2B Tier A (52)</option>
+          <option>B2B Tier B (48)</option>
+          <option>B2B Tier C (24)</option>
+          <option>VIP (4)</option>
+        </select>
+        <select class="filter-select">
+          <option>Any status</option>
+          <option>Active</option>
+          <option>Pending approval</option>
+          <option>Suspended</option>
+        </select>
+        <select class="filter-select">
+          <option>Registered: any time</option>
+          <option>Last 7 days</option>
+          <option>Last 30 days</option>
+          <option>Last 90 days</option>
+        </select>
+        <input class="filter-input" type="text" placeholder="Search by name, email, company…" />
+        <button class="btn btn-secondary btn-sm">Filter</button>
+      </div>
+
+      <div class="wp-tabs">
+        <button class="wp-tab is-active">All <span class="count">847</span></button>
+        <button class="wp-tab">B2C <span class="count">719</span></button>
+        <button class="wp-tab">B2B <span class="count">128</span></button>
+        <button class="wp-tab">Pending approval <span class="count">7</span></button>
+      </div>
+
+      <!-- List table -->
+      <div class="wp-list-table-wrap">
+        <div class="wp-tablenav">
+          <div class="wp-tablenav-left">
+            <select class="filter-select">
+              <option>Bulk actions</option>
+              <option>Change tier</option>
+              <option>Email customers</option>
+              <option>Suspend</option>
+              <option>Delete</option>
+            </select>
+            <button class="btn btn-tertiary btn-sm">Apply</button>
+          </div>
+          <div class="wp-tablenav-right">
+            <span class="wp-pagination">
+              <span class="wp-pagination-info">1–10 of 847</span>
+              <button class="wp-pagination-btn" disabled><svg viewBox="0 0 24 24"><polyline points="11 17 6 12 11 7"/><polyline points="18 17 13 12 18 7"/></svg></button>
+              <button class="wp-pagination-btn" disabled><svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg></button>
+              <span style="padding:0 6px;">1 of 85</span>
+              <button class="wp-pagination-btn"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></button>
+              <button class="wp-pagination-btn"><svg viewBox="0 0 24 24"><polyline points="13 17 18 12 13 7"/><polyline points="6 17 11 12 6 7"/></svg></button>
+            </span>
+          </div>
+        </div>
+
+        <table class="wp-list-table">
+          <thead>
+            <tr>
+              <th class="col-cb"><input type="checkbox" /></th>
+              <th class="sortable">Customer <span class="sort-icon">↕</span></th>
+              <th>Company</th>
+              <th>Tier</th>
+              <th class="sortable">Orders <span class="sort-icon">↓</span></th>
+              <th class="sortable">Total spent <span class="sort-icon">↕</span></th>
+              <th>Status</th>
+              <th>Joined</th>
+              <th class="col-actions"></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="col-cb"><input type="checkbox" /></td>
+              <td>
+                <div class="col-title-cell">
+                  <div class="col-title-thumb" style="background:linear-gradient(135deg,#2563eb,#1e40af);color:#fff;font-size:11px;">SC</div>
+                  <div class="col-title-info">
+                    <div class="col-title-main"><a href="#">Sarah Chen</a></div>
+                    <div class="col-title-sub">sarah@chenmarketing.com</div>
+                    <div class="row-actions">
+                      <a href="#">View</a><span class="row-actions-sep">|</span>
+                      <a href="#">Edit</a><span class="row-actions-sep">|</span>
+                      <a href="#">Email</a><span class="row-actions-sep">|</span>
+                      <a href="#" class="delete">Suspend</a>
+                    </div>
+                  </div>
+                </div>
+              </td>
+              <td>Chen Marketing Corp</td>
+              <td><span class="tier-pill" data-tier="b2b-b">B2B · Tier B</span></td>
+              <td>47</td>
+              <td>$12,847</td>
+              <td><span class="status-pill" data-status="active"><span class="dot"></span>Active</span></td>
+              <td>Feb 14, 2026</td>
+              <td class="col-actions"><button class="btn-link btn btn-sm">→</button></td>
+            </tr>
+            <tr>
+              <td class="col-cb"><input type="checkbox" /></td>
+              <td>
+                <div class="col-title-cell">
+                  <div class="col-title-thumb" style="background:linear-gradient(135deg,#10b981,#047857);color:#fff;font-size:11px;">MR</div>
+                  <div class="col-title-info">
+                    <div class="col-title-main"><a href="#">Marcus Reid</a></div>
+                    <div class="col-title-sub">marcus@chenmarketing.com</div>
+                    <div class="row-actions">
+                      <a href="#">View</a><span class="row-actions-sep">|</span>
+                      <a href="#">Edit</a><span class="row-actions-sep">|</span>
+                      <a href="#">Email</a><span class="row-actions-sep">|</span>
+                      <a href="#" class="delete">Suspend</a>
+                    </div>
+                  </div>
+                </div>
+              </td>
+              <td>Chen Marketing Corp <span style="font-size:11px;color:var(--nbd-mb-text-mute);">(team)</span></td>
+              <td><span class="tier-pill" data-tier="b2b-b">B2B · Tier B</span></td>
+              <td>12</td>
+              <td>$1,432</td>
+              <td><span class="status-pill" data-status="active"><span class="dot"></span>Active</span></td>
+              <td>Feb 18, 2026</td>
+              <td class="col-actions"><button class="btn-link btn btn-sm">→</button></td>
+            </tr>
+            <tr>
+              <td class="col-cb"><input type="checkbox" /></td>
+              <td>
+                <div class="col-title-cell">
+                  <div class="col-title-thumb" style="background:linear-gradient(135deg,#f59e0b,#b45309);color:#fff;font-size:11px;">JT</div>
+                  <div class="col-title-info">
+                    <div class="col-title-main"><a href="#">Jordan Tate</a></div>
+                    <div class="col-title-sub">jordan@taterealty.com</div>
+                    <div class="row-actions">
+                      <a href="#">View</a><span class="row-actions-sep">|</span>
+                      <a href="#">Edit</a><span class="row-actions-sep">|</span>
+                      <a href="#">Email</a><span class="row-actions-sep">|</span>
+                      <a href="#" class="delete">Suspend</a>
+                    </div>
+                  </div>
+                </div>
+              </td>
+              <td>Tate Realty Group</td>
+              <td><span class="tier-pill" data-tier="b2b-a">B2B · Tier A</span></td>
+              <td>89</td>
+              <td>$24,580</td>
+              <td><span class="status-pill" data-status="active"><span class="dot"></span>Active</span></td>
+              <td>Jan 3, 2026</td>
+              <td class="col-actions"><button class="btn-link btn btn-sm">→</button></td>
+            </tr>
+            <tr>
+              <td class="col-cb"><input type="checkbox" /></td>
+              <td>
+                <div class="col-title-cell">
+                  <div class="col-title-thumb" style="background:linear-gradient(135deg,#fbbf24,#d97706);color:#fff;font-size:11px;">★</div>
+                  <div class="col-title-info">
+                    <div class="col-title-main"><a href="#">David Park</a></div>
+                    <div class="col-title-sub">david@premium-events.com</div>
+                    <div class="row-actions">
+                      <a href="#">View</a><span class="row-actions-sep">|</span>
+                      <a href="#">Edit</a><span class="row-actions-sep">|</span>
+                      <a href="#">Email</a><span class="row-actions-sep">|</span>
+                      <a href="#" class="delete">Suspend</a>
+                    </div>
+                  </div>
+                </div>
+              </td>
+              <td>Premium Events Inc.</td>
+              <td><span class="tier-pill" data-tier="vip">★ VIP</span></td>
+              <td>183</td>
+              <td>$48,920</td>
+              <td><span class="status-pill" data-status="active"><span class="dot"></span>Active</span></td>
+              <td>Nov 12, 2025</td>
+              <td class="col-actions"><button class="btn-link btn btn-sm">→</button></td>
+            </tr>
+            <tr>
+              <td class="col-cb"><input type="checkbox" /></td>
+              <td>
+                <div class="col-title-cell">
+                  <div class="col-title-thumb" style="background:var(--nbd-mb-bg-soft);color:var(--nbd-mb-text-soft);font-size:11px;">EM</div>
+                  <div class="col-title-info">
+                    <div class="col-title-main"><a href="#">Emma Mason</a></div>
+                    <div class="col-title-sub">emma.mason@gmail.com</div>
+                    <div class="row-actions">
+                      <a href="#">View</a><span class="row-actions-sep">|</span>
+                      <a href="#">Edit</a><span class="row-actions-sep">|</span>
+                      <a href="#">Email</a><span class="row-actions-sep">|</span>
+                      <a href="#" class="delete">Suspend</a>
+                    </div>
+                  </div>
+                </div>
+              </td>
+              <td>—</td>
+              <td><span class="tier-pill" data-tier="b2c">B2C</span></td>
+              <td>3</td>
+              <td>$184</td>
+              <td><span class="status-pill" data-status="active"><span class="dot"></span>Active</span></td>
+              <td>Apr 22, 2026</td>
+              <td class="col-actions"><button class="btn-link btn btn-sm">→</button></td>
+            </tr>
+            <tr style="background:var(--nbd-color-warning-soft);">
+              <td class="col-cb"><input type="checkbox" /></td>
+              <td>
+                <div class="col-title-cell">
+                  <div class="col-title-thumb" style="background:linear-gradient(135deg,#dc2626,#991b1b);color:#fff;font-size:11px;">RL</div>
+                  <div class="col-title-info">
+                    <div class="col-title-main"><a href="#">Rachel Liu</a> <span class="tag-chip" style="background:var(--nbd-color-warning);color:#fff;border:none;">PENDING</span></div>
+                    <div class="col-title-sub">rachel@bigevents.co · applied for B2B Tier C</div>
+                    <div class="row-actions">
+                      <a href="#" style="color:var(--nbd-color-success);font-weight:600;">Approve</a><span class="row-actions-sep">|</span>
+                      <a href="#" class="delete">Reject</a><span class="row-actions-sep">|</span>
+                      <a href="#">View application</a>
+                    </div>
+                  </div>
+                </div>
+              </td>
+              <td>Big Events Co.</td>
+              <td><span class="tier-pill" data-tier="b2b-c">B2B · Tier C (pending)</span></td>
+              <td>0</td>
+              <td>$0</td>
+              <td><span class="status-pill" data-status="pending"><span class="dot"></span>Pending</span></td>
+              <td>2 hours ago</td>
+              <td class="col-actions"><button class="btn btn-primary btn-sm">Review</button></td>
+            </tr>
+            <tr>
+              <td class="col-cb"><input type="checkbox" /></td>
+              <td>
+                <div class="col-title-cell">
+                  <div class="col-title-thumb" style="background:linear-gradient(135deg,#9333ea,#581c87);color:#fff;font-size:11px;">AL</div>
+                  <div class="col-title-info">
+                    <div class="col-title-main"><a href="#">Alex Lin</a></div>
+                    <div class="col-title-sub">alex@chenmarketing.com</div>
+                    <div class="row-actions">
+                      <a href="#">View</a><span class="row-actions-sep">|</span>
+                      <a href="#">Edit</a><span class="row-actions-sep">|</span>
+                      <a href="#">Email</a><span class="row-actions-sep">|</span>
+                      <a href="#" class="delete">Suspend</a>
+                    </div>
+                  </div>
+                </div>
+              </td>
+              <td>Chen Marketing Corp <span style="font-size:11px;color:var(--nbd-mb-text-mute);">(team)</span></td>
+              <td><span class="tier-pill" data-tier="b2b-b">B2B · Tier B</span></td>
+              <td>8</td>
+              <td>$847</td>
+              <td><span class="status-pill" data-status="active"><span class="dot"></span>Active</span></td>
+              <td>Mar 8, 2026</td>
+              <td class="col-actions"><button class="btn-link btn btn-sm">→</button></td>
+            </tr>
+            <tr>
+              <td class="col-cb"><input type="checkbox" /></td>
+              <td>
+                <div class="col-title-cell">
+                  <div class="col-title-thumb" style="background:linear-gradient(135deg,#0891b2,#0e7490);color:#fff;font-size:11px;">KB</div>
+                  <div class="col-title-info">
+                    <div class="col-title-main"><a href="#">Kim Bradley</a></div>
+                    <div class="col-title-sub">kim@coastalsigns.net</div>
+                    <div class="row-actions">
+                      <a href="#">View</a><span class="row-actions-sep">|</span>
+                      <a href="#">Edit</a><span class="row-actions-sep">|</span>
+                      <a href="#">Email</a><span class="row-actions-sep">|</span>
+                      <a href="#" class="delete">Suspend</a>
+                    </div>
+                  </div>
+                </div>
+              </td>
+              <td>Coastal Signs LLC</td>
+              <td><span class="tier-pill" data-tier="b2b-c">B2B · Tier C</span></td>
+              <td>27</td>
+              <td>$5,420</td>
+              <td><span class="status-pill" data-status="active"><span class="dot"></span>Active</span></td>
+              <td>Feb 1, 2026</td>
+              <td class="col-actions"><button class="btn-link btn btn-sm">→</button></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+
+    <!-- ================ PRICING RULES PAGE ================ -->
+    <section class="page" data-page="pricing">
+      <div class="wp-page-head">
+        <div class="wp-page-title-block">
+          <h1 class="wp-page-title">Pricing rules</h1>
+          <a href="#" class="wp-page-add-new">Add rule</a>
+        </div>
+      </div>
+
+      <p class="wp-page-sub">Define tier discounts, bulk pricing, and per-product overrides. Rules cascade — higher priority wins.</p>
+
+      <!-- Tier ladder card -->
+      <div class="wp-card">
+        <div class="wp-card-head">
+          <div>
+            <h3 class="wp-card-title">Tier discount ladder</h3>
+            <div class="wp-card-sub">Apply percentage off retail prices based on customer tier</div>
+          </div>
+          <button class="btn btn-tertiary btn-sm">+ Add tier</button>
+        </div>
+        <div class="wp-card-body is-flush">
+          <table class="wp-list-table">
+            <thead>
+              <tr>
+                <th>Tier</th>
+                <th>Discount %</th>
+                <th>Minimum order</th>
+                <th>Payment terms</th>
+                <th>Free shipping</th>
+                <th>Customers</th>
+                <th class="col-actions"></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><span class="tier-pill" data-tier="b2c">B2C — Guest/Member</span></td>
+                <td>—</td>
+                <td>None</td>
+                <td>Credit card (pre-pay)</td>
+                <td>Over $200</td>
+                <td>719</td>
+                <td class="col-actions"><a href="#" style="font-size:12px;">Edit</a></td>
+              </tr>
+              <tr>
+                <td><span class="tier-pill" data-tier="b2b-a">B2B — Tier A</span></td>
+                <td><strong>10%</strong></td>
+                <td>$100</td>
+                <td>Credit card or invoice</td>
+                <td>Over $150</td>
+                <td>52</td>
+                <td class="col-actions"><a href="#" style="font-size:12px;">Edit</a></td>
+              </tr>
+              <tr>
+                <td><span class="tier-pill" data-tier="b2b-b">B2B — Tier B</span></td>
+                <td><strong>15%</strong></td>
+                <td>$250</td>
+                <td>Net-15</td>
+                <td>Over $100</td>
+                <td>48</td>
+                <td class="col-actions"><a href="#" style="font-size:12px;">Edit</a></td>
+              </tr>
+              <tr>
+                <td><span class="tier-pill" data-tier="b2b-c">B2B — Tier C</span></td>
+                <td><strong>20%</strong></td>
+                <td>$500</td>
+                <td>Net-30</td>
+                <td>Always free</td>
+                <td>24</td>
+                <td class="col-actions"><a href="#" style="font-size:12px;">Edit</a></td>
+              </tr>
+              <tr>
+                <td><span class="tier-pill" data-tier="vip">★ VIP</span></td>
+                <td><strong>24%</strong></td>
+                <td>None</td>
+                <td>Net-30 + custom</td>
+                <td>Always free + rush</td>
+                <td>4</td>
+                <td class="col-actions"><a href="#" style="font-size:12px;">Edit</a></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Bulk pricing card -->
+      <div class="wp-card">
+        <div class="wp-card-head">
+          <div>
+            <h3 class="wp-card-title">Quantity-based discounts</h3>
+            <div class="wp-card-sub">Stack on top of tier discount — applies to all products by default</div>
+          </div>
+          <button class="btn btn-tertiary btn-sm">+ Add break</button>
+        </div>
+        <div class="wp-card-body is-flush">
+          <table class="wp-list-table">
+            <thead>
+              <tr>
+                <th>Quantity</th>
+                <th>Extra discount</th>
+                <th>Applies to</th>
+                <th>Status</th>
+                <th class="col-actions"></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>5+ units</td>
+                <td>+3%</td>
+                <td>All products</td>
+                <td><span class="status-pill" data-status="active"><span class="dot"></span>Active</span></td>
+                <td class="col-actions"><a href="#" style="font-size:12px;">Edit</a></td>
+              </tr>
+              <tr>
+                <td>10+ units</td>
+                <td>+7%</td>
+                <td>All products</td>
+                <td><span class="status-pill" data-status="active"><span class="dot"></span>Active</span></td>
+                <td class="col-actions"><a href="#" style="font-size:12px;">Edit</a></td>
+              </tr>
+              <tr>
+                <td>25+ units</td>
+                <td>+12%</td>
+                <td>All products</td>
+                <td><span class="status-pill" data-status="active"><span class="dot"></span>Active</span></td>
+                <td class="col-actions"><a href="#" style="font-size:12px;">Edit</a></td>
+              </tr>
+              <tr>
+                <td>50+ units</td>
+                <td>+18%</td>
+                <td>Banners, Yard signs</td>
+                <td><span class="status-pill" data-status="active"><span class="dot"></span>Active</span></td>
+                <td class="col-actions"><a href="#" style="font-size:12px;">Edit</a></td>
+              </tr>
+              <tr>
+                <td>100+ units</td>
+                <td>Custom quote</td>
+                <td>All products</td>
+                <td><span class="status-pill" data-status="active"><span class="dot"></span>Active</span></td>
+                <td class="col-actions"><a href="#" style="font-size:12px;">Edit</a></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Special pricing rules -->
+      <div class="wp-card">
+        <div class="wp-card-head">
+          <div>
+            <h3 class="wp-card-title">Special rules</h3>
+            <div class="wp-card-sub">Product-specific overrides, promo codes, and seasonal pricing</div>
+          </div>
+          <button class="btn btn-tertiary btn-sm">+ New rule</button>
+        </div>
+        <div class="wp-card-body is-flush">
+          <table class="wp-list-table">
+            <thead>
+              <tr>
+                <th>Rule name</th>
+                <th>Trigger</th>
+                <th>Effect</th>
+                <th>Priority</th>
+                <th>Status</th>
+                <th class="col-actions"></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Grand Opening promo</strong></td>
+                <td>Code: <code>OPENING20</code></td>
+                <td>20% off HD Banners</td>
+                <td>10</td>
+                <td><span class="status-pill" data-status="active"><span class="dot"></span>Active</span></td>
+                <td class="col-actions"><a href="#" style="font-size:12px;">Edit</a></td>
+              </tr>
+              <tr>
+                <td><strong>Rush order surcharge</strong></td>
+                <td>Production speed: 24h</td>
+                <td>+$15 flat fee</td>
+                <td>5</td>
+                <td><span class="status-pill" data-status="active"><span class="dot"></span>Active</span></td>
+                <td class="col-actions"><a href="#" style="font-size:12px;">Edit</a></td>
+              </tr>
+              <tr>
+                <td><strong>Real estate rider rebate</strong></td>
+                <td>Tier A+ · 6+ riders</td>
+                <td>$2 off per rider</td>
+                <td>3</td>
+                <td><span class="status-pill" data-status="active"><span class="dot"></span>Active</span></td>
+                <td class="col-actions"><a href="#" style="font-size:12px;">Edit</a></td>
+              </tr>
+              <tr>
+                <td><strong>Free pre-press review</strong></td>
+                <td>Any B2B order</td>
+                <td>Skip $5 review fee</td>
+                <td>2</td>
+                <td><span class="status-pill" data-status="active"><span class="dot"></span>Active</span></td>
+                <td class="col-actions"><a href="#" style="font-size:12px;">Edit</a></td>
+              </tr>
+              <tr>
+                <td><strong>Holiday sale 2025</strong></td>
+                <td>Date range expired</td>
+                <td>15% off everything</td>
+                <td>1</td>
+                <td><span class="status-pill" data-status="disabled"><span class="dot"></span>Expired</span></td>
+                <td class="col-actions"><a href="#" style="font-size:12px;">Re-enable</a></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================ BRAND ASSETS PAGE ================ -->
+    <section class="page" data-page="assets">
+      <div class="wp-page-head">
+        <div class="wp-page-title-block">
+          <h1 class="wp-page-title">Brand assets</h1>
+        </div>
+        <div class="wp-page-actions">
+          <button class="btn btn-tertiary btn-sm">
+            <svg viewBox="0 0 24 24"><path d="M3 7v13h18V7M3 7V4h7l2 3h9"/></svg>
+            New folder
+          </button>
+          <button class="btn btn-primary btn-sm">
+            <svg viewBox="0 0 24 24"><path d="M16 16l-4-4-4 4M12 12v9"/><path d="M20.39 18.39A5 5 0 0018 9h-1.26A8 8 0 103 16.3"/></svg>
+            Upload files
+          </button>
+        </div>
+      </div>
+
+      <p class="wp-page-sub">Master library of design assets available in the Online Designer's template panel. Customers see what you upload here.</p>
+
+      <!-- Storage card -->
+      <div class="wp-card">
+        <div class="wp-card-body" style="display:flex;align-items:center;gap:var(--nbd-space-4);">
+          <div style="width:48px;height:48px;border-radius:var(--nbd-radius-md);background:var(--nbd-mb-primary-soft);color:var(--nbd-mb-primary);display:grid;place-items:center;flex-shrink:0;">
+            <svg width="24" height="24" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8" fill="none"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+          </div>
+          <div style="flex:1;min-width:0;">
+            <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:6px;">
+              <strong style="font-size:14px;">Asset storage</strong>
+              <span style="font-size:13px;color:var(--nbd-mb-text-soft);font-variant-numeric:tabular-nums;">8.4 GB of 50 GB used (16.8%)</span>
+            </div>
+            <div class="progress"><div class="progress-fill" style="width:16.8%;"></div></div>
+            <div style="font-size:12px;color:var(--nbd-mb-text-soft);margin-top:6px;">487 files · 2,341 thumbnails generated · CDN active</div>
+          </div>
+          <a href="#" class="btn btn-tertiary btn-sm">Upgrade storage</a>
+        </div>
+      </div>
+
+      <!-- Tabs by category -->
+      <div class="wp-tabs">
+        <button class="wp-tab is-active">All files <span class="count">487</span></button>
+        <button class="wp-tab">Logos <span class="count">24</span></button>
+        <button class="wp-tab">Cliparts <span class="count">156</span></button>
+        <button class="wp-tab">Templates <span class="count">48</span></button>
+        <button class="wp-tab">Fonts <span class="count">31</span></button>
+        <button class="wp-tab">Photos <span class="count">228</span></button>
+      </div>
+
+      <!-- Filter -->
+      <div class="filter-row">
+        <select class="filter-select">
+          <option>All folders</option>
+          <option>📁 Brand kits</option>
+          <option>📁 Holiday assets</option>
+          <option>📁 Real estate</option>
+          <option>📁 Event templates</option>
+          <option>📁 Stock photos</option>
+        </select>
+        <select class="filter-select">
+          <option>Visible to: All customers</option>
+          <option>B2C only</option>
+          <option>B2B only</option>
+          <option>Specific customers</option>
+          <option>Hidden (admin only)</option>
+        </select>
+        <select class="filter-select">
+          <option>Sort: Recently added</option>
+          <option>Most used</option>
+          <option>File name A-Z</option>
+          <option>File size</option>
+        </select>
+        <input class="filter-input" type="text" placeholder="Search files…" />
+      </div>
+
+      <!-- Asset grid -->
+      <div class="asset-grid">
+        <div class="asset-tile">
+          <div class="asset-tile-thumb" style="background:linear-gradient(135deg,#2b3a8a,#1a1547);">SIGN<br/>EDGE</div>
+          <div class="asset-tile-body">
+            <div class="asset-tile-name">signedge-logo-primary.svg</div>
+            <div class="asset-tile-meta">2.4 MB · used 47×</div>
+          </div>
+        </div>
+        <div class="asset-tile">
+          <div class="asset-tile-thumb" style="background:#dc2626;color:#fff;font-size:14px;">SALE<br/>50%</div>
+          <div class="asset-tile-body">
+            <div class="asset-tile-name">sale-burst-red.png</div>
+            <div class="asset-tile-meta">890 KB · used 28×</div>
+          </div>
+        </div>
+        <div class="asset-tile">
+          <div class="asset-tile-thumb" style="background:#15803d;color:#fff;font-size:11px;">FOR<br/>SALE</div>
+          <div class="asset-tile-body">
+            <div class="asset-tile-name">for-sale-realestate.ai</div>
+            <div class="asset-tile-meta">3.1 MB · used 156×</div>
+          </div>
+        </div>
+        <div class="asset-tile">
+          <div class="asset-tile-thumb" style="background:linear-gradient(135deg,#7c2d12,#431407);color:#fed7aa;font-size:11px;">SOLD<br/>RIDER</div>
+          <div class="asset-tile-body">
+            <div class="asset-tile-name">sold-rider-template.psd</div>
+            <div class="asset-tile-meta">12.4 MB · used 89×</div>
+          </div>
+        </div>
+        <div class="asset-tile">
+          <div class="asset-tile-thumb" style="background:#1e40af;color:#fbbf24;font-size:11px;">NOW<br/>OPEN</div>
+          <div class="asset-tile-body">
+            <div class="asset-tile-name">now-open-template.svg</div>
+            <div class="asset-tile-meta">1.8 MB · used 34×</div>
+          </div>
+        </div>
+        <div class="asset-tile">
+          <div class="asset-tile-thumb" style="background:linear-gradient(135deg,#9333ea,#581c87);color:#fff;font-size:11px;">EVENT</div>
+          <div class="asset-tile-body">
+            <div class="asset-tile-name">event-backdrop-gala.psd</div>
+            <div class="asset-tile-meta">22.7 MB · used 12×</div>
+          </div>
+        </div>
+        <div class="asset-tile">
+          <div class="asset-tile-thumb" style="background:#fbbf24;color:#1f2937;font-size:11px;">GRAND<br/>OPEN</div>
+          <div class="asset-tile-body">
+            <div class="asset-tile-name">grand-opening-vector.ai</div>
+            <div class="asset-tile-meta">4.2 MB · used 67×</div>
+          </div>
+        </div>
+        <div class="asset-tile">
+          <div class="asset-tile-thumb" style="background:linear-gradient(135deg,#047857,#064e3b);color:#fff;font-size:10px;">OPEN<br/>HOUSE</div>
+          <div class="asset-tile-body">
+            <div class="asset-tile-name">open-house-template.svg</div>
+            <div class="asset-tile-meta">1.2 MB · used 203×</div>
+          </div>
+        </div>
+        <div class="asset-tile">
+          <div class="asset-tile-thumb" style="background:#0891b2;color:#fff;font-size:11px;">SUMMER<br/>SALE</div>
+          <div class="asset-tile-body">
+            <div class="asset-tile-name">summer-sale-2026.psd</div>
+            <div class="asset-tile-meta">8.6 MB · used 18×</div>
+          </div>
+        </div>
+        <div class="asset-tile">
+          <div class="asset-tile-thumb" style="background:#374151;color:#9ca3af;font-size:10px;">BLACK<br/>FRIDAY</div>
+          <div class="asset-tile-body">
+            <div class="asset-tile-name">bf-2025-banner.ai</div>
+            <div class="asset-tile-meta">5.1 MB · used 92×</div>
+          </div>
+        </div>
+        <div class="asset-tile">
+          <div class="asset-tile-thumb" style="background:linear-gradient(135deg,#dc2626,#7f1d1d);color:#fff;font-size:11px;">XMAS</div>
+          <div class="asset-tile-body">
+            <div class="asset-tile-name">xmas-overlay-pack.zip</div>
+            <div class="asset-tile-meta">18.4 MB · used 11×</div>
+          </div>
+        </div>
+        <div class="asset-tile">
+          <div class="asset-tile-thumb" style="background:#f3f4f6;color:var(--nbd-mb-text);font-size:10px;">+477<br/>more</div>
+          <div class="asset-tile-body">
+            <div class="asset-tile-name">Load more files</div>
+            <div class="asset-tile-meta">Showing 11 of 487</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- ================ DESIGNER SETTINGS PAGE ================ -->
+    <section class="page" data-page="designer">
+      <div class="wp-page-head">
+        <div class="wp-page-title-block">
+          <h1 class="wp-page-title">Designer settings</h1>
+        </div>
+        <div class="wp-page-actions">
+          <button class="btn btn-tertiary btn-sm">Preview designer</button>
+          <button class="btn btn-primary btn-sm">Save changes</button>
+        </div>
+      </div>
+
+      <p class="wp-page-sub">Configure the Online Designer canvas — defaults, restrictions, available tools, and customer-facing options.</p>
+
+      <div class="wp-tabs">
+        <button class="wp-tab is-active">Canvas <span class="count"></span></button>
+        <button class="wp-tab">Tools & panels</button>
+        <button class="wp-tab">File upload</button>
+        <button class="wp-tab">Pre-press</button>
+        <button class="wp-tab">Print output</button>
+        <button class="wp-tab">Localization</button>
+      </div>
+
+      <div class="form-layout">
+        <div>
+          <div class="wp-card">
+            <div class="wp-card-head">
+              <h3 class="wp-card-title">Canvas defaults</h3>
+            </div>
+            <div class="wp-card-body">
+              <table class="form-table">
+                <tr>
+                  <th>
+                    <label for="ds-zoom">Default zoom level</label>
+                    <div class="help">Initial zoom when designer loads. "Fit to screen" auto-adjusts.</div>
+                  </th>
+                  <td>
+                    <select class="form-select form-input--medium" id="ds-zoom">
+                      <option>Fit to screen (recommended)</option>
+                      <option>50%</option>
+                      <option selected>68%</option>
+                      <option>100%</option>
+                      <option>125%</option>
+                    </select>
+                  </td>
+                </tr>
+                <tr>
+                  <th>
+                    <label>Show bleed/safe area</label>
+                    <div class="help">Visual guides for print boundaries</div>
+                  </th>
+                  <td>
+                    <label class="switch">
+                      <input type="checkbox" checked />
+                      <span class="switch-slider"></span>
+                      <span class="switch-label">Bleed line (red, solid)</span>
+                    </label>
+                    <br/><br/>
+                    <label class="switch">
+                      <input type="checkbox" checked />
+                      <span class="switch-slider"></span>
+                      <span class="switch-label">Safe area (green, dashed)</span>
+                    </label>
+                  </td>
+                </tr>
+                <tr>
+                  <th>
+                    <label>Bleed size</label>
+                    <div class="help">Extra trim area added around design</div>
+                  </th>
+                  <td>
+                    <div class="form-row-inline">
+                      <input class="form-input form-input--narrow" type="number" value="3" />
+                      <span class="form-suffix">mm</span>
+                      <span class="help-tip" title="Standard print: 3mm. Banners: 5mm.">?</span>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <th>
+                    <label>Safe area inset</label>
+                  </th>
+                  <td>
+                    <div class="form-row-inline">
+                      <input class="form-input form-input--narrow" type="number" value="24" />
+                      <span class="form-suffix">px from edge</span>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <th>
+                    <label>Canvas background</label>
+                    <div class="help">Color shown around print area</div>
+                  </th>
+                  <td>
+                    <div class="radio-cards">
+                      <label class="radio-card is-active">
+                        <input type="radio" name="bg" checked />
+                        <div class="radio-card-title">Light grid (default)</div>
+                        <div class="radio-card-desc">Subtle dot pattern</div>
+                      </label>
+                      <label class="radio-card">
+                        <input type="radio" name="bg" />
+                        <div class="radio-card-title">Plain gray</div>
+                        <div class="radio-card-desc">No pattern</div>
+                      </label>
+                      <label class="radio-card">
+                        <input type="radio" name="bg" />
+                        <div class="radio-card-title">Dark mode</div>
+                        <div class="radio-card-desc">Dark canvas BG</div>
+                      </label>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <th>
+                    <label>Snap to grid</label>
+                  </th>
+                  <td>
+                    <label class="switch">
+                      <input type="checkbox" checked />
+                      <span class="switch-slider"></span>
+                      <span class="switch-label">Enable snapping (10px increments)</span>
+                    </label>
+                  </td>
+                </tr>
+                <tr>
+                  <th>
+                    <label>Show ruler</label>
+                  </th>
+                  <td>
+                    <label class="switch">
+                      <input type="checkbox" />
+                      <span class="switch-slider"></span>
+                      <span class="switch-label">Display ruler around canvas</span>
+                    </label>
+                  </td>
+                </tr>
+              </table>
+            </div>
+          </div>
+
+          <div class="wp-card">
+            <div class="wp-card-head">
+              <h3 class="wp-card-title">Customer permissions</h3>
+            </div>
+            <div class="wp-card-body">
+              <table class="form-table">
+                <tr>
+                  <th><label>Allow custom sizes</label></th>
+                  <td>
+                    <label class="switch">
+                      <input type="checkbox" checked />
+                      <span class="switch-slider"></span>
+                      <span class="switch-label">Customers can enter custom width/height</span>
+                    </label>
+                    <div class="form-help">When disabled, only preset sizes available.</div>
+                  </td>
+                </tr>
+                <tr>
+                  <th><label>Max custom dimensions</label></th>
+                  <td>
+                    <div class="form-row-inline">
+                      <input class="form-input form-input--narrow" type="number" value="120" />
+                      <span class="form-suffix">″ width ×</span>
+                      <input class="form-input form-input--narrow" type="number" value="240" />
+                      <span class="form-suffix">″ height</span>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <th><label>Allow upload of artwork</label></th>
+                  <td>
+                    <label class="switch">
+                      <input type="checkbox" checked />
+                      <span class="switch-slider"></span>
+                      <span class="switch-label">Customers can upload PDF/AI/PSD/PNG/JPG</span>
+                    </label>
+                  </td>
+                </tr>
+                <tr>
+                  <th><label>Auto-save designs</label></th>
+                  <td>
+                    <label class="switch">
+                      <input type="checkbox" checked />
+                      <span class="switch-slider"></span>
+                      <span class="switch-label">Save every 30 seconds to customer's account</span>
+                    </label>
+                  </td>
+                </tr>
+                <tr>
+                  <th><label>Require login to save</label></th>
+                  <td>
+                    <label class="switch">
+                      <input type="checkbox" />
+                      <span class="switch-slider"></span>
+                      <span class="switch-label">Force login before saving design</span>
+                    </label>
+                    <div class="form-help">When OFF, guest designs persist via cookie for 7 days.</div>
+                  </td>
+                </tr>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- Side panel -->
+        <aside>
+          <div class="wp-card">
+            <div class="wp-card-head">
+              <h3 class="wp-card-title">Save status</h3>
+            </div>
+            <div class="wp-card-body">
+              <div style="display:flex;align-items:center;gap:8px;font-size:13px;color:var(--nbd-color-success);font-weight:600;margin-bottom:8px;">
+                <svg width="14" height="14" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" fill="none"><polyline points="20 6 9 17 4 12"/></svg>
+                All changes saved
+              </div>
+              <div style="font-size:12px;color:var(--nbd-mb-text-soft);">Last saved: 2 minutes ago</div>
+              <hr style="margin:var(--nbd-space-3) 0;border:none;border-top:1px solid var(--nbd-mb-border-subtle);">
+              <button class="btn btn-primary" style="width:100%;justify-content:center;">Save changes</button>
+              <button class="btn btn-link btn-sm" style="width:100%;justify-content:center;margin-top:8px;color:var(--nbd-color-error);">Reset to defaults</button>
+            </div>
+          </div>
+
+          <div class="wp-card">
+            <div class="wp-card-head">
+              <h3 class="wp-card-title">Quick preview</h3>
+            </div>
+            <div class="wp-card-body">
+              <div style="aspect-ratio:4/3;background:linear-gradient(135deg,#2b3a8a,#1a1547);border-radius:var(--nbd-radius-md);display:grid;place-items:center;color:#ffe35a;font-weight:800;font-size:18px;margin-bottom:var(--nbd-space-2);box-shadow:var(--nbd-shadow-sm);">
+                SIGN<br/>EDGE
+              </div>
+              <div style="font-size:12px;color:var(--nbd-mb-text-soft);text-align:center;">Canvas preview with current settings</div>
+              <button class="btn btn-secondary btn-sm" style="width:100%;justify-content:center;margin-top:var(--nbd-space-2);">Open full preview →</button>
+            </div>
+          </div>
+
+          <div class="wp-card">
+            <div class="wp-card-head">
+              <h3 class="wp-card-title">Help & docs</h3>
+            </div>
+            <div class="wp-card-body">
+              <ul style="margin:0;padding-left:18px;font-size:13px;line-height:1.8;">
+                <li><a href="#">Designer setup guide</a></li>
+                <li><a href="#">Customer permission reference</a></li>
+                <li><a href="#">Bleed & safe area best practices</a></li>
+                <li><a href="#">Print-ready file FAQ</a></li>
+              </ul>
+            </div>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <!-- ================ SETTINGS PAGE ================ -->
+    <section class="page" data-page="settings">
+      <div class="wp-page-head">
+        <div class="wp-page-title-block">
+          <h1 class="wp-page-title">Settings</h1>
+        </div>
+        <div class="wp-page-actions">
+          <button class="btn btn-primary btn-sm">Save changes</button>
+        </div>
+      </div>
+
+      <div class="wp-tabs">
+        <button class="wp-tab is-active">General</button>
+        <button class="wp-tab">API & Webhooks</button>
+        <button class="wp-tab">Payments</button>
+        <button class="wp-tab">Shipping</button>
+        <button class="wp-tab">Email</button>
+        <button class="wp-tab">Integrations</button>
+        <button class="wp-tab">Tax & Legal</button>
+      </div>
+
+      <div class="form-layout">
+        <div>
+          <!-- General settings -->
+          <div class="wp-card">
+            <div class="wp-card-head">
+              <h3 class="wp-card-title">Store identity</h3>
+            </div>
+            <div class="wp-card-body">
+              <table class="form-table">
+                <tr>
+                  <th><label for="st-name">Store name</label></th>
+                  <td><input class="form-input" id="st-name" type="text" value="SignEdge Graphics" /></td>
+                </tr>
+                <tr>
+                  <th>
+                    <label for="st-email">Admin email</label>
+                    <div class="help">Order notifications & customer support</div>
+                  </th>
+                  <td><input class="form-input" id="st-email" type="email" value="hoyle@giganticprints.com" /></td>
+                </tr>
+                <tr>
+                  <th><label for="st-phone">Support phone</label></th>
+                  <td><input class="form-input form-input--medium" id="st-phone" type="tel" value="(772) 555-0142" /></td>
+                </tr>
+                <tr>
+                  <th><label>Time zone</label></th>
+                  <td>
+                    <select class="form-select form-input--medium">
+                      <option>America/New_York (UTC-5)</option>
+                      <option>America/Chicago (UTC-6)</option>
+                      <option>America/Los_Angeles (UTC-8)</option>
+                    </select>
+                  </td>
+                </tr>
+                <tr>
+                  <th><label>Currency</label></th>
+                  <td>
+                    <select class="form-select form-input--medium">
+                      <option>USD ($)</option>
+                      <option>EUR (€)</option>
+                      <option>GBP (£)</option>
+                      <option>CAD (C$)</option>
+                    </select>
+                  </td>
+                </tr>
+                <tr>
+                  <th><label>Measurement units</label></th>
+                  <td>
+                    <div class="radio-cards" style="max-width:340px;">
+                      <label class="radio-card is-active">
+                        <input type="radio" name="units" checked />
+                        <div class="radio-card-title">Imperial (US)</div>
+                        <div class="radio-card-desc">inches, feet, lbs</div>
+                      </label>
+                      <label class="radio-card">
+                        <input type="radio" name="units" />
+                        <div class="radio-card-title">Metric</div>
+                        <div class="radio-card-desc">cm, m, kg</div>
+                      </label>
+                    </div>
+                  </td>
+                </tr>
+              </table>
+            </div>
+          </div>
+
+          <!-- Production -->
+          <div class="wp-card">
+            <div class="wp-card-head">
+              <h3 class="wp-card-title">Production</h3>
+            </div>
+            <div class="wp-card-body">
+              <table class="form-table">
+                <tr>
+                  <th><label>Production location</label></th>
+                  <td>
+                    <input class="form-input" type="text" value="Fort Pierce, FL · 34947" />
+                  </td>
+                </tr>
+                <tr>
+                  <th><label>Standard turnaround</label></th>
+                  <td>
+                    <div class="form-row-inline">
+                      <input class="form-input form-input--narrow" type="number" value="3" />
+                      <span class="form-suffix">business days</span>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <th>
+                    <label>Rush production</label>
+                    <div class="help">Optional 24h turnaround</div>
+                  </th>
+                  <td>
+                    <label class="switch">
+                      <input type="checkbox" checked />
+                      <span class="switch-slider"></span>
+                      <span class="switch-label">Enable rush option</span>
+                    </label>
+                    <div class="form-row-inline" style="margin-top:8px;">
+                      <span class="form-prefix">Surcharge:</span>
+                      <span class="form-prefix">$</span>
+                      <input class="form-input form-input--narrow" type="number" value="15" />
+                      <span class="form-suffix">flat fee</span>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <th><label>Cutoff time for same-day</label></th>
+                  <td>
+                    <input class="form-input form-input--medium" type="time" value="14:00" />
+                    <div class="form-help">Orders placed before 2:00 PM ET ship same day</div>
+                  </td>
+                </tr>
+              </table>
+            </div>
+          </div>
+
+          <!-- API & Webhooks (preview of tab content) -->
+          <div class="wp-card">
+            <div class="wp-card-head">
+              <h3 class="wp-card-title">REST API</h3>
+              <span class="status-pill" data-status="active"><span class="dot"></span>Active</span>
+            </div>
+            <div class="wp-card-body">
+              <table class="form-table">
+                <tr>
+                  <th>
+                    <label>API enabled</label>
+                    <div class="help">Allow external apps to read/write store data</div>
+                  </th>
+                  <td>
+                    <label class="switch">
+                      <input type="checkbox" checked />
+                      <span class="switch-slider"></span>
+                      <span class="switch-label">REST API endpoints active</span>
+                    </label>
+                  </td>
+                </tr>
+                <tr>
+                  <th><label>Base URL</label></th>
+                  <td>
+                    <code style="font-size:12px;background:var(--nbd-mb-bg-soft);padding:6px 10px;border-radius:var(--nbd-radius-sm);display:inline-block;">https://giganticprints.printcart.com/wp-json/signedge/v1/</code>
+                  </td>
+                </tr>
+                <tr>
+                  <th><label>API tokens</label></th>
+                  <td>
+                    <div style="font-size:13px;margin-bottom:8px;">3 active tokens · last used 5 minutes ago</div>
+                    <button class="btn btn-tertiary btn-sm">Manage tokens →</button>
+                  </td>
+                </tr>
+                <tr>
+                  <th><label>Rate limit</label></th>
+                  <td>
+                    <div class="form-row-inline">
+                      <input class="form-input form-input--narrow" type="number" value="60" />
+                      <span class="form-suffix">requests/min per token</span>
+                    </div>
+                  </td>
+                </tr>
+              </table>
+            </div>
+          </div>
+
+          <!-- Webhooks -->
+          <div class="wp-card">
+            <div class="wp-card-head">
+              <h3 class="wp-card-title">Webhooks</h3>
+              <button class="btn btn-tertiary btn-sm">+ Add webhook</button>
+            </div>
+            <div class="wp-card-body is-flush">
+              <table class="wp-list-table">
+                <thead>
+                  <tr>
+                    <th>Event</th>
+                    <th>Endpoint URL</th>
+                    <th>Status</th>
+                    <th>Last delivery</th>
+                    <th class="col-actions"></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><code>order.created</code></td>
+                    <td><code style="font-size:12px;">https://hooks.zapier.com/...</code></td>
+                    <td><span class="status-pill" data-status="active"><span class="dot"></span>200 OK</span></td>
+                    <td>2 min ago</td>
+                    <td class="col-actions"><a href="#" style="font-size:12px;">Edit</a></td>
+                  </tr>
+                  <tr>
+                    <td><code>order.shipped</code></td>
+                    <td><code style="font-size:12px;">https://shopify.com/webhooks/...</code></td>
+                    <td><span class="status-pill" data-status="active"><span class="dot"></span>200 OK</span></td>
+                    <td>14 min ago</td>
+                    <td class="col-actions"><a href="#" style="font-size:12px;">Edit</a></td>
+                  </tr>
+                  <tr>
+                    <td><code>customer.upgraded</code></td>
+                    <td><code style="font-size:12px;">https://hubspot.com/api/...</code></td>
+                    <td><span class="status-pill" data-status="pending"><span class="dot"></span>Retrying</span></td>
+                    <td>1 hour ago (3 retries)</td>
+                    <td class="col-actions"><a href="#" style="font-size:12px;">Edit</a></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <aside>
+          <div class="wp-card">
+            <div class="wp-card-head">
+              <h3 class="wp-card-title">Quick info</h3>
+            </div>
+            <div class="wp-card-body" style="font-size:13px;line-height:1.6;">
+              <div style="margin-bottom:var(--nbd-space-3);">
+                <div style="font-size:11px;font-weight:700;color:var(--nbd-mb-text-mute);text-transform:uppercase;letter-spacing:0.04em;margin-bottom:2px;">Plugin version</div>
+                <div><strong>2.4.9</strong> · up to date</div>
+              </div>
+              <div style="margin-bottom:var(--nbd-space-3);">
+                <div style="font-size:11px;font-weight:700;color:var(--nbd-mb-text-mute);text-transform:uppercase;letter-spacing:0.04em;margin-bottom:2px;">WordPress</div>
+                <div>6.8.1</div>
+              </div>
+              <div style="margin-bottom:var(--nbd-space-3);">
+                <div style="font-size:11px;font-weight:700;color:var(--nbd-mb-text-mute);text-transform:uppercase;letter-spacing:0.04em;margin-bottom:2px;">PHP</div>
+                <div>8.2.18</div>
+              </div>
+              <div>
+                <div style="font-size:11px;font-weight:700;color:var(--nbd-mb-text-mute);text-transform:uppercase;letter-spacing:0.04em;margin-bottom:2px;">WooCommerce</div>
+                <div>9.6.2 · connected</div>
+              </div>
+              <hr style="margin:var(--nbd-space-3) 0;border:none;border-top:1px solid var(--nbd-mb-border-subtle);">
+              <button class="btn btn-tertiary btn-sm" style="width:100%;justify-content:center;">Run system check</button>
+            </div>
+          </div>
+
+          <div class="wp-card">
+            <div class="wp-card-head">
+              <h3 class="wp-card-title">Need help?</h3>
+            </div>
+            <div class="wp-card-body" style="font-size:13px;line-height:1.7;">
+              <p style="margin:0 0 var(--nbd-space-2);">Browse our docs or contact support.</p>
+              <a href="#" style="display:block;padding:6px 0;">→ Documentation</a>
+              <a href="#" style="display:block;padding:6px 0;">→ Video tutorials</a>
+              <a href="#" style="display:block;padding:6px 0;">→ Submit ticket</a>
+              <a href="#" style="display:block;padding:6px 0;">→ Live chat (PRO)</a>
+            </div>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+
+    <!-- ================ REPORTS PAGE ================ -->
+    <section class="page" data-page="reports">
+      <div class="wp-page-head">
+        <div class="wp-page-title-block">
+          <h1 class="wp-page-title">Reports</h1>
+        </div>
+        <div class="wp-page-actions">
+          <select class="filter-select">
+            <option>This month</option>
+            <option>Last month</option>
+            <option>Last 90 days</option>
+            <option>This year</option>
+            <option>Custom range…</option>
+          </select>
+          <button class="btn btn-tertiary btn-sm">
+            <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M17 8l-5-5-5 5M12 3v12"/></svg>
+            Export PDF
+          </button>
+        </div>
+      </div>
+
+      <!-- KPI row -->
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-card-head">
+            <div class="stat-label">Revenue</div>
+            <div class="stat-icon success"><svg viewBox="0 0 24 24"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg></div>
+          </div>
+          <div class="stat-value">$48,247</div>
+          <div class="stat-delta up"><svg viewBox="0 0 24 24"><polyline points="18 15 12 9 6 15"/></svg>+18% vs last month</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-card-head">
+            <div class="stat-label">Orders</div>
+            <div class="stat-icon"><svg viewBox="0 0 24 24"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg></div>
+          </div>
+          <div class="stat-value">412</div>
+          <div class="stat-delta up"><svg viewBox="0 0 24 24"><polyline points="18 15 12 9 6 15"/></svg>+34 (+9%)</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-card-head">
+            <div class="stat-label">Avg order value</div>
+            <div class="stat-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg></div>
+          </div>
+          <div class="stat-value">$117.10</div>
+          <div class="stat-delta up"><svg viewBox="0 0 24 24"><polyline points="18 15 12 9 6 15"/></svg>+$8.40</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-card-head">
+            <div class="stat-label">Conversion rate</div>
+            <div class="stat-icon warning"><svg viewBox="0 0 24 24"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg></div>
+          </div>
+          <div class="stat-value">3.8%</div>
+          <div class="stat-delta down"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>-0.4%</div>
+        </div>
+      </div>
+
+      <div class="form-layout">
+        <!-- Main charts -->
+        <div>
+          <!-- Revenue chart -->
+          <div class="wp-card">
+            <div class="wp-card-head">
+              <div>
+                <h3 class="wp-card-title">Revenue trend</h3>
+                <div class="wp-card-sub">Daily revenue · last 30 days</div>
+              </div>
+              <div class="form-row-inline">
+                <label class="switch">
+                  <input type="checkbox" checked />
+                  <span class="switch-slider"></span>
+                  <span class="switch-label" style="font-size:12px;">B2C</span>
+                </label>
+                <label class="switch">
+                  <input type="checkbox" checked />
+                  <span class="switch-slider"></span>
+                  <span class="switch-label" style="font-size:12px;">B2B</span>
+                </label>
+              </div>
+            </div>
+            <div class="wp-card-body" style="padding:0;">
+              <!-- Pseudo chart -->
+              <div style="height:280px;display:flex;align-items:flex-end;gap:4px;padding:var(--nbd-space-4) var(--nbd-space-4) var(--nbd-space-2);border-bottom:1px solid var(--nbd-mb-border-subtle);">
+                <div style="flex:1;height:42%;background:var(--nbd-mb-primary-soft);border-radius:2px 2px 0 0;display:flex;flex-direction:column;justify-content:flex-end;">
+                  <div style="height:60%;background:var(--nbd-mb-primary);border-radius:2px 2px 0 0;"></div>
+                </div>
+                <div style="flex:1;height:38%;background:var(--nbd-mb-primary-soft);border-radius:2px 2px 0 0;display:flex;flex-direction:column;justify-content:flex-end;"><div style="height:55%;background:var(--nbd-mb-primary);border-radius:2px 2px 0 0;"></div></div>
+                <div style="flex:1;height:55%;background:var(--nbd-mb-primary-soft);border-radius:2px 2px 0 0;display:flex;flex-direction:column;justify-content:flex-end;"><div style="height:50%;background:var(--nbd-mb-primary);border-radius:2px 2px 0 0;"></div></div>
+                <div style="flex:1;height:48%;background:var(--nbd-mb-primary-soft);border-radius:2px 2px 0 0;display:flex;flex-direction:column;justify-content:flex-end;"><div style="height:65%;background:var(--nbd-mb-primary);border-radius:2px 2px 0 0;"></div></div>
+                <div style="flex:1;height:62%;background:var(--nbd-mb-primary-soft);border-radius:2px 2px 0 0;display:flex;flex-direction:column;justify-content:flex-end;"><div style="height:58%;background:var(--nbd-mb-primary);border-radius:2px 2px 0 0;"></div></div>
+                <div style="flex:1;height:58%;background:var(--nbd-mb-primary-soft);border-radius:2px 2px 0 0;display:flex;flex-direction:column;justify-content:flex-end;"><div style="height:62%;background:var(--nbd-mb-primary);border-radius:2px 2px 0 0;"></div></div>
+                <div style="flex:1;height:72%;background:var(--nbd-mb-primary-soft);border-radius:2px 2px 0 0;display:flex;flex-direction:column;justify-content:flex-end;"><div style="height:68%;background:var(--nbd-mb-primary);border-radius:2px 2px 0 0;"></div></div>
+                <div style="flex:1;height:65%;background:var(--nbd-mb-primary-soft);border-radius:2px 2px 0 0;display:flex;flex-direction:column;justify-content:flex-end;"><div style="height:55%;background:var(--nbd-mb-primary);border-radius:2px 2px 0 0;"></div></div>
+                <div style="flex:1;height:78%;background:var(--nbd-mb-primary-soft);border-radius:2px 2px 0 0;display:flex;flex-direction:column;justify-content:flex-end;"><div style="height:72%;background:var(--nbd-mb-primary);border-radius:2px 2px 0 0;"></div></div>
+                <div style="flex:1;height:68%;background:var(--nbd-mb-primary-soft);border-radius:2px 2px 0 0;display:flex;flex-direction:column;justify-content:flex-end;"><div style="height:60%;background:var(--nbd-mb-primary);border-radius:2px 2px 0 0;"></div></div>
+                <div style="flex:1;height:85%;background:var(--nbd-mb-primary-soft);border-radius:2px 2px 0 0;display:flex;flex-direction:column;justify-content:flex-end;"><div style="height:78%;background:var(--nbd-mb-primary);border-radius:2px 2px 0 0;"></div></div>
+                <div style="flex:1;height:74%;background:var(--nbd-mb-primary-soft);border-radius:2px 2px 0 0;display:flex;flex-direction:column;justify-content:flex-end;"><div style="height:68%;background:var(--nbd-mb-primary);border-radius:2px 2px 0 0;"></div></div>
+                <div style="flex:1;height:92%;background:var(--nbd-mb-primary-soft);border-radius:2px 2px 0 0;display:flex;flex-direction:column;justify-content:flex-end;"><div style="height:82%;background:var(--nbd-mb-primary);border-radius:2px 2px 0 0;"></div></div>
+                <div style="flex:1;height:88%;background:var(--nbd-mb-primary-soft);border-radius:2px 2px 0 0;display:flex;flex-direction:column;justify-content:flex-end;"><div style="height:75%;background:var(--nbd-mb-primary);border-radius:2px 2px 0 0;"></div></div>
+                <div style="flex:1;height:95%;background:var(--nbd-mb-primary-soft);border-radius:2px 2px 0 0;display:flex;flex-direction:column;justify-content:flex-end;"><div style="height:88%;background:var(--nbd-mb-primary);border-radius:2px 2px 0 0;"></div></div>
+                <div style="flex:1;height:82%;background:var(--nbd-mb-primary-soft);border-radius:2px 2px 0 0;display:flex;flex-direction:column;justify-content:flex-end;"><div style="height:72%;background:var(--nbd-mb-primary);border-radius:2px 2px 0 0;"></div></div>
+              </div>
+              <div style="padding:8px var(--nbd-space-4);display:flex;justify-content:space-between;font-size:11px;color:var(--nbd-mb-text-mute);">
+                <span>Apr 13</span>
+                <span>Apr 20</span>
+                <span>Apr 27</span>
+                <span>May 4</span>
+                <span>May 11</span>
+              </div>
+              <div style="padding:var(--nbd-space-3) var(--nbd-space-4);border-top:1px solid var(--nbd-mb-border-subtle);display:flex;gap:var(--nbd-space-4);font-size:12px;">
+                <span style="display:inline-flex;align-items:center;gap:6px;"><span style="width:10px;height:10px;background:var(--nbd-mb-primary-soft);border-radius:2px;"></span>B2C revenue · $14,820</span>
+                <span style="display:inline-flex;align-items:center;gap:6px;"><span style="width:10px;height:10px;background:var(--nbd-mb-primary);border-radius:2px;"></span>B2B revenue · $33,427</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Top products table -->
+          <div class="wp-card">
+            <div class="wp-card-head">
+              <h3 class="wp-card-title">Top products this month</h3>
+              <a href="#" class="btn-link btn btn-sm">View full report →</a>
+            </div>
+            <div class="wp-card-body is-flush">
+              <table class="wp-list-table">
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>Product</th>
+                    <th>Orders</th>
+                    <th>Units</th>
+                    <th>Revenue</th>
+                    <th>% of total</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><strong>1</strong></td>
+                    <td>
+                      <div class="col-title-cell">
+                        <div class="col-title-thumb" style="background:linear-gradient(135deg,#2b3a8a,#1a1547);width:32px;height:32px;font-size:8px;">HD</div>
+                        <strong>HD Vinyl Banner</strong>
+                      </div>
+                    </td>
+                    <td>147</td>
+                    <td>312</td>
+                    <td><strong>$14,820</strong></td>
+                    <td>
+                      <div style="display:flex;align-items:center;gap:8px;">
+                        <div class="progress" style="width:80px;"><div class="progress-fill" style="width:30%;"></div></div>
+                        <span style="font-variant-numeric:tabular-nums;">30.7%</span>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><strong>2</strong></td>
+                    <td>
+                      <div class="col-title-cell">
+                        <div class="col-title-thumb" style="background:#dc2626;color:#fff;width:32px;height:32px;font-size:9px;">YARD</div>
+                        <strong>Yard Sign — Corrugated</strong>
+                      </div>
+                    </td>
+                    <td>89</td>
+                    <td>684</td>
+                    <td><strong>$8,920</strong></td>
+                    <td>
+                      <div style="display:flex;align-items:center;gap:8px;">
+                        <div class="progress" style="width:80px;"><div class="progress-fill" style="width:18%;"></div></div>
+                        <span style="font-variant-numeric:tabular-nums;">18.5%</span>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><strong>3</strong></td>
+                    <td>
+                      <div class="col-title-cell">
+                        <div class="col-title-thumb" style="background:linear-gradient(135deg,#15803d,#14532d);color:#fff;width:32px;height:32px;font-size:8px;">SOLD</div>
+                        <strong>Real Estate Rider</strong>
+                      </div>
+                    </td>
+                    <td>74</td>
+                    <td>432</td>
+                    <td><strong>$5,184</strong></td>
+                    <td>
+                      <div style="display:flex;align-items:center;gap:8px;">
+                        <div class="progress" style="width:80px;"><div class="progress-fill" style="width:11%;"></div></div>
+                        <span style="font-variant-numeric:tabular-nums;">10.7%</span>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><strong>4</strong></td>
+                    <td>
+                      <div class="col-title-cell">
+                        <div class="col-title-thumb" style="background:linear-gradient(135deg,#7c2d12,#92400e);color:#fef3c7;width:32px;height:32px;font-size:8px;">SHIRT</div>
+                        <strong>DTG T-shirt</strong>
+                      </div>
+                    </td>
+                    <td>52</td>
+                    <td>198</td>
+                    <td><strong>$3,564</strong></td>
+                    <td>
+                      <div style="display:flex;align-items:center;gap:8px;">
+                        <div class="progress" style="width:80px;"><div class="progress-fill" style="width:7%;"></div></div>
+                        <span style="font-variant-numeric:tabular-nums;">7.4%</span>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><strong>5</strong></td>
+                    <td>
+                      <div class="col-title-cell">
+                        <div class="col-title-thumb" style="background:linear-gradient(135deg,#047857,#064e3b);color:#fff;width:32px;height:32px;font-size:9px;">RET</div>
+                        <strong>Retractable Banner</strong>
+                      </div>
+                    </td>
+                    <td>23</td>
+                    <td>23</td>
+                    <td><strong>$2,967</strong></td>
+                    <td>
+                      <div style="display:flex;align-items:center;gap:8px;">
+                        <div class="progress" style="width:80px;"><div class="progress-fill" style="width:6%;"></div></div>
+                        <span style="font-variant-numeric:tabular-nums;">6.1%</span>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- Side: breakdowns -->
+        <aside>
+          <div class="wp-card">
+            <div class="wp-card-head">
+              <h3 class="wp-card-title">Revenue by tier</h3>
+            </div>
+            <div class="wp-card-body" style="display:flex;flex-direction:column;gap:var(--nbd-space-3);">
+              <div>
+                <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:4px;">
+                  <span class="tier-pill" data-tier="b2c">B2C</span>
+                  <strong>$14,820</strong>
+                </div>
+                <div class="progress"><div class="progress-fill" style="width:30%;"></div></div>
+              </div>
+              <div>
+                <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:4px;">
+                  <span class="tier-pill" data-tier="b2b-a">B2B-A</span>
+                  <strong>$8,920</strong>
+                </div>
+                <div class="progress"><div class="progress-fill" style="width:18%;"></div></div>
+              </div>
+              <div>
+                <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:4px;">
+                  <span class="tier-pill" data-tier="b2b-b">B2B-B</span>
+                  <strong>$12,184</strong>
+                </div>
+                <div class="progress"><div class="progress-fill" style="width:25%;"></div></div>
+              </div>
+              <div>
+                <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:4px;">
+                  <span class="tier-pill" data-tier="b2b-c">B2B-C</span>
+                  <strong>$7,420</strong>
+                </div>
+                <div class="progress"><div class="progress-fill" style="width:15%;"></div></div>
+              </div>
+              <div>
+                <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:4px;">
+                  <span class="tier-pill" data-tier="vip">★ VIP</span>
+                  <strong>$4,903</strong>
+                </div>
+                <div class="progress"><div class="progress-fill" style="width:10%;"></div></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="wp-card">
+            <div class="wp-card-head">
+              <h3 class="wp-card-title">Customer health</h3>
+            </div>
+            <div class="wp-card-body" style="font-size:13px;line-height:1.6;">
+              <div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--nbd-mb-border-subtle);">
+                <span>New customers</span><strong style="color:var(--nbd-color-success);">+34</strong>
+              </div>
+              <div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--nbd-mb-border-subtle);">
+                <span>Returning rate</span><strong>62%</strong>
+              </div>
+              <div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--nbd-mb-border-subtle);">
+                <span>Repeat customers</span><strong>184</strong>
+              </div>
+              <div style="display:flex;justify-content:space-between;padding:6px 0;">
+                <span>Churn risk</span><strong style="color:var(--nbd-color-warning);">3 accounts</strong>
+              </div>
+            </div>
+          </div>
+
+          <div class="wp-card">
+            <div class="wp-card-head">
+              <h3 class="wp-card-title">Saved reports</h3>
+              <button class="btn btn-link btn-sm">+ New</button>
+            </div>
+            <div class="wp-card-body" style="font-size:13px;">
+              <a href="#" style="display:block;padding:6px 0;border-bottom:1px solid var(--nbd-mb-border-subtle);">Monthly P&amp;L</a>
+              <a href="#" style="display:block;padding:6px 0;border-bottom:1px solid var(--nbd-mb-border-subtle);">B2B tier performance</a>
+              <a href="#" style="display:block;padding:6px 0;border-bottom:1px solid var(--nbd-mb-border-subtle);">Product margins Q2</a>
+              <a href="#" style="display:block;padding:6px 0;">Customer LTV cohort</a>
+            </div>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+
+    <!-- ================ LICENSE PAGE ================ -->
+    <section class="page" data-page="license">
+      <div class="wp-page-head">
+        <div class="wp-page-title-block">
+          <h1 class="wp-page-title">License & activation</h1>
+        </div>
+      </div>
+
+      <p class="wp-page-sub">Manage your SignEdge Canva license. Active license unlocks Pro features, Brand Store, Teams, Approval workflow, and premium support.</p>
+
+      <!-- License status hero -->
+      <div class="license-status-card">
+        <div class="license-status-icon">
+          <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+        </div>
+        <div class="license-status-info">
+          <div class="license-status-title">Pro license active</div>
+          <div class="license-status-meta">Activated Feb 14, 2026 · Renews Feb 14, 2027 · 1 site of 1 used</div>
+        </div>
+        <button class="btn btn-tertiary">Manage subscription →</button>
+      </div>
+
+      <div class="form-layout">
+        <div>
+          <div class="wp-card">
+            <div class="wp-card-head">
+              <h3 class="wp-card-title">License key</h3>
+            </div>
+            <div class="wp-card-body">
+              <table class="form-table">
+                <tr>
+                  <th>
+                    <label for="lic-key">License key</label>
+                    <div class="help">Sent to your email after purchase</div>
+                  </th>
+                  <td>
+                    <div class="license-input-row">
+                      <input class="license-key-input" id="lic-key" type="text" value="SEDG-PRO-A847-J3K2-9F1Q-2H8M" readonly />
+                      <button class="btn btn-tertiary" title="Copy">
+                        <svg viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+                      </button>
+                    </div>
+                    <div class="form-help" style="margin-top:8px;">
+                      <strong>Status:</strong> <span style="color:var(--nbd-color-success);">✓ Valid · Verified 3 minutes ago</span>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <th>
+                    <label>License type</label>
+                  </th>
+                  <td>
+                    <div style="display:inline-flex;align-items:center;gap:6px;padding:4px 10px;background:linear-gradient(135deg,#fbbf24,#d97706);color:#fff;border-radius:var(--nbd-radius-full);font-size:12px;font-weight:700;">
+                      ★ PRO · 1-site
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <th><label>Activated on</label></th>
+                  <td>
+                    <code style="background:var(--nbd-mb-bg-soft);padding:4px 8px;border-radius:var(--nbd-radius-sm);font-size:12px;">giganticprints.printcart.com</code>
+                  </td>
+                </tr>
+                <tr>
+                  <th>
+                    <label>Auto-renew</label>
+                    <div class="help">Charged Feb 14, 2027</div>
+                  </th>
+                  <td>
+                    <label class="switch">
+                      <input type="checkbox" checked />
+                      <span class="switch-slider"></span>
+                      <span class="switch-label">Auto-renew enabled · $149/year</span>
+                    </label>
+                  </td>
+                </tr>
+                <tr>
+                  <th><label>Updates</label></th>
+                  <td>
+                    <div style="font-size:13px;color:var(--nbd-mb-text);margin-bottom:6px;">✓ You're on the latest version (2.4.9)</div>
+                    <label class="switch">
+                      <input type="checkbox" checked />
+                      <span class="switch-slider"></span>
+                      <span class="switch-label">Auto-install minor updates</span>
+                    </label>
+                  </td>
+                </tr>
+              </table>
+              <hr style="margin:var(--nbd-space-4) 0;border:none;border-top:1px solid var(--nbd-mb-border-subtle);">
+              <div style="display:flex;gap:var(--nbd-space-2);flex-wrap:wrap;">
+                <button class="btn btn-secondary btn-sm">Refresh license</button>
+                <button class="btn btn-tertiary btn-sm">View invoice history</button>
+                <button class="btn btn-link btn-sm" style="color:var(--nbd-color-error);">Deactivate this site</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="wp-card">
+            <div class="wp-card-head">
+              <h3 class="wp-card-title">Feature comparison</h3>
+            </div>
+            <div class="wp-card-body is-flush">
+              <table class="wp-list-table">
+                <thead>
+                  <tr>
+                    <th>Feature</th>
+                    <th>Free</th>
+                    <th>Pro (active)</th>
+                    <th>Enterprise</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><strong>Products</strong></td>
+                    <td>5</td>
+                    <td style="color:var(--nbd-color-success);font-weight:600;">Unlimited ✓</td>
+                    <td>Unlimited + multi-store</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Online Designer</strong></td>
+                    <td>Basic</td>
+                    <td style="color:var(--nbd-color-success);font-weight:600;">Full ✓</td>
+                    <td>Full + custom branding</td>
+                  </tr>
+                  <tr>
+                    <td><strong>B2B tiers</strong></td>
+                    <td>—</td>
+                    <td style="color:var(--nbd-color-success);font-weight:600;">Up to 5 ✓</td>
+                    <td>Unlimited</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Brand Store</strong></td>
+                    <td>—</td>
+                    <td style="color:var(--nbd-color-success);font-weight:600;">✓</td>
+                    <td>✓ + white-label</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Teams workspace</strong></td>
+                    <td>—</td>
+                    <td style="color:var(--nbd-color-success);font-weight:600;">Up to 25 members ✓</td>
+                    <td>Unlimited</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Procurement approval</strong></td>
+                    <td>—</td>
+                    <td style="color:var(--nbd-color-success);font-weight:600;">✓</td>
+                    <td>✓ + multi-step</td>
+                  </tr>
+                  <tr>
+                    <td><strong>API & webhooks</strong></td>
+                    <td>Read-only</td>
+                    <td style="color:var(--nbd-color-success);font-weight:600;">Full ✓</td>
+                    <td>Full + private SDK</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Asset storage</strong></td>
+                    <td>1 GB</td>
+                    <td style="color:var(--nbd-color-success);font-weight:600;">50 GB ✓</td>
+                    <td>500 GB</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Support</strong></td>
+                    <td>Forum</td>
+                    <td style="color:var(--nbd-color-success);font-weight:600;">Email · 24h ✓</td>
+                    <td>Dedicated account manager</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Pricing</strong></td>
+                    <td>$0</td>
+                    <td><strong>$149/year</strong></td>
+                    <td>$899/year</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="wp-card-foot">
+              <span style="font-size:12px;color:var(--nbd-mb-text-soft);">Want more sites or features?</span>
+              <button class="btn btn-secondary btn-sm">Upgrade to Enterprise →</button>
+            </div>
+          </div>
+        </div>
+
+        <aside>
+          <div class="wp-card">
+            <div class="wp-card-head">
+              <h3 class="wp-card-title">Plugin info</h3>
+            </div>
+            <div class="wp-card-body" style="font-size:13px;line-height:1.7;">
+              <div style="margin-bottom:var(--nbd-space-2);">
+                <div style="font-size:11px;font-weight:700;color:var(--nbd-mb-text-mute);text-transform:uppercase;letter-spacing:0.04em;">Version</div>
+                <strong>2.4.9</strong>
+              </div>
+              <div style="margin-bottom:var(--nbd-space-2);">
+                <div style="font-size:11px;font-weight:700;color:var(--nbd-mb-text-mute);text-transform:uppercase;letter-spacing:0.04em;">Released</div>
+                May 8, 2026
+              </div>
+              <div style="margin-bottom:var(--nbd-space-2);">
+                <div style="font-size:11px;font-weight:700;color:var(--nbd-mb-text-mute);text-transform:uppercase;letter-spacing:0.04em;">Files</div>
+                124 files · 8.4 MB
+              </div>
+              <hr style="margin:var(--nbd-space-3) 0;border:none;border-top:1px solid var(--nbd-mb-border-subtle);">
+              <a href="#" style="display:block;padding:4px 0;">→ Changelog</a>
+              <a href="#" style="display:block;padding:4px 0;">→ Release notes</a>
+              <a href="#" style="display:block;padding:4px 0;">→ Roadmap</a>
+            </div>
+          </div>
+
+          <div class="wp-card">
+            <div class="wp-card-head">
+              <h3 class="wp-card-title">Activity log</h3>
+            </div>
+            <div class="wp-card-body" style="font-size:12px;line-height:1.6;">
+              <div style="padding:6px 0;border-bottom:1px solid var(--nbd-mb-border-subtle);">
+                <strong>Verified license</strong><br/>
+                <span style="color:var(--nbd-mb-text-soft);">3 minutes ago</span>
+              </div>
+              <div style="padding:6px 0;border-bottom:1px solid var(--nbd-mb-border-subtle);">
+                <strong>Updated to 2.4.9</strong><br/>
+                <span style="color:var(--nbd-mb-text-soft);">May 8 · auto-install</span>
+              </div>
+              <div style="padding:6px 0;border-bottom:1px solid var(--nbd-mb-border-subtle);">
+                <strong>Renewed (1 year)</strong><br/>
+                <span style="color:var(--nbd-mb-text-soft);">Feb 14, 2026</span>
+              </div>
+              <div style="padding:6px 0;">
+                <strong>Activated PRO</strong><br/>
+                <span style="color:var(--nbd-mb-text-soft);">Feb 14, 2025</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="wp-card">
+            <div class="wp-card-head">
+              <h3 class="wp-card-title">Help</h3>
+            </div>
+            <div class="wp-card-body" style="font-size:13px;line-height:1.7;">
+              <a href="#" style="display:block;padding:4px 0;">→ License FAQ</a>
+              <a href="#" style="display:block;padding:4px 0;">→ Transfer license</a>
+              <a href="#" style="display:block;padding:4px 0;">→ Refund policy</a>
+              <a href="#" style="display:block;padding:4px 0;">→ Contact billing</a>
+            </div>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<script>
+  // Page navigation
+  document.querySelectorAll('.wp-nav-item').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const nav = btn.dataset.nav;
+      if (!nav) return;
+      document.querySelectorAll('.wp-nav-item').forEach(b => b.classList.remove('is-active'));
+      btn.classList.add('is-active');
+      document.querySelectorAll('.page').forEach(p => p.classList.remove('is-active'));
+      const page = document.querySelector(`[data-page="${nav}"]`);
+      if (page) page.classList.add('is-active');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  });
+
+  // Tab switching within pages
+  document.querySelectorAll('.wp-tabs').forEach(tabsGroup => {
+    tabsGroup.querySelectorAll('.wp-tab').forEach(tab => {
+      tab.addEventListener('click', () => {
+        tabsGroup.querySelectorAll('.wp-tab').forEach(t => t.classList.remove('is-active'));
+        tab.classList.add('is-active');
+      });
+    });
+  });
+
+  // Radio cards
+  document.querySelectorAll('.radio-card').forEach(card => {
+    card.addEventListener('click', () => {
+      const radio = card.querySelector('input[type="radio"]');
+      if (!radio) return;
+      const name = radio.name;
+      document.querySelectorAll(`.radio-card`).forEach(c => {
+        const r = c.querySelector('input[type="radio"]');
+        if (r && r.name === name) c.classList.remove('is-active');
+      });
+      card.classList.add('is-active');
+      radio.checked = true;
+    });
+  });
+
+  // Select all checkbox
+  document.querySelectorAll('.wp-list-table thead .col-cb input').forEach(master => {
+    master.addEventListener('change', () => {
+      const table = master.closest('.wp-list-table-wrap');
+      table?.querySelectorAll('tbody .col-cb input').forEach(cb => {
+        cb.checked = master.checked;
+        cb.closest('tr')?.classList.toggle('is-selected', cb.checked);
+      });
+    });
+  });
+  document.querySelectorAll('.wp-list-table tbody .col-cb input').forEach(cb => {
+    cb.addEventListener('change', () => {
+      cb.closest('tr')?.classList.toggle('is-selected', cb.checked);
+    });
+  });
+
+  // Notice close
+  document.querySelectorAll('.wp-notice-close').forEach(btn => {
+    btn.addEventListener('click', () => btn.closest('.wp-notice')?.remove());
+  });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,2836 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>SignEdge Canva — My Account</title>
+<style>
+  /* =========================================================
+     SignEdge Canva — Client Account Dashboard
+     Adaptive layout: B2C (basic) ↔ B2B (full feature set)
+     Sections: Overview · Profile · Reorders · Templates ·
+               Orders & Invoices · Image Zone · Brand Store ·
+               Teams · Procurement Approval
+     ========================================================= */
+
+  /* ---------- DESIGN TOKENS ---------- */
+  :root {
+    --nbd-mb-primary: #2563eb;
+    --nbd-mb-primary-pressed: #1d4ed8;
+    --nbd-mb-primary-soft: #dbeafe;
+    --nbd-mb-text: #1f2937;
+    --nbd-mb-text-soft: #6b7280;
+    --nbd-mb-bg: #ffffff;
+    --nbd-mb-bg-soft: #f9fafb;
+    --nbd-mb-bg-canvas: #f3f4f6;
+    --nbd-mb-border: #e5e7eb;
+    --nbd-mb-border-strong: #d1d5db;
+    --nbd-mb-border-subtle: #f3f4f6;
+    --nbd-color-success: #10b981;
+    --nbd-color-success-soft: #d1fae5;
+    --nbd-color-warning: #f59e0b;
+    --nbd-color-warning-soft: #fef3c7;
+    --nbd-color-error: #ef4444;
+    --nbd-color-error-soft: #fee2e2;
+    --nbd-color-info: #3b82f6;
+    --nbd-color-info-soft: #dbeafe;
+
+    --nbd-space-1: 4px;
+    --nbd-space-2: 8px;
+    --nbd-space-3: 12px;
+    --nbd-space-4: 16px;
+    --nbd-space-6: 24px;
+    --nbd-space-8: 32px;
+    --nbd-space-12: 48px;
+
+    --nbd-radius-sm: 4px;
+    --nbd-radius-md: 6px;
+    --nbd-radius-lg: 8px;
+    --nbd-radius-xl: 12px;
+    --nbd-radius-2xl: 16px;
+    --nbd-radius-full: 9999px;
+
+    --nbd-shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    --nbd-shadow-md: 0 2px 4px 0 rgba(0, 0, 0, 0.08);
+    --nbd-shadow-lg: 0 4px 12px 0 rgba(0, 0, 0, 0.08);
+    --nbd-shadow-xl: 0 8px 24px 0 rgba(0, 0, 0, 0.16);
+    --nbd-shadow-focus: 0 0 0 3px rgba(37, 99, 235, 0.25);
+
+    --nbd-duration-fast: 120ms;
+    --nbd-duration-normal: 220ms;
+    --nbd-ease-out: ease-out;
+
+    --nbd-font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+                       "Helvetica Neue", Arial, sans-serif;
+
+    --topbar-height: 64px;
+    --sidebar-width: 240px;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; height: 100%; }
+  body {
+    font-family: var(--nbd-font-family);
+    font-size: 14px;
+    line-height: 1.5;
+    color: var(--nbd-mb-text);
+    background: var(--nbd-mb-bg-soft);
+    -webkit-font-smoothing: antialiased;
+  }
+  button { font-family: inherit; cursor: pointer; border: none; background: none; padding: 0; color: inherit; }
+  a { color: var(--nbd-mb-primary); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation-duration: 0ms !important; transition-duration: 0ms !important; }
+  }
+
+  /* =========================================================
+     TOPBAR
+     ========================================================= */
+  .topbar {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    height: var(--topbar-height);
+    background: var(--nbd-mb-bg);
+    border-bottom: 1px solid var(--nbd-mb-border);
+    padding: 0 var(--nbd-space-6);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    z-index: 100;
+    gap: var(--nbd-space-4);
+  }
+  .brand {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--nbd-space-3);
+    color: var(--nbd-mb-text);
+  }
+  .brand:hover { text-decoration: none; }
+  .brand-logo {
+    width: 36px; height: 36px;
+    background: var(--nbd-mb-primary);
+    color: #fff;
+    display: grid;
+    place-items: center;
+    border-radius: var(--nbd-radius-md);
+    font-size: 18px;
+    font-weight: 700;
+  }
+  .brand-name {
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 1.1;
+    letter-spacing: -0.01em;
+  }
+  .brand-name small {
+    display: block;
+    font-size: 11px;
+    color: var(--nbd-mb-text-soft);
+    font-weight: 500;
+    margin-top: 1px;
+    letter-spacing: 0.04em;
+  }
+
+  .topbar-search {
+    flex: 1;
+    max-width: 420px;
+    position: relative;
+  }
+  .topbar-search-icon {
+    position: absolute;
+    left: var(--nbd-space-3);
+    top: 50%;
+    transform: translateY(-50%);
+    width: 16px; height: 16px;
+    color: var(--nbd-mb-text-soft);
+    pointer-events: none;
+  }
+  .topbar-search-icon svg { width: 100%; height: 100%; stroke: currentColor; stroke-width: 2; fill: none; }
+  .topbar-search-input {
+    width: 100%;
+    height: 38px;
+    padding: 0 var(--nbd-space-3) 0 36px;
+    border: 1px solid var(--nbd-mb-border);
+    border-radius: var(--nbd-radius-md);
+    background: var(--nbd-mb-bg-soft);
+    font-size: 14px;
+    color: var(--nbd-mb-text);
+    font-family: inherit;
+    transition: all var(--nbd-duration-fast);
+  }
+  .topbar-search-input:focus {
+    outline: none;
+    border-color: var(--nbd-mb-primary);
+    background: var(--nbd-mb-bg);
+    box-shadow: var(--nbd-shadow-focus);
+  }
+
+  .topbar-actions {
+    display: flex;
+    align-items: center;
+    gap: var(--nbd-space-2);
+  }
+  .icon-btn {
+    width: 36px; height: 36px;
+    display: grid;
+    place-items: center;
+    border-radius: var(--nbd-radius-md);
+    color: var(--nbd-mb-text);
+    transition: background var(--nbd-duration-fast);
+    position: relative;
+  }
+  .icon-btn:hover { background: var(--nbd-mb-bg-soft); }
+  .icon-btn:focus-visible { outline: 2px solid var(--nbd-mb-primary); outline-offset: 2px; }
+  .icon-btn svg { width: 18px; height: 18px; stroke: currentColor; stroke-width: 1.8; fill: none; }
+  .icon-btn .badge {
+    position: absolute;
+    top: 4px; right: 4px;
+    min-width: 16px; height: 16px;
+    padding: 0 4px;
+    background: var(--nbd-color-error);
+    color: #fff;
+    border-radius: var(--nbd-radius-full);
+    font-size: 10px;
+    font-weight: 700;
+    display: grid;
+    place-items: center;
+  }
+
+  .user-menu {
+    display: flex;
+    align-items: center;
+    gap: var(--nbd-space-2);
+    padding: 4px 10px 4px 4px;
+    border-radius: var(--nbd-radius-full);
+    border: 1px solid var(--nbd-mb-border);
+    background: var(--nbd-mb-bg);
+    transition: all var(--nbd-duration-fast);
+    cursor: pointer;
+  }
+  .user-menu:hover { border-color: var(--nbd-mb-text-soft); }
+  .user-menu:focus-visible { outline: 2px solid var(--nbd-mb-primary); outline-offset: 2px; }
+  .user-avatar {
+    width: 28px; height: 28px;
+    border-radius: var(--nbd-radius-full);
+    background: linear-gradient(135deg, var(--nbd-mb-primary), #1e40af);
+    color: #fff;
+    display: grid;
+    place-items: center;
+    font-size: 11px;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+  .user-menu-name {
+    font-size: 13px;
+    font-weight: 600;
+    line-height: 1;
+  }
+  .user-menu-tier {
+    display: block;
+    font-size: 10px;
+    color: var(--nbd-mb-text-soft);
+    font-weight: 500;
+    margin-top: 2px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+
+  /* =========================================================
+     LAYOUT
+     ========================================================= */
+  .app {
+    display: block;
+    min-height: 100vh;
+    padding-top: var(--topbar-height);
+    padding-left: var(--sidebar-width);
+  }
+  @media (max-width: 1023px) {
+    .app { padding-left: 0; }
+    .sidebar { display: none; }
+  }
+
+  /* =========================================================
+     SIDEBAR
+     ========================================================= */
+  .sidebar {
+    position: fixed;
+    top: var(--topbar-height);
+    left: 0;
+    bottom: 0;
+    width: var(--sidebar-width);
+    background: var(--nbd-mb-bg);
+    border-right: 1px solid var(--nbd-mb-border);
+    padding: var(--nbd-space-4) var(--nbd-space-3);
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: var(--nbd-space-4);
+  }
+
+  .sidebar-section {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+  .sidebar-section-label {
+    font-size: 10px;
+    font-weight: 600;
+    color: var(--nbd-mb-text-soft);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    padding: var(--nbd-space-2) var(--nbd-space-3);
+  }
+
+  .nav-item {
+    display: flex;
+    align-items: center;
+    gap: var(--nbd-space-3);
+    padding: var(--nbd-space-2) var(--nbd-space-3);
+    border-radius: var(--nbd-radius-md);
+    color: var(--nbd-mb-text);
+    font-size: 14px;
+    font-weight: 500;
+    transition: all var(--nbd-duration-fast);
+    cursor: pointer;
+    text-align: left;
+    width: 100%;
+    text-decoration: none;
+    min-height: 36px;
+    position: relative;
+  }
+  .nav-item:hover { background: var(--nbd-mb-bg-soft); text-decoration: none; }
+  .nav-item:focus-visible { outline: 2px solid var(--nbd-mb-primary); outline-offset: 2px; }
+  .nav-item.is-active {
+    background: var(--nbd-mb-primary-soft);
+    color: var(--nbd-mb-primary);
+    font-weight: 600;
+  }
+  .nav-item.is-active .nav-icon { color: var(--nbd-mb-primary); }
+  .nav-icon {
+    width: 18px; height: 18px;
+    color: var(--nbd-mb-text-soft);
+    flex-shrink: 0;
+    transition: color var(--nbd-duration-fast);
+  }
+  .nav-icon svg { width: 100%; height: 100%; stroke: currentColor; stroke-width: 1.8; fill: none; }
+  .nav-label {
+    flex: 1;
+    min-width: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .nav-badge {
+    background: var(--nbd-mb-primary);
+    color: #fff;
+    font-size: 10px;
+    font-weight: 700;
+    padding: 1px 6px;
+    border-radius: var(--nbd-radius-full);
+    flex-shrink: 0;
+  }
+  .nav-badge.is-new {
+    background: var(--nbd-color-success);
+  }
+  .nav-badge.is-warning {
+    background: var(--nbd-color-warning);
+  }
+
+  /* Locked B2B feature for B2C users */
+  .nav-item.is-locked {
+    color: var(--nbd-mb-text-soft);
+    cursor: not-allowed;
+  }
+  .nav-item.is-locked:hover { background: transparent; }
+  .nav-item.is-locked .nav-icon { opacity: 0.6; }
+  .nav-lock-icon {
+    width: 12px; height: 12px;
+    color: var(--nbd-mb-text-soft);
+    flex-shrink: 0;
+  }
+  .nav-lock-icon svg { width: 100%; height: 100%; stroke: currentColor; stroke-width: 1.8; fill: none; }
+
+  /* Tier card at bottom of sidebar */
+  .sidebar-tier-card {
+    margin-top: auto;
+    padding: var(--nbd-space-3);
+    background: linear-gradient(135deg, var(--nbd-mb-primary-soft), #eff6ff);
+    border: 1px solid var(--nbd-mb-primary);
+    border-radius: var(--nbd-radius-lg);
+  }
+  .sidebar-tier-card[data-tier="b2c"] {
+    background: linear-gradient(135deg, #fef3c7, #fffbeb);
+    border-color: var(--nbd-color-warning);
+  }
+  .tier-card-label {
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--nbd-mb-primary);
+    margin-bottom: 2px;
+  }
+  .sidebar-tier-card[data-tier="b2c"] .tier-card-label { color: #92400e; }
+  .tier-card-title {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--nbd-mb-text);
+    margin-bottom: 2px;
+  }
+  .tier-card-desc {
+    font-size: 11px;
+    color: var(--nbd-mb-text-soft);
+    line-height: 1.4;
+    margin-bottom: var(--nbd-space-2);
+  }
+  .tier-card-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--nbd-mb-primary);
+  }
+  .tier-card-cta:hover { text-decoration: underline; }
+  .sidebar-tier-card[data-tier="b2c"] .tier-card-cta { color: #92400e; }
+
+  /* =========================================================
+     MAIN CONTENT
+     ========================================================= */
+  .main {
+    padding: var(--nbd-space-6) var(--nbd-space-8);
+    min-width: 0;
+    overflow-x: hidden;
+  }
+  @media (max-width: 767px) {
+    .main { padding: var(--nbd-space-4); }
+  }
+
+  /* Page header */
+  .page-head {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: var(--nbd-space-4);
+    margin-bottom: var(--nbd-space-6);
+    flex-wrap: wrap;
+  }
+  .page-title-block { min-width: 0; flex: 1; }
+  .page-title {
+    font-size: 26px;
+    font-weight: 700;
+    line-height: 1.15;
+    letter-spacing: -0.01em;
+    margin: 0;
+  }
+  .page-sub {
+    font-size: 14px;
+    color: var(--nbd-mb-text-soft);
+    margin-top: 4px;
+    line-height: 1.5;
+  }
+  .page-actions {
+    display: flex;
+    gap: var(--nbd-space-2);
+    flex-shrink: 0;
+  }
+
+  /* Reusable buttons */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--nbd-space-2);
+    height: 38px;
+    padding: 0 var(--nbd-space-4);
+    border-radius: var(--nbd-radius-md);
+    font-size: 14px;
+    font-weight: 600;
+    transition: all var(--nbd-duration-fast);
+    cursor: pointer;
+    font-family: inherit;
+    white-space: nowrap;
+  }
+  .btn svg { width: 14px; height: 14px; stroke: currentColor; stroke-width: 2; fill: none; }
+  .btn-primary {
+    background: var(--nbd-mb-primary);
+    color: #fff;
+    border: 1px solid var(--nbd-mb-primary);
+    box-shadow: var(--nbd-shadow-sm);
+  }
+  .btn-primary:hover { background: #1e57c5; }
+  .btn-primary:focus-visible { outline: 2px solid var(--nbd-mb-primary); outline-offset: 2px; }
+  .btn-secondary {
+    background: var(--nbd-mb-bg);
+    color: var(--nbd-mb-text);
+    border: 1px solid var(--nbd-mb-border-strong);
+  }
+  .btn-secondary:hover { background: var(--nbd-mb-bg-soft); border-color: var(--nbd-mb-text-soft); }
+  .btn-secondary:focus-visible { outline: 2px solid var(--nbd-mb-primary); outline-offset: 2px; }
+  .btn-ghost {
+    background: transparent;
+    color: var(--nbd-mb-text-soft);
+    border: none;
+  }
+  .btn-ghost:hover { background: var(--nbd-mb-bg-soft); color: var(--nbd-mb-text); }
+  .btn-danger {
+    background: var(--nbd-mb-bg);
+    color: var(--nbd-color-error);
+    border: 1px solid var(--nbd-color-error-soft);
+  }
+  .btn-danger:hover { background: var(--nbd-color-error-soft); }
+  .btn-sm { height: 32px; padding: 0 var(--nbd-space-3); font-size: 13px; }
+  .btn-lg { height: 44px; padding: 0 var(--nbd-space-6); font-size: 15px; }
+
+  /* Pages */
+  .page {
+    display: none;
+  }
+  .page.is-active { display: block; }
+
+  /* =========================================================
+     OVERVIEW PAGE
+     ========================================================= */
+
+  /* Stats grid */
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: var(--nbd-space-4);
+    margin-bottom: var(--nbd-space-6);
+  }
+  @media (max-width: 1279px) { .stats-grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 480px) { .stats-grid { grid-template-columns: 1fr; } }
+
+  .stat-card {
+    background: var(--nbd-mb-bg);
+    border: 1px solid var(--nbd-mb-border);
+    border-radius: var(--nbd-radius-lg);
+    padding: var(--nbd-space-4);
+    display: flex;
+    flex-direction: column;
+    gap: var(--nbd-space-2);
+  }
+  .stat-card-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--nbd-space-2);
+  }
+  .stat-label {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--nbd-mb-text-soft);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+  .stat-icon {
+    width: 32px; height: 32px;
+    border-radius: var(--nbd-radius-md);
+    display: grid;
+    place-items: center;
+    color: var(--nbd-mb-primary);
+    background: var(--nbd-mb-primary-soft);
+    flex-shrink: 0;
+  }
+  .stat-icon svg { width: 16px; height: 16px; stroke: currentColor; stroke-width: 1.8; fill: none; }
+  .stat-icon.success { color: var(--nbd-color-success); background: var(--nbd-color-success-soft); }
+  .stat-icon.warning { color: #92400e; background: var(--nbd-color-warning-soft); }
+  .stat-icon.info { color: var(--nbd-color-info); background: var(--nbd-color-info-soft); }
+  .stat-value {
+    font-size: 28px;
+    font-weight: 700;
+    line-height: 1;
+    color: var(--nbd-mb-text);
+    font-variant-numeric: tabular-nums;
+    letter-spacing: -0.02em;
+  }
+  .stat-delta {
+    display: inline-flex;
+    align-items: center;
+    gap: 2px;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--nbd-mb-text-soft);
+  }
+  .stat-delta.up { color: var(--nbd-color-success); }
+  .stat-delta.down { color: var(--nbd-color-error); }
+  .stat-delta svg { width: 12px; height: 12px; stroke: currentColor; stroke-width: 2.5; fill: none; }
+
+  /* Section layout — 2-column on overview */
+  .section-grid-2 {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: var(--nbd-space-4);
+    margin-bottom: var(--nbd-space-6);
+  }
+  @media (max-width: 1023px) { .section-grid-2 { grid-template-columns: 1fr; } }
+
+  /* Card primitive */
+  .card {
+    background: var(--nbd-mb-bg);
+    border: 1px solid var(--nbd-mb-border);
+    border-radius: var(--nbd-radius-lg);
+    overflow: hidden;
+  }
+  .card-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--nbd-space-3);
+    padding: var(--nbd-space-4) var(--nbd-space-4);
+    border-bottom: 1px solid var(--nbd-mb-border-subtle);
+  }
+  .card-title {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--nbd-mb-text);
+    margin: 0;
+  }
+  .card-sub {
+    font-size: 12px;
+    color: var(--nbd-mb-text-soft);
+    margin-top: 2px;
+  }
+  .card-action {
+    font-size: 13px;
+    color: var(--nbd-mb-primary);
+    font-weight: 500;
+    cursor: pointer;
+  }
+  .card-action:hover { text-decoration: underline; }
+  .card-body { padding: var(--nbd-space-4); }
+  .card-body.is-flush { padding: 0; }
+  .card-foot {
+    padding: var(--nbd-space-3) var(--nbd-space-4);
+    border-top: 1px solid var(--nbd-mb-border-subtle);
+    background: var(--nbd-mb-bg-soft);
+    font-size: 13px;
+    color: var(--nbd-mb-text-soft);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  /* Recent orders list */
+  .order-row {
+    display: grid;
+    grid-template-columns: 56px 1fr auto auto;
+    gap: var(--nbd-space-3);
+    align-items: center;
+    padding: var(--nbd-space-3) var(--nbd-space-4);
+    border-bottom: 1px solid var(--nbd-mb-border-subtle);
+    transition: background var(--nbd-duration-fast);
+    cursor: pointer;
+  }
+  .order-row:last-child { border-bottom: none; }
+  .order-row:hover { background: var(--nbd-mb-bg-soft); }
+  .order-thumb {
+    width: 56px; height: 56px;
+    border-radius: var(--nbd-radius-md);
+    background: var(--nbd-mb-bg-soft);
+    display: grid;
+    place-items: center;
+    font-size: 9px;
+    font-weight: 800;
+    color: #ffe35a;
+    flex-shrink: 0;
+  }
+  .order-info { min-width: 0; }
+  .order-title {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--nbd-mb-text);
+    margin-bottom: 2px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .order-meta {
+    font-size: 12px;
+    color: var(--nbd-mb-text-soft);
+    display: flex;
+    align-items: center;
+    gap: var(--nbd-space-2);
+  }
+  .order-meta-dot {
+    width: 3px; height: 3px;
+    background: var(--nbd-mb-border-strong);
+    border-radius: 50%;
+  }
+  .order-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 3px var(--nbd-space-2);
+    border-radius: var(--nbd-radius-full);
+    font-size: 11px;
+    font-weight: 600;
+  }
+  .order-status[data-status="delivered"] { background: var(--nbd-color-success-soft); color: #065f46; }
+  .order-status[data-status="shipped"] { background: var(--nbd-color-info-soft); color: #1e40af; }
+  .order-status[data-status="production"] { background: var(--nbd-color-warning-soft); color: #92400e; }
+  .order-status[data-status="pending"] { background: var(--nbd-mb-bg-soft); color: var(--nbd-mb-text-soft); }
+  .order-status-dot {
+    width: 6px; height: 6px;
+    background: currentColor;
+    border-radius: 50%;
+  }
+  .order-price {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--nbd-mb-text);
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* Quick actions panel */
+  .quick-actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--nbd-space-2);
+  }
+  .quick-action {
+    padding: var(--nbd-space-3);
+    background: var(--nbd-mb-bg);
+    border: 1px solid var(--nbd-mb-border);
+    border-radius: var(--nbd-radius-md);
+    text-align: center;
+    cursor: pointer;
+    transition: all var(--nbd-duration-fast);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--nbd-space-2);
+    min-height: 88px;
+    justify-content: center;
+  }
+  .quick-action:hover {
+    border-color: var(--nbd-mb-primary);
+    background: var(--nbd-mb-primary-soft);
+    transform: translateY(-1px);
+  }
+  .quick-action-icon-wrap {
+    width: 32px; height: 32px;
+    color: var(--nbd-mb-primary);
+  }
+  .quick-action-icon-wrap svg { width: 100%; height: 100%; stroke: currentColor; stroke-width: 1.8; fill: none; }
+  .quick-action-label {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--nbd-mb-text);
+    line-height: 1.3;
+  }
+
+  /* Tier benefits card */
+  .benefits-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--nbd-space-2);
+  }
+  .benefits-list li {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--nbd-space-2);
+    font-size: 13px;
+    line-height: 1.4;
+    color: var(--nbd-mb-text);
+  }
+  .benefits-list li::before {
+    content: "✓";
+    color: var(--nbd-color-success);
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+  .benefits-list li.is-locked {
+    color: var(--nbd-mb-text-soft);
+  }
+  .benefits-list li.is-locked::before {
+    content: "🔒";
+    font-size: 11px;
+  }
+
+  /* =========================================================
+     PROFILE PAGE
+     ========================================================= */
+  .profile-grid {
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    gap: var(--nbd-space-6);
+  }
+  @media (max-width: 767px) { .profile-grid { grid-template-columns: 1fr; } }
+
+  .profile-avatar-block {
+    text-align: center;
+    padding: var(--nbd-space-6) var(--nbd-space-4);
+  }
+  .profile-avatar-lg {
+    width: 96px; height: 96px;
+    border-radius: var(--nbd-radius-full);
+    background: linear-gradient(135deg, var(--nbd-mb-primary), #1e40af);
+    color: #fff;
+    display: grid;
+    place-items: center;
+    font-size: 36px;
+    font-weight: 700;
+    margin: 0 auto var(--nbd-space-3);
+    position: relative;
+  }
+  .profile-avatar-edit {
+    position: absolute;
+    bottom: 0; right: 0;
+    width: 32px; height: 32px;
+    background: var(--nbd-mb-bg);
+    border: 2px solid var(--nbd-mb-bg);
+    border-radius: var(--nbd-radius-full);
+    box-shadow: var(--nbd-shadow-sm);
+    display: grid;
+    place-items: center;
+    color: var(--nbd-mb-text);
+    cursor: pointer;
+  }
+  .profile-avatar-edit svg { width: 14px; height: 14px; stroke: currentColor; stroke-width: 2; fill: none; }
+  .profile-name {
+    font-size: 18px;
+    font-weight: 700;
+    margin: 0;
+  }
+  .profile-email {
+    font-size: 13px;
+    color: var(--nbd-mb-text-soft);
+    margin-top: 2px;
+  }
+
+  /* Form fields */
+  .form-section { margin-bottom: var(--nbd-space-6); }
+  .form-section-title {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--nbd-mb-text);
+    margin: 0 0 var(--nbd-space-2);
+  }
+  .form-section-desc {
+    font-size: 12px;
+    color: var(--nbd-mb-text-soft);
+    margin-bottom: var(--nbd-space-3);
+  }
+  .form-grid-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--nbd-space-3);
+  }
+  @media (max-width: 480px) { .form-grid-2 { grid-template-columns: 1fr; } }
+  .form-field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-bottom: var(--nbd-space-3);
+  }
+  .form-label {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--nbd-mb-text);
+  }
+  .form-input, .form-select, .form-textarea {
+    height: 40px;
+    padding: 0 var(--nbd-space-3);
+    border: 1px solid var(--nbd-mb-border);
+    border-radius: var(--nbd-radius-md);
+    background: var(--nbd-mb-bg);
+    font-size: 14px;
+    color: var(--nbd-mb-text);
+    font-family: inherit;
+    transition: all var(--nbd-duration-fast);
+  }
+  .form-textarea {
+    height: auto;
+    min-height: 80px;
+    padding: var(--nbd-space-2) var(--nbd-space-3);
+    resize: vertical;
+  }
+  .form-input:focus, .form-select:focus, .form-textarea:focus {
+    outline: none;
+    border-color: var(--nbd-mb-primary);
+    box-shadow: var(--nbd-shadow-focus);
+  }
+  .form-help {
+    font-size: 11px;
+    color: var(--nbd-mb-text-soft);
+  }
+
+  /* =========================================================
+     REORDERS PAGE
+     ========================================================= */
+  .filter-bar {
+    display: flex;
+    align-items: center;
+    gap: var(--nbd-space-2);
+    margin-bottom: var(--nbd-space-4);
+    flex-wrap: wrap;
+  }
+  .filter-chip {
+    padding: 6px var(--nbd-space-3);
+    background: var(--nbd-mb-bg);
+    border: 1px solid var(--nbd-mb-border);
+    border-radius: var(--nbd-radius-full);
+    font-size: 13px;
+    color: var(--nbd-mb-text);
+    font-weight: 500;
+    cursor: pointer;
+    transition: all var(--nbd-duration-fast);
+  }
+  .filter-chip:hover { border-color: var(--nbd-mb-text-soft); }
+  .filter-chip.is-active {
+    background: var(--nbd-mb-text);
+    color: #fff;
+    border-color: var(--nbd-mb-text);
+  }
+
+  .reorder-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--nbd-space-4);
+  }
+  @media (max-width: 1023px) { .reorder-grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 480px) { .reorder-grid { grid-template-columns: 1fr; } }
+
+  .reorder-card {
+    background: var(--nbd-mb-bg);
+    border: 1px solid var(--nbd-mb-border);
+    border-radius: var(--nbd-radius-lg);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    transition: all var(--nbd-duration-fast);
+  }
+  .reorder-card:hover {
+    border-color: var(--nbd-mb-text-soft);
+    box-shadow: var(--nbd-shadow-md);
+  }
+  .reorder-thumb {
+    aspect-ratio: 4 / 3;
+    background: var(--nbd-mb-bg-soft);
+    display: grid;
+    place-items: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .reorder-thumb-art {
+    width: 75%; height: 75%;
+    border-radius: var(--nbd-radius-sm);
+    background: linear-gradient(135deg, #2b3a8a, #1a1547);
+    display: grid;
+    place-items: center;
+    color: #ffe35a;
+    font-size: 14px;
+    font-weight: 800;
+    text-align: center;
+    text-shadow: 1px 1px 0 rgba(0,0,0,0.3);
+  }
+  .reorder-thumb-badge {
+    position: absolute;
+    top: var(--nbd-space-2); left: var(--nbd-space-2);
+    padding: 2px var(--nbd-space-2);
+    background: rgba(255,255,255,0.95);
+    backdrop-filter: blur(4px);
+    border-radius: var(--nbd-radius-sm);
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--nbd-mb-text);
+    letter-spacing: 0.04em;
+  }
+  .reorder-body {
+    padding: var(--nbd-space-3);
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .reorder-title {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--nbd-mb-text);
+    line-height: 1.3;
+  }
+  .reorder-meta {
+    font-size: 12px;
+    color: var(--nbd-mb-text-soft);
+    line-height: 1.4;
+  }
+  .reorder-last {
+    font-size: 11px;
+    color: var(--nbd-mb-text-soft);
+    margin-top: var(--nbd-space-1);
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+  .reorder-last svg { width: 11px; height: 11px; stroke: currentColor; stroke-width: 2; fill: none; }
+  .reorder-actions {
+    display: flex;
+    gap: var(--nbd-space-2);
+    padding: var(--nbd-space-3);
+    border-top: 1px solid var(--nbd-mb-border-subtle);
+    background: var(--nbd-mb-bg-soft);
+  }
+  .reorder-actions .btn { flex: 1; justify-content: center; }
+
+  /* =========================================================
+     TEMPLATES PAGE
+     ========================================================= */
+  .template-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: var(--nbd-space-4);
+  }
+  @media (max-width: 1279px) { .template-grid { grid-template-columns: repeat(3, 1fr); } }
+  @media (max-width: 767px) { .template-grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 480px) { .template-grid { grid-template-columns: 1fr; } }
+
+  .template-card {
+    background: var(--nbd-mb-bg);
+    border: 1px solid var(--nbd-mb-border);
+    border-radius: var(--nbd-radius-lg);
+    overflow: hidden;
+    cursor: pointer;
+    transition: all var(--nbd-duration-fast);
+    position: relative;
+  }
+  .template-card:hover {
+    border-color: var(--nbd-mb-primary);
+    box-shadow: var(--nbd-shadow-md);
+    transform: translateY(-2px);
+  }
+  .template-thumb {
+    aspect-ratio: 4 / 3;
+    background: var(--nbd-mb-bg-soft);
+    overflow: hidden;
+    position: relative;
+  }
+  .template-thumb-content {
+    width: 100%; height: 100%;
+    display: grid;
+    place-items: center;
+    color: #fff;
+    font-weight: 800;
+    font-size: 20px;
+    text-shadow: 2px 2px 0 rgba(0,0,0,0.3);
+    line-height: 0.9;
+    text-align: center;
+    padding: var(--nbd-space-2);
+  }
+  .template-card-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0,0,0,0.5);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    gap: var(--nbd-space-2);
+    z-index: 2;
+  }
+  .template-card:hover .template-card-overlay { display: flex; }
+  .template-card-overlay .btn {
+    background: var(--nbd-mb-bg);
+    color: var(--nbd-mb-text);
+    border: none;
+  }
+  .template-body {
+    padding: var(--nbd-space-3);
+  }
+  .template-title {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--nbd-mb-text);
+    line-height: 1.3;
+    margin-bottom: 2px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .template-meta {
+    font-size: 11px;
+    color: var(--nbd-mb-text-soft);
+  }
+
+  /* =========================================================
+     ORDERS TABLE
+     ========================================================= */
+  .table-wrap {
+    border: 1px solid var(--nbd-mb-border);
+    border-radius: var(--nbd-radius-lg);
+    overflow: hidden;
+    background: var(--nbd-mb-bg);
+  }
+  .table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+  }
+  .table thead th {
+    text-align: left;
+    padding: var(--nbd-space-3) var(--nbd-space-4);
+    background: var(--nbd-mb-bg-soft);
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--nbd-mb-text-soft);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    border-bottom: 1px solid var(--nbd-mb-border);
+    white-space: nowrap;
+  }
+  .table tbody td {
+    padding: var(--nbd-space-3) var(--nbd-space-4);
+    border-bottom: 1px solid var(--nbd-mb-border-subtle);
+    color: var(--nbd-mb-text);
+    vertical-align: middle;
+  }
+  .table tbody tr:last-child td { border-bottom: none; }
+  .table tbody tr {
+    transition: background var(--nbd-duration-fast);
+    cursor: pointer;
+  }
+  .table tbody tr:hover { background: var(--nbd-mb-bg-soft); }
+  .table .td-order-num {
+    font-weight: 600;
+    color: var(--nbd-mb-primary);
+    font-variant-numeric: tabular-nums;
+  }
+  .table .td-tabular { font-variant-numeric: tabular-nums; }
+
+  /* =========================================================
+     IMAGE ZONE
+     ========================================================= */
+  .imagezone-toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--nbd-space-3);
+    margin-bottom: var(--nbd-space-4);
+    flex-wrap: wrap;
+  }
+  .imagezone-folders {
+    display: flex;
+    gap: var(--nbd-space-2);
+    flex-wrap: wrap;
+  }
+  .folder-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px var(--nbd-space-3);
+    background: var(--nbd-mb-bg);
+    border: 1px solid var(--nbd-mb-border);
+    border-radius: var(--nbd-radius-full);
+    font-size: 13px;
+    color: var(--nbd-mb-text);
+    cursor: pointer;
+    transition: all var(--nbd-duration-fast);
+  }
+  .folder-chip:hover { border-color: var(--nbd-mb-text-soft); }
+  .folder-chip.is-active {
+    background: var(--nbd-mb-primary-soft);
+    color: var(--nbd-mb-primary);
+    border-color: var(--nbd-mb-primary);
+  }
+  .folder-chip svg { width: 14px; height: 14px; stroke: currentColor; stroke-width: 2; fill: none; }
+
+  .asset-grid {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: var(--nbd-space-3);
+  }
+  @media (max-width: 1279px) { .asset-grid { grid-template-columns: repeat(4, 1fr); } }
+  @media (max-width: 767px) { .asset-grid { grid-template-columns: repeat(3, 1fr); } }
+  @media (max-width: 480px) { .asset-grid { grid-template-columns: repeat(2, 1fr); } }
+
+  .asset-tile {
+    background: var(--nbd-mb-bg);
+    border: 1px solid var(--nbd-mb-border);
+    border-radius: var(--nbd-radius-md);
+    overflow: hidden;
+    cursor: pointer;
+    transition: all var(--nbd-duration-fast);
+    display: flex;
+    flex-direction: column;
+  }
+  .asset-tile:hover { border-color: var(--nbd-mb-primary); box-shadow: var(--nbd-shadow-md); }
+  .asset-tile-thumb {
+    aspect-ratio: 1;
+    background: var(--nbd-mb-bg-soft);
+    display: grid;
+    place-items: center;
+    color: #ffe35a;
+    font-size: 10px;
+    font-weight: 800;
+    text-align: center;
+    overflow: hidden;
+    padding: var(--nbd-space-2);
+  }
+  .asset-tile-body {
+    padding: 6px var(--nbd-space-2);
+    border-top: 1px solid var(--nbd-mb-border-subtle);
+  }
+  .asset-tile-name {
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--nbd-mb-text);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .asset-tile-meta {
+    font-size: 10px;
+    color: var(--nbd-mb-text-soft);
+    margin-top: 1px;
+  }
+
+  /* Storage indicator */
+  .storage-card {
+    display: flex;
+    align-items: center;
+    gap: var(--nbd-space-3);
+    padding: var(--nbd-space-3) var(--nbd-space-4);
+    background: var(--nbd-mb-bg);
+    border: 1px solid var(--nbd-mb-border);
+    border-radius: var(--nbd-radius-lg);
+  }
+  .storage-info { flex: 1; min-width: 0; }
+  .storage-label {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--nbd-mb-text);
+    margin-bottom: 4px;
+  }
+  .storage-track {
+    height: 6px;
+    background: var(--nbd-mb-bg-soft);
+    border-radius: var(--nbd-radius-full);
+    overflow: hidden;
+  }
+  .storage-fill {
+    height: 100%;
+    background: var(--nbd-mb-primary);
+    border-radius: var(--nbd-radius-full);
+    transition: width var(--nbd-duration-normal);
+  }
+  .storage-meta {
+    font-size: 11px;
+    color: var(--nbd-mb-text-soft);
+    margin-top: 4px;
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* =========================================================
+     BRAND STORE
+     ========================================================= */
+  .brand-banner {
+    background: linear-gradient(135deg, var(--nbd-mb-primary), #1e40af);
+    color: #fff;
+    border-radius: var(--nbd-radius-xl);
+    padding: var(--nbd-space-6);
+    margin-bottom: var(--nbd-space-6);
+    position: relative;
+    overflow: hidden;
+  }
+  .brand-banner-content {
+    position: relative;
+    z-index: 1;
+    max-width: 60%;
+  }
+  .brand-banner-pill {
+    display: inline-block;
+    padding: 4px var(--nbd-space-3);
+    background: rgba(255,255,255,0.2);
+    border-radius: var(--nbd-radius-full);
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-bottom: var(--nbd-space-2);
+  }
+  .brand-banner h2 {
+    font-size: 22px;
+    font-weight: 700;
+    margin: 0 0 var(--nbd-space-2);
+    line-height: 1.2;
+  }
+  .brand-banner p {
+    font-size: 14px;
+    opacity: 0.92;
+    margin: 0 0 var(--nbd-space-3);
+    line-height: 1.5;
+  }
+  .brand-banner::after {
+    content: "";
+    position: absolute;
+    right: -40px;
+    top: -40px;
+    width: 240px; height: 240px;
+    background: radial-gradient(circle, rgba(255,255,255,0.15), transparent 70%);
+    border-radius: 50%;
+  }
+  .brand-banner .btn-primary {
+    background: #fff;
+    color: var(--nbd-mb-primary);
+    border-color: #fff;
+  }
+  .brand-banner .btn-primary:hover { background: var(--nbd-mb-bg-soft); }
+
+  /* Brand store product list */
+  .brand-products {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: var(--nbd-space-4);
+  }
+  @media (max-width: 1023px) { .brand-products { grid-template-columns: repeat(2, 1fr); } }
+
+  .brand-product-card {
+    background: var(--nbd-mb-bg);
+    border: 1px solid var(--nbd-mb-border);
+    border-radius: var(--nbd-radius-lg);
+    overflow: hidden;
+    cursor: pointer;
+    transition: all var(--nbd-duration-fast);
+  }
+  .brand-product-card:hover { border-color: var(--nbd-mb-text-soft); box-shadow: var(--nbd-shadow-md); }
+  .brand-product-thumb {
+    aspect-ratio: 4 / 3;
+    background: var(--nbd-mb-bg-soft);
+    display: grid;
+    place-items: center;
+    font-size: 18px;
+    font-weight: 800;
+    color: #ffe35a;
+  }
+  .brand-product-body { padding: var(--nbd-space-3); }
+  .brand-product-name { font-size: 13px; font-weight: 600; margin-bottom: 2px; }
+  .brand-product-price {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--nbd-mb-primary);
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* =========================================================
+     TEAMS
+     ========================================================= */
+  .team-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--nbd-space-3);
+    margin-bottom: var(--nbd-space-4);
+  }
+  @media (max-width: 767px) { .team-stats { grid-template-columns: 1fr; } }
+
+  .team-member-row {
+    display: grid;
+    grid-template-columns: 40px 1fr auto auto auto;
+    gap: var(--nbd-space-3);
+    align-items: center;
+    padding: var(--nbd-space-3) var(--nbd-space-4);
+    border-bottom: 1px solid var(--nbd-mb-border-subtle);
+  }
+  .team-member-row:last-child { border-bottom: none; }
+  .team-avatar {
+    width: 36px; height: 36px;
+    border-radius: var(--nbd-radius-full);
+    background: linear-gradient(135deg, var(--nbd-mb-primary), #1e40af);
+    color: #fff;
+    display: grid;
+    place-items: center;
+    font-size: 13px;
+    font-weight: 700;
+  }
+  .team-avatar[data-color="green"] { background: linear-gradient(135deg, var(--nbd-color-success), #047857); }
+  .team-avatar[data-color="orange"] { background: linear-gradient(135deg, var(--nbd-color-warning), #b45309); }
+  .team-avatar[data-color="purple"] { background: linear-gradient(135deg, #9333ea, #6b21a8); }
+  .team-member-info { min-width: 0; }
+  .team-member-name {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--nbd-mb-text);
+  }
+  .team-member-email {
+    font-size: 12px;
+    color: var(--nbd-mb-text-soft);
+  }
+  .role-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 2px var(--nbd-space-2);
+    border-radius: var(--nbd-radius-sm);
+    font-size: 11px;
+    font-weight: 600;
+    background: var(--nbd-mb-bg-soft);
+    color: var(--nbd-mb-text);
+  }
+  .role-badge[data-role="admin"] { background: var(--nbd-mb-primary-soft); color: var(--nbd-mb-primary); }
+  .role-badge[data-role="designer"] { background: var(--nbd-color-success-soft); color: #065f46; }
+  .role-badge[data-role="approver"] { background: var(--nbd-color-warning-soft); color: #92400e; }
+
+  /* =========================================================
+     APPROVAL QUEUE
+     ========================================================= */
+  .approval-card {
+    background: var(--nbd-mb-bg);
+    border: 1px solid var(--nbd-mb-border);
+    border-radius: var(--nbd-radius-lg);
+    padding: var(--nbd-space-4);
+    display: grid;
+    grid-template-columns: 80px 1fr auto;
+    gap: var(--nbd-space-4);
+    align-items: start;
+    margin-bottom: var(--nbd-space-3);
+  }
+  @media (max-width: 767px) {
+    .approval-card { grid-template-columns: 1fr; }
+  }
+  .approval-thumb {
+    width: 80px; height: 80px;
+    background: linear-gradient(135deg, #2b3a8a, #1a1547);
+    border-radius: var(--nbd-radius-md);
+    display: grid;
+    place-items: center;
+    color: #ffe35a;
+    font-size: 11px;
+    font-weight: 800;
+    text-align: center;
+    text-shadow: 1px 1px 0 rgba(0,0,0,0.3);
+  }
+  .approval-info { min-width: 0; }
+  .approval-title {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--nbd-mb-text);
+    margin-bottom: 4px;
+  }
+  .approval-meta {
+    font-size: 12px;
+    color: var(--nbd-mb-text-soft);
+    line-height: 1.5;
+    margin-bottom: var(--nbd-space-2);
+  }
+  .approval-requester {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    color: var(--nbd-mb-text);
+    padding: 3px var(--nbd-space-2);
+    background: var(--nbd-mb-bg-soft);
+    border-radius: var(--nbd-radius-full);
+  }
+  .approval-requester-avatar {
+    width: 18px; height: 18px;
+    border-radius: var(--nbd-radius-full);
+    background: linear-gradient(135deg, var(--nbd-mb-primary), #1e40af);
+    color: #fff;
+    display: grid;
+    place-items: center;
+    font-size: 9px;
+    font-weight: 700;
+  }
+  .approval-amount {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--nbd-mb-text);
+    margin-bottom: var(--nbd-space-1);
+    font-variant-numeric: tabular-nums;
+  }
+  .approval-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    min-width: 140px;
+  }
+
+  /* =========================================================
+     PROMO / LOCKED STATE
+     ========================================================= */
+  .locked-overlay {
+    background: var(--nbd-mb-bg);
+    border: 1px solid var(--nbd-mb-border);
+    border-radius: var(--nbd-radius-xl);
+    padding: var(--nbd-space-12) var(--nbd-space-6);
+    text-align: center;
+    max-width: 560px;
+    margin: 0 auto;
+  }
+  .locked-icon {
+    width: 64px; height: 64px;
+    border-radius: var(--nbd-radius-full);
+    background: var(--nbd-mb-primary-soft);
+    color: var(--nbd-mb-primary);
+    display: grid;
+    place-items: center;
+    margin: 0 auto var(--nbd-space-4);
+  }
+  .locked-icon svg { width: 28px; height: 28px; stroke: currentColor; stroke-width: 1.8; fill: none; }
+  .locked-title {
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: var(--nbd-space-2);
+  }
+  .locked-desc {
+    font-size: 14px;
+    color: var(--nbd-mb-text-soft);
+    margin-bottom: var(--nbd-space-4);
+    line-height: 1.5;
+  }
+  .locked-benefits {
+    text-align: left;
+    max-width: 380px;
+    margin: 0 auto var(--nbd-space-4);
+  }
+
+  /* =========================================================
+     EMPTY STATE
+     ========================================================= */
+  .empty-state {
+    padding: var(--nbd-space-12) var(--nbd-space-4);
+    text-align: center;
+  }
+  .empty-state-icon {
+    width: 56px; height: 56px;
+    border-radius: var(--nbd-radius-full);
+    background: var(--nbd-mb-bg-soft);
+    color: var(--nbd-mb-text-soft);
+    display: grid;
+    place-items: center;
+    margin: 0 auto var(--nbd-space-3);
+  }
+  .empty-state-icon svg { width: 24px; height: 24px; stroke: currentColor; stroke-width: 1.5; fill: none; }
+  .empty-state-title { font-size: 15px; font-weight: 600; margin-bottom: 4px; }
+  .empty-state-desc { font-size: 13px; color: var(--nbd-mb-text-soft); max-width: 320px; margin: 0 auto; }
+
+  /* =========================================================
+     TIER SWITCHER (demo)
+     ========================================================= */
+  .tier-switcher {
+    position: fixed;
+    bottom: var(--nbd-space-4);
+    right: var(--nbd-space-4);
+    background: var(--nbd-mb-text);
+    color: #fff;
+    border-radius: var(--nbd-radius-xl);
+    padding: var(--nbd-space-3);
+    box-shadow: var(--nbd-shadow-xl);
+    z-index: 90;
+    font-size: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    min-width: 160px;
+  }
+  .tier-switcher h6 {
+    margin: 0;
+    font-size: 10px;
+    font-weight: 700;
+    color: rgba(255,255,255,0.6);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+  .tier-switcher-btns {
+    display: flex;
+    gap: 4px;
+  }
+  .tier-switcher-btn {
+    flex: 1;
+    padding: 5px var(--nbd-space-2);
+    background: transparent;
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: var(--nbd-radius-md);
+    color: rgba(255,255,255,0.85);
+    font-size: 11px;
+    font-weight: 600;
+  }
+  .tier-switcher-btn:hover { background: rgba(255,255,255,0.08); }
+  .tier-switcher-btn.is-active {
+    background: var(--nbd-mb-primary);
+    border-color: var(--nbd-mb-primary);
+    color: #fff;
+  }
+
+  /* =========================================================
+     B2C/B2B VISIBILITY HELPERS
+     ========================================================= */
+  [data-show-tier="b2b"] { display: none; }
+  body[data-tier="b2b"] [data-show-tier="b2b"] { display: revert; }
+  body[data-tier="b2b"] [data-show-tier="b2c-only"] { display: none; }
+
+  /* Re-show grids/flex correctly */
+  body[data-tier="b2b"] .stats-grid[data-show-tier="b2b"] { display: grid; }
+  body[data-tier="b2b"] .section-grid-2[data-show-tier="b2b"] { display: grid; }
+  body[data-tier="b2b"] .nav-item[data-show-tier="b2b"] { display: flex; }
+  body[data-tier="b2b"] .team-stats[data-show-tier="b2b"] { display: grid; }
+</style>
+</head>
+<body data-tier="b2c">
+
+<!-- ============ TOP BAR ============ -->
+<header class="topbar">
+  <a href="#" class="brand">
+    <span class="brand-logo">S</span>
+    <span class="brand-name">SignEdge<small>Canva</small></span>
+  </a>
+
+  <div class="topbar-search">
+    <span class="topbar-search-icon">
+      <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.35-4.35"/></svg>
+    </span>
+    <input class="topbar-search-input" type="text" placeholder="Search orders, templates, assets…" />
+  </div>
+
+  <div class="topbar-actions">
+    <button class="icon-btn" aria-label="Help">
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3M12 17h.01"/></svg>
+    </button>
+    <button class="icon-btn" aria-label="Notifications">
+      <svg viewBox="0 0 24 24"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 01-3.46 0"/></svg>
+      <span class="badge">3</span>
+    </button>
+    <button class="icon-btn" aria-label="Cart">
+      <svg viewBox="0 0 24 24"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.7 13.4a2 2 0 002 1.6h9.7a2 2 0 002-1.6L23 6H6"/></svg>
+    </button>
+    <button class="user-menu">
+      <span class="user-avatar">SC</span>
+      <span>
+        <span class="user-menu-name">Sarah Chen</span>
+        <span class="user-menu-tier" id="userMenuTier">B2C Member</span>
+      </span>
+      <svg width="14" height="14" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" fill="none"><polyline points="6 9 12 15 18 9"/></svg>
+    </button>
+  </div>
+</header>
+
+<!-- ============ APP ============ -->
+<div class="app">
+
+  <!-- =========== SIDEBAR =========== -->
+  <aside class="sidebar">
+    <div class="sidebar-section">
+      <button class="nav-item is-active" data-nav="overview">
+        <span class="nav-icon"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="9"/><rect x="14" y="3" width="7" height="5"/><rect x="14" y="12" width="7" height="9"/><rect x="3" y="16" width="7" height="5"/></svg></span>
+        <span class="nav-label">Overview</span>
+      </button>
+      <button class="nav-item" data-nav="profile">
+        <span class="nav-icon"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></span>
+        <span class="nav-label">My Profile</span>
+      </button>
+    </div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-section-label">Shopping</div>
+      <button class="nav-item" data-nav="reorders">
+        <span class="nav-icon"><svg viewBox="0 0 24 24"><path d="M21 12a9 9 0 11-9-9c2.52 0 4.84.93 6.62 2.47L21 8"/><path d="M21 3v5h-5"/></svg></span>
+        <span class="nav-label">Reorders</span>
+        <span class="nav-badge">12</span>
+      </button>
+      <button class="nav-item" data-nav="templates">
+        <span class="nav-icon"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="9"/><rect x="14" y="3" width="7" height="5"/><rect x="14" y="12" width="7" height="9"/><rect x="3" y="16" width="7" height="5"/></svg></span>
+        <span class="nav-label">My Templates</span>
+      </button>
+      <button class="nav-item" data-nav="orders">
+        <span class="nav-icon"><svg viewBox="0 0 24 24"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg></span>
+        <span class="nav-label">Orders & Invoices</span>
+      </button>
+    </div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-section-label">Assets</div>
+      <button class="nav-item" data-nav="imagezone">
+        <span class="nav-icon"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="M21 15l-5-5L5 21"/></svg></span>
+        <span class="nav-label">Image Zone</span>
+      </button>
+    </div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-section-label">B2B Workspace</div>
+      <button class="nav-item" data-nav="brand-store" data-locked-b2c>
+        <span class="nav-icon"><svg viewBox="0 0 24 24"><path d="M3 3h18v4H3zM3 7v13h18V7M8 11h.01M14 11h.01M11 15h2"/></svg></span>
+        <span class="nav-label">Brand Store</span>
+        <span class="nav-badge is-new">PRO</span>
+      </button>
+      <button class="nav-item" data-nav="teams" data-locked-b2c>
+        <span class="nav-icon"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg></span>
+        <span class="nav-label">Teams</span>
+      </button>
+      <button class="nav-item" data-nav="approval" data-locked-b2c>
+        <span class="nav-icon"><svg viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></span>
+        <span class="nav-label">Approval Queue</span>
+        <span class="nav-badge is-warning" data-show-tier="b2b">5</span>
+      </button>
+    </div>
+
+    <!-- Tier upgrade card (only for B2C) -->
+    <div class="sidebar-tier-card" data-tier="b2c" id="sidebarTierCard">
+      <div class="tier-card-label" id="tierCardLabel">B2C Member</div>
+      <div class="tier-card-title" id="tierCardTitle">Get B2B benefits</div>
+      <div class="tier-card-desc" id="tierCardDesc">Save up to 24%, unlock teams, Brand Store & more.</div>
+      <a href="#" class="tier-card-cta">
+        Apply now
+        <svg width="12" height="12" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" fill="none"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+      </a>
+    </div>
+  </aside>
+
+  <!-- =========== MAIN =========== -->
+  <main class="main">
+
+    <!-- ============ OVERVIEW PAGE ============ -->
+    <section class="page is-active" data-page="overview">
+      <div class="page-head">
+        <div class="page-title-block">
+          <h1 class="page-title">Welcome back, Sarah 👋</h1>
+          <p class="page-sub">Here's what's happening with your SignEdge account.</p>
+        </div>
+        <div class="page-actions">
+          <button class="btn btn-secondary">
+            <svg viewBox="0 0 24 24"><path d="M21 12a9 9 0 11-9-9c2.52 0 4.84.93 6.62 2.47L21 8"/><path d="M21 3v5h-5"/></svg>
+            Reorder
+          </button>
+          <button class="btn btn-primary">
+            <svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>
+            New design
+          </button>
+        </div>
+      </div>
+
+      <!-- Stats — different by tier -->
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-card-head">
+            <div class="stat-label">Total orders</div>
+            <div class="stat-icon"><svg viewBox="0 0 24 24"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg></div>
+          </div>
+          <div class="stat-value">12</div>
+          <div class="stat-delta up">
+            <svg viewBox="0 0 24 24"><polyline points="18 15 12 9 6 15"/></svg>
+            +3 this month
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-card-head">
+            <div class="stat-label">Total spent</div>
+            <div class="stat-icon success"><svg viewBox="0 0 24 24"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg></div>
+          </div>
+          <div class="stat-value">$1,847</div>
+          <div class="stat-delta">YTD 2026</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-card-head">
+            <div class="stat-label">Saved templates</div>
+            <div class="stat-icon info"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="9"/><rect x="14" y="3" width="7" height="5"/><rect x="14" y="12" width="7" height="9"/><rect x="3" y="16" width="7" height="5"/></svg></div>
+          </div>
+          <div class="stat-value">8</div>
+          <div class="stat-delta">3 used recently</div>
+        </div>
+        <div class="stat-card" data-show-tier="b2c-only">
+          <div class="stat-card-head">
+            <div class="stat-label">Tier savings</div>
+            <div class="stat-icon warning"><svg viewBox="0 0 24 24"><path d="M12 2L2 7v10l10 5 10-5V7L12 2z"/></svg></div>
+          </div>
+          <div class="stat-value">$0</div>
+          <div class="stat-delta down">B2C tier · no discount</div>
+        </div>
+        <div class="stat-card" data-show-tier="b2b">
+          <div class="stat-card-head">
+            <div class="stat-label">Tier savings (B2B)</div>
+            <div class="stat-icon warning"><svg viewBox="0 0 24 24"><path d="M12 2L2 7v10l10 5 10-5V7L12 2z"/></svg></div>
+          </div>
+          <div class="stat-value">$276</div>
+          <div class="stat-delta up">15% off this year</div>
+        </div>
+      </div>
+
+      <!-- Recent orders + Quick actions -->
+      <div class="section-grid-2">
+        <div class="card">
+          <div class="card-head">
+            <div>
+              <h3 class="card-title">Recent orders</h3>
+              <div class="card-sub">Last 5 orders</div>
+            </div>
+            <button class="card-action" data-nav-link="orders">View all →</button>
+          </div>
+          <div class="card-body is-flush">
+            <div class="order-row">
+              <div class="order-thumb" style="background:linear-gradient(135deg,#2b3a8a,#1a1547);">SIGN</div>
+              <div class="order-info">
+                <div class="order-title">HD Banner — Grand Opening</div>
+                <div class="order-meta">#10238 <span class="order-meta-dot"></span> May 11 <span class="order-meta-dot"></span> 55″ × 68″</div>
+              </div>
+              <div class="order-status" data-status="delivered"><span class="order-status-dot"></span>Delivered</div>
+              <div class="order-price">$52.50</div>
+            </div>
+            <div class="order-row">
+              <div class="order-thumb" style="background:linear-gradient(135deg,#dc2626,#7f1d1d);color:#fff;">SALE</div>
+              <div class="order-info">
+                <div class="order-title">Yard Sign — Sale 50% Off</div>
+                <div class="order-meta">#10221 <span class="order-meta-dot"></span> May 8 <span class="order-meta-dot"></span> 18″ × 24″ (×10)</div>
+              </div>
+              <div class="order-status" data-status="shipped"><span class="order-status-dot"></span>Shipped</div>
+              <div class="order-price">$184.00</div>
+            </div>
+            <div class="order-row">
+              <div class="order-thumb" style="background:linear-gradient(135deg,#15803d,#14532d);color:#fff;">SOLD</div>
+              <div class="order-info">
+                <div class="order-title">Real Estate Rider — Sold</div>
+                <div class="order-meta">#10198 <span class="order-meta-dot"></span> May 3 <span class="order-meta-dot"></span> 6″ × 24″ (×6)</div>
+              </div>
+              <div class="order-status" data-status="production"><span class="order-status-dot"></span>In production</div>
+              <div class="order-price">$72.00</div>
+            </div>
+            <div class="order-row">
+              <div class="order-thumb" style="background:linear-gradient(135deg,#7c2d12,#431407);color:#fed7aa;">EVENT</div>
+              <div class="order-info">
+                <div class="order-title">Step & Repeat — Charity Gala</div>
+                <div class="order-meta">#10175 <span class="order-meta-dot"></span> Apr 26 <span class="order-meta-dot"></span> 8′ × 8′</div>
+              </div>
+              <div class="order-status" data-status="delivered"><span class="order-status-dot"></span>Delivered</div>
+              <div class="order-price">$295.00</div>
+            </div>
+            <div class="order-row">
+              <div class="order-thumb" style="background:linear-gradient(135deg,#1e40af,#1e3a8a);color:#fbbf24;">OPEN</div>
+              <div class="order-info">
+                <div class="order-title">Window Decal — Now Open</div>
+                <div class="order-meta">#10142 <span class="order-meta-dot"></span> Apr 17 <span class="order-meta-dot"></span> 24″ × 36″</div>
+              </div>
+              <div class="order-status" data-status="delivered"><span class="order-status-dot"></span>Delivered</div>
+              <div class="order-price">$48.00</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right column: Quick actions + tier benefits -->
+        <div style="display:flex;flex-direction:column;gap:var(--nbd-space-4);">
+          <div class="card">
+            <div class="card-head">
+              <h3 class="card-title">Quick actions</h3>
+            </div>
+            <div class="card-body">
+              <div class="quick-actions">
+                <button class="quick-action">
+                  <span class="quick-action-icon-wrap"><svg viewBox="0 0 24 24"><path d="M21 12a9 9 0 11-9-9c2.52 0 4.84.93 6.62 2.47L21 8"/><path d="M21 3v5h-5"/></svg></span>
+                  <span class="quick-action-label">Reorder last</span>
+                </button>
+                <button class="quick-action">
+                  <span class="quick-action-icon-wrap"><svg viewBox="0 0 24 24"><path d="M16 16l-4-4-4 4M12 12v9"/><path d="M20.4 14.5A5 5 0 0017 6h-1.3A8 8 0 102.5 13"/></svg></span>
+                  <span class="quick-action-label">Upload artwork</span>
+                </button>
+                <button class="quick-action">
+                  <span class="quick-action-icon-wrap"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="9"/><rect x="14" y="3" width="7" height="5"/><rect x="14" y="12" width="7" height="9"/><rect x="3" y="16" width="7" height="5"/></svg></span>
+                  <span class="quick-action-label">My templates</span>
+                </button>
+                <button class="quick-action">
+                  <span class="quick-action-icon-wrap"><svg viewBox="0 0 24 24"><path d="M12 8v8M8 12h8"/><circle cx="12" cy="12" r="10"/></svg></span>
+                  <span class="quick-action-label">New design</span>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-head">
+              <h3 class="card-title" id="benefitsTitle">B2C member benefits</h3>
+            </div>
+            <div class="card-body">
+              <ul class="benefits-list" data-show-tier="b2c-only">
+                <li>Free file pre-press review</li>
+                <li>Saved templates & design history</li>
+                <li>Reorder past purchases in 1 click</li>
+                <li class="is-locked">B2B tier discount (10–24% off)</li>
+                <li class="is-locked">Team workspace & roles</li>
+                <li class="is-locked">Procurement approval workflow</li>
+              </ul>
+              <ul class="benefits-list" data-show-tier="b2b">
+                <li>15% off retail prices (Tier B)</li>
+                <li>Net-30 payment terms</li>
+                <li>Brand Store with custom catalog</li>
+                <li>Team workspace with role-based access</li>
+                <li>Procurement approval workflow</li>
+                <li>Dedicated account manager</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ PROFILE PAGE ============ -->
+    <section class="page" data-page="profile">
+      <div class="page-head">
+        <div class="page-title-block">
+          <h1 class="page-title">My Profile</h1>
+          <p class="page-sub">Update your personal info, contact details, and password.</p>
+        </div>
+        <div class="page-actions">
+          <button class="btn btn-secondary">Cancel</button>
+          <button class="btn btn-primary">Save changes</button>
+        </div>
+      </div>
+
+      <div class="profile-grid">
+        <div class="card">
+          <div class="profile-avatar-block">
+            <div class="profile-avatar-lg">
+              SC
+              <button class="profile-avatar-edit" aria-label="Change photo">
+                <svg viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 113 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+              </button>
+            </div>
+            <div class="profile-name">Sarah Chen</div>
+            <div class="profile-email">sarah@chenmarketing.com</div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-body">
+            <div class="form-section">
+              <h4 class="form-section-title">Personal info</h4>
+              <div class="form-grid-2">
+                <div class="form-field">
+                  <label class="form-label" for="pf-firstName">First name</label>
+                  <input class="form-input" id="pf-firstName" type="text" value="Sarah" />
+                </div>
+                <div class="form-field">
+                  <label class="form-label" for="pf-lastName">Last name</label>
+                  <input class="form-input" id="pf-lastName" type="text" value="Chen" />
+                </div>
+              </div>
+              <div class="form-field">
+                <label class="form-label" for="pf-email">Email</label>
+                <input class="form-input" id="pf-email" type="email" value="sarah@chenmarketing.com" />
+              </div>
+              <div class="form-field">
+                <label class="form-label" for="pf-phone">Phone</label>
+                <input class="form-input" id="pf-phone" type="tel" value="(555) 234-5678" />
+              </div>
+            </div>
+
+            <div class="form-section">
+              <h4 class="form-section-title">Shipping address</h4>
+              <div class="form-field">
+                <label class="form-label" for="pf-addr">Street address</label>
+                <input class="form-input" id="pf-addr" type="text" value="847 Marketing Way" />
+              </div>
+              <div class="form-grid-2">
+                <div class="form-field">
+                  <label class="form-label" for="pf-city">City</label>
+                  <input class="form-input" id="pf-city" type="text" value="Austin" />
+                </div>
+                <div class="form-field">
+                  <label class="form-label" for="pf-state">State</label>
+                  <select class="form-select" id="pf-state">
+                    <option>Texas</option>
+                    <option>California</option>
+                    <option>Florida</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-section" data-show-tier="b2b">
+              <h4 class="form-section-title">Company info <span style="background:var(--nbd-color-success-soft);color:#065f46;padding:1px 6px;border-radius:9999px;font-size:10px;font-weight:600;letter-spacing:0.04em;margin-left:6px;">B2B</span></h4>
+              <div class="form-field">
+                <label class="form-label" for="pf-company">Company name</label>
+                <input class="form-input" id="pf-company" type="text" value="Chen Marketing Corp" />
+              </div>
+              <div class="form-grid-2">
+                <div class="form-field">
+                  <label class="form-label" for="pf-tax">Tax ID / EIN</label>
+                  <input class="form-input" id="pf-tax" type="text" value="84-3924018" />
+                </div>
+                <div class="form-field">
+                  <label class="form-label" for="pf-role">Your role</label>
+                  <input class="form-input" id="pf-role" type="text" value="Procurement Manager" />
+                </div>
+              </div>
+            </div>
+
+            <div class="form-section">
+              <h4 class="form-section-title">Security</h4>
+              <div class="form-field">
+                <label class="form-label">Password</label>
+                <button class="btn btn-secondary btn-sm" style="align-self:flex-start;">Change password</button>
+              </div>
+              <div class="form-field">
+                <label class="form-label">Two-factor auth</label>
+                <div style="font-size:13px;color:var(--nbd-mb-text-soft);margin-bottom:6px;">Add an extra layer of security to your account.</div>
+                <button class="btn btn-secondary btn-sm" style="align-self:flex-start;">Enable 2FA</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ REORDERS PAGE ============ -->
+    <section class="page" data-page="reorders">
+      <div class="page-head">
+        <div class="page-title-block">
+          <h1 class="page-title">Reorders</h1>
+          <p class="page-sub">Quickly reorder past prints. Same design, same specs, fast checkout.</p>
+        </div>
+        <div class="page-actions">
+          <button class="btn btn-secondary">
+            <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
+            Export list
+          </button>
+        </div>
+      </div>
+
+      <div class="filter-bar">
+        <button class="filter-chip is-active">All (12)</button>
+        <button class="filter-chip">Banners (5)</button>
+        <button class="filter-chip">Yard signs (3)</button>
+        <button class="filter-chip">Stickers (2)</button>
+        <button class="filter-chip">Apparel (2)</button>
+      </div>
+
+      <div class="reorder-grid">
+        <div class="reorder-card">
+          <div class="reorder-thumb">
+            <span class="reorder-thumb-badge">×3 ordered</span>
+            <div class="reorder-thumb-art" style="background:linear-gradient(135deg,#2b3a8a,#1a1547);">SIGN<br/>EDGE</div>
+          </div>
+          <div class="reorder-body">
+            <div class="reorder-title">HD Banner — Grand Opening</div>
+            <div class="reorder-meta">55″ × 68″ · 15oz vinyl · single-sided</div>
+            <div class="reorder-last">
+              <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+              Last ordered May 11, 2026
+            </div>
+          </div>
+          <div class="reorder-actions">
+            <button class="btn btn-secondary btn-sm">Edit design</button>
+            <button class="btn btn-primary btn-sm">Reorder · $52.50</button>
+          </div>
+        </div>
+
+        <div class="reorder-card">
+          <div class="reorder-thumb">
+            <span class="reorder-thumb-badge">×10 ordered</span>
+            <div class="reorder-thumb-art" style="background:#dc2626;color:#fff;">SALE<br/>50%<br/>OFF</div>
+          </div>
+          <div class="reorder-body">
+            <div class="reorder-title">Yard Sign — Sale 50% Off</div>
+            <div class="reorder-meta">18″ × 24″ · corrugated plastic · 10 pcs</div>
+            <div class="reorder-last">
+              <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+              Last ordered May 8, 2026
+            </div>
+          </div>
+          <div class="reorder-actions">
+            <button class="btn btn-secondary btn-sm">Edit design</button>
+            <button class="btn btn-primary btn-sm">Reorder · $184.00</button>
+          </div>
+        </div>
+
+        <div class="reorder-card">
+          <div class="reorder-thumb">
+            <span class="reorder-thumb-badge">×6 ordered</span>
+            <div class="reorder-thumb-art" style="background:#15803d;color:#fff;">SOLD<br/>RIDER</div>
+          </div>
+          <div class="reorder-body">
+            <div class="reorder-title">Real Estate Rider — Sold</div>
+            <div class="reorder-meta">6″ × 24″ · aluminum · 6 pcs</div>
+            <div class="reorder-last">
+              <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+              Last ordered May 3, 2026
+            </div>
+          </div>
+          <div class="reorder-actions">
+            <button class="btn btn-secondary btn-sm">Edit design</button>
+            <button class="btn btn-primary btn-sm">Reorder · $72.00</button>
+          </div>
+        </div>
+
+        <div class="reorder-card">
+          <div class="reorder-thumb">
+            <span class="reorder-thumb-badge">×2 ordered</span>
+            <div class="reorder-thumb-art" style="background:linear-gradient(135deg,#7c2d12,#431407);color:#fed7aa;">EVENT<br/>2026</div>
+          </div>
+          <div class="reorder-body">
+            <div class="reorder-title">Step & Repeat — Charity Gala</div>
+            <div class="reorder-meta">8′ × 8′ · fabric · pole pocket</div>
+            <div class="reorder-last">
+              <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+              Last ordered Apr 26, 2026
+            </div>
+          </div>
+          <div class="reorder-actions">
+            <button class="btn btn-secondary btn-sm">Edit design</button>
+            <button class="btn btn-primary btn-sm">Reorder · $295.00</button>
+          </div>
+        </div>
+
+        <div class="reorder-card">
+          <div class="reorder-thumb">
+            <span class="reorder-thumb-badge">×1 ordered</span>
+            <div class="reorder-thumb-art" style="background:#1e40af;color:#fbbf24;">NOW<br/>OPEN</div>
+          </div>
+          <div class="reorder-body">
+            <div class="reorder-title">Window Decal — Now Open</div>
+            <div class="reorder-meta">24″ × 36″ · perforated vinyl</div>
+            <div class="reorder-last">
+              <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+              Last ordered Apr 17, 2026
+            </div>
+          </div>
+          <div class="reorder-actions">
+            <button class="btn btn-secondary btn-sm">Edit design</button>
+            <button class="btn btn-primary btn-sm">Reorder · $48.00</button>
+          </div>
+        </div>
+
+        <div class="reorder-card">
+          <div class="reorder-thumb">
+            <span class="reorder-thumb-badge">×1 ordered</span>
+            <div class="reorder-thumb-art" style="background:linear-gradient(135deg,#9333ea,#581c87);color:#fff;">TEAM<br/>SHIRT</div>
+          </div>
+          <div class="reorder-body">
+            <div class="reorder-title">Team T-shirts — Marketing</div>
+            <div class="reorder-meta">L · navy · DTG print · 24 pcs</div>
+            <div class="reorder-last">
+              <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+              Last ordered Apr 5, 2026
+            </div>
+          </div>
+          <div class="reorder-actions">
+            <button class="btn btn-secondary btn-sm">Edit design</button>
+            <button class="btn btn-primary btn-sm">Reorder · $432.00</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ TEMPLATES PAGE ============ -->
+    <section class="page" data-page="templates">
+      <div class="page-head">
+        <div class="page-title-block">
+          <h1 class="page-title">My Templates</h1>
+          <p class="page-sub">Saved designs ready to customize and print.</p>
+        </div>
+        <div class="page-actions">
+          <button class="btn btn-secondary">
+            <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="9"/><rect x="14" y="3" width="7" height="5"/><rect x="14" y="12" width="7" height="9"/><rect x="3" y="16" width="7" height="5"/></svg>
+            Browse stock templates
+          </button>
+          <button class="btn btn-primary">
+            <svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>
+            New template
+          </button>
+        </div>
+      </div>
+
+      <div class="filter-bar">
+        <button class="filter-chip is-active">All (8)</button>
+        <button class="filter-chip">Banners (3)</button>
+        <button class="filter-chip">Yard signs (2)</button>
+        <button class="filter-chip">Apparel (1)</button>
+        <button class="filter-chip" data-show-tier="b2b">Brand-locked (2)</button>
+      </div>
+
+      <div class="template-grid">
+        <div class="template-card">
+          <div class="template-thumb">
+            <div class="template-thumb-content" style="background:linear-gradient(135deg,#2b3a8a,#1a1547);color:#ffe35a;">SIGN<br/>EDGE</div>
+            <div class="template-card-overlay">
+              <button class="btn btn-sm">Use template</button>
+              <button class="btn btn-sm">Edit</button>
+            </div>
+          </div>
+          <div class="template-body">
+            <div class="template-title">Grand Opening — Blue</div>
+            <div class="template-meta">Banner · 55″ × 68″ · used 3 times</div>
+          </div>
+        </div>
+        <div class="template-card">
+          <div class="template-thumb">
+            <div class="template-thumb-content" style="background:#dc2626;color:#fff;">SALE<br/>50%</div>
+            <div class="template-card-overlay">
+              <button class="btn btn-sm">Use template</button>
+              <button class="btn btn-sm">Edit</button>
+            </div>
+          </div>
+          <div class="template-body">
+            <div class="template-title">Sale Promo — Red</div>
+            <div class="template-meta">Yard sign · 18″ × 24″</div>
+          </div>
+        </div>
+        <div class="template-card">
+          <div class="template-thumb">
+            <div class="template-thumb-content" style="background:#15803d;color:#fff;">FOR<br/>SALE</div>
+            <div class="template-card-overlay">
+              <button class="btn btn-sm">Use template</button>
+              <button class="btn btn-sm">Edit</button>
+            </div>
+          </div>
+          <div class="template-body">
+            <div class="template-title">For Sale — Green</div>
+            <div class="template-meta">Yard sign · 18″ × 24″</div>
+          </div>
+        </div>
+        <div class="template-card">
+          <div class="template-thumb">
+            <div class="template-thumb-content" style="background:linear-gradient(135deg,#7c2d12,#431407);color:#fed7aa;">EVENT</div>
+            <div class="template-card-overlay">
+              <button class="btn btn-sm">Use template</button>
+              <button class="btn btn-sm">Edit</button>
+            </div>
+          </div>
+          <div class="template-body">
+            <div class="template-title">Charity Event Backdrop</div>
+            <div class="template-meta">Step & repeat · 8′ × 8′</div>
+          </div>
+        </div>
+        <div class="template-card">
+          <div class="template-thumb">
+            <div class="template-thumb-content" style="background:#1e40af;color:#fbbf24;">NOW<br/>OPEN</div>
+            <div class="template-card-overlay">
+              <button class="btn btn-sm">Use template</button>
+              <button class="btn btn-sm">Edit</button>
+            </div>
+          </div>
+          <div class="template-body">
+            <div class="template-title">Now Open — Window Decal</div>
+            <div class="template-meta">Decal · 24″ × 36″</div>
+          </div>
+        </div>
+        <div class="template-card">
+          <div class="template-thumb">
+            <div class="template-thumb-content" style="background:linear-gradient(135deg,#9333ea,#581c87);color:#fff;">TEAM</div>
+            <div class="template-card-overlay">
+              <button class="btn btn-sm">Use template</button>
+              <button class="btn btn-sm">Edit</button>
+            </div>
+          </div>
+          <div class="template-body">
+            <div class="template-title">Marketing Team Shirts</div>
+            <div class="template-meta">Apparel · L · DTG</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ ORDERS & INVOICES PAGE ============ -->
+    <section class="page" data-page="orders">
+      <div class="page-head">
+        <div class="page-title-block">
+          <h1 class="page-title">Orders & Invoices</h1>
+          <p class="page-sub">Track every order. Download invoices anytime.</p>
+        </div>
+        <div class="page-actions">
+          <button class="btn btn-secondary">
+            <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
+            Export CSV
+          </button>
+        </div>
+      </div>
+
+      <div class="filter-bar">
+        <button class="filter-chip is-active">All (12)</button>
+        <button class="filter-chip">In production (1)</button>
+        <button class="filter-chip">Shipped (1)</button>
+        <button class="filter-chip">Delivered (10)</button>
+        <button class="filter-chip">Pending payment (0)</button>
+      </div>
+
+      <div class="table-wrap">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Order #</th>
+              <th>Product</th>
+              <th>Date</th>
+              <th>Total</th>
+              <th>Status</th>
+              <th>Invoice</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="td-order-num">#10238</td>
+              <td>HD Banner — Grand Opening</td>
+              <td>May 11, 2026</td>
+              <td class="td-tabular">$52.50</td>
+              <td><span class="order-status" data-status="delivered"><span class="order-status-dot"></span>Delivered</span></td>
+              <td><a href="#">Download PDF</a></td>
+              <td><button class="btn btn-secondary btn-sm">Reorder</button></td>
+            </tr>
+            <tr>
+              <td class="td-order-num">#10221</td>
+              <td>Yard Sign × 10 — Sale 50% Off</td>
+              <td>May 8, 2026</td>
+              <td class="td-tabular">$184.00</td>
+              <td><span class="order-status" data-status="shipped"><span class="order-status-dot"></span>Shipped</span></td>
+              <td><a href="#">Download PDF</a></td>
+              <td><button class="btn btn-secondary btn-sm">Reorder</button></td>
+            </tr>
+            <tr>
+              <td class="td-order-num">#10198</td>
+              <td>Real Estate Rider × 6 — Sold</td>
+              <td>May 3, 2026</td>
+              <td class="td-tabular">$72.00</td>
+              <td><span class="order-status" data-status="production"><span class="order-status-dot"></span>In production</span></td>
+              <td><a href="#">Download PDF</a></td>
+              <td><button class="btn btn-secondary btn-sm">Reorder</button></td>
+            </tr>
+            <tr>
+              <td class="td-order-num">#10175</td>
+              <td>Step & Repeat — Charity Gala</td>
+              <td>Apr 26, 2026</td>
+              <td class="td-tabular">$295.00</td>
+              <td><span class="order-status" data-status="delivered"><span class="order-status-dot"></span>Delivered</span></td>
+              <td><a href="#">Download PDF</a></td>
+              <td><button class="btn btn-secondary btn-sm">Reorder</button></td>
+            </tr>
+            <tr>
+              <td class="td-order-num">#10142</td>
+              <td>Window Decal — Now Open</td>
+              <td>Apr 17, 2026</td>
+              <td class="td-tabular">$48.00</td>
+              <td><span class="order-status" data-status="delivered"><span class="order-status-dot"></span>Delivered</span></td>
+              <td><a href="#">Download PDF</a></td>
+              <td><button class="btn btn-secondary btn-sm">Reorder</button></td>
+            </tr>
+            <tr>
+              <td class="td-order-num">#10089</td>
+              <td>Team T-shirts × 24 — Marketing</td>
+              <td>Apr 5, 2026</td>
+              <td class="td-tabular">$432.00</td>
+              <td><span class="order-status" data-status="delivered"><span class="order-status-dot"></span>Delivered</span></td>
+              <td><a href="#">Download PDF</a></td>
+              <td><button class="btn btn-secondary btn-sm">Reorder</button></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ============ IMAGE ZONE PAGE ============ -->
+    <section class="page" data-page="imagezone">
+      <div class="page-head">
+        <div class="page-title-block">
+          <h1 class="page-title">Image Zone</h1>
+          <p class="page-sub">Your private library of logos, photos, and print-ready artwork.</p>
+        </div>
+        <div class="page-actions">
+          <button class="btn btn-secondary">
+            <svg viewBox="0 0 24 24"><path d="M3 7v13h18V7M3 7V4h7l2 3h9M3 7h18"/></svg>
+            New folder
+          </button>
+          <button class="btn btn-primary">
+            <svg viewBox="0 0 24 24"><path d="M16 16l-4-4-4 4M12 12v9"/><path d="M20 16v3a2 2 0 01-2 2H6a2 2 0 01-2-2v-3"/></svg>
+            Upload
+          </button>
+        </div>
+      </div>
+
+      <div class="imagezone-toolbar">
+        <div class="imagezone-folders">
+          <button class="folder-chip is-active">
+            <svg viewBox="0 0 24 24"><path d="M3 7v13h18V7M3 7V4h7l2 3h9M3 7h18"/></svg>
+            All files (24)
+          </button>
+          <button class="folder-chip">
+            <svg viewBox="0 0 24 24"><path d="M3 7v13h18V7M3 7V4h7l2 3h9"/></svg>
+            Logos (4)
+          </button>
+          <button class="folder-chip">
+            <svg viewBox="0 0 24 24"><path d="M3 7v13h18V7M3 7V4h7l2 3h9"/></svg>
+            Photos (12)
+          </button>
+          <button class="folder-chip">
+            <svg viewBox="0 0 24 24"><path d="M3 7v13h18V7M3 7V4h7l2 3h9"/></svg>
+            Print-ready (8)
+          </button>
+        </div>
+        <div class="storage-card" style="min-width:280px;">
+          <svg width="20" height="20" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8" fill="none" style="color:var(--nbd-mb-primary);"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+          <div class="storage-info">
+            <div class="storage-label">Storage</div>
+            <div class="storage-track"><div class="storage-fill" style="width:34%;"></div></div>
+            <div class="storage-meta">1.7 GB of 5 GB used</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="asset-grid">
+        <button class="asset-tile">
+          <div class="asset-tile-thumb" style="background:linear-gradient(135deg,#2b3a8a,#1a1547);">SIGN<br/>EDGE</div>
+          <div class="asset-tile-body">
+            <div class="asset-tile-name">logo-primary.svg</div>
+            <div class="asset-tile-meta">2.4 MB · Apr 12</div>
+          </div>
+        </button>
+        <button class="asset-tile">
+          <div class="asset-tile-thumb" style="background:linear-gradient(135deg,#047857,#064e3b);color:#fff;">LOGO<br/>v2</div>
+          <div class="asset-tile-body">
+            <div class="asset-tile-name">logo-secondary.png</div>
+            <div class="asset-tile-meta">890 KB · Apr 12</div>
+          </div>
+        </button>
+        <button class="asset-tile">
+          <div class="asset-tile-thumb" style="background:linear-gradient(135deg,#dc2626,#7f1d1d);color:#fff;font-size:14px;">SALE</div>
+          <div class="asset-tile-body">
+            <div class="asset-tile-name">sale-50-off.psd</div>
+            <div class="asset-tile-meta">12.4 MB · Mar 28</div>
+          </div>
+        </button>
+        <button class="asset-tile">
+          <div class="asset-tile-thumb" style="background:linear-gradient(135deg,#15803d,#14532d);color:#fff;font-size:12px;">FOR<br/>SALE</div>
+          <div class="asset-tile-body">
+            <div class="asset-tile-name">forsale-template.ai</div>
+            <div class="asset-tile-meta">3.1 MB · Mar 22</div>
+          </div>
+        </button>
+        <button class="asset-tile">
+          <div class="asset-tile-thumb" style="background:linear-gradient(135deg,#1e40af,#1e3a8a);color:#fbbf24;font-size:12px;">NOW<br/>OPEN</div>
+          <div class="asset-tile-body">
+            <div class="asset-tile-name">now-open.pdf</div>
+            <div class="asset-tile-meta">1.8 MB · Mar 15</div>
+          </div>
+        </button>
+        <button class="asset-tile">
+          <div class="asset-tile-thumb" style="background:linear-gradient(135deg,#9333ea,#581c87);color:#fff;font-size:12px;">EVENT</div>
+          <div class="asset-tile-body">
+            <div class="asset-tile-name">event-2026-bg.png</div>
+            <div class="asset-tile-meta">8.2 MB · Mar 4</div>
+          </div>
+        </button>
+        <button class="asset-tile">
+          <div class="asset-tile-thumb" style="background:linear-gradient(135deg,#7c2d12,#431407);color:#fed7aa;font-size:12px;">CHAR<br/>GALA</div>
+          <div class="asset-tile-body">
+            <div class="asset-tile-name">charity-gala.psd</div>
+            <div class="asset-tile-meta">22.7 MB · Feb 26</div>
+          </div>
+        </button>
+        <button class="asset-tile">
+          <div class="asset-tile-thumb" style="background:#f3f4f6;color:var(--nbd-mb-text);font-size:11px;">PRESS<br/>KIT</div>
+          <div class="asset-tile-body">
+            <div class="asset-tile-name">press-kit.zip</div>
+            <div class="asset-tile-meta">45 MB · Feb 18</div>
+          </div>
+        </button>
+      </div>
+    </section>
+
+    <!-- ============ BRAND STORE PAGE ============ -->
+    <section class="page" data-page="brand-store">
+      <div class="page-head">
+        <div class="page-title-block">
+          <h1 class="page-title">Brand Store</h1>
+          <p class="page-sub">Pre-approved products with locked branding for your team to order.</p>
+        </div>
+        <div class="page-actions" data-show-tier="b2b">
+          <button class="btn btn-secondary">Manage catalog</button>
+          <button class="btn btn-primary">
+            <svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>
+            Add product
+          </button>
+        </div>
+      </div>
+
+      <!-- B2C: locked overlay -->
+      <div data-show-tier="b2c-only">
+        <div class="locked-overlay">
+          <div class="locked-icon">
+            <svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
+          </div>
+          <div class="locked-title">Brand Store is a B2B feature</div>
+          <div class="locked-desc">Create a private storefront with pre-approved products for your team. Lock branding, sizes, and pricing per role.</div>
+          <ul class="benefits-list locked-benefits">
+            <li>Pre-configured products with locked branding</li>
+            <li>Role-based access (designers, approvers, viewers)</li>
+            <li>Bulk pricing tiers per team</li>
+            <li>Centralized invoicing & cost centers</li>
+          </ul>
+          <button class="btn btn-primary btn-lg">Upgrade to B2B</button>
+        </div>
+      </div>
+
+      <!-- B2B: full brand store -->
+      <div data-show-tier="b2b">
+        <div class="brand-banner">
+          <div class="brand-banner-content">
+            <span class="brand-banner-pill">Chen Marketing Corp</span>
+            <h2>Your branded marketplace</h2>
+            <p>Team members order from your pre-approved catalog. All designs branded, sized & priced for you.</p>
+            <button class="btn btn-primary">Manage catalog →</button>
+          </div>
+        </div>
+
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:var(--nbd-space-3);">
+          <h3 style="font-size:16px;margin:0;">Pre-approved products (8)</h3>
+          <a href="#" style="font-size:13px;font-weight:500;">View as team member →</a>
+        </div>
+
+        <div class="brand-products">
+          <div class="brand-product-card">
+            <div class="brand-product-thumb" style="background:linear-gradient(135deg,#2b3a8a,#1a1547);">CHEN</div>
+            <div class="brand-product-body">
+              <div class="brand-product-name">Open House Banner</div>
+              <div class="brand-product-price">$44.62 <span style="font-size:11px;color:var(--nbd-mb-text-soft);font-weight:500;">team price</span></div>
+            </div>
+          </div>
+          <div class="brand-product-card">
+            <div class="brand-product-thumb" style="background:#dc2626;color:#fff;">SOLD</div>
+            <div class="brand-product-body">
+              <div class="brand-product-name">Real Estate Rider</div>
+              <div class="brand-product-price">$11.05 <span style="font-size:11px;color:var(--nbd-mb-text-soft);font-weight:500;">×6 pcs</span></div>
+            </div>
+          </div>
+          <div class="brand-product-card">
+            <div class="brand-product-thumb" style="background:#15803d;color:#fff;">CHEN</div>
+            <div class="brand-product-body">
+              <div class="brand-product-name">For Sale Yard Sign</div>
+              <div class="brand-product-price">$15.30 <span style="font-size:11px;color:var(--nbd-mb-text-soft);font-weight:500;">team price</span></div>
+            </div>
+          </div>
+          <div class="brand-product-card">
+            <div class="brand-product-thumb" style="background:linear-gradient(135deg,#9333ea,#581c87);color:#fff;">TEAM</div>
+            <div class="brand-product-body">
+              <div class="brand-product-name">Branded T-shirts</div>
+              <div class="brand-product-price">$15.00 <span style="font-size:11px;color:var(--nbd-mb-text-soft);font-weight:500;">/ shirt</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ TEAMS PAGE ============ -->
+    <section class="page" data-page="teams">
+      <div class="page-head">
+        <div class="page-title-block">
+          <h1 class="page-title">Teams</h1>
+          <p class="page-sub">Invite team members and assign roles to manage purchases together.</p>
+        </div>
+        <div class="page-actions" data-show-tier="b2b">
+          <button class="btn btn-primary">
+            <svg viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="8.5" cy="7" r="4"/><line x1="20" y1="8" x2="20" y2="14"/><line x1="23" y1="11" x2="17" y2="11"/></svg>
+            Invite member
+          </button>
+        </div>
+      </div>
+
+      <!-- B2C: locked -->
+      <div data-show-tier="b2c-only">
+        <div class="locked-overlay">
+          <div class="locked-icon">
+            <svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
+          </div>
+          <div class="locked-title">Teams is a B2B feature</div>
+          <div class="locked-desc">Add unlimited team members with role-based permissions. Share templates, history, and approvals.</div>
+          <ul class="benefits-list locked-benefits">
+            <li>Unlimited members on Tier B+</li>
+            <li>4 role types (Admin / Designer / Approver / Viewer)</li>
+            <li>Shared template library</li>
+            <li>Spending limits per member</li>
+          </ul>
+          <button class="btn btn-primary btn-lg">Upgrade to B2B</button>
+        </div>
+      </div>
+
+      <!-- B2B: team grid -->
+      <div data-show-tier="b2b">
+        <div class="team-stats">
+          <div class="stat-card">
+            <div class="stat-card-head">
+              <div class="stat-label">Members</div>
+              <div class="stat-icon"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/></svg></div>
+            </div>
+            <div class="stat-value">8 / 25</div>
+            <div class="stat-delta">17 slots available</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-card-head">
+              <div class="stat-label">Pending invites</div>
+              <div class="stat-icon info"><svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22 6 12 13 2 6"/></svg></div>
+            </div>
+            <div class="stat-value">2</div>
+            <div class="stat-delta">Sent in last 7 days</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-card-head">
+              <div class="stat-label">Roles in use</div>
+              <div class="stat-icon success"><svg viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"/></svg></div>
+            </div>
+            <div class="stat-value">3</div>
+            <div class="stat-delta">Admin · Designer · Approver</div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-head">
+            <h3 class="card-title">Team members</h3>
+          </div>
+          <div class="card-body is-flush">
+            <div class="team-member-row">
+              <div class="team-avatar">SC</div>
+              <div class="team-member-info">
+                <div class="team-member-name">Sarah Chen <span style="font-size:10px;background:var(--nbd-mb-bg-soft);padding:1px 5px;border-radius:3px;color:var(--nbd-mb-text-soft);margin-left:4px;">YOU</span></div>
+                <div class="team-member-email">sarah@chenmarketing.com</div>
+              </div>
+              <span class="role-badge" data-role="admin">Admin</span>
+              <span style="font-size:11px;color:var(--nbd-mb-text-soft);">Active now</span>
+              <button class="icon-btn"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="1"/><circle cx="12" cy="5" r="1"/><circle cx="12" cy="19" r="1"/></svg></button>
+            </div>
+            <div class="team-member-row">
+              <div class="team-avatar" data-color="green">MR</div>
+              <div class="team-member-info">
+                <div class="team-member-name">Marcus Reid</div>
+                <div class="team-member-email">marcus@chenmarketing.com</div>
+              </div>
+              <span class="role-badge" data-role="designer">Designer</span>
+              <span style="font-size:11px;color:var(--nbd-mb-text-soft);">2h ago</span>
+              <button class="icon-btn"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="1"/><circle cx="12" cy="5" r="1"/><circle cx="12" cy="19" r="1"/></svg></button>
+            </div>
+            <div class="team-member-row">
+              <div class="team-avatar" data-color="orange">JT</div>
+              <div class="team-member-info">
+                <div class="team-member-name">Jordan Tate</div>
+                <div class="team-member-email">jordan@chenmarketing.com</div>
+              </div>
+              <span class="role-badge" data-role="approver">Approver</span>
+              <span style="font-size:11px;color:var(--nbd-mb-text-soft);">Yesterday</span>
+              <button class="icon-btn"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="1"/><circle cx="12" cy="5" r="1"/><circle cx="12" cy="19" r="1"/></svg></button>
+            </div>
+            <div class="team-member-row">
+              <div class="team-avatar" data-color="purple">AL</div>
+              <div class="team-member-info">
+                <div class="team-member-name">Alex Lin</div>
+                <div class="team-member-email">alex@chenmarketing.com</div>
+              </div>
+              <span class="role-badge" data-role="designer">Designer</span>
+              <span style="font-size:11px;color:var(--nbd-mb-text-soft);">May 8</span>
+              <button class="icon-btn"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="1"/><circle cx="12" cy="5" r="1"/><circle cx="12" cy="19" r="1"/></svg></button>
+            </div>
+            <div class="team-member-row">
+              <div class="team-avatar">RP</div>
+              <div class="team-member-info">
+                <div class="team-member-name">Riley Park</div>
+                <div class="team-member-email">riley@chenmarketing.com · <span style="color:var(--nbd-color-warning);">pending invite</span></div>
+              </div>
+              <span class="role-badge">Viewer</span>
+              <span style="font-size:11px;color:var(--nbd-mb-text-soft);">Invited May 9</span>
+              <button class="icon-btn"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="1"/><circle cx="12" cy="5" r="1"/><circle cx="12" cy="19" r="1"/></svg></button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ APPROVAL QUEUE PAGE ============ -->
+    <section class="page" data-page="approval">
+      <div class="page-head">
+        <div class="page-title-block">
+          <h1 class="page-title">Approval Queue</h1>
+          <p class="page-sub">Review and approve orders submitted by your team.</p>
+        </div>
+      </div>
+
+      <!-- B2C: locked -->
+      <div data-show-tier="b2c-only">
+        <div class="locked-overlay">
+          <div class="locked-icon">
+            <svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
+          </div>
+          <div class="locked-title">Procurement approval is a B2B feature</div>
+          <div class="locked-desc">Let team members submit orders for approval before checkout. Set spending limits and routing rules per role.</div>
+          <ul class="benefits-list locked-benefits">
+            <li>Multi-step approval (designer → approver → admin)</li>
+            <li>Spending thresholds per role</li>
+            <li>Auto-routing based on category & amount</li>
+            <li>Full audit trail of approvals</li>
+          </ul>
+          <button class="btn btn-primary btn-lg">Upgrade to B2B</button>
+        </div>
+      </div>
+
+      <!-- B2B: approval cards -->
+      <div data-show-tier="b2b">
+        <div class="filter-bar">
+          <button class="filter-chip is-active">Pending (5)</button>
+          <button class="filter-chip">Approved (12)</button>
+          <button class="filter-chip">Rejected (1)</button>
+        </div>
+
+        <div class="approval-card">
+          <div class="approval-thumb">SIGN<br/>EDGE</div>
+          <div class="approval-info">
+            <div class="approval-title">HD Banner — Grand Opening East Branch</div>
+            <div class="approval-meta">
+              55″ × 68″ · 15oz vinyl · reinforced edges, grommets<br/>
+              Submitted <strong>2 hours ago</strong> · needs your approval by <strong>May 14, 5pm</strong>
+            </div>
+            <div class="approval-requester">
+              <span class="approval-requester-avatar">MR</span>
+              Marcus Reid · Designer
+            </div>
+          </div>
+          <div style="text-align:right;">
+            <div class="approval-amount">$52.50</div>
+            <div class="approval-actions">
+              <button class="btn btn-secondary btn-sm">View details</button>
+              <button class="btn btn-primary btn-sm">Approve</button>
+              <button class="btn btn-danger btn-sm">Reject</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="approval-card">
+          <div class="approval-thumb" style="background:linear-gradient(135deg,#9333ea,#581c87);">TEAM<br/>SHIRT</div>
+          <div class="approval-info">
+            <div class="approval-title">Marketing Team T-shirts × 24</div>
+            <div class="approval-meta">
+              L · navy · DTG print, front + back<br/>
+              Submitted <strong>5 hours ago</strong> · needs your approval by <strong>May 14, 9am</strong>
+            </div>
+            <div class="approval-requester">
+              <span class="approval-requester-avatar" style="background:linear-gradient(135deg,#9333ea,#581c87);">AL</span>
+              Alex Lin · Designer
+            </div>
+          </div>
+          <div style="text-align:right;">
+            <div class="approval-amount">$432.00</div>
+            <div class="approval-actions">
+              <button class="btn btn-secondary btn-sm">View details</button>
+              <button class="btn btn-primary btn-sm">Approve</button>
+              <button class="btn btn-danger btn-sm">Reject</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="approval-card">
+          <div class="approval-thumb" style="background:linear-gradient(135deg,#7c2d12,#431407);color:#fed7aa;">EVENT</div>
+          <div class="approval-info">
+            <div class="approval-title">Step & Repeat — Charity Gala 2026</div>
+            <div class="approval-meta">
+              8′ × 8′ · fabric · pole pocket<br/>
+              Submitted <strong>yesterday</strong> · needs your approval by <strong>May 15, noon</strong>
+            </div>
+            <div class="approval-requester">
+              <span class="approval-requester-avatar" style="background:linear-gradient(135deg,var(--nbd-color-success),#047857);">MR</span>
+              Marcus Reid · Designer
+            </div>
+          </div>
+          <div style="text-align:right;">
+            <div class="approval-amount">$295.00</div>
+            <div class="approval-actions">
+              <button class="btn btn-secondary btn-sm">View details</button>
+              <button class="btn btn-primary btn-sm">Approve</button>
+              <button class="btn btn-danger btn-sm">Reject</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<!-- =========== TIER SWITCHER (DEMO) =========== -->
+<div class="tier-switcher" role="region" aria-label="Demo tier switcher">
+  <h6>Demo · tier</h6>
+  <div class="tier-switcher-btns">
+    <button class="tier-switcher-btn is-active" data-tier="b2c">B2C</button>
+    <button class="tier-switcher-btn" data-tier="b2b">B2B</button>
+  </div>
+</div>
+
+<script>
+  // ============ Navigation ============
+  document.querySelectorAll('.nav-item').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const nav = btn.dataset.nav;
+      if (!nav) return;
+
+      // Update active state
+      document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('is-active'));
+      btn.classList.add('is-active');
+
+      // Switch page
+      document.querySelectorAll('.page').forEach(p => p.classList.remove('is-active'));
+      const page = document.querySelector(`[data-page="${nav}"]`);
+      if (page) page.classList.add('is-active');
+
+      // Scroll to top
+      window.scrollTo({top: 0, behavior: 'smooth'});
+    });
+  });
+
+  // Quick action card → nav link
+  document.querySelectorAll('[data-nav-link]').forEach(el => {
+    el.addEventListener('click', (e) => {
+      e.preventDefault();
+      const target = el.dataset.navLink;
+      const navBtn = document.querySelector(`.nav-item[data-nav="${target}"]`);
+      navBtn?.click();
+    });
+  });
+
+  // ============ Tier switcher ============
+  const tierSwitcherBtns = document.querySelectorAll('.tier-switcher-btn');
+  tierSwitcherBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const tier = btn.dataset.tier;
+      document.body.setAttribute('data-tier', tier);
+
+      tierSwitcherBtns.forEach(b => b.classList.remove('is-active'));
+      btn.classList.add('is-active');
+
+      // Update user menu tier label
+      const menuTier = document.getElementById('userMenuTier');
+      if (menuTier) menuTier.textContent = tier === 'b2b' ? 'B2B · Tier B' : 'B2C Member';
+
+      // Update sidebar tier card
+      const card = document.getElementById('sidebarTierCard');
+      const label = document.getElementById('tierCardLabel');
+      const title = document.getElementById('tierCardTitle');
+      const desc = document.getElementById('tierCardDesc');
+      if (tier === 'b2b') {
+        card.setAttribute('data-tier', 'b2b');
+        label.textContent = 'B2B Tier B';
+        title.textContent = '15% discount active';
+        desc.textContent = 'You\'ve saved $276 this year. Need more? Tier C unlocks at $5K/month.';
+      } else {
+        card.setAttribute('data-tier', 'b2c');
+        label.textContent = 'B2C Member';
+        title.textContent = 'Get B2B benefits';
+        desc.textContent = 'Save up to 24%, unlock teams, Brand Store & more.';
+      }
+
+      // Update benefits title
+      const bt = document.getElementById('benefitsTitle');
+      if (bt) bt.textContent = tier === 'b2b' ? 'B2B Tier B benefits' : 'B2C member benefits';
+    });
+  });
+
+  // ============ Filter chips (visual toggle only) ============
+  document.querySelectorAll('.filter-bar').forEach(bar => {
+    const chips = bar.querySelectorAll('.filter-chip');
+    chips.forEach(c => c.addEventListener('click', () => {
+      chips.forEach(x => x.classList.remove('is-active'));
+      c.classList.add('is-active');
+    }));
+  });
+
+  // Folder chips
+  document.querySelectorAll('.imagezone-folders').forEach(group => {
+    const chips = group.querySelectorAll('.folder-chip');
+    chips.forEach(c => c.addEventListener('click', () => {
+      chips.forEach(x => x.classList.remove('is-active'));
+      c.classList.add('is-active');
+    }));
+  });
+</script>
+
+</body>
+</html>
