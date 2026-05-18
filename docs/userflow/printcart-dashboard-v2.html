@@ -1,0 +1,3712 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Printcart Dashboard v2.0 · Mockup</title>
+<style>
+/* =========================================================
+   PRINTCART DASHBOARD v2.0 · Merchant Control Plane
+   Reuses Printcart Stores v2.5.1 design tokens (--nbd-mb-*)
+   SPA: data-page sections + goPage() toggle .is-active
+   ========================================================= */
+
+:root {
+  --nbd-mb-primary: #2563eb;
+  --nbd-mb-primary-pressed: #1d4ed8;
+  --nbd-mb-primary-soft: #dbeafe;
+  --nbd-mb-primary-dark: #1e40af;
+  --nbd-mb-text: #1f2937;
+  --nbd-mb-text-soft: #6b7280;
+  --nbd-mb-text-strong: #111827;
+  --nbd-mb-bg: #ffffff;
+  --nbd-mb-bg-soft: #f9fafb;
+  --nbd-mb-bg-canvas: #f3f4f6;
+  --nbd-mb-border: #e5e7eb;
+  --nbd-mb-border-strong: #d1d5db;
+  --nbd-mb-border-subtle: #f3f4f6;
+  --nbd-color-success: #10b981;
+  --nbd-color-success-soft: #d1fae5;
+  --nbd-color-success-text: #065f46;
+  --nbd-color-warning: #f59e0b;
+  --nbd-color-warning-soft: #fef3c7;
+  --nbd-color-warning-text: #92400e;
+  --nbd-color-error: #ef4444;
+  --nbd-color-error-soft: #fee2e2;
+  --nbd-color-error-text: #991b1b;
+  --nbd-color-info: #3b82f6;
+  --nbd-color-info-soft: #dbeafe;
+  --nbd-color-info-text: #1e40af;
+  --nbd-accent: #fbbf24;
+  --nbd-accent-deep: #f59e0b;
+  --nbd-accent-text-on: #78350f;
+  --nbd-space-1: 4px;
+  --nbd-space-2: 8px;
+  --nbd-space-3: 12px;
+  --nbd-space-4: 16px;
+  --nbd-space-5: 20px;
+  --nbd-space-6: 24px;
+  --nbd-space-8: 32px;
+  --nbd-space-12: 48px;
+  --nbd-radius-sm: 4px;
+  --nbd-radius-md: 6px;
+  --nbd-radius-lg: 8px;
+  --nbd-radius-xl: 12px;
+  --nbd-radius-full: 9999px;
+  --nbd-shadow-sm: 0 1px 2px 0 rgba(0,0,0,0.05);
+  --nbd-shadow-md: 0 2px 4px 0 rgba(0,0,0,0.08);
+  --nbd-shadow-lg: 0 4px 12px 0 rgba(0,0,0,0.08);
+  --nbd-shadow-xl: 0 8px 24px 0 rgba(0,0,0,0.16);
+  --nbd-duration-fast: 120ms;
+  --nbd-font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --topbar-height: 60px;
+  --sidebar-width: 240px;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; height: 100%; }
+body {
+  font-family: var(--nbd-font-family);
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--nbd-mb-text);
+  background: var(--nbd-mb-bg-soft);
+  -webkit-font-smoothing: antialiased;
+}
+button { font-family: inherit; cursor: pointer; border: none; background: none; padding: 0; color: inherit; }
+a { color: var(--nbd-mb-primary); text-decoration: none; }
+a:hover { text-decoration: underline; }
+code { font-family: 'SF Mono', Monaco, Consolas, monospace; font-size: 12px; }
+
+/* ============ APP SHELL (no topbar — all moved to sidebar) ============ */
+.app {
+  min-height: 100vh;
+  padding-left: var(--sidebar-width);
+}
+
+/* ============ STORE AVATAR (dùng trong dropdown items) ============ */
+.store-avatar {
+  width: 26px; height: 26px;
+  background: linear-gradient(135deg, #2563eb, #1e40af);
+  color: #fff; display: grid; place-items: center;
+  border-radius: var(--nbd-radius-md);
+  font-weight: 700; font-size: 11px; letter-spacing: 0.02em;
+  flex-shrink: 0;
+}
+
+/* Switcher dropdown */
+.switcher-dropdown {
+  position: absolute; top: 0; left: calc(100% + 8px);
+  width: 280px; background: #fff;
+  border: 1px solid var(--nbd-mb-border);
+  border-radius: var(--nbd-radius-xl);
+  box-shadow: 0 12px 32px rgba(0,0,0,0.20);
+  padding: 8px; z-index: 1000; display: none;
+}
+.switcher-dropdown.is-open { display: block; }
+.switcher-section-label {
+  font-size: 10px; text-transform: uppercase;
+  letter-spacing: 0.08em; font-weight: 700;
+  color: var(--nbd-mb-text-soft); padding: 8px 12px 4px;
+}
+.switcher-item {
+  display: flex; align-items: center; gap: var(--nbd-space-2);
+  padding: 8px 12px; border-radius: var(--nbd-radius-md);
+  cursor: pointer; color: var(--nbd-mb-text); width: 100%; text-align: left;
+}
+.switcher-item:hover { background: var(--nbd-mb-bg-soft); }
+.switcher-item.is-current { background: var(--nbd-mb-primary-soft); }
+.switcher-name { font-weight: 600; font-size: 13px; color: var(--nbd-mb-text-strong); margin-bottom: 1px; }
+.switcher-meta { font-size: 11px; color: var(--nbd-mb-text-soft); }
+.switcher-divider { height: 1px; background: var(--nbd-mb-border); margin: 6px 0; }
+.switcher-cta {
+  display: flex; align-items: center; gap: var(--nbd-space-2);
+  padding: 8px 12px; border-radius: var(--nbd-radius-md);
+  color: var(--nbd-mb-primary); font-weight: 600; font-size: 13px;
+  cursor: pointer; width: 100%; text-align: left;
+}
+.switcher-cta:hover { background: var(--nbd-mb-primary-soft); }
+
+/* ============ SIDEBAR (full-height, contains everything) ============ */
+:root { --sidebar-width: 260px; }
+.sidebar {
+  position: fixed;
+  top: 0; left: 0; bottom: 0;
+  width: var(--sidebar-width);
+  background: #fff;
+  border-right: 1px solid var(--nbd-mb-border);
+  padding: 0;
+  display: flex; flex-direction: column;
+}
+
+/* Sidebar header: brand + store switcher + wallet pill */
+.sidebar-header {
+  padding: var(--nbd-space-4) var(--nbd-space-3) var(--nbd-space-3);
+  border-bottom: 1px solid var(--nbd-mb-border);
+  display: flex; flex-direction: column; gap: var(--nbd-space-3);
+}
+.sidebar-brand {
+  display: flex; align-items: center; gap: var(--nbd-space-2);
+  color: var(--nbd-mb-text-strong);
+  padding: 0 var(--nbd-space-2);
+}
+.sidebar-brand:hover { text-decoration: none; }
+.sidebar-brand-logo {
+  width: 34px; height: 34px;
+  background: linear-gradient(135deg, #2563eb, #1e40af);
+  color: #fff;
+  border-radius: var(--nbd-radius-md);
+  display: grid; place-items: center;
+  font-size: 17px; font-weight: 800;
+  box-shadow: 0 6px 14px rgba(37,99,235,0.25);
+  flex-shrink: 0;
+}
+.sidebar-brand-name { font-size: 15px; font-weight: 700; line-height: 1.1; letter-spacing: -0.01em; }
+.sidebar-brand-name small {
+  display: block; font-size: 9px; color: var(--nbd-mb-text-soft);
+  font-weight: 500; margin-top: 2px; letter-spacing: 0.06em; text-transform: uppercase;
+}
+
+/* Store switcher inside sidebar */
+.sidebar-store {
+  width: 100%;
+  display: flex; align-items: center; gap: var(--nbd-space-2);
+  padding: var(--nbd-space-2);
+  background: var(--nbd-mb-bg-soft);
+  border: 1px solid var(--nbd-mb-border);
+  border-radius: var(--nbd-radius-md);
+  color: var(--nbd-mb-text-strong);
+  font-weight: 600;
+  font-size: 13px;
+  cursor: pointer; position: relative;
+  text-align: left;
+}
+.sidebar-store:hover { border-color: var(--nbd-mb-border-strong); background: #fff; }
+.sidebar-store-info { flex: 1; min-width: 0; }
+.sidebar-store-name {
+  display: block;
+  font-weight: 700; font-size: 13px; color: var(--nbd-mb-text-strong);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.sidebar-store-plan { display: block; font-size: 10px; color: var(--nbd-mb-text-soft); font-weight: 500; }
+.sidebar-store-caret { color: var(--nbd-mb-text-soft); flex-shrink: 0; }
+.sidebar-store-caret svg { width: 14px; height: 14px; stroke: currentColor; stroke-width: 2; fill: none; display: block; }
+
+/* Wallet pill in sidebar */
+.sidebar-wallet {
+  display: flex; align-items: center; justify-content: space-between;
+  width: 100%;
+  padding: var(--nbd-space-2) var(--nbd-space-3);
+  background: linear-gradient(135deg, #fbbf24, #f59e0b);
+  color: var(--nbd-accent-text-on);
+  border-radius: var(--nbd-radius-md);
+  font-weight: 700; font-size: 12px;
+  box-shadow: 0 4px 12px rgba(251,191,36,0.25);
+  border: none; cursor: pointer;
+}
+.sidebar-wallet:hover { text-decoration: none; transform: translateY(-1px); transition: transform 0.12s ease; }
+.sidebar-wallet svg { width: 13px; height: 13px; stroke: currentColor; stroke-width: 2.2; fill: none; flex-shrink: 0; }
+.sidebar-wallet-amount { flex: 1; text-align: left; padding-left: 6px; }
+.sidebar-wallet-arrow svg { width: 12px; height: 12px; }
+
+/* Body scroll area */
+.sidebar-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: var(--nbd-space-3) var(--nbd-space-3);
+  display: flex; flex-direction: column;
+  gap: var(--nbd-space-4);
+}
+
+/* Sidebar footer (user area) */
+.sidebar-footer {
+  border-top: 1px solid var(--nbd-mb-border);
+  padding: var(--nbd-space-3);
+  display: flex; align-items: center; gap: var(--nbd-space-2);
+  background: var(--nbd-mb-bg-soft);
+}
+.sidebar-user-avatar {
+  width: 32px; height: 32px; border-radius: 50%;
+  background: linear-gradient(135deg, #1e3a8a, #7c3aed);
+  color: #fff; display: grid; place-items: center;
+  font-weight: 700; font-size: 11px; cursor: pointer;
+  flex-shrink: 0;
+}
+.sidebar-user-info { flex: 1; min-width: 0; }
+.sidebar-user-name {
+  display: block; font-weight: 700; font-size: 12px; color: var(--nbd-mb-text-strong);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.sidebar-user-email { display: block; font-size: 10px; color: var(--nbd-mb-text-soft); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.sidebar-user-actions { display: flex; gap: 2px; flex-shrink: 0; }
+.sidebar-user-actions button {
+  width: 28px; height: 28px; border-radius: var(--nbd-radius-sm);
+  color: var(--nbd-mb-text-soft);
+  display: grid; place-items: center; position: relative;
+}
+.sidebar-user-actions button:hover { background: #fff; color: var(--nbd-mb-text-strong); }
+.sidebar-user-actions button svg { width: 14px; height: 14px; stroke: currentColor; stroke-width: 2; fill: none; }
+.sidebar-user-dot {
+  position: absolute; top: 4px; right: 5px;
+  width: 6px; height: 6px;
+  background: var(--nbd-color-error);
+  border-radius: 50%;
+  border: 1.5px solid var(--nbd-mb-bg-soft);
+}
+.sidebar-section { display: flex; flex-direction: column; gap: 2px; }
+.sidebar-section-label {
+  font-size: 10px; font-weight: 600;
+  color: var(--nbd-mb-text-soft);
+  text-transform: uppercase; letter-spacing: 0.06em;
+  padding: var(--nbd-space-2) var(--nbd-space-3);
+}
+.nav-item {
+  display: flex; align-items: center; gap: var(--nbd-space-3);
+  padding: var(--nbd-space-2) var(--nbd-space-3);
+  border-radius: var(--nbd-radius-md);
+  color: var(--nbd-mb-text);
+  font-size: 14px; font-weight: 500;
+  transition: all var(--nbd-duration-fast);
+  cursor: pointer; text-align: left;
+  width: 100%; text-decoration: none;
+  min-height: 36px; position: relative;
+}
+.nav-item:hover { background: var(--nbd-mb-bg-soft); text-decoration: none; }
+.nav-item.is-active {
+  background: var(--nbd-mb-primary-soft);
+  color: var(--nbd-mb-primary);
+  font-weight: 600;
+}
+.nav-item.is-active .nav-icon { color: var(--nbd-mb-primary); }
+.nav-icon {
+  width: 18px; height: 18px;
+  color: var(--nbd-mb-text-soft);
+  flex-shrink: 0;
+  transition: color var(--nbd-duration-fast);
+}
+.nav-icon svg { width: 100%; height: 100%; stroke: currentColor; stroke-width: 1.8; fill: none; }
+.nav-label {
+  flex: 1; min-width: 0;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.nav-badge {
+  background: var(--nbd-mb-primary); color: #fff;
+  font-size: 10px; font-weight: 700;
+  padding: 1px 6px;
+  border-radius: var(--nbd-radius-full);
+  flex-shrink: 0;
+}
+.nav-badge.is-new { background: var(--nbd-color-success); }
+.nav-badge.is-warning { background: var(--nbd-color-warning); }
+.nav-badge.is-error { background: var(--nbd-color-error); }
+
+.sidebar-promo {
+  margin-top: auto;
+  padding: var(--nbd-space-3);
+  background: linear-gradient(135deg, var(--nbd-mb-primary-soft), #eff6ff);
+  border: 1px solid var(--nbd-mb-primary);
+  border-radius: var(--nbd-radius-lg);
+  box-shadow: var(--nbd-shadow-md);
+}
+.sidebar-body { /* push promo to bottom of body */ }
+.sidebar-body > .sidebar-promo { margin-top: auto; }
+.sidebar-promo-label {
+  font-size: 10px; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.06em;
+  color: var(--nbd-mb-primary); margin-bottom: 2px;
+}
+.sidebar-promo-title { font-size: 13px; font-weight: 700; color: var(--nbd-mb-text); margin-bottom: 2px; }
+.sidebar-promo-desc { font-size: 11px; color: var(--nbd-mb-text-soft); line-height: 1.4; margin-bottom: var(--nbd-space-2); }
+.sidebar-promo-cta {
+  display: inline-flex; align-items: center; gap: 4px;
+  font-size: 12px; font-weight: 600; color: var(--nbd-mb-primary);
+}
+.sidebar-promo-cta:hover { text-decoration: underline; }
+.sidebar-promo-cta svg { width: 12px; height: 12px; stroke: currentColor; stroke-width: 2; fill: none; }
+
+/* ============ MAIN ============ */
+.main { padding: var(--nbd-space-4) var(--nbd-space-6) var(--nbd-space-12); min-width: 0; overflow-x: hidden; }
+
+/* ============ PAGE SYSTEM ============ */
+.page { display: none; }
+.page.is-active { display: block; }
+
+/* ============ BUTTONS ============ */
+.btn {
+  display: inline-flex; align-items: center; gap: var(--nbd-space-2);
+  height: 38px; padding: 0 var(--nbd-space-4);
+  border-radius: var(--nbd-radius-md);
+  font-size: 14px; font-weight: 600;
+  transition: all var(--nbd-duration-fast);
+  cursor: pointer; font-family: inherit;
+  white-space: nowrap; border: none;
+}
+.btn svg { width: 14px; height: 14px; stroke: currentColor; stroke-width: 2; fill: none; }
+.btn-primary {
+  background: var(--nbd-mb-primary); color: #fff;
+  border: 1px solid var(--nbd-mb-primary);
+  box-shadow: var(--nbd-shadow-sm);
+}
+.btn-primary:hover { background: #1e57c5; }
+.btn-secondary {
+  background: #fff; color: var(--nbd-mb-text);
+  border: 1px solid var(--nbd-mb-border-strong);
+}
+.btn-secondary:hover { background: var(--nbd-mb-bg-soft); border-color: var(--nbd-mb-text-soft); }
+.btn-ghost { background: transparent; color: var(--nbd-mb-text-soft); }
+.btn-ghost:hover { background: var(--nbd-mb-bg-soft); color: var(--nbd-mb-text); }
+.btn-danger {
+  background: #fff; color: var(--nbd-color-error);
+  border: 1px solid var(--nbd-color-error-soft);
+}
+.btn-danger:hover { background: var(--nbd-color-error-soft); }
+.btn-accent {
+  background: linear-gradient(135deg, #fbbf24, #f59e0b);
+  color: var(--nbd-accent-text-on);
+  box-shadow: 0 4px 12px rgba(251,191,36,0.30);
+}
+.btn-accent:hover { transform: translateY(-1px); }
+.btn-sm { height: 32px; padding: 0 var(--nbd-space-3); font-size: 13px; }
+.btn-lg { height: 44px; padding: 0 var(--nbd-space-6); font-size: 15px; }
+.btn-block { display: flex; width: 100%; justify-content: center; }
+
+/* ============ BRAND PAGE HEADER ============ */
+.brand-page-header {
+  --brand-primary: #2563eb;
+  --brand-secondary: #1e40af;
+  --brand-logo-bg: #fff;
+  position: relative;
+  margin: 0 0 20px;
+  padding: 22px 24px;
+  background: linear-gradient(135deg, var(--brand-primary), var(--brand-secondary));
+  color: #fff;
+  overflow: hidden;
+  border-radius: var(--nbd-radius-lg);
+  box-shadow: 0 4px 16px rgba(37,99,235,0.18);
+}
+.brand-page-header::after {
+  content: ""; position: absolute;
+  top: -60px; right: -80px;
+  width: 280px; height: 280px;
+  background: radial-gradient(circle, rgba(255,255,255,0.15), transparent 70%);
+  border-radius: 50%; pointer-events: none;
+}
+.brand-page-header-content {
+  position: relative; z-index: 1;
+  display: flex; align-items: center; gap: 20px; flex-wrap: wrap;
+}
+.brand-page-header-logo {
+  width: 52px; height: 52px;
+  border-radius: 14px;
+  background: var(--brand-logo-bg);
+  display: grid; place-items: center;
+  font-size: 24px; font-weight: 800;
+  color: var(--brand-primary);
+  flex-shrink: 0;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+}
+.brand-page-header-info { flex: 1; min-width: 240px; }
+.brand-page-header-eyebrow {
+  font-size: 11px; font-weight: 700;
+  letter-spacing: 0.08em; text-transform: uppercase;
+  opacity: 0.85; margin-bottom: 4px;
+}
+.brand-page-header-title { font-size: 22px; font-weight: 800; margin: 0 0 4px; line-height: 1.1; color: #fff; }
+.brand-page-header-sub { font-size: 13px; opacity: 0.92; line-height: 1.4; color: #fff; margin: 0; max-width: 640px; }
+.brand-page-header-actions { display: flex; gap: 8px; align-items: center; flex-shrink: 0; }
+.brand-page-header-actions .btn {
+  background: rgba(255,255,255,0.15); color: #fff;
+  border: 1px solid rgba(255,255,255,0.25);
+  backdrop-filter: blur(8px);
+}
+.brand-page-header-actions .btn:hover { background: rgba(255,255,255,0.25); }
+.brand-page-header-actions .btn-primary {
+  background: #fff; color: var(--brand-primary); border-color: #fff;
+}
+.brand-page-header-stats {
+  position: relative; z-index: 1;
+  margin-top: 14px; padding-top: 14px;
+  border-top: 1px solid rgba(255,255,255,0.15);
+  display: flex; gap: 32px; flex-wrap: wrap;
+}
+.brand-page-header-stat { display: flex; flex-direction: column; gap: 2px; }
+.brand-page-header-stat-value { font-size: 20px; font-weight: 800; color: #fff; }
+.brand-page-header-stat-label {
+  font-size: 11px; font-weight: 600;
+  text-transform: uppercase; letter-spacing: 0.05em;
+  opacity: 0.85;
+}
+
+/* ============ CARD ============ */
+.card {
+  background: #fff;
+  border: 1px solid var(--nbd-mb-border);
+  border-radius: var(--nbd-radius-lg);
+  overflow: hidden;
+  box-shadow: var(--nbd-shadow-sm);
+  margin-bottom: var(--nbd-space-4);
+}
+.card-head {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: var(--nbd-space-3);
+  padding: var(--nbd-space-4);
+  border-bottom: 1px solid var(--nbd-mb-border-subtle);
+}
+.card-title { font-size: 15px; font-weight: 700; color: var(--nbd-mb-text); margin: 0; }
+.card-sub { font-size: 12px; color: var(--nbd-mb-text-soft); margin-top: 2px; }
+.card-action {
+  font-size: 13px; color: var(--nbd-mb-primary);
+  font-weight: 500; cursor: pointer; background: none; border: none;
+}
+.card-action:hover { text-decoration: underline; }
+.card-body { padding: var(--nbd-space-4); }
+.card-body.is-flush { padding: 0; }
+.card-foot {
+  padding: var(--nbd-space-3) var(--nbd-space-4);
+  border-top: 1px solid var(--nbd-mb-border-subtle);
+  background: var(--nbd-mb-bg-soft);
+  font-size: 13px; color: var(--nbd-mb-text-soft);
+  display: flex; align-items: center; justify-content: space-between;
+}
+
+/* ============ STATS GRID ============ */
+.stats-grid {
+  display: grid; grid-template-columns: repeat(4, 1fr);
+  gap: var(--nbd-space-4);
+  margin-bottom: var(--nbd-space-6);
+}
+@media (max-width: 1279px) { .stats-grid { grid-template-columns: repeat(2, 1fr); } }
+.stat-card {
+  background: #fff;
+  border: 1px solid var(--nbd-mb-border);
+  border-radius: var(--nbd-radius-lg);
+  padding: var(--nbd-space-4);
+  display: flex; flex-direction: column; gap: var(--nbd-space-2);
+  box-shadow: var(--nbd-shadow-sm);
+}
+.stat-label {
+  font-size: 11px; font-weight: 600;
+  color: var(--nbd-mb-text-soft);
+  text-transform: uppercase; letter-spacing: 0.05em;
+}
+.stat-value { font-size: 26px; font-weight: 800; letter-spacing: -0.02em; color: var(--nbd-mb-text-strong); line-height: 1; }
+.stat-value-suffix { font-size: 13px; color: var(--nbd-mb-text-soft); font-weight: 500; margin-left: 4px; }
+.stat-meta { font-size: 12px; color: var(--nbd-mb-text-soft); }
+.stat-meta.is-up { color: var(--nbd-color-success-text); }
+
+/* ============ FORM (ADR-029 inset shadow) ============ */
+.form-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: var(--nbd-space-4); }
+@media (max-width: 767px) { .form-grid-2 { grid-template-columns: 1fr; } }
+.form-field { display: flex; flex-direction: column; gap: 6px; margin-bottom: var(--nbd-space-3); }
+.form-label { font-size: 12px; font-weight: 600; color: var(--nbd-mb-text); }
+.form-label .required { color: var(--nbd-color-error); margin-left: 2px; }
+.form-input, .form-select, .form-textarea {
+  height: 40px;
+  padding: 0 var(--nbd-space-3);
+  border: 1px solid var(--nbd-mb-border);
+  border-radius: var(--nbd-radius-md);
+  background: #fff;
+  font-size: 14px;
+  color: var(--nbd-mb-text);
+  font-family: inherit;
+  transition: all var(--nbd-duration-fast);
+  box-shadow: inset 0 2px 4px rgba(0,0,0,0.06), inset 0 1px 0 rgba(0,0,0,0.02);
+}
+.form-textarea { height: auto; min-height: 80px; padding: var(--nbd-space-2) var(--nbd-space-3); resize: vertical; }
+.form-input:focus, .form-select:focus, .form-textarea:focus {
+  outline: none;
+  border-color: var(--nbd-mb-primary);
+  box-shadow: inset 0 2px 4px rgba(0,0,0,0.04), 0 0 0 3px rgba(37,99,235,0.12);
+  background: #fff;
+}
+.form-help { font-size: 11px; color: var(--nbd-mb-text-soft); margin-top: 2px; }
+
+.check { display: inline-flex; align-items: flex-start; gap: var(--nbd-space-2); cursor: pointer; }
+.check input { width: 16px; height: 16px; margin-top: 2px; accent-color: var(--nbd-mb-primary); flex-shrink: 0; }
+.check-label { font-size: 13px; color: var(--nbd-mb-text); line-height: 1.5; }
+
+.radio-card-grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--nbd-space-3); }
+.radio-card {
+  display: flex; gap: var(--nbd-space-3); align-items: flex-start;
+  padding: var(--nbd-space-4);
+  border: 2px solid var(--nbd-mb-border);
+  border-radius: var(--nbd-radius-lg);
+  background: #fff; cursor: pointer;
+  text-align: left; font-family: inherit;
+}
+.radio-card:hover { border-color: var(--nbd-mb-border-strong); }
+.radio-card.is-selected { border-color: var(--nbd-mb-primary); background: var(--nbd-mb-primary-soft); }
+.radio-dot {
+  width: 20px; height: 20px; border-radius: 50%;
+  border: 2px solid var(--nbd-mb-border-strong);
+  flex-shrink: 0; position: relative; margin-top: 2px;
+}
+.radio-card.is-selected .radio-dot { border-color: var(--nbd-mb-primary); }
+.radio-card.is-selected .radio-dot::after {
+  content: ''; position: absolute;
+  top: 3px; left: 3px;
+  width: 10px; height: 10px;
+  border-radius: 50%; background: var(--nbd-mb-primary);
+}
+.radio-card-title { font-weight: 700; color: var(--nbd-mb-text-strong); font-size: 14px; margin: 0 0 2px; }
+.radio-card-desc { font-size: 12px; color: var(--nbd-mb-text-soft); margin: 0; }
+
+.chip {
+  display: inline-flex; align-items: center;
+  padding: 5px 12px;
+  border: 1px solid var(--nbd-mb-border);
+  border-radius: var(--nbd-radius-full);
+  font-size: 12px; font-weight: 500;
+  cursor: pointer; background: #fff;
+  color: var(--nbd-mb-text);
+  margin-right: 6px; margin-bottom: 6px;
+}
+.chip:hover { border-color: var(--nbd-mb-border-strong); }
+.chip.is-selected { background: var(--nbd-mb-primary); color: #fff; border-color: var(--nbd-mb-primary); }
+
+/* ============ STATUS PILL ============ */
+.status-pill {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 3px 10px;
+  border-radius: var(--nbd-radius-full);
+  font-size: 11px; font-weight: 700;
+}
+.status-pill .dot { width: 6px; height: 6px; border-radius: 50%; }
+.status-pill.is-success { background: var(--nbd-color-success-soft); color: var(--nbd-color-success-text); }
+.status-pill.is-success .dot { background: var(--nbd-color-success); animation: pulse 2s infinite; }
+.status-pill.is-warning { background: var(--nbd-color-warning-soft); color: var(--nbd-color-warning-text); }
+.status-pill.is-warning .dot { background: var(--nbd-color-warning); }
+.status-pill.is-error { background: var(--nbd-color-error-soft); color: var(--nbd-color-error-text); }
+.status-pill.is-error .dot { background: var(--nbd-color-error); }
+.status-pill.is-info { background: var(--nbd-color-info-soft); color: var(--nbd-color-info-text); }
+.status-pill.is-info .dot { background: var(--nbd-color-info); }
+.status-pill.is-neutral { background: var(--nbd-mb-bg-soft); color: var(--nbd-mb-text-soft); }
+.status-pill.is-neutral .dot { background: var(--nbd-mb-text-soft); }
+@keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.35; } }
+
+/* ============ TABS ============ */
+.tabs {
+  display: flex; gap: 2px;
+  border-bottom: 1px solid var(--nbd-mb-border);
+  margin-bottom: var(--nbd-space-5);
+}
+.tab {
+  padding: 10px var(--nbd-space-4);
+  font-weight: 600; font-size: 13px;
+  color: var(--nbd-mb-text-soft);
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -1px;
+}
+.tab:hover { color: var(--nbd-mb-text); }
+.tab.is-active { color: var(--nbd-mb-primary); border-bottom-color: var(--nbd-mb-primary); }
+
+/* ============ ALERT ============ */
+.alert {
+  padding: var(--nbd-space-3) var(--nbd-space-4);
+  border-radius: var(--nbd-radius-lg);
+  margin-bottom: var(--nbd-space-4);
+  display: flex; gap: var(--nbd-space-3); align-items: flex-start;
+  border-left: 4px solid;
+  font-size: 13px;
+}
+.alert-icon { font-size: 16px; flex-shrink: 0; line-height: 1; margin-top: 1px; }
+.alert-info { background: var(--nbd-color-info-soft); border-color: var(--nbd-color-info); color: var(--nbd-color-info-text); }
+.alert-success { background: var(--nbd-color-success-soft); border-color: var(--nbd-color-success); color: var(--nbd-color-success-text); }
+.alert-warning { background: var(--nbd-color-warning-soft); border-color: var(--nbd-color-warning); color: var(--nbd-color-warning-text); }
+.alert-danger { background: var(--nbd-color-error-soft); border-color: var(--nbd-color-error); color: var(--nbd-color-error-text); }
+
+/* ============ TABLE ============ */
+.table { width: 100%; border-collapse: collapse; }
+.table th {
+  text-align: left;
+  font-size: 11px; font-weight: 700;
+  color: var(--nbd-mb-text-soft);
+  text-transform: uppercase; letter-spacing: 0.05em;
+  padding: 10px var(--nbd-space-4);
+  background: var(--nbd-mb-bg-soft);
+  border-bottom: 1px solid var(--nbd-mb-border);
+}
+.table td {
+  padding: 13px var(--nbd-space-4);
+  border-bottom: 1px solid var(--nbd-mb-border-subtle);
+  font-size: 13px; vertical-align: middle;
+}
+.table tr:last-child td { border-bottom: none; }
+.table.is-hover tbody tr { cursor: pointer; transition: background var(--nbd-duration-fast); }
+.table.is-hover tbody tr:hover td { background: var(--nbd-mb-bg-soft); }
+.tx-amount { font-family: 'SF Mono', Monaco, monospace; font-weight: 700; }
+.tx-amount.is-plus { color: var(--nbd-color-success); }
+.tx-amount.is-minus { color: var(--nbd-mb-text); }
+.tx-id-link { color: var(--nbd-mb-primary); font-weight: 600; }
+
+/* ============ PAGE TOOLBAR ============ */
+.page-toolbar { display: flex; align-items: center; gap: var(--nbd-space-3); margin-bottom: var(--nbd-space-4); flex-wrap: wrap; }
+.page-search { position: relative; flex: 1; max-width: 320px; }
+.page-search svg {
+  position: absolute; left: 12px; top: 50%;
+  transform: translateY(-50%);
+  width: 16px; height: 16px;
+  color: var(--nbd-mb-text-soft);
+  stroke: currentColor; stroke-width: 2; fill: none;
+  pointer-events: none;
+}
+.page-search input {
+  width: 100%; height: 38px;
+  padding: 0 12px 0 36px;
+  border: 1px solid var(--nbd-mb-border);
+  border-radius: var(--nbd-radius-md);
+  background: #fff;
+  font-size: 13px; font-family: inherit;
+  box-shadow: inset 0 2px 4px rgba(0,0,0,0.06), inset 0 1px 0 rgba(0,0,0,0.02);
+}
+.page-search input:focus {
+  outline: none;
+  border-color: var(--nbd-mb-primary);
+  box-shadow: inset 0 2px 4px rgba(0,0,0,0.04), 0 0 0 3px rgba(37,99,235,0.12);
+}
+.filter-bar { display: flex; align-items: center; gap: var(--nbd-space-2); flex-wrap: wrap; }
+.filter-chip {
+  padding: 6px var(--nbd-space-3);
+  background: #fff;
+  border: 1px solid var(--nbd-mb-border);
+  border-radius: var(--nbd-radius-full);
+  font-size: 13px; color: var(--nbd-mb-text);
+  font-weight: 500; cursor: pointer;
+  transition: all var(--nbd-duration-fast);
+}
+.filter-chip.is-active { background: var(--nbd-mb-primary); color: #fff; border-color: var(--nbd-mb-primary); }
+
+/* ============ WIZARD STEPPER ============ */
+.wizard-stepper {
+  display: flex; align-items: center; gap: var(--nbd-space-2);
+  background: #fff;
+  padding: var(--nbd-space-4) var(--nbd-space-5);
+  border-radius: var(--nbd-radius-lg);
+  border: 1px solid var(--nbd-mb-border);
+  box-shadow: var(--nbd-shadow-sm);
+  margin-bottom: var(--nbd-space-5);
+}
+.wizard-step {
+  display: flex; align-items: center; gap: 10px;
+  flex: 1;
+  padding: 8px 14px;
+  border-radius: var(--nbd-radius-md);
+  cursor: pointer; background: none; border: none;
+  font-family: inherit; text-align: left;
+}
+.wizard-step:hover:not(.is-active) { background: var(--nbd-mb-bg-soft); }
+.wizard-step.is-active { background: var(--nbd-mb-primary-soft); }
+.wizard-step-circle {
+  width: 32px; height: 32px;
+  border-radius: 50%;
+  background: var(--nbd-mb-bg-soft);
+  border: 2px solid var(--nbd-mb-border-strong);
+  color: var(--nbd-mb-text-soft);
+  display: grid; place-items: center;
+  font-weight: 800; font-size: 13px;
+  flex-shrink: 0;
+}
+.wizard-step.is-active .wizard-step-circle {
+  background: var(--nbd-mb-primary);
+  border-color: var(--nbd-mb-primary); color: #fff;
+  box-shadow: 0 0 0 4px var(--nbd-mb-primary-soft);
+}
+.wizard-step.is-done .wizard-step-circle {
+  background: var(--nbd-color-success);
+  border-color: var(--nbd-color-success); color: #fff;
+}
+.wizard-step-label { font-size: 13px; color: var(--nbd-mb-text-soft); font-weight: 500; }
+.wizard-step.is-active .wizard-step-label, .wizard-step.is-done .wizard-step-label { color: var(--nbd-mb-text-strong); font-weight: 700; }
+.wizard-step-num { font-size: 10px; text-transform: uppercase; color: var(--nbd-mb-text-soft); }
+.wizard-step.is-active .wizard-step-num { color: var(--nbd-mb-primary); }
+.wizard-step-line { flex-shrink: 0; width: 24px; height: 2px; background: var(--nbd-mb-border); }
+.wizard-step-line.is-done { background: var(--nbd-color-success); }
+.wizard-panel { display: none; }
+.wizard-panel.is-active { display: block; }
+
+/* ============ PLATFORM CARDS ============ */
+.platform-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: var(--nbd-space-3);
+}
+@media (max-width: 1023px) { .platform-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 600px) { .platform-grid { grid-template-columns: 1fr; } }
+.platform-card {
+  display: flex; gap: var(--nbd-space-3); align-items: flex-start;
+  padding: var(--nbd-space-4);
+  border: 2px solid var(--nbd-mb-border);
+  border-radius: var(--nbd-radius-lg);
+  background: #fff;
+  cursor: pointer;
+  transition: all 0.18s ease;
+  text-align: left; font-family: inherit;
+}
+.platform-card:hover {
+  border-color: var(--nbd-mb-primary);
+  box-shadow: 0 4px 16px rgba(37,99,235,0.15);
+  transform: translateY(-2px);
+}
+.platform-icon {
+  width: 44px; height: 44px;
+  border-radius: var(--nbd-radius-lg);
+  display: grid; place-items: center;
+  font-weight: 800; font-size: 18px;
+  flex-shrink: 0; color: #fff;
+}
+.platform-icon.wp { background: #21759B; }
+.platform-icon.wix { background: #FAAD4D; }
+.platform-icon.shopify { background: #95BF47; }
+.platform-icon.magento { background: #EE672F; }
+.platform-icon.bigcommerce { background: #34313F; }
+.platform-icon.api { background: #1f2937; color: var(--nbd-accent); }
+.platform-card-info { flex: 1; min-width: 0; }
+.platform-card-title { font-weight: 700; font-size: 14px; color: var(--nbd-mb-text-strong); margin: 0 0 2px; }
+.platform-card-desc { font-size: 12px; color: var(--nbd-mb-text-soft); margin: 0 0 6px; }
+
+.skip-zone {
+  margin-top: var(--nbd-space-4);
+  padding: var(--nbd-space-4);
+  background: var(--nbd-mb-bg-soft);
+  border: 1px dashed var(--nbd-mb-border-strong);
+  border-radius: var(--nbd-radius-lg);
+  text-align: center;
+}
+.skip-zone p { margin: 0 0 var(--nbd-space-3); font-size: 13px; color: var(--nbd-mb-text-soft); }
+
+/* ============ CREDENTIALS BOX ============ */
+.creds-layout { display: grid; grid-template-columns: 1fr 360px; gap: var(--nbd-space-5); }
+@media (max-width: 1100px) { .creds-layout { grid-template-columns: 1fr; } }
+.creds-steps ol { padding-left: 20px; margin: 0; }
+.creds-steps li { margin-bottom: var(--nbd-space-4); line-height: 1.6; color: var(--nbd-mb-text); font-size: 13px; }
+.creds-steps strong { color: var(--nbd-mb-text-strong); }
+.creds-box {
+  background: #0f172a; color: #e2e8f0;
+  border-radius: var(--nbd-radius-lg);
+  padding: var(--nbd-space-4);
+  height: fit-content;
+  border: 1px solid #1e293b;
+}
+.creds-box-title { color: #fff; font-size: 13px; font-weight: 800; margin: 0 0 var(--nbd-space-3); display: flex; align-items: center; gap: 6px; }
+.creds-box-title svg { width: 14px; height: 14px; stroke: currentColor; stroke-width: 2; fill: none; }
+.cred-row { margin-bottom: var(--nbd-space-3); }
+.cred-label {
+  font-size: 10px; text-transform: uppercase;
+  letter-spacing: 0.06em; font-weight: 700; color: #94a3b8;
+  display: flex; justify-content: space-between;
+  margin-bottom: 4px;
+}
+.cred-input {
+  display: flex; align-items: center; gap: 6px;
+  padding: 7px 10px;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: var(--nbd-radius-md);
+  font-family: 'SF Mono', Monaco, monospace;
+  font-size: 11px; color: #fff;
+}
+.cred-input code { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.cred-input button { background: transparent; border: none; color: #94a3b8; cursor: pointer; font-size: 13px; padding: 2px; }
+.cred-input button:hover { color: var(--nbd-accent); }
+.cred-input button svg { width: 13px; height: 13px; stroke: currentColor; stroke-width: 2; fill: none; }
+
+/* ============ WALLET HERO ============ */
+.wallet-hero {
+  background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 60%, #7c3aed 100%);
+  color: #fff;
+  border-radius: var(--nbd-radius-lg);
+  padding: var(--nbd-space-6);
+  display: flex; align-items: center; justify-content: space-between;
+  position: relative; overflow: hidden;
+  margin-bottom: var(--nbd-space-4);
+  box-shadow: 0 8px 24px rgba(37,99,235,0.20);
+}
+.wallet-hero::after {
+  content: ''; position: absolute;
+  right: -80px; top: -80px;
+  width: 280px; height: 280px;
+  background: radial-gradient(circle, rgba(251,191,36,0.25), transparent 65%);
+  border-radius: 50%;
+}
+.wallet-hero-info { position: relative; z-index: 1; }
+.wallet-hero-label { font-size: 10px; text-transform: uppercase; letter-spacing: 0.08em; font-weight: 800; opacity: 0.85; margin-bottom: 6px; }
+.wallet-hero-amount { font-size: 44px; font-weight: 800; letter-spacing: -0.03em; line-height: 1; color: #fff; }
+.wallet-hero-unit { font-size: 14px; font-weight: 700; color: var(--nbd-accent); margin-left: 8px; }
+.wallet-hero-sub { font-size: 13px; opacity: 0.85; margin-top: 6px; }
+.wallet-hero-meter { margin-top: 14px; background: rgba(255,255,255,0.15); border-radius: var(--nbd-radius-full); height: 8px; overflow: hidden; }
+.wallet-hero-meter-fill { height: 100%; background: linear-gradient(90deg, #fbbf24, #f59e0b); border-radius: var(--nbd-radius-full); transition: width 0.4s ease; }
+.wallet-hero-actions { position: relative; z-index: 1; display: flex; gap: var(--nbd-space-2); }
+.btn-on-dark { background: rgba(255,255,255,0.12); color: #fff; border: 1px solid rgba(255,255,255,0.22); backdrop-filter: blur(8px); }
+.btn-on-dark:hover { background: rgba(255,255,255,0.22); }
+
+.sub-card {
+  background: linear-gradient(135deg, #f0f9ff, #e0f2fe);
+  border: 1px solid #93c5fd;
+  border-radius: var(--nbd-radius-lg);
+  padding: var(--nbd-space-4);
+  margin-bottom: var(--nbd-space-4);
+  display: flex; align-items: center; gap: var(--nbd-space-4);
+}
+.sub-card-icon { width: 48px; height: 48px; border-radius: var(--nbd-radius-md); background: #fff; display: grid; place-items: center; font-size: 22px; flex-shrink: 0; box-shadow: var(--nbd-shadow-sm); }
+.sub-card-body { flex: 1; }
+.sub-card-label { font-size: 10px; text-transform: uppercase; letter-spacing: 0.06em; font-weight: 700; color: var(--nbd-mb-primary); margin-bottom: 2px; }
+.sub-card-title { font-size: 15px; font-weight: 700; color: var(--nbd-mb-text-strong); margin: 0 0 2px; }
+.sub-card-desc { font-size: 12px; color: var(--nbd-mb-text-soft); margin: 0; }
+
+.pkg-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--nbd-space-3); }
+@media (max-width: 1023px) { .pkg-grid { grid-template-columns: 1fr; } }
+.pkg-card {
+  background: #fff;
+  border: 2px solid var(--nbd-mb-border);
+  border-radius: var(--nbd-radius-lg);
+  padding: var(--nbd-space-4);
+  text-align: center;
+  position: relative;
+  transition: all 0.18s ease;
+}
+.pkg-card:hover { border-color: var(--nbd-mb-primary); box-shadow: 0 8px 20px rgba(37,99,235,0.15); transform: translateY(-2px); }
+.pkg-card.is-featured { border-color: var(--nbd-accent); background: linear-gradient(180deg, #fffbeb, #fff 60%); }
+.pkg-card.is-featured::before {
+  content: '★ BEST VALUE'; position: absolute;
+  top: -10px; left: 50%; transform: translateX(-50%);
+  background: linear-gradient(135deg, #fbbf24, #f59e0b);
+  color: var(--nbd-accent-text-on);
+  font-size: 10px; font-weight: 800;
+  padding: 3px 12px;
+  border-radius: var(--nbd-radius-full);
+  letter-spacing: 0.06em;
+  box-shadow: 0 4px 12px rgba(251,191,36,0.30);
+}
+.pkg-tokens { font-size: 24px; font-weight: 800; color: var(--nbd-mb-text-strong); letter-spacing: -0.02em; line-height: 1; }
+.pkg-tokens-unit { font-size: 12px; color: var(--nbd-mb-text-soft); margin-left: 4px; font-weight: 500; }
+.pkg-price { font-size: 17px; font-weight: 800; color: var(--nbd-mb-primary); margin-top: 8px; }
+.pkg-price-per { font-size: 11px; color: var(--nbd-mb-text-soft); font-weight: 500; }
+.pkg-savings { font-size: 11px; color: var(--nbd-color-success); font-weight: 700; margin-top: 4px; }
+
+/* ============ LAYOUT 2-COL ============ */
+.layout-2col { display: grid; grid-template-columns: 1fr 340px; gap: var(--nbd-space-4); }
+@media (max-width: 1100px) { .layout-2col { grid-template-columns: 1fr; } }
+
+/* ============ APP LIST ROW ============ */
+.list-row {
+  display: flex; align-items: center; gap: var(--nbd-space-3);
+  padding: var(--nbd-space-3) var(--nbd-space-4);
+  background: #fff;
+  border: 1px solid var(--nbd-mb-border);
+  border-radius: var(--nbd-radius-lg);
+  margin-bottom: var(--nbd-space-2);
+  box-shadow: var(--nbd-shadow-sm);
+}
+.list-row-icon { width: 42px; height: 42px; border-radius: var(--nbd-radius-lg); display: grid; place-items: center; font-weight: 800; color: #fff; flex-shrink: 0; font-size: 16px; }
+.list-row-info { flex: 1; min-width: 0; }
+.list-row-title { font-weight: 700; color: var(--nbd-mb-text-strong); font-size: 14px; margin: 0; display: flex; align-items: center; gap: 8px; }
+.list-row-meta { font-size: 12px; color: var(--nbd-mb-text-soft); margin-top: 4px; display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+.list-row-actions { display: flex; gap: 6px; }
+
+/* ============ DEFINITION LIST ============ */
+.def-list { display: grid; grid-template-columns: 200px 1fr; gap: var(--nbd-space-3) var(--nbd-space-4); }
+.def-list dt { font-size: 12px; color: var(--nbd-mb-text-soft); font-weight: 600; margin: 0; }
+.def-list dd { font-size: 13px; color: var(--nbd-mb-text); margin: 0; font-weight: 500; }
+
+/* ============ KB HERO ============ */
+.kb-hero {
+  background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 60%, #7c3aed 100%);
+  color: #fff;
+  border-radius: var(--nbd-radius-lg);
+  padding: var(--nbd-space-8) var(--nbd-space-6);
+  text-align: center;
+  margin-bottom: var(--nbd-space-4);
+  position: relative; overflow: hidden;
+  box-shadow: 0 8px 24px rgba(37,99,235,0.18);
+}
+.kb-hero::before {
+  content: ''; position: absolute;
+  top: -60px; right: -80px;
+  width: 260px; height: 260px;
+  background: radial-gradient(circle, rgba(251,191,36,0.25), transparent 70%);
+  border-radius: 50%;
+}
+.kb-hero h2 { color: #fff; font-size: 26px; margin: 0 0 8px; letter-spacing: -0.02em; font-weight: 800; position: relative; z-index: 1; }
+.kb-hero p { margin: 0 0 18px; opacity: 0.85; font-size: 14px; position: relative; z-index: 1; }
+.kb-search-box { max-width: 560px; margin: 0 auto; position: relative; z-index: 1; }
+.kb-search-box input {
+  width: 100%; height: 46px;
+  padding: 0 16px 0 46px;
+  border-radius: var(--nbd-radius-md);
+  border: none; font-size: 14px;
+  background: #fff;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.20);
+  font-family: inherit;
+}
+.kb-search-icon { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); width: 18px; height: 18px; color: var(--nbd-mb-text-soft); stroke: currentColor; stroke-width: 2; fill: none; }
+.kb-category-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--nbd-space-3); margin-bottom: var(--nbd-space-4); }
+@media (max-width: 1023px) { .kb-category-grid { grid-template-columns: repeat(2, 1fr); } }
+.kb-category-card {
+  background: #fff;
+  border: 1px solid var(--nbd-mb-border);
+  border-radius: var(--nbd-radius-lg);
+  padding: var(--nbd-space-4);
+  box-shadow: var(--nbd-shadow-sm);
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+.kb-category-card:hover { transform: translateY(-3px); box-shadow: var(--nbd-shadow-lg); border-color: var(--nbd-mb-primary); }
+.kb-category-icon { width: 40px; height: 40px; border-radius: var(--nbd-radius-lg); display: grid; place-items: center; font-size: 18px; font-weight: 800; color: #fff; margin-bottom: var(--nbd-space-2); }
+
+/* ============ DETAIL BACK ============ */
+.detail-back {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-size: 13px;
+  color: var(--nbd-mb-text-soft);
+  margin-bottom: var(--nbd-space-3);
+}
+.detail-back:hover { color: var(--nbd-mb-primary); text-decoration: none; }
+.detail-back svg { width: 14px; height: 14px; stroke: currentColor; stroke-width: 2; fill: none; }
+
+/* ============ HELPERS ============ */
+.text-muted { color: var(--nbd-mb-text-soft); }
+.text-strong { color: var(--nbd-mb-text-strong); }
+.text-success { color: var(--nbd-color-success-text); }
+.text-warning { color: var(--nbd-color-warning-text); }
+.text-danger { color: var(--nbd-color-error-text); }
+.text-end { text-align: right; }
+.text-center { text-align: center; }
+.fw-bold { font-weight: 700; }
+.fw-semibold { font-weight: 600; }
+.fw-extra { font-weight: 800; }
+.d-flex { display: flex; }
+.flex-1 { flex: 1; }
+.gap-2 { gap: 8px; } .gap-3 { gap: 12px; }
+.mt-2 { margin-top: 8px; } .mt-3 { margin-top: 12px; } .mt-4 { margin-top: 16px; }
+.mb-0 { margin-bottom: 0; } .mb-2 { margin-bottom: 8px; } .mb-3 { margin-bottom: 12px; }
+.code-block {
+  font-family: 'SF Mono', Monaco, monospace;
+  font-size: 12px;
+  padding: 8px 12px;
+  background: var(--nbd-mb-bg-soft);
+  border: 1px solid var(--nbd-mb-border);
+  border-radius: var(--nbd-radius-md);
+  color: var(--nbd-mb-text-strong);
+  box-shadow: inset 0 2px 4px rgba(0,0,0,0.04);
+}
+hr { border: none; border-top: 1px solid var(--nbd-mb-border); margin: 16px 0; }
+
+</style>
+</head>
+<body>
+
+<div class="app">
+
+<!-- ============================================================
+     SIDEBAR (full-height: brand + store + wallet + nav + user)
+     ============================================================ -->
+<aside class="sidebar">
+
+  <!-- SIDEBAR HEADER: Brand + Store switcher + Wallet -->
+  <div class="sidebar-header">
+    <a href="#" class="sidebar-brand" onclick="goPage('home'); return false;">
+      <span class="sidebar-brand-logo">P</span>
+      <span class="sidebar-brand-name">Printcart<small>Dashboard</small></span>
+    </a>
+
+    <div class="sidebar-store" id="storeSwitcherBtn" onclick="toggleStoreSwitcher(event)" role="button" tabindex="0">
+      <span class="store-avatar" id="currentStoreAvatar">MS</span>
+      <span class="sidebar-store-info">
+        <span class="sidebar-store-name" id="currentStoreName">MyStickerShop</span>
+        <span class="sidebar-store-plan">Free plan · 4 products</span>
+      </span>
+      <span class="sidebar-store-caret"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></span>
+
+      <div class="switcher-dropdown" id="storeSwitcherDropdown" onclick="event.stopPropagation()">
+        <div class="switcher-section-label">Current store</div>
+        <button class="switcher-item is-current">
+          <span class="store-avatar">MS</span>
+          <span class="flex-1">
+            <span class="switcher-name">MyStickerShop ★</span><br>
+            <span class="switcher-meta">Free plan · 4 products</span>
+          </span>
+          <span class="status-pill is-success"><span class="dot"></span>Active</span>
+        </button>
+
+        <div class="switcher-section-label">Switch to</div>
+        <button class="switcher-item" onclick="switchStore('PrintHub VN', 'PH', this)">
+          <span class="store-avatar" style="background: linear-gradient(135deg, #f59e0b, #dc2626);">PH</span>
+          <span class="flex-1">
+            <span class="switcher-name">PrintHub VN</span><br>
+            <span class="switcher-meta">Pro · 12,450 tokens · WordPress</span>
+          </span>
+        </button>
+        <button class="switcher-item" onclick="switchStore('StickersByJen', 'SJ', this)">
+          <span class="store-avatar" style="background: linear-gradient(135deg, #10b981, #16a34a);">SJ</span>
+          <span class="flex-1">
+            <span class="switcher-name">StickersByJen</span><br>
+            <span class="switcher-meta">Free · 850 tokens · Wix</span>
+          </span>
+        </button>
+        <button class="switcher-item" onclick="switchStore('EventLab Studio', 'EL', this)">
+          <span class="store-avatar" style="background: linear-gradient(135deg, #7c3aed, #5b21b6);">EL</span>
+          <span class="flex-1">
+            <span class="switcher-name">EventLab Studio</span><br>
+            <span class="switcher-meta">Pro · 5,200 tokens · Shopify</span>
+          </span>
+        </button>
+
+        <div class="switcher-divider"></div>
+        <button class="switcher-cta"><svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" stroke-width="2" fill="none"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg> All stores (12)</button>
+        <button class="switcher-cta" onclick="goPage('wizard'); closeStoreSwitcher();"><svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" stroke-width="2" fill="none"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg> Create new store</button>
+      </div>
+    </div>
+
+    <button class="sidebar-wallet" onclick="goPage('wallet')" title="Wallet balance">
+      <svg viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+      <span class="sidebar-wallet-amount">8,420 tokens</span>
+      <span class="sidebar-wallet-arrow"><svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" fill="none"><polyline points="9 18 15 12 9 6"/></svg></span>
+    </button>
+  </div>
+
+  <!-- SIDEBAR BODY: nav sections -->
+  <div class="sidebar-body">
+
+    <div class="sidebar-section">
+      <button class="nav-item is-active" data-nav="home">
+        <span class="nav-icon"><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></span>
+        <span class="nav-label">Home</span>
+      </button>
+    <button class="nav-item" data-nav="wizard">
+      <span class="nav-icon"><svg viewBox="0 0 24 24"><path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 00-2.91-.09zM12 15l-3-3a22 22 0 012-3.95A12.88 12.88 0 0122 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 01-4 2z"/><path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5"/></svg></span>
+      <span class="nav-label">Setup Wizard</span>
+      <span class="nav-badge is-warning">2/3</span>
+    </button>
+  </div>
+
+  <div class="sidebar-section">
+    <div class="sidebar-section-label">Stores</div>
+    <button class="nav-item" data-nav="stores">
+      <span class="nav-icon"><svg viewBox="0 0 24 24"><path d="M3 9l1.5-6h15l1.5 6"/><path d="M3 9v10a2 2 0 002 2h14a2 2 0 002-2V9"/><path d="M3 9h18"/></svg></span>
+      <span class="nav-label">My Stores</span>
+      <span class="nav-badge">4</span>
+    </button>
+  </div>
+
+  <div class="sidebar-section">
+    <div class="sidebar-section-label">Catalog</div>
+    <button class="nav-item" data-nav="products">
+      <span class="nav-icon"><svg viewBox="0 0 24 24"><path d="M16.5 9.4l-9-5.19M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg></span>
+      <span class="nav-label">Products</span>
+    </button>
+    <button class="nav-item" data-nav="orders">
+      <span class="nav-icon"><svg viewBox="0 0 24 24"><path d="M16 4h2a2 2 0 012 2v14a2 2 0 01-2 2H6a2 2 0 01-2-2V6a2 2 0 012-2h2"/><rect x="8" y="2" width="8" height="4" rx="1"/></svg></span>
+      <span class="nav-label">Orders</span>
+    </button>
+    <button class="nav-item" data-nav="designs">
+      <span class="nav-icon"><svg viewBox="0 0 24 24"><circle cx="13.5" cy="6.5" r=".5"/><circle cx="17.5" cy="10.5" r=".5"/><circle cx="8.5" cy="7.5" r=".5"/><circle cx="6.5" cy="12.5" r=".5"/><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 011.668-1.668h1.996c3.051 0 5.555-2.503 5.555-5.554C21.965 6.012 17.461 2 12 2z"/></svg></span>
+      <span class="nav-label">Designs</span>
+    </button>
+  </div>
+
+  <div class="sidebar-section">
+    <div class="sidebar-section-label">Platform Connect</div>
+    <button class="nav-item" data-nav="platform-wp">
+      <span class="nav-icon"><svg viewBox="0 0 24 24"><path d="M18 16.98h-5.99c-1.1 0-1.95.94-2.48 1.9A4 4 0 117 12.21M18 16.98c0 1.66 1.34 3 3 3 1.66 0 3-1.34 3-3M18 16.98v-2.5"/></svg></span>
+      <span class="nav-label">WordPress</span>
+      <span class="nav-badge is-new">✓</span>
+    </button>
+    <button class="nav-item" data-nav="platform-wix">
+      <span class="nav-icon"><svg viewBox="0 0 24 24"><path d="M18 16.98h-5.99c-1.1 0-1.95.94-2.48 1.9A4 4 0 117 12.21"/></svg></span>
+      <span class="nav-label">Wix</span>
+    </button>
+    <button class="nav-item" data-nav="platform-shopify">
+      <span class="nav-icon"><svg viewBox="0 0 24 24"><path d="M18 16.98h-5.99c-1.1 0-1.95.94-2.48 1.9A4 4 0 117 12.21"/></svg></span>
+      <span class="nav-label">Shopify</span>
+    </button>
+    <button class="nav-item" data-nav="platform-magento">
+      <span class="nav-icon"><svg viewBox="0 0 24 24"><path d="M18 16.98h-5.99c-1.1 0-1.95.94-2.48 1.9A4 4 0 117 12.21"/></svg></span>
+      <span class="nav-label">Magento</span>
+    </button>
+    <button class="nav-item" data-nav="platform-bigcommerce">
+      <span class="nav-icon"><svg viewBox="0 0 24 24"><path d="M18 16.98h-5.99c-1.1 0-1.95.94-2.48 1.9A4 4 0 117 12.21"/></svg></span>
+      <span class="nav-label">BigCommerce</span>
+    </button>
+    <button class="nav-item" data-nav="platform-api">
+      <span class="nav-icon"><svg viewBox="0 0 24 24"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg></span>
+      <span class="nav-label">Custom API</span>
+    </button>
+  </div>
+
+  <div class="sidebar-section">
+    <div class="sidebar-section-label">Settings</div>
+    <button class="nav-item" data-nav="api-keys">
+      <span class="nav-icon"><svg viewBox="0 0 24 24"><path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 11-7.778 7.778 5.5 5.5 0 017.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4"/></svg></span>
+      <span class="nav-label">API &amp; Keys</span>
+    </button>
+    <button class="nav-item" data-nav="wallet">
+      <span class="nav-icon"><svg viewBox="0 0 24 24"><path d="M21 12V7H5a2 2 0 010-4h14v4"/><path d="M3 5v14a2 2 0 002 2h16v-5"/><path d="M18 12a2 2 0 000 4h4v-4z"/></svg></span>
+      <span class="nav-label">Wallet &amp; Billing</span>
+    </button>
+    <button class="nav-item" data-nav="apps">
+      <span class="nav-icon"><svg viewBox="0 0 24 24"><path d="M19.439 7.85c-.049.322.059.648.289.878l1.568 1.568c.47.47.706 1.087.706 1.704s-.235 1.233-.706 1.704l-1.611 1.611a.98.98 0 01-.837.276c-.47-.07-.802-.48-.968-.925a2.501 2.501 0 10-3.214 3.214c.446.166.855.497.925.968a.979.979 0 01-.276.837l-1.61 1.61a2.404 2.404 0 01-1.705.707 2.402 2.402 0 01-1.704-.706l-1.568-1.568a1.026 1.026 0 00-.877-.29c-.493.074-.84.504-1.02.968a2.5 2.5 0 11-3.237-3.237c.464-.18.894-.527.967-1.02a1.026 1.026 0 00-.289-.877l-1.568-1.568A2.402 2.402 0 012 12c0-.617.236-1.234.706-1.704L4.317 8.685a.98.98 0 01.837-.276c.47.07.802.48.968.925a2.501 2.501 0 103.214-3.214c-.446-.166-.855-.497-.925-.968a.979.979 0 01.276-.837l1.61-1.61A2.402 2.402 0 0112 2c.617 0 1.234.236 1.704.706l1.568 1.568c.23.23.556.338.877.29.493-.074.84-.504 1.02-.968a2.5 2.5 0 113.237 3.237c-.464.18-.894.527-.967 1.02z"/></svg></span>
+      <span class="nav-label">Apps &amp; Connectors</span>
+    </button>
+  </div>
+
+  <div class="sidebar-section">
+    <div class="sidebar-section-label">Support</div>
+    <button class="nav-item" data-nav="support">
+      <span class="nav-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3M12 17h.01"/></svg></span>
+      <span class="nav-label">Tickets</span>
+      <span class="nav-badge is-error">1</span>
+    </button>
+    <button class="nav-item" data-nav="knowledgebase">
+      <span class="nav-icon"><svg viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg></span>
+      <span class="nav-label">Knowledgebase</span>
+    </button>
+  </div>
+
+  <div class="sidebar-section">
+    <div class="sidebar-section-label">Account</div>
+    <button class="nav-item" data-nav="profile">
+      <span class="nav-icon"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></span>
+      <span class="nav-label">My Profile</span>
+    </button>
+  </div>
+
+  <div class="sidebar-promo">
+    <div class="sidebar-promo-label">⭐ Free plan</div>
+    <div class="sidebar-promo-title">Upgrade to Pro</div>
+    <div class="sidebar-promo-desc">Unlimited stores, priority support, advanced AI features.</div>
+    <a href="#" class="sidebar-promo-cta" onclick="goPage('wallet'); return false;">
+      Upgrade now <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+    </a>
+  </div>
+  </div><!-- /sidebar-body -->
+
+  <!-- SIDEBAR FOOTER: User avatar + actions -->
+  <div class="sidebar-footer">
+    <div class="sidebar-user-avatar" title="Avery Nguyen">AN</div>
+    <div class="sidebar-user-info">
+      <span class="sidebar-user-name">Avery Nguyen</span>
+      <span class="sidebar-user-email">avery@example.com</span>
+    </div>
+    <div class="sidebar-user-actions">
+      <button onclick="goPage('knowledgebase')" title="Help">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3M12 17h.01"/></svg>
+      </button>
+      <button title="Notifications">
+        <svg viewBox="0 0 24 24"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 01-3.46 0"/></svg>
+        <span class="sidebar-user-dot"></span>
+      </button>
+      <button onclick="goPage('profile')" title="Profile">
+        <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      </button>
+    </div>
+  </div>
+</aside>
+
+<main class="main">
+
+<!-- ============================================================
+     PAGE: HOME
+     ============================================================ -->
+<section class="page is-active" data-page="home">
+
+  <div class="brand-page-header">
+    <div class="brand-page-header-content">
+      <div class="brand-page-header-logo">MS</div>
+      <div class="brand-page-header-info">
+        <div class="brand-page-header-eyebrow">MyStickerShop · Home</div>
+        <h1 class="brand-page-header-title">Welcome back, Avery 👋</h1>
+        <p class="brand-page-header-sub">Here's what's happening with your stores today.</p>
+      </div>
+      <div class="brand-page-header-actions">
+        <button class="btn"><svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg> Reports</button>
+        <button class="btn btn-primary"><svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg> Add product</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="alert alert-warning">
+    <span class="alert-icon">⚡</span>
+    <div style="flex: 1;">
+      <strong>Finish your setup</strong> — 1 step left. Connect a platform to start receiving orders.
+    </div>
+    <button class="btn btn-sm btn-primary" data-nav-link="wizard">Continue setup →</button>
+  </div>
+
+  <div class="stats-grid">
+    <div class="stat-card">
+      <span class="stat-label">Active stores</span>
+      <span class="stat-value">4 <span class="stat-value-suffix">total</span></span>
+      <span class="stat-meta is-up">+1 this month</span>
+    </div>
+    <div class="stat-card">
+      <span class="stat-label">Orders this week</span>
+      <span class="stat-value">127</span>
+      <span class="stat-meta is-up">+23% vs last week</span>
+    </div>
+    <div class="stat-card">
+      <span class="stat-label">Designs created</span>
+      <span class="stat-value">142 <span class="stat-value-suffix">/ 200</span></span>
+      <span class="stat-meta">Free plan · 71% used</span>
+    </div>
+    <div class="stat-card">
+      <span class="stat-label">Wallet balance</span>
+      <span class="stat-value">8,420 <span class="stat-value-suffix">tokens</span></span>
+      <span class="stat-meta">Renews May 31 · auto</span>
+    </div>
+  </div>
+
+  <div class="layout-2col">
+    <div>
+      <div class="card">
+        <div class="card-head">
+          <div>
+            <h3 class="card-title">Recent orders</h3>
+            <div class="card-sub">Latest 5 across all stores</div>
+          </div>
+          <button class="card-action" data-nav-link="orders">View all →</button>
+        </div>
+        <div class="card-body is-flush">
+          <table class="table is-hover">
+            <thead><tr><th>Order</th><th>Store</th><th>Product</th><th>Status</th><th class="text-end">Total</th></tr></thead>
+            <tbody>
+              <tr onclick="goPage('order-detail')"><td class="fw-semibold">#10254</td><td>MyStickerShop</td><td>Round stickers · 250pcs</td><td><span class="status-pill is-warning"><span class="dot"></span>Production</span></td><td class="text-end fw-bold">$48.50</td></tr>
+              <tr onclick="goPage('order-detail')"><td class="fw-semibold">#10253</td><td>PrintHub VN</td><td>Business cards · 500pcs</td><td><span class="status-pill is-info"><span class="dot"></span>Shipped</span></td><td class="text-end fw-bold">$72.00</td></tr>
+              <tr onclick="goPage('order-detail')"><td class="fw-semibold">#10252</td><td>MyStickerShop</td><td>Vinyl wall decals · 12pcs</td><td><span class="status-pill is-success"><span class="dot"></span>Delivered</span></td><td class="text-end fw-bold">$135.00</td></tr>
+              <tr onclick="goPage('order-detail')"><td class="fw-semibold">#10251</td><td>EventLab Studio</td><td>Event banners · 4pcs</td><td><span class="status-pill is-success"><span class="dot"></span>Delivered</span></td><td class="text-end fw-bold">$240.00</td></tr>
+              <tr onclick="goPage('order-detail')"><td class="fw-semibold">#10250</td><td>StickersByJen</td><td>Holographic stickers · 100pcs</td><td><span class="status-pill is-success"><span class="dot"></span>Delivered</span></td><td class="text-end fw-bold">$32.00</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <aside>
+      <div class="card">
+        <div class="card-head"><h3 class="card-title">🚀 Setup checklist</h3></div>
+        <div class="card-body">
+          <div style="display: flex; flex-direction: column; gap: 10px;">
+            <div style="display: flex; align-items: center; gap: 10px;">
+              <div style="width: 22px; height: 22px; border-radius: 50%; background: var(--nbd-color-success); color: #fff; display: grid; place-items: center; font-size: 11px; font-weight: 800; flex-shrink: 0;">✓</div>
+              <div style="flex: 1; font-weight: 600; font-size: 13px; text-decoration: line-through; color: var(--nbd-mb-text-soft);">Profile complete</div>
+            </div>
+            <div style="display: flex; align-items: center; gap: 10px;">
+              <div style="width: 22px; height: 22px; border-radius: 50%; background: var(--nbd-color-success); color: #fff; display: grid; place-items: center; font-size: 11px; font-weight: 800; flex-shrink: 0;">✓</div>
+              <div style="flex: 1; font-weight: 600; font-size: 13px; text-decoration: line-through; color: var(--nbd-mb-text-soft);">Store created</div>
+            </div>
+            <div style="display: flex; align-items: center; gap: 10px;">
+              <div style="width: 22px; height: 22px; border-radius: 50%; border: 2px solid var(--nbd-mb-border-strong); flex-shrink: 0;"></div>
+              <div style="flex: 1;">
+                <div style="font-weight: 600; font-size: 13px; color: var(--nbd-mb-text-strong);">Connect a platform</div>
+                <div style="font-size: 11px; color: var(--nbd-mb-text-soft);">WP/Wix/Shopify/API · ~2 min</div>
+              </div>
+              <button class="btn btn-sm btn-primary" data-nav-link="wizard">Go</button>
+            </div>
+            <div style="display: flex; align-items: center; gap: 10px;">
+              <div style="width: 22px; height: 22px; border-radius: 50%; border: 2px solid var(--nbd-mb-border-strong); flex-shrink: 0;"></div>
+              <div style="flex: 1;">
+                <div style="font-weight: 600; font-size: 13px; color: var(--nbd-mb-text-strong);">First order</div>
+                <div style="font-size: 11px; color: var(--nbd-mb-text-soft);">Earn $50 in production credit</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-head">
+          <h3 class="card-title">💎 Wallet</h3>
+          <button class="card-action" data-nav-link="wallet">Manage →</button>
+        </div>
+        <div class="card-body">
+          <div style="display: flex; align-items: baseline; gap: 8px; margin-bottom: 8px;">
+            <span style="font-size: 28px; font-weight: 800; color: var(--nbd-mb-text-strong);">8,420</span>
+            <span style="font-size: 13px; color: var(--nbd-color-warning); font-weight: 700;">tokens</span>
+          </div>
+          <div style="background: var(--nbd-mb-bg-soft); height: 6px; border-radius: 999px; overflow: hidden; margin-bottom: 8px;">
+            <div style="width: 56%; height: 100%; background: linear-gradient(90deg, #fbbf24, #f59e0b);"></div>
+          </div>
+          <div style="font-size: 12px; color: var(--nbd-mb-text-soft);">
+            <strong>Pro 15K</strong> · renews May 31 · 6,580 used
+          </div>
+        </div>
+      </div>
+    </aside>
+  </div>
+
+</section>
+
+<!-- ============================================================
+     PAGE: SETUP WIZARD (1 menu, 3 tabs inside)
+     ============================================================ -->
+<section class="page" data-page="wizard">
+
+  <div class="brand-page-header">
+    <div class="brand-page-header-content">
+      <div class="brand-page-header-logo">🚀</div>
+      <div class="brand-page-header-info">
+        <div class="brand-page-header-eyebrow">Setup Wizard</div>
+        <h1 class="brand-page-header-title">Get your store ready</h1>
+        <p class="brand-page-header-sub">Complete these 3 steps to start selling. Step 3 is optional — you can skip and add a platform later.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="wizard-stepper">
+    <button class="wizard-step is-done" onclick="goWizardStep(1)" data-step="1">
+      <div class="wizard-step-circle">✓</div>
+      <div>
+        <div class="wizard-step-num">Step 1</div>
+        <div class="wizard-step-label">Profile</div>
+      </div>
+    </button>
+    <div class="wizard-step-line is-done"></div>
+    <button class="wizard-step is-done" onclick="goWizardStep(2)" data-step="2">
+      <div class="wizard-step-circle">✓</div>
+      <div>
+        <div class="wizard-step-num">Step 2</div>
+        <div class="wizard-step-label">Create store</div>
+      </div>
+    </button>
+    <div class="wizard-step-line"></div>
+    <button class="wizard-step is-active" onclick="goWizardStep(3)" data-step="3">
+      <div class="wizard-step-circle">3</div>
+      <div>
+        <div class="wizard-step-num">Step 3 · optional</div>
+        <div class="wizard-step-label">Connect platform</div>
+      </div>
+    </button>
+  </div>
+
+  <!-- WIZARD STEP 1: PROFILE -->
+  <div class="wizard-panel" data-wizard-panel="1">
+    <div class="card">
+      <div class="card-head">
+        <div>
+          <h3 class="card-title">Tell us about you</h3>
+          <div class="card-sub">We use this to personalise your dashboard and notifications.</div>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="form-grid-2">
+          <div class="form-field">
+            <label class="form-label">Full name <span class="required">*</span></label>
+            <input type="text" class="form-input" value="Avery Nguyen">
+          </div>
+          <div class="form-field">
+            <label class="form-label">Email <span class="required">*</span></label>
+            <input type="email" class="form-input" value="avery@example.com" disabled>
+            <span class="form-help">Used for login · not changeable here</span>
+          </div>
+          <div class="form-field">
+            <label class="form-label">Country <span class="required">*</span></label>
+            <select class="form-select"><option selected>Vietnam</option><option>United States</option><option>United Kingdom</option></select>
+          </div>
+          <div class="form-field">
+            <label class="form-label">Timezone <span class="required">*</span></label>
+            <select class="form-select"><option selected>(GMT+7) Ho Chi Minh City</option><option>(GMT+8) Singapore</option></select>
+          </div>
+          <div class="form-field">
+            <label class="form-label">Preferred language</label>
+            <select class="form-select"><option>English</option><option selected>Tiếng Việt</option></select>
+          </div>
+          <div class="form-field">
+            <label class="form-label">Phone (optional)</label>
+            <input type="tel" class="form-input" placeholder="+84 ...">
+          </div>
+        </div>
+      </div>
+      <div class="card-foot">
+        <span class="text-muted">Step 1 of 3</span>
+        <button class="btn btn-primary" onclick="goWizardStep(2)">Continue →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- WIZARD STEP 2: CREATE STORE -->
+  <div class="wizard-panel" data-wizard-panel="2">
+    <div class="card">
+      <div class="card-head">
+        <div>
+          <h3 class="card-title">⭐ Create your first store</h3>
+          <div class="card-sub">Each store has its own API keys, products, and orders.</div>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="form-field">
+          <label class="form-label">Store name <span class="required">*</span></label>
+          <input type="text" class="form-input" value="MyStickerShop" oninput="updateSlug(this.value, 'wizSlug')">
+          <div style="display: flex; align-items: center; gap: 6px; margin-top: 6px; font-size: 12px; font-family: 'SF Mono', Monaco, monospace;">
+            <span class="text-muted">printcart.com/store/</span>
+            <strong style="color: var(--nbd-mb-text-strong);" id="wizSlug">mystickershop</strong>
+            <span class="status-pill is-success"><span class="dot"></span>available</span>
+          </div>
+        </div>
+
+        <div class="form-field">
+          <label class="form-label">Business type <span class="required">*</span></label>
+          <div class="radio-card-grid">
+            <button type="button" class="radio-card is-selected" onclick="selectRadio(this)">
+              <div class="radio-dot"></div>
+              <div><div class="radio-card-title">Print-on-Demand</div><p class="radio-card-desc">Stickers, apparel, mugs, custom drops</p></div>
+            </button>
+            <button type="button" class="radio-card" onclick="selectRadio(this)">
+              <div class="radio-dot"></div>
+              <div><div class="radio-card-title">Commercial Print</div><p class="radio-card-desc">Business cards, brochures, signage</p></div>
+            </button>
+            <button type="button" class="radio-card" onclick="selectRadio(this)">
+              <div class="radio-dot"></div>
+              <div><div class="radio-card-title">Design Studio</div><p class="radio-card-desc">Custom design service for clients</p></div>
+            </button>
+            <button type="button" class="radio-card" onclick="selectRadio(this)">
+              <div class="radio-dot"></div>
+              <div><div class="radio-card-title">Marketplace</div><p class="radio-card-desc">Multi-vendor hub</p></div>
+            </button>
+          </div>
+        </div>
+
+        <div class="form-field">
+          <label class="form-label">Industry tags (optional)</label>
+          <div>
+            <button class="chip is-selected" onclick="this.classList.toggle('is-selected')">Apparel</button>
+            <button class="chip" onclick="this.classList.toggle('is-selected')">Packaging</button>
+            <button class="chip is-selected" onclick="this.classList.toggle('is-selected')">Stationery</button>
+            <button class="chip" onclick="this.classList.toggle('is-selected')">Signage</button>
+            <button class="chip" onclick="this.classList.toggle('is-selected')">Promotional</button>
+          </div>
+        </div>
+
+        <div class="alert alert-info">
+          <span class="alert-icon">💡</span>
+          <div><strong>What happens next:</strong> We generate API credentials (Sid + Secret + Unauth Token), credit <strong>50 free tokens</strong>, and prepare your dashboard.</div>
+        </div>
+      </div>
+      <div class="card-foot">
+        <button class="btn btn-ghost" onclick="goWizardStep(1)">← Back</button>
+        <button class="btn btn-primary" onclick="goWizardStep(3)">Create store →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- WIZARD STEP 3: CONNECT PLATFORM (OPTIONAL) -->
+  <div class="wizard-panel is-active" data-wizard-panel="3">
+    <div class="card">
+      <div class="card-head">
+        <div>
+          <h3 class="card-title">Where will you sell?</h3>
+          <div class="card-sub">Optional — connect now, or skip and set it up later from <strong>Platform Connect</strong> sidebar menu.</div>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="platform-grid">
+          <button class="platform-card" onclick="goPage('platform-wp')">
+            <div class="platform-icon wp">W</div>
+            <div class="platform-card-info">
+              <div class="platform-card-title">WordPress / WooCommerce</div>
+              <p class="platform-card-desc">Free plugin · Manual install</p>
+              <span class="status-pill is-warning"><span class="dot"></span>Most popular</span>
+            </div>
+          </button>
+          <button class="platform-card" onclick="goPage('platform-wix')">
+            <div class="platform-icon wix">Wx</div>
+            <div class="platform-card-info">
+              <div class="platform-card-title">Wix</div>
+              <p class="platform-card-desc">One-click from App Market</p>
+              <span class="status-pill is-info"><span class="dot"></span>OAuth</span>
+            </div>
+          </button>
+          <button class="platform-card" onclick="goPage('platform-shopify')">
+            <div class="platform-icon shopify">S</div>
+            <div class="platform-card-info">
+              <div class="platform-card-title">Shopify</div>
+              <p class="platform-card-desc">Public + Private app</p>
+              <span class="status-pill is-info"><span class="dot"></span>OAuth</span>
+            </div>
+          </button>
+          <button class="platform-card" onclick="goPage('platform-magento')">
+            <div class="platform-icon magento">M</div>
+            <div class="platform-card-info">
+              <div class="platform-card-title">Magento / Adobe Commerce</div>
+              <p class="platform-card-desc">Extension marketplace</p>
+              <span class="status-pill is-neutral"><span class="dot"></span>v2 + v3</span>
+            </div>
+          </button>
+          <button class="platform-card" onclick="goPage('platform-bigcommerce')">
+            <div class="platform-icon bigcommerce">B</div>
+            <div class="platform-card-info">
+              <div class="platform-card-title">BigCommerce</div>
+              <p class="platform-card-desc">Single-Click app</p>
+              <span class="status-pill is-info"><span class="dot"></span>OAuth</span>
+            </div>
+          </button>
+          <button class="platform-card" onclick="goPage('platform-api')">
+            <div class="platform-icon api">⌨</div>
+            <div class="platform-card-info">
+              <div class="platform-card-title">Custom REST API</div>
+              <p class="platform-card-desc">For developers · headless</p>
+              <span class="status-pill is-neutral"><span class="dot"></span>Developer</span>
+            </div>
+          </button>
+        </div>
+
+        <div class="skip-zone">
+          <p>Not ready yet? You can always come back from Platform Connect in the sidebar.</p>
+          <button class="btn btn-secondary" onclick="goPage('home')">Skip for now — go to dashboard</button>
+        </div>
+      </div>
+      <div class="card-foot">
+        <button class="btn btn-ghost" onclick="goWizardStep(2)">← Back</button>
+        <span class="text-muted" style="font-size: 12px;">You can come back to this anytime</span>
+      </div>
+    </div>
+  </div>
+
+</section>
+
+<!-- ============================================================
+     PAGE: STORES (list)
+     ============================================================ -->
+<section class="page" data-page="stores">
+
+  <div class="brand-page-header">
+    <div class="brand-page-header-content">
+      <div class="brand-page-header-logo">🏪</div>
+      <div class="brand-page-header-info">
+        <div class="brand-page-header-eyebrow">Stores</div>
+        <h1 class="brand-page-header-title">My Stores</h1>
+        <p class="brand-page-header-sub">Manage all stores in one place. Each has its own API keys, products, and orders.</p>
+      </div>
+      <div class="brand-page-header-actions">
+        <button class="btn btn-primary" data-nav-link="wizard"><svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg> Create store</button>
+      </div>
+    </div>
+    <div class="brand-page-header-stats">
+      <div class="brand-page-header-stat"><div class="brand-page-header-stat-value">4</div><div class="brand-page-header-stat-label">Total stores</div></div>
+      <div class="brand-page-header-stat"><div class="brand-page-header-stat-value">3</div><div class="brand-page-header-stat-label">Connected</div></div>
+      <div class="brand-page-header-stat"><div class="brand-page-header-stat-value">1</div><div class="brand-page-header-stat-label">Not connected</div></div>
+    </div>
+  </div>
+
+  <div class="page-toolbar">
+    <div class="page-search">
+      <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.35-4.35"/></svg>
+      <input type="text" placeholder="Search stores...">
+    </div>
+    <div class="filter-bar">
+      <button class="filter-chip is-active">All (4)</button>
+      <button class="filter-chip">Connected (3)</button>
+      <button class="filter-chip">WordPress (1)</button>
+      <button class="filter-chip">Shopify (1)</button>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-body is-flush">
+    <table class="table is-hover">
+      <thead><tr><th>Store</th><th>Platform</th><th>Plan</th><th>Orders (30d)</th><th>Wallet</th><th>Status</th></tr></thead>
+      <tbody>
+        <tr onclick="goPage('store-detail')">
+          <td><div style="display: flex; align-items: center; gap: 10px;"><span class="store-avatar">MS</span><div><div class="fw-bold">MyStickerShop ★</div><div class="text-muted" style="font-size: 11px;">mystickershop.com</div></div></div></td>
+          <td><span class="status-pill is-info"><span class="dot"></span>WordPress</span></td>
+          <td><span class="status-pill is-neutral"><span class="dot"></span>Free</span></td>
+          <td class="fw-semibold">87</td>
+          <td>8,420 tokens</td>
+          <td><span class="status-pill is-success"><span class="dot"></span>Healthy</span></td>
+        </tr>
+        <tr onclick="goPage('store-detail')">
+          <td><div style="display: flex; align-items: center; gap: 10px;"><span class="store-avatar" style="background: linear-gradient(135deg, #f59e0b, #dc2626);">PH</span><div><div class="fw-bold">PrintHub VN</div><div class="text-muted" style="font-size: 11px;">printhub.vn</div></div></div></td>
+          <td><span class="status-pill is-info"><span class="dot"></span>WordPress</span></td>
+          <td><span class="status-pill is-warning"><span class="dot"></span>Pro</span></td>
+          <td class="fw-semibold">142</td>
+          <td>12,450 tokens</td>
+          <td><span class="status-pill is-success"><span class="dot"></span>Healthy</span></td>
+        </tr>
+        <tr onclick="goPage('store-detail')">
+          <td><div style="display: flex; align-items: center; gap: 10px;"><span class="store-avatar" style="background: linear-gradient(135deg, #10b981, #16a34a);">SJ</span><div><div class="fw-bold">StickersByJen</div><div class="text-muted" style="font-size: 11px;">stickersjen.wixsite.com</div></div></div></td>
+          <td><span class="status-pill is-info"><span class="dot"></span>Wix</span></td>
+          <td><span class="status-pill is-neutral"><span class="dot"></span>Free</span></td>
+          <td class="fw-semibold">23</td>
+          <td>850 tokens</td>
+          <td><span class="status-pill is-warning"><span class="dot"></span>Token expired</span></td>
+        </tr>
+        <tr onclick="goPage('store-detail')">
+          <td><div style="display: flex; align-items: center; gap: 10px;"><span class="store-avatar" style="background: linear-gradient(135deg, #7c3aed, #5b21b6);">EL</span><div><div class="fw-bold">EventLab Studio</div><div class="text-muted" style="font-size: 11px;">eventlab.myshopify.com</div></div></div></td>
+          <td><span class="status-pill is-info"><span class="dot"></span>Shopify</span></td>
+          <td><span class="status-pill is-warning"><span class="dot"></span>Pro</span></td>
+          <td class="fw-semibold">56</td>
+          <td>5,200 tokens</td>
+          <td><span class="status-pill is-success"><span class="dot"></span>Healthy</span></td>
+        </tr>
+      </tbody>
+    </table>
+    </div>
+  </div>
+
+</section>
+
+<!-- ============================================================
+     PAGE: STORE DETAIL
+     ============================================================ -->
+<section class="page" data-page="store-detail">
+
+  <a href="#" class="detail-back" onclick="goPage('stores'); return false;">
+    <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg> All stores
+  </a>
+
+  <div class="brand-page-header">
+    <div class="brand-page-header-content">
+      <div class="brand-page-header-logo">MS</div>
+      <div class="brand-page-header-info">
+        <div class="brand-page-header-eyebrow">MyStickerShop · Overview</div>
+        <h1 class="brand-page-header-title">MyStickerShop</h1>
+        <p class="brand-page-header-sub">Default store · WordPress · created May 16, 2026</p>
+      </div>
+      <div class="brand-page-header-actions">
+        <button class="btn"><svg viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg> Edit settings</button>
+        <button class="btn btn-primary"><svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg> Add product</button>
+      </div>
+    </div>
+    <div class="brand-page-header-stats">
+      <div class="brand-page-header-stat"><div class="brand-page-header-stat-value">87</div><div class="brand-page-header-stat-label">Orders 30d</div></div>
+      <div class="brand-page-header-stat"><div class="brand-page-header-stat-value">142</div><div class="brand-page-header-stat-label">Products</div></div>
+      <div class="brand-page-header-stat"><div class="brand-page-header-stat-value">8,420</div><div class="brand-page-header-stat-label">Tokens</div></div>
+      <div class="brand-page-header-stat"><div class="brand-page-header-stat-value">Free</div><div class="brand-page-header-stat-label">Plan</div></div>
+    </div>
+  </div>
+
+  <div class="tabs">
+    <button class="tab is-active">Overview</button>
+    <button class="tab">Products</button>
+    <button class="tab">Orders</button>
+    <button class="tab">Customers</button>
+    <button class="tab">Settings</button>
+  </div>
+
+  <div class="layout-2col">
+    <div>
+      <div class="card">
+        <div class="card-head">
+          <h3 class="card-title">Recent orders</h3>
+          <button class="card-action" data-nav-link="orders">View all →</button>
+        </div>
+        <div class="card-body is-flush">
+          <table class="table is-hover">
+            <thead><tr><th>Order</th><th>Product</th><th>Status</th><th class="text-end">Total</th></tr></thead>
+            <tbody>
+              <tr onclick="goPage('order-detail')"><td>#10254</td><td>Round stickers · 250pcs</td><td><span class="status-pill is-warning"><span class="dot"></span>Production</span></td><td class="text-end fw-bold">$48.50</td></tr>
+              <tr onclick="goPage('order-detail')"><td>#10248</td><td>Bumper stickers · 100pcs</td><td><span class="status-pill is-success"><span class="dot"></span>Delivered</span></td><td class="text-end fw-bold">$26.00</td></tr>
+              <tr onclick="goPage('order-detail')"><td>#10241</td><td>Wall decals · 12pcs</td><td><span class="status-pill is-success"><span class="dot"></span>Delivered</span></td><td class="text-end fw-bold">$135.00</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-head"><h3 class="card-title">Connection health</h3></div>
+        <div class="card-body">
+          <dl class="def-list">
+            <dt>Platform</dt><dd>WordPress + WooCommerce 7.8</dd>
+            <dt>Plugin version</dt><dd>Printcart 2.4.9 <span class="status-pill is-success" style="margin-left: 6px;"><span class="dot"></span>up to date</span></dd>
+            <dt>Last sync</dt><dd>2 minutes ago</dd>
+            <dt>Webhook health</dt><dd><span class="status-pill is-success"><span class="dot"></span>Healthy · 0 failures in 7 days</span></dd>
+          </dl>
+        </div>
+      </div>
+    </div>
+
+    <aside>
+      <div class="card">
+        <div class="card-head"><h3 class="card-title">Quick actions</h3></div>
+        <div class="card-body">
+          <div style="display: flex; flex-direction: column; gap: 8px;">
+            <button class="btn btn-secondary btn-block" data-nav-link="api-keys">View API keys</button>
+            <button class="btn btn-secondary btn-block" data-nav-link="apps">Manage connectors</button>
+            <button class="btn btn-secondary btn-block">Webhook log</button>
+            <button class="btn btn-secondary btn-block">Force re-sync</button>
+            <hr>
+            <button class="btn btn-danger btn-block">Delete store</button>
+          </div>
+        </div>
+      </div>
+    </aside>
+  </div>
+
+</section>
+
+<!-- ============================================================
+     PAGE: PLATFORM · WORDPRESS
+     ============================================================ -->
+<section class="page" data-page="platform-wp">
+
+  <div class="brand-page-header">
+    <div class="brand-page-header-content">
+      <div class="brand-page-header-logo" style="color: #21759B;">W</div>
+      <div class="brand-page-header-info">
+        <div class="brand-page-header-eyebrow">Platform Connect · WordPress</div>
+        <h1 class="brand-page-header-title">Connect WordPress / WooCommerce</h1>
+        <p class="brand-page-header-sub">Free plugin · install in ~2 minutes. Your credentials are on the right.</p>
+      </div>
+      <div class="brand-page-header-actions">
+        <span class="status-pill is-success" style="background: rgba(16,185,129,0.25); color: #fff; border: 1px solid rgba(255,255,255,0.3);"><span class="dot"></span>Connected · healthy</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="alert alert-info">
+    <span class="alert-icon">📦</span>
+    <div>
+      <strong>Install method:</strong> Download the plugin ZIP, upload to WordPress, activate, then paste credentials.
+      <div style="margin-top: 8px;">
+        <button class="btn btn-sm btn-primary"><svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg> Download printcart-wp-2.4.9.zip</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="creds-layout">
+    <div class="card">
+      <div class="card-head"><h3 class="card-title">Installation steps</h3></div>
+      <div class="card-body">
+        <div class="creds-steps">
+          <ol>
+            <li><strong>Download the Printcart plugin</strong><br>Compatible with WP 6.0+ and WooCommerce 7.0+.</li>
+            <li><strong>Upload to WordPress</strong><br>In WP admin: <em>Plugins → Add New → Upload Plugin</em>, choose the .zip, click <em>Install Now</em>.</li>
+            <li><strong>Activate the plugin</strong><br>After install, click <em>Activate Plugin</em>.</li>
+            <li><strong>Paste your credentials</strong><br>Go to <em>PC Designer → General → Connect</em> and paste Sid, Secret, and Unauth Token from the box on the right.</li>
+            <li><strong>Test the connection</strong><br>Click "Verify" on the WordPress side, or use the button below.</li>
+          </ol>
+        </div>
+      </div>
+      <div class="card-foot">
+        <button class="btn btn-ghost" data-nav-link="wizard">← Choose different platform</button>
+        <button class="btn btn-primary">Check connection now</button>
+      </div>
+    </div>
+
+    <div class="creds-box">
+      <div class="creds-box-title"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg> Your WordPress credentials</div>
+      <div class="cred-row">
+        <div class="cred-label"><span>Sid</span><span style="color:#60a5fa;">Public</span></div>
+        <div class="cred-input"><code>pcsia_4a810325589e63d069…</code><button><svg viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg></button></div>
+      </div>
+      <div class="cred-row">
+        <div class="cred-label"><span>Secret</span><span style="color: var(--nbd-accent);">⚠ Shown once</span></div>
+        <div class="cred-input"><code>•••••••••••••••••••••</code><button><svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button><button><svg viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg></button></div>
+      </div>
+      <div class="cred-row">
+        <div class="cred-label"><span>Unauth Token</span><span style="color:#60a5fa;">Frontend</span></div>
+        <div class="cred-input"><code>503f48027e8c33c55ccebf1…</code><button><svg viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg></button></div>
+      </div>
+      <button class="btn btn-block" style="background: rgba(255,255,255,0.08); color: #fff; border: 1px solid rgba(255,255,255,0.15); margin-top: 8px; font-size: 12px;">Copy all as JSON</button>
+    </div>
+  </div>
+
+</section>
+
+<!-- ============================================================
+     PAGE: PLATFORM · WIX
+     ============================================================ -->
+<section class="page" data-page="platform-wix">
+
+  <div class="brand-page-header">
+    <div class="brand-page-header-content">
+      <div class="brand-page-header-logo" style="color: #FAAD4D;">Wx</div>
+      <div class="brand-page-header-info">
+        <div class="brand-page-header-eyebrow">Platform Connect · Wix</div>
+        <h1 class="brand-page-header-title">Connect Wix</h1>
+        <p class="brand-page-header-sub">OAuth one-click install — no manual setup needed.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="alert alert-success">
+    <span class="alert-icon">⚡</span>
+    <div>
+      <strong>One-click install:</strong> Click "Install on Wix" — we handle the rest.
+      <div style="margin-top: 8px;">
+        <button class="btn btn-sm btn-primary">Install on Wix App Market</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="creds-layout">
+    <div class="card">
+      <div class="card-head"><h3 class="card-title">Installation steps</h3></div>
+      <div class="card-body">
+        <div class="creds-steps">
+          <ol>
+            <li><strong>Click "Install on Wix"</strong><br>Opens the Wix App Market with permissions screen.</li>
+            <li><strong>Choose your site</strong><br>Select which Wix site to connect (you can connect multiple later).</li>
+            <li><strong>Authorize Printcart</strong><br>Allow access to products, orders, and storefront customization.</li>
+            <li><strong>You're done</strong><br>Credentials are auto-exchanged. The Printcart designer button appears on your product pages automatically.</li>
+          </ol>
+        </div>
+      </div>
+      <div class="card-foot">
+        <button class="btn btn-ghost" data-nav-link="wizard">← Choose different platform</button>
+      </div>
+    </div>
+
+    <div class="creds-box">
+      <div class="creds-box-title">🛡 Auto-exchanged via OAuth</div>
+      <p style="color: #94a3b8; font-size: 12px; margin: 0 0 12px;">Credentials are securely stored after OAuth. No manual paste needed.</p>
+      <div class="cred-row">
+        <div class="cred-label"><span>OAuth status</span></div>
+        <div class="cred-input"><code>Pending authorization</code></div>
+      </div>
+    </div>
+  </div>
+
+</section>
+
+<!-- ============================================================
+     PAGE: PLATFORM · SHOPIFY
+     ============================================================ -->
+<section class="page" data-page="platform-shopify">
+
+  <div class="brand-page-header">
+    <div class="brand-page-header-content">
+      <div class="brand-page-header-logo" style="color: #95BF47;">S</div>
+      <div class="brand-page-header-info">
+        <div class="brand-page-header-eyebrow">Platform Connect · Shopify</div>
+        <h1 class="brand-page-header-title">Connect Shopify</h1>
+        <p class="brand-page-header-sub">Public app (one-click) or Private app (custom credentials).</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="creds-layout">
+    <div>
+      <div class="card">
+        <div class="card-head"><h3 class="card-title">Option 1: Public app (recommended)</h3></div>
+        <div class="card-body">
+          <div class="creds-steps">
+            <ol>
+              <li><strong>Visit Shopify App Store</strong><br>Search for "Printcart Designer".</li>
+              <li><strong>Click "Add app"</strong><br>OAuth flow handles credentials automatically.</li>
+              <li><strong>Approve scopes</strong><br>Allow read/write access to products, orders, theme.</li>
+              <li><strong>Done</strong><br>Designer button auto-injects on product pages.</li>
+            </ol>
+          </div>
+          <button class="btn btn-primary mt-3">Install from Shopify App Store →</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-head"><h3 class="card-title">Option 2: Private app</h3></div>
+        <div class="card-body">
+          <div class="creds-steps">
+            <ol>
+              <li><strong>Open Shopify Admin</strong><br><em>Settings → Apps and sales channels → Develop apps</em>.</li>
+              <li><strong>Create new app</strong><br>Name it "Printcart Designer". Set Admin API scopes.</li>
+              <li><strong>Install + get token</strong><br>Copy the Admin API access token.</li>
+              <li><strong>Paste here</strong><br>Use the credentials box on the right.</li>
+            </ol>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="creds-box">
+      <div class="creds-box-title">🛡 Your Shopify credentials</div>
+      <div class="cred-row">
+        <div class="cred-label"><span>Sid</span></div>
+        <div class="cred-input"><code>pcsia_4a810325589e63d069…</code><button><svg viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg></button></div>
+      </div>
+      <div class="cred-row">
+        <div class="cred-label"><span>Secret</span></div>
+        <div class="cred-input"><code>•••••••••••••••••••••</code><button><svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button></div>
+      </div>
+      <div class="cred-row">
+        <div class="cred-label"><span>Unauth Token</span></div>
+        <div class="cred-input"><code>503f48027e8c33c55ccebf1…</code><button><svg viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg></button></div>
+      </div>
+    </div>
+  </div>
+
+</section>
+
+<!-- ============================================================
+     PAGE: PLATFORM · MAGENTO
+     ============================================================ -->
+<section class="page" data-page="platform-magento">
+
+  <div class="brand-page-header">
+    <div class="brand-page-header-content">
+      <div class="brand-page-header-logo" style="color: #EE672F;">M</div>
+      <div class="brand-page-header-info">
+        <div class="brand-page-header-eyebrow">Platform Connect · Magento</div>
+        <h1 class="brand-page-header-title">Connect Magento / Adobe Commerce</h1>
+        <p class="brand-page-header-sub">Composer install · supports v2 + v3.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="alert alert-info">
+    <span class="alert-icon">📦</span>
+    <div>
+      <strong>Composer install:</strong> Run CLI commands on your Magento server.
+      <pre class="code-block mt-2" style="display: block; white-space: pre-wrap; margin: 0;">composer require printcart/magento2-pod
+php bin/magento module:enable Printcart_Pod
+php bin/magento setup:upgrade
+php bin/magento setup:di:compile</pre>
+    </div>
+  </div>
+
+  <div class="creds-layout">
+    <div class="card">
+      <div class="card-head"><h3 class="card-title">Installation steps</h3></div>
+      <div class="card-body">
+        <div class="creds-steps">
+          <ol>
+            <li><strong>Install via Composer</strong><br>Run the Composer command above on your Magento server.</li>
+            <li><strong>Enable and configure module</strong><br>Run <code>setup:upgrade</code> and <code>setup:di:compile</code> in production mode.</li>
+            <li><strong>Open admin panel</strong><br>Go to <em>Stores → Configuration → Printcart → API Settings</em>.</li>
+            <li><strong>Paste credentials</strong><br>Enter Sid, Secret, and Unauth Token. Save config and flush cache.</li>
+            <li><strong>Verify connection</strong><br>The "Customize" button will appear on product pages.</li>
+          </ol>
+        </div>
+      </div>
+      <div class="card-foot">
+        <button class="btn btn-ghost" data-nav-link="wizard">← Choose different platform</button>
+        <button class="btn btn-primary">Check connection</button>
+      </div>
+    </div>
+
+    <div class="creds-box">
+      <div class="creds-box-title">🛡 Magento credentials</div>
+      <div class="cred-row">
+        <div class="cred-label"><span>Sid</span></div>
+        <div class="cred-input"><code>pcsia_4a810325589e63d069…</code><button><svg viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg></button></div>
+      </div>
+      <div class="cred-row">
+        <div class="cred-label"><span>Secret</span></div>
+        <div class="cred-input"><code>•••••••••••••••••••••</code><button><svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button></div>
+      </div>
+      <div class="cred-row">
+        <div class="cred-label"><span>Unauth Token</span></div>
+        <div class="cred-input"><code>503f48027e8c33c55ccebf1…</code><button><svg viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg></button></div>
+      </div>
+    </div>
+  </div>
+
+</section>
+
+<!-- ============================================================
+     PAGE: PLATFORM · BIGCOMMERCE
+     ============================================================ -->
+<section class="page" data-page="platform-bigcommerce">
+
+  <div class="brand-page-header">
+    <div class="brand-page-header-content">
+      <div class="brand-page-header-logo" style="color: #34313F;">B</div>
+      <div class="brand-page-header-info">
+        <div class="brand-page-header-eyebrow">Platform Connect · BigCommerce</div>
+        <h1 class="brand-page-header-title">Connect BigCommerce</h1>
+        <p class="brand-page-header-sub">Single-Click app from App Marketplace · OAuth handles credentials.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="alert alert-success">
+    <span class="alert-icon">⚡</span>
+    <div>
+      <strong>Single-Click install:</strong> No manual configuration needed.
+      <div style="margin-top: 8px;">
+        <button class="btn btn-sm btn-primary">Install from BigCommerce Marketplace</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="creds-layout">
+    <div class="card">
+      <div class="card-head"><h3 class="card-title">Installation steps</h3></div>
+      <div class="card-body">
+        <div class="creds-steps">
+          <ol>
+            <li><strong>Install Single-Click app</strong><br>Visit BigCommerce App Marketplace, search "Printcart Designer".</li>
+            <li><strong>Authorize on your store</strong><br>Approve access to products, orders, customers, and theme files.</li>
+            <li><strong>Configure designer behavior</strong><br>Choose where the Customize button appears (product page, cart, both).</li>
+            <li><strong>Test on a product</strong><br>Open any product page on your storefront — the designer should be active.</li>
+          </ol>
+        </div>
+      </div>
+      <div class="card-foot">
+        <button class="btn btn-ghost" data-nav-link="wizard">← Choose different platform</button>
+      </div>
+    </div>
+
+    <div class="creds-box">
+      <div class="creds-box-title">🛡 BigCommerce credentials</div>
+      <p style="color: #94a3b8; font-size: 12px; margin: 0 0 12px;">Credentials auto-exchanged via OAuth after install.</p>
+      <div class="cred-row">
+        <div class="cred-label"><span>OAuth status</span></div>
+        <div class="cred-input"><code>Pending authorization</code></div>
+      </div>
+    </div>
+  </div>
+
+</section>
+
+<!-- ============================================================
+     PAGE: PLATFORM · CUSTOM API
+     ============================================================ -->
+<section class="page" data-page="platform-api">
+
+  <div class="brand-page-header">
+    <div class="brand-page-header-content">
+      <div class="brand-page-header-logo" style="color: #1f2937;">⌨</div>
+      <div class="brand-page-header-info">
+        <div class="brand-page-header-eyebrow">Platform Connect · Custom API</div>
+        <h1 class="brand-page-header-title">Custom REST API integration</h1>
+        <p class="brand-page-header-sub">For developers building a headless or custom storefront. Embed the Printcart designer programmatically.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="alert alert-info">
+    <span class="alert-icon">⌨</span>
+    <div><strong>For developers.</strong> No plugin to install. Use REST API + Designer SDK to embed customization in any framework (React, Vue, Next.js, etc.).</div>
+  </div>
+
+  <div class="creds-layout">
+    <div>
+      <div class="card">
+        <div class="card-head"><h3 class="card-title">Quickstart</h3></div>
+        <div class="card-body">
+          <div class="creds-steps">
+            <ol>
+              <li>
+                <strong>Install the Designer SDK</strong>
+                <pre class="code-block mt-2" style="display: block; white-space: pre-wrap; margin: 0;">npm install @printcart/designer-sdk</pre>
+              </li>
+              <li>
+                <strong>Initialize with credentials</strong>
+                <pre class="code-block mt-2" style="display: block; white-space: pre-wrap; margin: 0;">import { PrintcartDesigner } from '@printcart/designer-sdk';
+
+const designer = new PrintcartDesigner({
+  unauthToken: 'YOUR_UNAUTH_TOKEN',
+  containerId: '#designer-root',
+});
+designer.open({ productId: 'prod_123' });</pre>
+              </li>
+              <li>
+                <strong>Server-side: list products / orders</strong>
+                <pre class="code-block mt-2" style="display: block; white-space: pre-wrap; margin: 0;">curl https://api.printcart.com/v2/products \
+  -H "X-Sid: YOUR_SID" \
+  -H "X-Secret: YOUR_SECRET"</pre>
+              </li>
+              <li><strong>Webhooks (recommended)</strong><br>Receive order events, design uploads, completion. Add a webhook URL in <em>Apps &amp; Connectors → Webhooks</em>.</li>
+            </ol>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-head"><h3 class="card-title">Endpoints</h3></div>
+        <div class="card-body is-flush">
+          <table class="table">
+            <thead><tr><th>Method</th><th>Endpoint</th><th>Purpose</th></tr></thead>
+            <tbody>
+              <tr><td><span class="status-pill is-success"><span class="dot"></span>GET</span></td><td><code>/v2/products</code></td><td>List products</td></tr>
+              <tr><td><span class="status-pill is-success"><span class="dot"></span>GET</span></td><td><code>/v2/orders</code></td><td>List orders</td></tr>
+              <tr><td><span class="status-pill is-info"><span class="dot"></span>POST</span></td><td><code>/v2/orders</code></td><td>Create order</td></tr>
+              <tr><td><span class="status-pill is-success"><span class="dot"></span>GET</span></td><td><code>/v2/designs/&#123;id&#125;</code></td><td>Fetch design data</td></tr>
+              <tr><td><span class="status-pill is-info"><span class="dot"></span>POST</span></td><td><code>/v2/uploads</code></td><td>Upload customer art</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="card-foot">
+          <span class="text-muted">35+ endpoints total</span>
+          <a href="#" class="card-action">Full API docs →</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="creds-box">
+      <div class="creds-box-title">🛡 API credentials</div>
+      <div class="cred-row">
+        <div class="cred-label"><span>Sid</span><span style="color:#60a5fa;">Public</span></div>
+        <div class="cred-input"><code>pcsia_4a810325589e63d069…</code><button><svg viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg></button></div>
+      </div>
+      <div class="cred-row">
+        <div class="cred-label"><span>Secret</span><span style="color: var(--nbd-accent);">⚠ Server-only</span></div>
+        <div class="cred-input"><code>•••••••••••••••••••••</code><button><svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button></div>
+      </div>
+      <div class="cred-row">
+        <div class="cred-label"><span>Unauth Token</span><span style="color:#60a5fa;">Frontend SDK</span></div>
+        <div class="cred-input"><code>503f48027e8c33c55ccebf1…</code><button><svg viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg></button></div>
+      </div>
+      <div style="margin-top: 16px; padding-top: 14px; border-top: 1px solid rgba(255,255,255,0.1);">
+        <div class="cred-label">Base URL</div>
+        <div class="cred-input"><code>https://api.printcart.com/v2</code><button><svg viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg></button></div>
+      </div>
+    </div>
+  </div>
+
+</section>
+
+<!-- ============================================================
+     PAGE: WALLET (1 menu, 5 tabs inside)
+     ============================================================ -->
+<section class="page" data-page="wallet">
+
+  <div class="brand-page-header">
+    <div class="brand-page-header-content">
+      <div class="brand-page-header-logo" style="color: #f59e0b;">💎</div>
+      <div class="brand-page-header-info">
+        <div class="brand-page-header-eyebrow">Settings · Wallet</div>
+        <h1 class="brand-page-header-title">Wallet &amp; Billing</h1>
+        <p class="brand-page-header-sub">Tokens power AI features and premium API calls. Monthly subscription auto-renew + one-time top-up for overflow.</p>
+      </div>
+      <div class="brand-page-header-actions">
+        <button class="btn"><svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg> Invoices</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="alert alert-warning" id="walletWarning" style="display: none;">
+    <span class="alert-icon">⚠</span>
+    <div style="flex: 1;">
+      <strong>Running low on tokens</strong> — your subscription renews on May 31. You can buy a one-time top-up to keep things running smoothly.
+    </div>
+    <button class="btn btn-sm btn-primary" onclick="switchWalletTab('buy', null); document.getElementById('walletWarning').style.display='none';">Buy tokens →</button>
+  </div>
+
+  <div class="tabs">
+    <button class="tab is-active" onclick="switchWalletTab('overview', this)">Overview</button>
+    <button class="tab" onclick="switchWalletTab('buy', this)">Buy tokens</button>
+    <button class="tab" onclick="switchWalletTab('transactions', this)">Transactions</button>
+    <button class="tab" onclick="switchWalletTab('billing', this)">Billing profile</button>
+    <button class="tab" onclick="switchWalletTab('payment', this)">Payment methods</button>
+  </div>
+
+  <!-- TAB 1: OVERVIEW -->
+  <div class="wallet-tab" data-wallet-tab="overview">
+
+    <div class="wallet-hero">
+      <div class="wallet-hero-info">
+        <div class="wallet-hero-label">💎 Current balance</div>
+        <div class="wallet-hero-amount">8,420<span class="wallet-hero-unit">tokens</span></div>
+        <div class="wallet-hero-sub">≈ 842 AI image generations · 1,684 background removes · 8,420 API calls</div>
+        <div class="wallet-hero-meter"><div class="wallet-hero-meter-fill" style="width: 56%;"></div></div>
+        <div style="display: flex; justify-content: space-between; font-size: 11px; opacity: 0.85; margin-top: 4px;">
+          <span>6,580 used of 15,000 monthly</span>
+          <span>Renews May 31 · auto</span>
+        </div>
+      </div>
+      <div class="wallet-hero-actions">
+        <button class="btn btn-accent btn-lg" onclick="switchWalletTab('buy', null)"><svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg> Buy tokens</button>
+        <button class="btn btn-on-dark">Usage breakdown</button>
+      </div>
+    </div>
+
+    <div class="sub-card">
+      <div class="sub-card-icon">⭐</div>
+      <div class="sub-card-body">
+        <div class="sub-card-label">Current subscription</div>
+        <div class="sub-card-title">Pro 15,000 · $99/month</div>
+        <div class="sub-card-desc">Auto-renews May 31, 2026 · charged to PayPal (avery@example.com) · cancel anytime</div>
+      </div>
+      <button class="btn btn-secondary">Manage subscription</button>
+    </div>
+
+    <div class="layout-2col">
+      <div>
+        <div class="card">
+          <div class="card-head">
+            <h3 class="card-title">Usage by store (this month)</h3>
+            <button class="card-action">Detailed report →</button>
+          </div>
+          <div class="card-body is-flush">
+            <table class="table">
+              <thead><tr><th>Store</th><th>Tokens used</th><th>Top service</th><th class="text-end">% of total</th></tr></thead>
+              <tbody>
+                <tr><td><div style="display: flex; align-items: center; gap: 8px;"><span class="store-avatar" style="width: 24px; height: 24px; font-size: 10px;">MS</span><span class="fw-semibold">MyStickerShop</span></div></td><td><strong>3,240</strong></td><td class="text-muted">AI bg-remove</td><td class="text-end">49%</td></tr>
+                <tr><td><div style="display: flex; align-items: center; gap: 8px;"><span class="store-avatar" style="width: 24px; height: 24px; font-size: 10px; background: linear-gradient(135deg, #f59e0b, #dc2626);">PH</span><span class="fw-semibold">PrintHub VN</span></div></td><td><strong>2,150</strong></td><td class="text-muted">AI upscale</td><td class="text-end">33%</td></tr>
+                <tr><td><div style="display: flex; align-items: center; gap: 8px;"><span class="store-avatar" style="width: 24px; height: 24px; font-size: 10px; background: linear-gradient(135deg, #7c3aed, #5b21b6);">EL</span><span class="fw-semibold">EventLab Studio</span></div></td><td><strong>980</strong></td><td class="text-muted">Premium API</td><td class="text-end">15%</td></tr>
+                <tr><td><div style="display: flex; align-items: center; gap: 8px;"><span class="store-avatar" style="width: 24px; height: 24px; font-size: 10px; background: linear-gradient(135deg, #10b981, #16a34a);">SJ</span><span class="fw-semibold">StickersByJen</span></div></td><td><strong>210</strong></td><td class="text-muted">AI preflight</td><td class="text-end">3%</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-head"><h3 class="card-title">Usage by feature</h3></div>
+          <div class="card-body">
+            <div style="display: flex; flex-direction: column; gap: 14px;">
+              <div>
+                <div style="display: flex; justify-content: space-between; margin-bottom: 6px; font-size: 13px;"><span class="fw-semibold">AI Background Remove</span><span class="text-muted">2,840 tokens · 43%</span></div>
+                <div style="background: var(--nbd-mb-bg-soft); height: 6px; border-radius: 999px; overflow: hidden;"><div style="width: 43%; height: 100%; background: var(--nbd-mb-primary);"></div></div>
+              </div>
+              <div>
+                <div style="display: flex; justify-content: space-between; margin-bottom: 6px; font-size: 13px;"><span class="fw-semibold">AI Image Upscale</span><span class="text-muted">2,100 tokens · 32%</span></div>
+                <div style="background: var(--nbd-mb-bg-soft); height: 6px; border-radius: 999px; overflow: hidden;"><div style="width: 32%; height: 100%; background: #7c3aed;"></div></div>
+              </div>
+              <div>
+                <div style="display: flex; justify-content: space-between; margin-bottom: 6px; font-size: 13px;"><span class="fw-semibold">AI Preflight Check</span><span class="text-muted">920 tokens · 14%</span></div>
+                <div style="background: var(--nbd-mb-bg-soft); height: 6px; border-radius: 999px; overflow: hidden;"><div style="width: 14%; height: 100%; background: var(--nbd-color-warning);"></div></div>
+              </div>
+              <div>
+                <div style="display: flex; justify-content: space-between; margin-bottom: 6px; font-size: 13px;"><span class="fw-semibold">Premium API calls</span><span class="text-muted">720 tokens · 11%</span></div>
+                <div style="background: var(--nbd-mb-bg-soft); height: 6px; border-radius: 999px; overflow: hidden;"><div style="width: 11%; height: 100%; background: var(--nbd-color-success);"></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <aside>
+        <div class="card">
+          <div class="card-head"><h3 class="card-title">Auto-renew status</h3></div>
+          <div class="card-body">
+            <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 12px;">
+              <div style="width: 36px; height: 36px; border-radius: 50%; background: var(--nbd-color-success-soft); color: var(--nbd-color-success); display: grid; place-items: center;"><svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none"><polyline points="20 6 9 17 4 12"/></svg></div>
+              <div>
+                <div class="fw-bold">Auto-renew enabled</div>
+                <div class="text-muted" style="font-size: 12px;">Next charge May 31 · $99.00</div>
+              </div>
+            </div>
+            <div style="display: flex; gap: 6px; padding-top: 12px; border-top: 1px solid var(--nbd-mb-border);">
+              <button class="btn btn-sm btn-secondary btn-block">Pause</button>
+              <button class="btn btn-sm btn-danger btn-block">Cancel</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-head"><h3 class="card-title">⚠ Low balance alert</h3></div>
+          <div class="card-body">
+            <div class="form-field">
+              <label class="form-label">Warn me when balance drops below</label>
+              <select class="form-select"><option>500 tokens</option><option selected>1,000 tokens</option><option>2,000 tokens</option><option>5,000 tokens</option></select>
+            </div>
+            <label class="check">
+              <input type="checkbox" checked>
+              <span class="check-label">Email me when this happens</span>
+            </label>
+            <div style="margin-top: 10px;">
+              <label class="check">
+                <input type="checkbox">
+                <span class="check-label">Auto top-up 5,000 tokens when balance &lt; 500</span>
+              </label>
+            </div>
+            <div style="margin-top: 16px;">
+              <button class="btn btn-sm btn-secondary" onclick="document.getElementById('walletWarning').style.display='flex'; window.scrollTo({top:0,behavior:'smooth'});">Preview low-balance state</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-head"><h3 class="card-title">Subscription history</h3></div>
+          <div class="card-body" style="font-size: 12px;">
+            <div style="display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px solid var(--nbd-mb-border-subtle);"><span>May 1</span><span class="fw-semibold">Renewed Pro 15K</span></div>
+            <div style="display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px solid var(--nbd-mb-border-subtle);"><span>Apr 1</span><span>Renewed Pro 15K</span></div>
+            <div style="display: flex; justify-content: space-between; padding: 6px 0;"><span>Mar 16</span><span>Upgraded Free → Pro 15K</span></div>
+          </div>
+        </div>
+      </aside>
+    </div>
+
+  </div>
+
+  <!-- TAB 2: BUY TOKENS -->
+  <div class="wallet-tab" data-wallet-tab="buy" style="display: none;">
+
+    <div style="display: flex; align-items: baseline; gap: 12px; margin-bottom: 16px;">
+      <h2 style="font-size: 17px; font-weight: 800; margin: 0;">Subscription · auto-renews monthly</h2>
+      <span class="status-pill is-info"><span class="dot"></span>Recommended for ongoing use</span>
+    </div>
+
+    <div class="pkg-grid" style="margin-bottom: 32px;">
+      <div class="pkg-card">
+        <div class="pkg-tokens">5,000<span class="pkg-tokens-unit">/ mo</span></div>
+        <div class="pkg-price">$39<span class="pkg-price-per">/mo</span></div>
+        <div class="pkg-savings text-muted">$0.0078 per token</div>
+        <button class="btn btn-secondary btn-block mt-3">Subscribe</button>
+      </div>
+      <div class="pkg-card is-featured">
+        <div class="pkg-tokens">15,000<span class="pkg-tokens-unit">/ mo</span></div>
+        <div class="pkg-price">$99<span class="pkg-price-per">/mo</span></div>
+        <div class="pkg-savings">$0.0066 · save 15%</div>
+        <button class="btn btn-secondary btn-block mt-3" disabled style="opacity: 0.6;">✓ Current plan</button>
+      </div>
+      <div class="pkg-card">
+        <div class="pkg-tokens">50,000<span class="pkg-tokens-unit">/ mo</span></div>
+        <div class="pkg-price">$299<span class="pkg-price-per">/mo</span></div>
+        <div class="pkg-savings">$0.006 · save 33%</div>
+        <button class="btn btn-secondary btn-block mt-3">Upgrade</button>
+      </div>
+    </div>
+
+    <div style="display: flex; align-items: baseline; gap: 12px; margin-bottom: 8px;">
+      <h2 style="font-size: 17px; font-weight: 800; margin: 0;">One-time top-up · overflow this month</h2>
+    </div>
+    <p class="text-muted" style="font-size: 13px; margin: 0 0 16px;">Used your monthly tokens up? Buy more — never expires, never auto-charges.</p>
+
+    <div class="pkg-grid">
+      <div class="pkg-card">
+        <div class="pkg-tokens">1,000<span class="pkg-tokens-unit">tokens</span></div>
+        <div class="pkg-price">$9</div>
+        <div class="pkg-price-per text-muted">$0.009 per token</div>
+        <button class="btn btn-secondary btn-block mt-3">Buy</button>
+      </div>
+      <div class="pkg-card">
+        <div class="pkg-tokens">10,000<span class="pkg-tokens-unit">tokens</span></div>
+        <div class="pkg-price">$79</div>
+        <div class="pkg-savings">$0.0079 · save 12%</div>
+        <button class="btn btn-secondary btn-block mt-3">Buy</button>
+      </div>
+      <div class="pkg-card">
+        <div class="pkg-tokens">75,000<span class="pkg-tokens-unit">tokens</span></div>
+        <div class="pkg-price">$499</div>
+        <div class="pkg-savings">$0.0066 · save 26%</div>
+        <button class="btn btn-secondary btn-block mt-3">Buy</button>
+      </div>
+    </div>
+
+    <div class="alert alert-info mt-4">
+      <span class="alert-icon">💡</span>
+      <div><strong>How it works:</strong> Subscription tokens used first. If you run out before renewal, we use one-time top-up balance. One-time tokens never expire.</div>
+    </div>
+
+  </div>
+
+  <!-- TAB 3: TRANSACTIONS -->
+  <div class="wallet-tab" data-wallet-tab="transactions" style="display: none;">
+    <div class="page-toolbar">
+      <div class="page-search">
+        <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.35-4.35"/></svg>
+        <input type="text" placeholder="Search transactions...">
+      </div>
+      <div class="filter-bar">
+        <button class="filter-chip is-active">All</button>
+        <button class="filter-chip">Credits</button>
+        <button class="filter-chip">Debits</button>
+        <button class="filter-chip">Subscription</button>
+        <button class="filter-chip">Top-ups</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-body is-flush">
+        <table class="table is-hover">
+          <thead><tr><th>Date</th><th>ID</th><th>Type</th><th>Description</th><th>Store</th><th class="text-end">Amount</th><th class="text-end">Balance</th></tr></thead>
+          <tbody>
+            <tr onclick="goPage('transaction-detail')"><td>May 16 · 14:32</td><td><span class="tx-id-link">TX-10248</span></td><td><span class="status-pill is-error"><span class="dot"></span>Debit</span></td><td>AI Background Remove · 8 images</td><td>MyStickerShop</td><td class="text-end tx-amount is-minus">−80</td><td class="text-end fw-bold">8,420</td></tr>
+            <tr onclick="goPage('transaction-detail')"><td>May 16 · 12:15</td><td><span class="tx-id-link">TX-10247</span></td><td><span class="status-pill is-error"><span class="dot"></span>Debit</span></td><td>AI Image Upscale · 1 image (2x)</td><td>PrintHub VN</td><td class="text-end tx-amount is-minus">−25</td><td class="text-end fw-bold">8,500</td></tr>
+            <tr onclick="goPage('transaction-detail')"><td>May 15 · 09:42</td><td><span class="tx-id-link">TX-10246</span></td><td><span class="status-pill is-success"><span class="dot"></span>Topup</span></td><td>One-time top-up · 10,000 tokens</td><td>—</td><td class="text-end tx-amount is-plus">+10,000</td><td class="text-end fw-bold">8,525</td></tr>
+            <tr onclick="goPage('transaction-detail')"><td>May 15 · 09:38</td><td><span class="tx-id-link">TX-10245</span></td><td><span class="status-pill is-warning"><span class="dot"></span>Warning</span></td><td>Low balance alert sent (below 1,000)</td><td>—</td><td class="text-end text-muted">—</td><td class="text-end fw-bold">−1,475 ⚠</td></tr>
+            <tr onclick="goPage('transaction-detail')"><td>May 1 · 00:00</td><td><span class="tx-id-link">TX-10210</span></td><td><span class="status-pill is-success"><span class="dot"></span>Subscription</span></td><td>Renewed Pro 15K · monthly auto</td><td>—</td><td class="text-end tx-amount is-plus">+15,000</td><td class="text-end fw-bold">15,000</td></tr>
+            <tr onclick="goPage('transaction-detail')"><td>Apr 16 · 09:23</td><td><span class="tx-id-link">TX-10100</span></td><td><span class="status-pill is-success"><span class="dot"></span>Bonus</span></td><td>Onboarding bonus</td><td>—</td><td class="text-end tx-amount is-plus">+50</td><td class="text-end fw-bold">50</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="card-foot">
+        <span class="text-muted">Showing 6 of 247</span>
+        <div style="display: flex; gap: 6px;"><button class="btn btn-sm btn-secondary">Previous</button><button class="btn btn-sm btn-secondary">Next</button></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TAB 4: BILLING PROFILE -->
+  <div class="wallet-tab" data-wallet-tab="billing" style="display: none;">
+    <div class="layout-2col">
+      <div>
+        <div class="card">
+          <div class="card-head">
+            <h3 class="card-title">Company / billing details</h3>
+            <div class="card-sub">Used on invoices and tax documents</div>
+          </div>
+          <div class="card-body">
+            <div class="form-grid-2">
+              <div class="form-field">
+                <label class="form-label">Company name <span class="required">*</span></label>
+                <input type="text" class="form-input" value="Avery Nguyen Trading Co., Ltd">
+              </div>
+              <div class="form-field">
+                <label class="form-label">Tax ID / VAT</label>
+                <input type="text" class="form-input" value="VN-0123456789">
+                <span class="form-help">Required for VAT invoices in EU/UK</span>
+              </div>
+              <div class="form-field">
+                <label class="form-label">Billing email <span class="required">*</span></label>
+                <input type="email" class="form-input" value="billing@avery-trading.com">
+              </div>
+              <div class="form-field">
+                <label class="form-label">Contact phone</label>
+                <input type="tel" class="form-input" value="+84 28 1234 5678">
+              </div>
+              <div class="form-field" style="grid-column: 1 / -1;">
+                <label class="form-label">Street address <span class="required">*</span></label>
+                <input type="text" class="form-input" value="123 Nguyen Hue Boulevard">
+              </div>
+              <div class="form-field">
+                <label class="form-label">City <span class="required">*</span></label>
+                <input type="text" class="form-input" value="Ho Chi Minh City">
+              </div>
+              <div class="form-field">
+                <label class="form-label">State / Province</label>
+                <input type="text" class="form-input" value="District 1">
+              </div>
+              <div class="form-field">
+                <label class="form-label">Postal code</label>
+                <input type="text" class="form-input" value="700000">
+              </div>
+              <div class="form-field">
+                <label class="form-label">Country <span class="required">*</span></label>
+                <select class="form-select"><option selected>Vietnam</option><option>United States</option><option>United Kingdom</option></select>
+              </div>
+            </div>
+          </div>
+          <div class="card-foot">
+            <button class="btn btn-ghost">Cancel</button>
+            <button class="btn btn-primary">Save billing profile</button>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-head"><h3 class="card-title">Invoice preferences</h3></div>
+          <div class="card-body">
+            <div class="form-field">
+              <label class="form-label">Invoice language</label>
+              <select class="form-select" style="max-width: 320px;"><option selected>English</option><option>Tiếng Việt</option><option>Français</option></select>
+            </div>
+            <div class="form-field">
+              <label class="form-label">Invoice prefix (optional)</label>
+              <input type="text" class="form-input" value="MS-" style="max-width: 240px;">
+              <span class="form-help">Appears before invoice numbers: <code>MS-2026-0001</code></span>
+            </div>
+            <label class="check"><input type="checkbox" checked><span class="check-label">Email me a PDF receipt every time a payment is made</span></label>
+          </div>
+        </div>
+      </div>
+
+      <aside>
+        <div class="card">
+          <div class="card-head"><h3 class="card-title">📄 Recent invoices</h3></div>
+          <div class="card-body" style="font-size: 13px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 1px solid var(--nbd-mb-border-subtle);">
+              <div><div class="fw-semibold">MS-2026-0005</div><div class="text-muted" style="font-size: 11px;">May 1 · $99.00</div></div>
+              <button class="btn btn-sm btn-secondary">PDF</button>
+            </div>
+            <div style="display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 1px solid var(--nbd-mb-border-subtle);">
+              <div><div class="fw-semibold">MS-2026-0004</div><div class="text-muted" style="font-size: 11px;">Apr 15 · $79.00 (top-up)</div></div>
+              <button class="btn btn-sm btn-secondary">PDF</button>
+            </div>
+            <div style="display: flex; justify-content: space-between; align-items: center; padding: 8px 0;">
+              <div><div class="fw-semibold">MS-2026-0003</div><div class="text-muted" style="font-size: 11px;">Apr 1 · $99.00</div></div>
+              <button class="btn btn-sm btn-secondary">PDF</button>
+            </div>
+            <button class="btn btn-secondary btn-block mt-3">View all invoices</button>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </div>
+
+  <!-- TAB 5: PAYMENT METHODS -->
+  <div class="wallet-tab" data-wallet-tab="payment" style="display: none;">
+    <div class="alert alert-info">
+      <span class="alert-icon">🔒</span>
+      <div>All payment methods are encrypted and stored via PCI-compliant Stripe + PayPal. We never see your full card number.</div>
+    </div>
+
+    <div class="card">
+      <div class="card-head">
+        <h3 class="card-title">Saved payment methods</h3>
+        <button class="btn btn-sm btn-primary"><svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg> Add new method</button>
+      </div>
+      <div class="card-body" style="padding: 0;">
+
+        <div class="list-row" style="margin: 16px; border: 2px solid var(--nbd-mb-primary); background: var(--nbd-mb-primary-soft);">
+          <div class="list-row-icon" style="background: #0070ba;">P</div>
+          <div class="list-row-info">
+            <div class="list-row-title">PayPal <span class="status-pill is-success"><span class="dot"></span>Default</span></div>
+            <div class="list-row-meta"><span>avery@example.com</span><span class="dot" style="width:3px;height:3px;border-radius:50%;background:var(--nbd-mb-border-strong);"></span><span>Linked Mar 16, 2026</span></div>
+          </div>
+          <div class="list-row-actions">
+            <button class="btn btn-sm btn-secondary">Edit</button>
+            <button class="btn btn-sm btn-danger">Remove</button>
+          </div>
+        </div>
+
+        <div class="list-row" style="margin: 16px;">
+          <div class="list-row-icon" style="background: linear-gradient(135deg, #1a1f71, #0070ba);">V</div>
+          <div class="list-row-info">
+            <div class="list-row-title">Visa •••• 4242</div>
+            <div class="list-row-meta"><span>Avery Nguyen</span><span class="dot" style="width:3px;height:3px;border-radius:50%;background:var(--nbd-mb-border-strong);"></span><span>Exp 12/2028</span></div>
+          </div>
+          <div class="list-row-actions">
+            <button class="btn btn-sm btn-secondary">Make default</button>
+            <button class="btn btn-sm btn-secondary">Edit</button>
+            <button class="btn btn-sm btn-danger">Remove</button>
+          </div>
+        </div>
+
+        <div class="list-row" style="margin: 16px;">
+          <div class="list-row-icon" style="background: linear-gradient(135deg, #eb001b, #f79e1b);">MC</div>
+          <div class="list-row-info">
+            <div class="list-row-title">Mastercard •••• 8888</div>
+            <div class="list-row-meta"><span>Avery Nguyen Trading</span><span class="dot" style="width:3px;height:3px;border-radius:50%;background:var(--nbd-mb-border-strong);"></span><span>Exp 03/2027</span><span class="dot" style="width:3px;height:3px;border-radius:50%;background:var(--nbd-mb-border-strong);"></span><span class="status-pill is-warning" style="margin: 0;"><span class="dot"></span>Expiring soon</span></div>
+          </div>
+          <div class="list-row-actions">
+            <button class="btn btn-sm btn-secondary">Make default</button>
+            <button class="btn btn-sm btn-secondary">Edit</button>
+            <button class="btn btn-sm btn-danger">Remove</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-head"><h3 class="card-title">Billing rules</h3></div>
+      <div class="card-body">
+        <ul style="padding-left: 18px; font-size: 13px; color: var(--nbd-mb-text); line-height: 1.7; margin: 0;">
+          <li>Subscription renews via <strong>default payment method</strong></li>
+          <li>If default fails, we retry the <strong>next saved method</strong></li>
+          <li><strong>3 failed attempts</strong> = subscription paused (we email you)</li>
+          <li>Top-ups always charged to <strong>default method only</strong></li>
+          <li>Receipts emailed + downloadable PDF in <em>Billing Profile → Recent invoices</em></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+</section>
+
+<!-- ============================================================
+     PAGE: API & KEYS
+     ============================================================ -->
+<section class="page" data-page="api-keys">
+
+  <div class="brand-page-header">
+    <div class="brand-page-header-content">
+      <div class="brand-page-header-logo">🔑</div>
+      <div class="brand-page-header-info">
+        <div class="brand-page-header-eyebrow">Settings · API &amp; Keys</div>
+        <h1 class="brand-page-header-title">API &amp; Keys</h1>
+        <p class="brand-page-header-sub">Credentials for MyStickerShop. Each store has its own set — switch via the topbar.</p>
+      </div>
+      <div class="brand-page-header-actions">
+        <button class="btn"><svg viewBox="0 0 24 24"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"/></svg> Rotate all</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="alert alert-warning">
+    <span class="alert-icon">⚠</span>
+    <div><strong>Keep your Secret safe.</strong> It grants full server-side API access. Never expose it in client-side code or commit it to public repos.</div>
+  </div>
+
+  <div class="layout-2col">
+    <div>
+      <!-- Sid card -->
+      <div class="card">
+        <div class="card-head">
+          <div>
+            <h3 class="card-title">Sid <span class="status-pill is-info"><span class="dot"></span>Public</span></h3>
+            <div class="card-sub">Store identifier · safe to use in client-side code</div>
+          </div>
+          <button class="btn btn-sm btn-secondary">Regenerate</button>
+        </div>
+        <div class="card-body">
+          <div style="display: flex; gap: 8px; align-items: center;">
+            <pre class="code-block" style="flex: 1; margin: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">pcsia_4a810325589e63d069f1a82e</pre>
+            <button class="btn btn-sm btn-secondary"><svg viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg> Copy</button>
+          </div>
+          <p class="text-muted" style="font-size: 12px; margin: 8px 0 0;">Created May 16, 2026 · Used in 12 requests today</p>
+        </div>
+      </div>
+
+      <!-- Secret card -->
+      <div class="card">
+        <div class="card-head">
+          <div>
+            <h3 class="card-title">Secret <span class="status-pill is-error"><span class="dot"></span>Server-only</span></h3>
+            <div class="card-sub">⚠ Shown once during creation · server-side API calls only</div>
+          </div>
+          <button class="btn btn-sm btn-secondary">Regenerate</button>
+        </div>
+        <div class="card-body">
+          <div style="display: flex; gap: 8px; align-items: center;">
+            <pre class="code-block" style="flex: 1; margin: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;" id="secretReveal">••••••••••••••••••••••••••••</pre>
+            <button class="btn btn-sm btn-secondary" onclick="toggleSecret()"><svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg> Reveal</button>
+            <button class="btn btn-sm btn-secondary"><svg viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg> Copy</button>
+          </div>
+          <p class="text-muted" style="font-size: 12px; margin: 8px 0 0;">Last rotated: never · usage: 3,420 requests this month</p>
+        </div>
+      </div>
+
+      <!-- Unauth Token card -->
+      <div class="card">
+        <div class="card-head">
+          <div>
+            <h3 class="card-title">Unauth Token <span class="status-pill is-info"><span class="dot"></span>Frontend SDK</span></h3>
+            <div class="card-sub">For browser-side designer embed · scoped to read-only operations</div>
+          </div>
+          <button class="btn btn-sm btn-secondary">Regenerate</button>
+        </div>
+        <div class="card-body">
+          <div style="display: flex; gap: 8px; align-items: center;">
+            <pre class="code-block" style="flex: 1; margin: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">503f48027e8c33c55ccebf1a72b9d</pre>
+            <button class="btn btn-sm btn-secondary"><svg viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg> Copy</button>
+          </div>
+          <p class="text-muted" style="font-size: 12px; margin: 8px 0 0;">Auto-rotated every 90 days · next rotation Aug 14, 2026</p>
+        </div>
+      </div>
+
+      <!-- Danger zone -->
+      <div class="card" style="border-color: var(--nbd-color-error-soft);">
+        <div class="card-head">
+          <div>
+            <h3 class="card-title text-danger">⚠ Danger zone</h3>
+            <div class="card-sub">Destructive actions — cannot be undone</div>
+          </div>
+        </div>
+        <div class="card-body">
+          <div style="display: flex; align-items: center; justify-content: space-between; padding: 8px 0;">
+            <div>
+              <div class="fw-bold">Rotate all keys</div>
+              <div class="text-muted" style="font-size: 12px;">Old keys stop working immediately. Update all integrations.</div>
+            </div>
+            <button class="btn btn-sm btn-danger">Rotate all</button>
+          </div>
+          <hr>
+          <div style="display: flex; align-items: center; justify-content: space-between; padding: 8px 0;">
+            <div>
+              <div class="fw-bold">Revoke API access entirely</div>
+              <div class="text-muted" style="font-size: 12px;">Disable all keys for this store. Cannot be undone without contacting support.</div>
+            </div>
+            <button class="btn btn-sm btn-danger">Revoke</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <aside>
+      <div class="card">
+        <div class="card-head"><h3 class="card-title">Quick reference</h3></div>
+        <div class="card-body" style="font-size: 13px;">
+          <div style="margin-bottom: 12px;">
+            <div class="fw-bold mb-2">Use Sid + Secret for:</div>
+            <ul style="padding-left: 18px; color: var(--nbd-mb-text-soft); line-height: 1.7; margin: 0;">
+              <li>Server-side API calls</li>
+              <li>Webhook signature verification</li>
+              <li>Order creation, product sync</li>
+            </ul>
+          </div>
+          <div>
+            <div class="fw-bold mb-2">Use Unauth Token for:</div>
+            <ul style="padding-left: 18px; color: var(--nbd-mb-text-soft); line-height: 1.7; margin: 0;">
+              <li>Browser designer embed</li>
+              <li>Read-only product fetches</li>
+              <li>Front-end SDK initialization</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-head"><h3 class="card-title">📊 API usage (last 7 days)</h3></div>
+        <div class="card-body">
+          <div style="font-size: 24px; font-weight: 800; color: var(--nbd-mb-text-strong); letter-spacing: -0.02em;">12,420</div>
+          <div class="text-muted" style="font-size: 12px; margin-bottom: 12px;">requests · 99.97% uptime</div>
+          <div style="background: var(--nbd-mb-bg-soft); height: 60px; border-radius: 6px; display: flex; align-items: flex-end; gap: 3px; padding: 6px;">
+            <div style="flex: 1; height: 30%; background: var(--nbd-mb-primary); border-radius: 2px;"></div>
+            <div style="flex: 1; height: 55%; background: var(--nbd-mb-primary); border-radius: 2px;"></div>
+            <div style="flex: 1; height: 40%; background: var(--nbd-mb-primary); border-radius: 2px;"></div>
+            <div style="flex: 1; height: 70%; background: var(--nbd-mb-primary); border-radius: 2px;"></div>
+            <div style="flex: 1; height: 85%; background: var(--nbd-mb-primary); border-radius: 2px;"></div>
+            <div style="flex: 1; height: 60%; background: var(--nbd-mb-primary); border-radius: 2px;"></div>
+            <div style="flex: 1; height: 95%; background: var(--nbd-mb-primary); border-radius: 2px;"></div>
+          </div>
+        </div>
+      </div>
+    </aside>
+  </div>
+
+</section>
+
+<!-- ============================================================
+     PAGE: APPS & CONNECTORS
+     ============================================================ -->
+<section class="page" data-page="apps">
+
+  <div class="brand-page-header">
+    <div class="brand-page-header-content">
+      <div class="brand-page-header-logo">🧩</div>
+      <div class="brand-page-header-info">
+        <div class="brand-page-header-eyebrow">Settings · Apps</div>
+        <h1 class="brand-page-header-title">Apps &amp; Connectors</h1>
+        <p class="brand-page-header-sub">Manage platform connections, webhooks, and third-party integrations.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="tabs">
+    <button class="tab is-active">Connected (3)</button>
+    <button class="tab">Available</button>
+    <button class="tab">Webhooks</button>
+  </div>
+
+  <h3 style="margin: 8px 0 12px; font-size: 14px; font-weight: 700;">Connected platforms</h3>
+
+  <div class="list-row">
+    <div class="list-row-icon" style="background: #21759B;">W</div>
+    <div class="list-row-info">
+      <div class="list-row-title">WordPress / WooCommerce <span class="status-pill is-success"><span class="dot"></span>Healthy</span></div>
+      <div class="list-row-meta"><span>MyStickerShop · mystickershop.com</span><span class="dot" style="width:3px;height:3px;border-radius:50%;background:var(--nbd-mb-border-strong);"></span><span>v2.4.9</span><span class="dot" style="width:3px;height:3px;border-radius:50%;background:var(--nbd-mb-border-strong);"></span><span>Last sync 2m ago</span></div>
+    </div>
+    <div class="list-row-actions">
+      <button class="btn btn-sm btn-secondary" data-nav-link="platform-wp">Manage</button>
+      <button class="btn btn-sm btn-secondary">Re-sync</button>
+    </div>
+  </div>
+
+  <div class="list-row">
+    <div class="list-row-icon" style="background: #FAAD4D;">Wx</div>
+    <div class="list-row-info">
+      <div class="list-row-title">Wix <span class="status-pill is-warning"><span class="dot"></span>Token expired</span></div>
+      <div class="list-row-meta"><span>StickersByJen</span><span class="dot" style="width:3px;height:3px;border-radius:50%;background:var(--nbd-mb-border-strong);"></span><span>Expired 3 days ago</span><span class="dot" style="width:3px;height:3px;border-radius:50%;background:var(--nbd-mb-border-strong);"></span><span class="text-warning">Action required</span></div>
+    </div>
+    <div class="list-row-actions">
+      <button class="btn btn-sm btn-primary">Reconnect</button>
+    </div>
+  </div>
+
+  <div class="list-row">
+    <div class="list-row-icon" style="background: #95BF47;">S</div>
+    <div class="list-row-info">
+      <div class="list-row-title">Shopify <span class="status-pill is-success"><span class="dot"></span>Healthy</span></div>
+      <div class="list-row-meta"><span>EventLab Studio</span><span class="dot" style="width:3px;height:3px;border-radius:50%;background:var(--nbd-mb-border-strong);"></span><span>v3.1.0</span><span class="dot" style="width:3px;height:3px;border-radius:50%;background:var(--nbd-mb-border-strong);"></span><span>Last sync 5m ago</span></div>
+    </div>
+    <div class="list-row-actions">
+      <button class="btn btn-sm btn-secondary" data-nav-link="platform-shopify">Manage</button>
+      <button class="btn btn-sm btn-secondary">Re-sync</button>
+    </div>
+  </div>
+
+  <h3 style="margin: 24px 0 12px; font-size: 14px; font-weight: 700;">Other integrations</h3>
+
+  <div class="list-row">
+    <div class="list-row-icon" style="background: linear-gradient(135deg, #ff0000, #cc0000);">Z</div>
+    <div class="list-row-info">
+      <div class="list-row-title">Zapier <span class="status-pill is-neutral"><span class="dot"></span>Not connected</span></div>
+      <div class="list-row-meta">Trigger workflows on order events, design uploads, customer signup</div>
+    </div>
+    <div class="list-row-actions"><button class="btn btn-sm btn-secondary">Connect</button></div>
+  </div>
+
+  <div class="list-row">
+    <div class="list-row-icon" style="background: linear-gradient(135deg, #4a154b, #611f64);">SL</div>
+    <div class="list-row-info">
+      <div class="list-row-title">Slack <span class="status-pill is-neutral"><span class="dot"></span>Not connected</span></div>
+      <div class="list-row-meta">Get order notifications in your Slack channel</div>
+    </div>
+    <div class="list-row-actions"><button class="btn btn-sm btn-secondary">Connect</button></div>
+  </div>
+
+  <div class="list-row">
+    <div class="list-row-icon" style="background: linear-gradient(135deg, #e1306c, #c13584);">IG</div>
+    <div class="list-row-info">
+      <div class="list-row-title">Instagram Shopping <span class="status-pill is-neutral"><span class="dot"></span>Not connected</span></div>
+      <div class="list-row-meta">Tag products on Instagram posts for direct customization</div>
+    </div>
+    <div class="list-row-actions"><button class="btn btn-sm btn-secondary">Connect</button></div>
+  </div>
+
+  <h3 style="margin: 24px 0 12px; font-size: 14px; font-weight: 700;">Webhooks delivery log (last 24h)</h3>
+
+  <div class="card">
+    <div class="card-body is-flush">
+      <table class="table">
+        <thead><tr><th>Event</th><th>Endpoint</th><th>Last delivery</th><th>Status</th><th class="text-end"></th></tr></thead>
+        <tbody>
+          <tr><td><code>order.created</code></td><td><code>https://mystickershop.com/wc-api/printcart</code></td><td>2 min ago</td><td><span class="status-pill is-success"><span class="dot"></span>200 OK</span></td><td class="text-end"><button class="btn btn-sm btn-ghost">View</button></td></tr>
+          <tr><td><code>design.uploaded</code></td><td><code>https://mystickershop.com/wc-api/printcart</code></td><td>5 min ago</td><td><span class="status-pill is-success"><span class="dot"></span>200 OK</span></td><td class="text-end"><button class="btn btn-sm btn-ghost">View</button></td></tr>
+          <tr><td><code>order.production</code></td><td><code>https://eventlab.myshopify.com/admin/api</code></td><td>12 min ago</td><td><span class="status-pill is-success"><span class="dot"></span>200 OK</span></td><td class="text-end"><button class="btn btn-sm btn-ghost">View</button></td></tr>
+          <tr><td><code>customer.created</code></td><td><code>https://stickersjen.wixsite.com/api/pc</code></td><td>1 hour ago</td><td><span class="status-pill is-error"><span class="dot"></span>401 Unauthorized</span></td><td class="text-end"><button class="btn btn-sm btn-ghost">Retry</button></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="card-foot">
+      <span class="text-muted">12 deliveries · 11 success · 1 failed</span>
+      <button class="btn btn-sm btn-secondary">Add webhook endpoint</button>
+    </div>
+  </div>
+
+</section>
+
+<!-- ============================================================
+     PAGE: SUPPORT (Tickets)
+     ============================================================ -->
+<section class="page" data-page="support">
+
+  <div class="brand-page-header">
+    <div class="brand-page-header-content">
+      <div class="brand-page-header-logo">💬</div>
+      <div class="brand-page-header-info">
+        <div class="brand-page-header-eyebrow">Support · Tickets</div>
+        <h1 class="brand-page-header-title">Support tickets</h1>
+        <p class="brand-page-header-sub">Get help from our team. Average response time: 2 hours.</p>
+      </div>
+      <div class="brand-page-header-actions">
+        <button class="btn btn-primary"><svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg> New ticket</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="page-toolbar">
+    <div class="page-search">
+      <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.35-4.35"/></svg>
+      <input type="text" placeholder="Search tickets...">
+    </div>
+    <div class="filter-bar">
+      <button class="filter-chip is-active">All (12)</button>
+      <button class="filter-chip">Open (3)</button>
+      <button class="filter-chip">Awaiting reply (1)</button>
+      <button class="filter-chip">Resolved (8)</button>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-body is-flush">
+      <table class="table is-hover">
+        <thead><tr><th>ID</th><th>Subject</th><th>Store</th><th>Last update</th><th>Status</th><th>Priority</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><strong>#3421</strong></td>
+            <td>Webhook returning 401 from Wix integration<br><span class="text-muted" style="font-size: 11px;">2 messages · last reply from Sarah (support)</span></td>
+            <td>StickersByJen</td>
+            <td>5 min ago</td>
+            <td><span class="status-pill is-warning"><span class="dot"></span>Awaiting your reply</span></td>
+            <td><span class="status-pill is-error"><span class="dot"></span>High</span></td>
+          </tr>
+          <tr>
+            <td><strong>#3418</strong></td>
+            <td>How to bulk import products from CSV?<br><span class="text-muted" style="font-size: 11px;">3 messages · last reply from Tom (support)</span></td>
+            <td>MyStickerShop</td>
+            <td>2 hours ago</td>
+            <td><span class="status-pill is-info"><span class="dot"></span>Open</span></td>
+            <td><span class="status-pill is-neutral"><span class="dot"></span>Normal</span></td>
+          </tr>
+          <tr>
+            <td><strong>#3402</strong></td>
+            <td>Custom font upload failing for vinyl decals<br><span class="text-muted" style="font-size: 11px;">5 messages · last reply from you</span></td>
+            <td>MyStickerShop</td>
+            <td>Yesterday</td>
+            <td><span class="status-pill is-info"><span class="dot"></span>Open</span></td>
+            <td><span class="status-pill is-neutral"><span class="dot"></span>Normal</span></td>
+          </tr>
+          <tr>
+            <td><strong>#3389</strong></td>
+            <td>Token consumption seems high for AI bg-remove</td>
+            <td>EventLab Studio</td>
+            <td>May 12</td>
+            <td><span class="status-pill is-success"><span class="dot"></span>Resolved</span></td>
+            <td><span class="status-pill is-neutral"><span class="dot"></span>Normal</span></td>
+          </tr>
+          <tr>
+            <td><strong>#3376</strong></td>
+            <td>Invoice PDF not generating correctly</td>
+            <td>—</td>
+            <td>May 8</td>
+            <td><span class="status-pill is-success"><span class="dot"></span>Resolved</span></td>
+            <td><span class="status-pill is-warning"><span class="dot"></span>Low</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="card-foot">
+      <span class="text-muted">5 of 12</span>
+      <div style="display: flex; gap: 6px;"><button class="btn btn-sm btn-secondary">Previous</button><button class="btn btn-sm btn-secondary">Next</button></div>
+    </div>
+  </div>
+
+</section>
+
+<!-- ============================================================
+     PAGE: KNOWLEDGEBASE
+     ============================================================ -->
+<section class="page" data-page="knowledgebase">
+
+  <div class="kb-hero">
+    <h2>How can we help you?</h2>
+    <p>Search our documentation, guides, and API reference.</p>
+    <div class="kb-search-box">
+      <svg class="kb-search-icon" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.35-4.35"/></svg>
+      <input type="text" placeholder="Search for guides, e.g. 'how to install WordPress plugin'">
+    </div>
+  </div>
+
+  <h3 style="margin: 8px 0 12px; font-size: 16px; font-weight: 700;">Browse by category</h3>
+
+  <div class="kb-category-grid">
+    <div class="kb-category-card">
+      <div class="kb-category-icon" style="background: linear-gradient(135deg, #2563eb, #1e40af);">🚀</div>
+      <div class="fw-bold">Getting started</div>
+      <div class="text-muted" style="font-size: 12px;">Account setup, first store, basic config — 24 articles</div>
+    </div>
+    <div class="kb-category-card">
+      <div class="kb-category-icon" style="background: linear-gradient(135deg, #10b981, #059669);">🔌</div>
+      <div class="fw-bold">Platform Connect</div>
+      <div class="text-muted" style="font-size: 12px;">WP, Wix, Shopify, Magento, BC, API — 38 articles</div>
+    </div>
+    <div class="kb-category-card">
+      <div class="kb-category-icon" style="background: linear-gradient(135deg, #f59e0b, #d97706);">💎</div>
+      <div class="fw-bold">Wallet &amp; Billing</div>
+      <div class="text-muted" style="font-size: 12px;">Tokens, subscriptions, invoices — 19 articles</div>
+    </div>
+    <div class="kb-category-card">
+      <div class="kb-category-icon" style="background: linear-gradient(135deg, #7c3aed, #5b21b6);">🎨</div>
+      <div class="fw-bold">Online Designer</div>
+      <div class="text-muted" style="font-size: 12px;">Customization tool config — 31 articles</div>
+    </div>
+    <div class="kb-category-card">
+      <div class="kb-category-icon" style="background: linear-gradient(135deg, #ef4444, #dc2626);">🤖</div>
+      <div class="fw-bold">AI Features</div>
+      <div class="text-muted" style="font-size: 12px;">Bg-remove, upscale, preflight — 15 articles</div>
+    </div>
+    <div class="kb-category-card">
+      <div class="kb-category-icon" style="background: linear-gradient(135deg, #06b6d4, #0891b2);">📦</div>
+      <div class="fw-bold">Orders &amp; Production</div>
+      <div class="text-muted" style="font-size: 12px;">Workflow, fulfillment, shipping — 22 articles</div>
+    </div>
+    <div class="kb-category-card">
+      <div class="kb-category-icon" style="background: linear-gradient(135deg, #1f2937, #111827);">⌨</div>
+      <div class="fw-bold">Developer API</div>
+      <div class="text-muted" style="font-size: 12px;">REST endpoints, SDK, webhooks — 45 articles</div>
+    </div>
+    <div class="kb-category-card">
+      <div class="kb-category-icon" style="background: linear-gradient(135deg, #ec4899, #db2777);">🛡</div>
+      <div class="fw-bold">Security &amp; Privacy</div>
+      <div class="text-muted" style="font-size: 12px;">GDPR, data export, audit logs — 12 articles</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-head"><h3 class="card-title">Popular articles</h3></div>
+    <div class="card-body is-flush">
+      <a href="#" style="display: block; padding: 12px 16px; border-bottom: 1px solid var(--nbd-mb-border-subtle); color: var(--nbd-mb-text); text-decoration: none;">
+        <div class="fw-bold">How to install Printcart on WordPress</div>
+        <div class="text-muted" style="font-size: 12px;">Getting started · 5 min read · ★ 4.9</div>
+      </a>
+      <a href="#" style="display: block; padding: 12px 16px; border-bottom: 1px solid var(--nbd-mb-border-subtle); color: var(--nbd-mb-text); text-decoration: none;">
+        <div class="fw-bold">Understanding token consumption per feature</div>
+        <div class="text-muted" style="font-size: 12px;">Wallet · 3 min read · ★ 4.8</div>
+      </a>
+      <a href="#" style="display: block; padding: 12px 16px; border-bottom: 1px solid var(--nbd-mb-border-subtle); color: var(--nbd-mb-text); text-decoration: none;">
+        <div class="fw-bold">Setting up webhooks for order events</div>
+        <div class="text-muted" style="font-size: 12px;">Developer API · 8 min read · ★ 4.7</div>
+      </a>
+      <a href="#" style="display: block; padding: 12px 16px; color: var(--nbd-mb-text); text-decoration: none;">
+        <div class="fw-bold">Connecting Shopify via Public app vs Private app</div>
+        <div class="text-muted" style="font-size: 12px;">Platform Connect · 6 min read · ★ 4.6</div>
+      </a>
+    </div>
+  </div>
+
+</section>
+
+<!-- ============================================================
+     PAGE: PROFILE
+     ============================================================ -->
+<section class="page" data-page="profile">
+
+  <div class="brand-page-header">
+    <div class="brand-page-header-content">
+      <div class="brand-page-header-logo">AN</div>
+      <div class="brand-page-header-info">
+        <div class="brand-page-header-eyebrow">Account · Profile</div>
+        <h1 class="brand-page-header-title">My Profile</h1>
+        <p class="brand-page-header-sub">Update your personal info, password, and notification preferences.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="tabs">
+    <button class="tab is-active">Profile</button>
+    <button class="tab">Security</button>
+    <button class="tab">Notifications</button>
+    <button class="tab">API tokens</button>
+  </div>
+
+  <div class="layout-2col">
+    <div>
+      <div class="card">
+        <div class="card-head"><h3 class="card-title">Personal info</h3></div>
+        <div class="card-body">
+          <div class="form-grid-2">
+            <div class="form-field">
+              <label class="form-label">Full name</label>
+              <input type="text" class="form-input" value="Avery Nguyen">
+            </div>
+            <div class="form-field">
+              <label class="form-label">Email</label>
+              <input type="email" class="form-input" value="avery@example.com" disabled>
+              <span class="form-help">Contact support to change email</span>
+            </div>
+            <div class="form-field">
+              <label class="form-label">Phone</label>
+              <input type="tel" class="form-input" value="+84 28 1234 5678">
+            </div>
+            <div class="form-field">
+              <label class="form-label">Country</label>
+              <select class="form-select"><option selected>Vietnam</option><option>United States</option></select>
+            </div>
+            <div class="form-field">
+              <label class="form-label">Timezone</label>
+              <select class="form-select"><option selected>(GMT+7) Ho Chi Minh City</option></select>
+            </div>
+            <div class="form-field">
+              <label class="form-label">Language</label>
+              <select class="form-select"><option>English</option><option selected>Tiếng Việt</option></select>
+            </div>
+          </div>
+        </div>
+        <div class="card-foot">
+          <button class="btn btn-ghost">Cancel</button>
+          <button class="btn btn-primary">Save changes</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-head"><h3 class="card-title">Change password</h3></div>
+        <div class="card-body">
+          <div class="form-field">
+            <label class="form-label">Current password</label>
+            <input type="password" class="form-input" placeholder="••••••••" style="max-width: 400px;">
+          </div>
+          <div class="form-field">
+            <label class="form-label">New password</label>
+            <input type="password" class="form-input" placeholder="Min 12 characters" style="max-width: 400px;">
+          </div>
+          <div class="form-field">
+            <label class="form-label">Confirm new password</label>
+            <input type="password" class="form-input" style="max-width: 400px;">
+          </div>
+        </div>
+        <div class="card-foot">
+          <span class="text-muted" style="font-size: 12px;">You'll be signed out of all devices</span>
+          <button class="btn btn-primary">Update password</button>
+        </div>
+      </div>
+    </div>
+
+    <aside>
+      <div class="card">
+        <div class="card-head"><h3 class="card-title">Two-factor auth</h3></div>
+        <div class="card-body">
+          <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 12px;">
+            <div style="width: 36px; height: 36px; border-radius: 50%; background: var(--nbd-color-warning-soft); color: var(--nbd-color-warning); display: grid; place-items: center;">🔓</div>
+            <div>
+              <div class="fw-bold">2FA disabled</div>
+              <div class="text-muted" style="font-size: 12px;">Highly recommended for merchants</div>
+            </div>
+          </div>
+          <button class="btn btn-secondary btn-block">Enable 2FA</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-head"><h3 class="card-title">Sessions</h3></div>
+        <div class="card-body" style="font-size: 12px;">
+          <div style="padding: 6px 0; border-bottom: 1px solid var(--nbd-mb-border-subtle);">
+            <div class="fw-bold">Chrome on Mac · current</div>
+            <div class="text-muted">HCMC · 5 min ago</div>
+          </div>
+          <div style="padding: 6px 0;">
+            <div class="fw-bold">Safari on iPhone</div>
+            <div class="text-muted">HCMC · 2 days ago</div>
+          </div>
+          <button class="btn btn-sm btn-danger btn-block mt-3">Sign out other sessions</button>
+        </div>
+      </div>
+
+      <div class="card" style="border-color: var(--nbd-color-error-soft);">
+        <div class="card-head"><h3 class="card-title text-danger">⚠ Danger zone</h3></div>
+        <div class="card-body">
+          <button class="btn btn-danger btn-block">Delete account</button>
+          <p class="text-muted" style="font-size: 11px; margin: 8px 0 0;">All stores, products, and data permanently deleted. Cannot be undone.</p>
+        </div>
+      </div>
+    </aside>
+  </div>
+
+</section>
+
+<!-- ============================================================
+     PAGE: ORDER DETAIL
+     ============================================================ -->
+<section class="page" data-page="order-detail">
+
+  <a href="#" class="detail-back" onclick="goPage('orders'); return false;">
+    <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg> All orders
+  </a>
+
+  <div class="brand-page-header">
+    <div class="brand-page-header-content">
+      <div class="brand-page-header-logo">📦</div>
+      <div class="brand-page-header-info">
+        <div class="brand-page-header-eyebrow">Order #10254 · MyStickerShop</div>
+        <h1 class="brand-page-header-title">Custom round stickers · 250pcs</h1>
+        <p class="brand-page-header-sub">Created May 16, 2026 · Customer: Jane Doe · Status: In production</p>
+      </div>
+      <div class="brand-page-header-actions">
+        <button class="btn">Print invoice</button>
+        <button class="btn btn-primary">Mark shipped</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="layout-2col">
+    <div>
+      <div class="card">
+        <div class="card-head"><h3 class="card-title">Items</h3></div>
+        <div class="card-body is-flush">
+          <table class="table">
+            <thead><tr><th>Product</th><th>SKU</th><th>Qty</th><th>Unit</th><th class="text-end">Subtotal</th></tr></thead>
+            <tbody>
+              <tr><td><strong>Round stickers</strong><br><span class="text-muted" style="font-size: 11px;">3" diameter · vinyl · matte</span></td><td><code>STK-RND-3M</code></td><td>250</td><td>$0.18</td><td class="text-end fw-bold">$45.00</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="card-foot">
+          <div></div>
+          <div style="text-align: right;">
+            <div>Subtotal: <strong>$45.00</strong></div>
+            <div class="text-muted" style="font-size: 12px;">Shipping: $3.50 · Tax: $0.00</div>
+            <div style="font-size: 16px; font-weight: 800; margin-top: 4px;">Total: $48.50</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-head"><h3 class="card-title">Timeline</h3></div>
+        <div class="card-body">
+          <div style="display: flex; flex-direction: column; gap: 14px;">
+            <div style="display: flex; gap: 12px;"><div style="width: 24px; height: 24px; border-radius: 50%; background: var(--nbd-color-success); display: grid; place-items: center; color: #fff; font-size: 12px; flex-shrink: 0;">✓</div><div><div class="fw-bold">Order placed</div><div class="text-muted" style="font-size: 12px;">May 16 · 14:32 · Customer Jane Doe</div></div></div>
+            <div style="display: flex; gap: 12px;"><div style="width: 24px; height: 24px; border-radius: 50%; background: var(--nbd-color-success); display: grid; place-items: center; color: #fff; font-size: 12px; flex-shrink: 0;">✓</div><div><div class="fw-bold">Design approved</div><div class="text-muted" style="font-size: 12px;">May 16 · 14:45 · Auto preflight passed</div></div></div>
+            <div style="display: flex; gap: 12px;"><div style="width: 24px; height: 24px; border-radius: 50%; background: var(--nbd-color-warning); display: grid; place-items: center; color: #fff; font-size: 12px; flex-shrink: 0;">⚡</div><div><div class="fw-bold">In production</div><div class="text-muted" style="font-size: 12px;">Started May 16 · 15:00 · ETA ship May 18</div></div></div>
+            <div style="display: flex; gap: 12px; opacity: 0.4;"><div style="width: 24px; height: 24px; border-radius: 50%; border: 2px solid var(--nbd-mb-border-strong); flex-shrink: 0;"></div><div><div class="fw-bold">Shipped</div><div class="text-muted" style="font-size: 12px;">Awaiting</div></div></div>
+            <div style="display: flex; gap: 12px; opacity: 0.4;"><div style="width: 24px; height: 24px; border-radius: 50%; border: 2px solid var(--nbd-mb-border-strong); flex-shrink: 0;"></div><div><div class="fw-bold">Delivered</div><div class="text-muted" style="font-size: 12px;">Awaiting</div></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <aside>
+      <div class="card">
+        <div class="card-head"><h3 class="card-title">Customer</h3></div>
+        <div class="card-body">
+          <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
+            <div style="width: 40px; height: 40px; border-radius: 50%; background: linear-gradient(135deg, #ec4899, #be185d); color: #fff; display: grid; place-items: center; font-weight: 700;">JD</div>
+            <div>
+              <div class="fw-bold">Jane Doe</div>
+              <div class="text-muted" style="font-size: 12px;">jane.doe@email.com</div>
+            </div>
+          </div>
+          <dl class="def-list" style="grid-template-columns: 90px 1fr; gap: 6px 12px; font-size: 12px;">
+            <dt>Orders</dt><dd>3 (this is #3)</dd>
+            <dt>LTV</dt><dd>$214.50</dd>
+            <dt>Phone</dt><dd>+84 ...</dd>
+          </dl>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-head"><h3 class="card-title">Shipping</h3></div>
+        <div class="card-body" style="font-size: 13px;">
+          <div class="fw-bold mb-2">Standard · DHL</div>
+          <p class="text-muted" style="font-size: 12px; margin: 0;">Jane Doe<br>123 Main Street<br>Ho Chi Minh City, 700000<br>Vietnam</p>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-head"><h3 class="card-title">Payment</h3></div>
+        <div class="card-body" style="font-size: 13px;">
+          <div class="fw-bold mb-2">Paid via Stripe</div>
+          <div class="text-muted" style="font-size: 12px;">Visa •••• 4242 · $48.50</div>
+        </div>
+      </div>
+    </aside>
+  </div>
+
+</section>
+
+<!-- ============================================================
+     PAGE: TRANSACTION DETAIL
+     ============================================================ -->
+<section class="page" data-page="transaction-detail">
+
+  <a href="#" class="detail-back" onclick="goPage('wallet'); return false;">
+    <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg> Wallet · Transactions
+  </a>
+
+  <div class="brand-page-header">
+    <div class="brand-page-header-content">
+      <div class="brand-page-header-logo">💎</div>
+      <div class="brand-page-header-info">
+        <div class="brand-page-header-eyebrow">Transaction · TX-10248</div>
+        <h1 class="brand-page-header-title">AI Background Remove · 8 images</h1>
+        <p class="brand-page-header-sub">May 16, 2026 · 14:32 · MyStickerShop</p>
+      </div>
+      <div class="brand-page-header-actions">
+        <button class="btn">Download receipt</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="layout-2col">
+    <div>
+      <div class="card">
+        <div class="card-head"><h3 class="card-title">Breakdown</h3></div>
+        <div class="card-body is-flush">
+          <table class="table">
+            <thead><tr><th>Item</th><th>Cost (tokens)</th><th>Subtotal</th></tr></thead>
+            <tbody>
+              <tr><td>AI Background Remove · image 1</td><td>10</td><td class="text-end">10</td></tr>
+              <tr><td>AI Background Remove · image 2</td><td>10</td><td class="text-end">10</td></tr>
+              <tr><td>AI Background Remove · image 3</td><td>10</td><td class="text-end">10</td></tr>
+              <tr><td>AI Background Remove · image 4</td><td>10</td><td class="text-end">10</td></tr>
+              <tr><td>AI Background Remove · image 5</td><td>10</td><td class="text-end">10</td></tr>
+              <tr><td>AI Background Remove · image 6</td><td>10</td><td class="text-end">10</td></tr>
+              <tr><td>AI Background Remove · image 7</td><td>10</td><td class="text-end">10</td></tr>
+              <tr><td>AI Background Remove · image 8</td><td>10</td><td class="text-end">10</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="card-foot">
+          <div></div>
+          <div style="text-align: right;">
+            <div style="font-size: 16px; font-weight: 800;">Total: 80 tokens</div>
+            <div class="text-muted" style="font-size: 12px;">≈ $0.53 at current rate</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <aside>
+      <div class="card">
+        <div class="card-head"><h3 class="card-title">Details</h3></div>
+        <div class="card-body">
+          <dl class="def-list" style="font-size: 13px;">
+            <dt>Transaction ID</dt><dd><code>TX-10248</code></dd>
+            <dt>Type</dt><dd><span class="status-pill is-error"><span class="dot"></span>Debit</span></dd>
+            <dt>Store</dt><dd>MyStickerShop</dd>
+            <dt>API key used</dt><dd><code>pcsia_4a81...</code></dd>
+            <dt>Date</dt><dd>May 16, 2026 · 14:32 (GMT+7)</dd>
+            <dt>Balance before</dt><dd>8,500 tokens</dd>
+            <dt>Balance after</dt><dd>8,420 tokens</dd>
+          </dl>
+        </div>
+      </div>
+    </aside>
+  </div>
+
+</section>
+
+<!-- ============================================================
+     PAGE: PRODUCTS (placeholder)
+     ============================================================ -->
+<section class="page" data-page="products">
+  <div class="brand-page-header">
+    <div class="brand-page-header-content">
+      <div class="brand-page-header-logo">📦</div>
+      <div class="brand-page-header-info">
+        <div class="brand-page-header-eyebrow">Catalog · Products</div>
+        <h1 class="brand-page-header-title">Products</h1>
+        <p class="brand-page-header-sub">Manage your product catalog across all stores.</p>
+      </div>
+      <div class="brand-page-header-actions"><button class="btn btn-primary">Add product</button></div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-body" style="padding: 60px 24px; text-align: center;">
+      <div style="font-size: 48px; margin-bottom: 16px; opacity: 0.5;">📦</div>
+      <h3 style="margin: 0 0 8px;">Products page — v2.1 scope</h3>
+      <p class="text-muted">Product CRUD, variants, pricing rules, bulk import. Coming in next milestone.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     PAGE: ORDERS (placeholder)
+     ============================================================ -->
+<section class="page" data-page="orders">
+  <div class="brand-page-header">
+    <div class="brand-page-header-content">
+      <div class="brand-page-header-logo">🛍</div>
+      <div class="brand-page-header-info">
+        <div class="brand-page-header-eyebrow">Catalog · Orders</div>
+        <h1 class="brand-page-header-title">Orders</h1>
+        <p class="brand-page-header-sub">All orders across stores. Click any order for full details.</p>
+      </div>
+    </div>
+  </div>
+  <div class="page-toolbar">
+    <div class="page-search">
+      <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.35-4.35"/></svg>
+      <input type="text" placeholder="Search orders...">
+    </div>
+    <div class="filter-bar">
+      <button class="filter-chip is-active">All</button>
+      <button class="filter-chip">Pending</button>
+      <button class="filter-chip">Production</button>
+      <button class="filter-chip">Shipped</button>
+      <button class="filter-chip">Delivered</button>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-body is-flush">
+      <table class="table is-hover">
+        <thead><tr><th>Order</th><th>Store</th><th>Customer</th><th>Product</th><th>Status</th><th class="text-end">Total</th></tr></thead>
+        <tbody>
+          <tr onclick="goPage('order-detail')"><td><strong>#10254</strong></td><td>MyStickerShop</td><td>Jane Doe</td><td>Round stickers · 250pcs</td><td><span class="status-pill is-warning"><span class="dot"></span>Production</span></td><td class="text-end fw-bold">$48.50</td></tr>
+          <tr onclick="goPage('order-detail')"><td><strong>#10253</strong></td><td>PrintHub VN</td><td>Nguyen Van A</td><td>Business cards · 500pcs</td><td><span class="status-pill is-info"><span class="dot"></span>Shipped</span></td><td class="text-end fw-bold">$72.00</td></tr>
+          <tr onclick="goPage('order-detail')"><td><strong>#10252</strong></td><td>MyStickerShop</td><td>Sarah J.</td><td>Wall decals · 12pcs</td><td><span class="status-pill is-success"><span class="dot"></span>Delivered</span></td><td class="text-end fw-bold">$135.00</td></tr>
+          <tr onclick="goPage('order-detail')"><td><strong>#10251</strong></td><td>EventLab Studio</td><td>Mike Chen</td><td>Event banners · 4pcs</td><td><span class="status-pill is-success"><span class="dot"></span>Delivered</span></td><td class="text-end fw-bold">$240.00</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     PAGE: DESIGNS (placeholder)
+     ============================================================ -->
+<section class="page" data-page="designs">
+  <div class="brand-page-header">
+    <div class="brand-page-header-content">
+      <div class="brand-page-header-logo">🎨</div>
+      <div class="brand-page-header-info">
+        <div class="brand-page-header-eyebrow">Catalog · Designs</div>
+        <h1 class="brand-page-header-title">Designs</h1>
+        <p class="brand-page-header-sub">Customer-created designs · 142 / 200 used on Free plan</p>
+      </div>
+      <div class="brand-page-header-actions"><button class="btn btn-primary" data-nav-link="wallet">Upgrade to unlimited</button></div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-body" style="padding: 60px 24px; text-align: center;">
+      <div style="font-size: 48px; margin-bottom: 16px; opacity: 0.5;">🎨</div>
+      <h3 style="margin: 0 0 8px;">Designs gallery — v2.1 scope</h3>
+      <p class="text-muted">Browse customer-uploaded designs, preflight status, asset library. Coming in next milestone.</p>
+    </div>
+  </div>
+</section>
+
+  </main>
+</div>
+
+<!-- ============================================================
+     AUTH PAGES (full-screen, outside .app shell)
+     Hidden by default - toggleable via auth links
+     ============================================================ -->
+<style>
+.auth-overlay {
+  position: fixed; inset: 0;
+  z-index: 9999;
+  display: none;
+  background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 60%, #7c3aed 100%);
+  overflow-y: auto;
+}
+.auth-overlay.is-open { display: block; }
+.auth-overlay::before {
+  content: ''; position: fixed;
+  top: -150px; right: -150px;
+  width: 500px; height: 500px;
+  background: radial-gradient(circle, rgba(251,191,36,0.18), transparent 65%);
+  border-radius: 50%; pointer-events: none;
+}
+.auth-wrap {
+  min-height: 100vh;
+  display: flex; align-items: center; justify-content: center;
+  padding: 32px 20px;
+}
+.auth-card {
+  width: 100%; max-width: 420px;
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 16px 40px rgba(0,0,0,0.20);
+  padding: 32px;
+  position: relative; z-index: 1;
+}
+.auth-brand {
+  display: flex; align-items: center; justify-content: center; gap: 10px;
+  margin-bottom: 20px;
+}
+.auth-brand-logo {
+  width: 38px; height: 38px;
+  border-radius: 6px;
+  background: linear-gradient(135deg, #2563eb, #1e40af);
+  color: #fff;
+  display: grid; place-items: center;
+  font-weight: 800; font-size: 18px;
+  box-shadow: 0 6px 14px rgba(37,99,235,0.25);
+}
+.auth-brand-name { font-weight: 800; font-size: 20px; color: var(--nbd-mb-text-strong); letter-spacing: -0.02em; }
+.auth-title { font-size: 22px; font-weight: 800; text-align: center; margin: 0 0 6px; }
+.auth-sub { text-align: center; color: var(--nbd-mb-text-soft); margin: 0 0 20px; font-size: 13px; }
+.auth-divider {
+  display: flex; align-items: center; gap: 12px;
+  margin: 16px 0;
+  color: var(--nbd-mb-text-soft);
+  font-size: 10px; text-transform: uppercase;
+  letter-spacing: 0.08em; font-weight: 700;
+}
+.auth-divider::before, .auth-divider::after { content: ''; flex: 1; height: 1px; background: var(--nbd-mb-border); }
+.social-btn {
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  padding: 9px 14px;
+  background: #fff;
+  border: 1px solid var(--nbd-mb-border);
+  border-radius: 6px;
+  color: var(--nbd-mb-text);
+  font-weight: 600; cursor: pointer;
+  font-family: inherit; font-size: 13px;
+  width: 100%; margin-bottom: 8px;
+}
+.social-btn:hover { background: var(--nbd-mb-bg-soft); border-color: var(--nbd-mb-border-strong); }
+.social-icon {
+  width: 17px; height: 17px; border-radius: 4px;
+  display: grid; place-items: center;
+  font-weight: 800; font-size: 10px; color: #fff;
+}
+</style>
+
+<div class="auth-overlay" id="authSignin">
+  <div class="auth-wrap">
+    <div class="auth-card">
+      <div class="auth-brand">
+        <span class="auth-brand-logo">P</span>
+        <span class="auth-brand-name">Printcart</span>
+      </div>
+      <h1 class="auth-title">Welcome back</h1>
+      <p class="auth-sub">Sign in to your merchant dashboard</p>
+
+      <button class="social-btn"><span class="social-icon" style="background: #ea4335;">G</span>Continue with Google</button>
+      <button class="social-btn"><span class="social-icon" style="background: #1877f2;">f</span>Continue with Facebook</button>
+
+      <div class="auth-divider">Or with email</div>
+
+      <div class="form-field">
+        <label class="form-label">Email</label>
+        <input type="email" class="form-input" placeholder="you@example.com">
+      </div>
+      <div class="form-field">
+        <label class="form-label">Password <a href="#" style="float: right; font-size: 11px;">Forgot?</a></label>
+        <input type="password" class="form-input" placeholder="Min 12 characters">
+      </div>
+      <label class="check" style="margin-bottom: 16px;">
+        <input type="checkbox"><span class="check-label">Keep me signed in for 30 days</span>
+      </label>
+      <button class="btn btn-primary btn-block btn-lg" onclick="document.getElementById('authSignin').classList.remove('is-open'); goPage('home');">Sign in →</button>
+
+      <p style="text-align: center; margin: 16px 0 0; font-size: 13px; color: var(--nbd-mb-text-soft);">
+        New to Printcart? <a href="#" onclick="document.getElementById('authSignin').classList.remove('is-open'); document.getElementById('authSignup').classList.add('is-open'); return false;">Create account →</a>
+      </p>
+
+      <p style="text-align: center; margin: 24px 0 0; font-size: 11px;">
+        <a href="#" onclick="document.getElementById('authSignin').classList.remove('is-open'); return false;" style="color: var(--nbd-mb-text-soft);">← Back to dashboard demo</a>
+      </p>
+    </div>
+  </div>
+</div>
+
+<div class="auth-overlay" id="authSignup">
+  <div class="auth-wrap">
+    <div class="auth-card">
+      <div class="auth-brand">
+        <span class="auth-brand-logo">P</span>
+        <span class="auth-brand-name">Printcart</span>
+      </div>
+      <h1 class="auth-title">Create your account</h1>
+      <p class="auth-sub">Start with 50 free tokens · no credit card required</p>
+
+      <button class="social-btn"><span class="social-icon" style="background: #ea4335;">G</span>Sign up with Google</button>
+      <button class="social-btn"><span class="social-icon" style="background: #1877f2;">f</span>Sign up with Facebook</button>
+
+      <div class="auth-divider">Or with email</div>
+
+      <div class="form-field">
+        <label class="form-label">Full name</label>
+        <input type="text" class="form-input" placeholder="Your name">
+      </div>
+      <div class="form-field">
+        <label class="form-label">Email</label>
+        <input type="email" class="form-input" placeholder="you@example.com">
+      </div>
+      <div class="form-field">
+        <label class="form-label">Password</label>
+        <input type="password" class="form-input" placeholder="Min 12 characters">
+        <span class="form-help">8+ chars, mix of letters, numbers, symbols</span>
+      </div>
+      <label class="check" style="margin-bottom: 16px;">
+        <input type="checkbox"><span class="check-label">I agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a></span>
+      </label>
+      <button class="btn btn-primary btn-block btn-lg" onclick="document.getElementById('authSignup').classList.remove('is-open'); goPage('wizard');">Create account →</button>
+
+      <p style="text-align: center; margin: 16px 0 0; font-size: 13px; color: var(--nbd-mb-text-soft);">
+        Already have an account? <a href="#" onclick="document.getElementById('authSignup').classList.remove('is-open'); document.getElementById('authSignin').classList.add('is-open'); return false;">Sign in →</a>
+      </p>
+
+      <p style="text-align: center; margin: 24px 0 0; font-size: 11px;">
+        <a href="#" onclick="document.getElementById('authSignup').classList.remove('is-open'); return false;" style="color: var(--nbd-mb-text-soft);">← Back to dashboard demo</a>
+      </p>
+    </div>
+  </div>
+</div>
+
+<!-- Floating demo controls -->
+<div style="position: fixed; bottom: 16px; right: 16px; display: flex; gap: 6px; z-index: 500;">
+  <button class="btn btn-sm btn-secondary" style="background: #1f2937; color: #fff; border-color: #1f2937; box-shadow: 0 4px 12px rgba(0,0,0,0.20);" onclick="document.getElementById('authSignin').classList.add('is-open');">Demo: Sign in screen</button>
+  <button class="btn btn-sm btn-secondary" style="background: #1f2937; color: #fff; border-color: #1f2937; box-shadow: 0 4px 12px rgba(0,0,0,0.20);" onclick="document.getElementById('authSignup').classList.add('is-open');">Demo: Sign up screen</button>
+</div>
+
+<!-- ============================================================
+     JAVASCRIPT
+     ============================================================ -->
+<script>
+// ============ Navigation: goPage(id) ============
+function goPage(id) {
+  // Hide all pages
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('is-active'));
+  // Show target page
+  const target = document.querySelector(`[data-page="${id}"]`);
+  if (target) target.classList.add('is-active');
+
+  // Update sidebar nav active state
+  document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('is-active'));
+  const navBtn = document.querySelector(`.nav-item[data-nav="${id}"]`);
+  if (navBtn) navBtn.classList.add('is-active');
+
+  // Scroll to top
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// Wire up all nav-item clicks
+document.querySelectorAll('.nav-item[data-nav]').forEach(btn => {
+  btn.addEventListener('click', () => goPage(btn.dataset.nav));
+});
+
+// Wire up [data-nav-link] cross-page jumps
+document.querySelectorAll('[data-nav-link]').forEach(el => {
+  el.addEventListener('click', (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    goPage(el.dataset.navLink);
+  });
+});
+
+// ============ Wizard tab switching ============
+function goWizardStep(n) {
+  // Hide all panels
+  document.querySelectorAll('.wizard-panel').forEach(p => p.classList.remove('is-active'));
+  // Show target panel
+  const target = document.querySelector(`[data-wizard-panel="${n}"]`);
+  if (target) target.classList.add('is-active');
+
+  // Update stepper visual state (current step only — done states stay)
+  document.querySelectorAll('.wizard-step').forEach(s => {
+    if (s.classList.contains('is-done')) return;
+    s.classList.remove('is-active');
+  });
+  const step = document.querySelector(`.wizard-step[data-step="${n}"]`);
+  if (step && !step.classList.contains('is-done')) step.classList.add('is-active');
+
+  // Scroll to top of wizard
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// ============ Wallet tabs switching ============
+function switchWalletTab(tabId, btnEl) {
+  document.querySelectorAll('.wallet-tab').forEach(t => t.style.display = 'none');
+  const target = document.querySelector(`[data-wallet-tab="${tabId}"]`);
+  if (target) target.style.display = 'block';
+
+  document.querySelectorAll('.wallet-tab + .tabs .tab, [data-page="wallet"] .tabs .tab').forEach(t => t.classList.remove('is-active'));
+  if (btnEl) {
+    btnEl.classList.add('is-active');
+  } else {
+    // If called without btn (e.g. from action button), find matching tab by index
+    const tabBtns = document.querySelectorAll('[data-page="wallet"] .tabs .tab');
+    const order = ['overview','buy','transactions','billing','payment'];
+    const idx = order.indexOf(tabId);
+    if (idx >= 0 && tabBtns[idx]) tabBtns[idx].classList.add('is-active');
+  }
+}
+
+// ============ Store switcher dropdown ============
+function toggleStoreSwitcher(event) {
+  event.stopPropagation();
+  const dd = document.getElementById('storeSwitcherDropdown');
+  if (dd) dd.classList.toggle('is-open');
+}
+
+function closeStoreSwitcher() {
+  const dd = document.getElementById('storeSwitcherDropdown');
+  if (dd) dd.classList.remove('is-open');
+}
+
+function switchStore(name, avatar, btnEl) {
+  document.getElementById('currentStoreName').textContent = name;
+  document.getElementById('currentStoreAvatar').textContent = avatar;
+  closeStoreSwitcher();
+}
+
+// Close dropdown on outside click
+document.addEventListener('click', (e) => {
+  const dd = document.getElementById('storeSwitcherDropdown');
+  const btn = document.getElementById('storeSwitcherBtn');
+  if (dd && dd.classList.contains('is-open')) {
+    if (!btn.contains(e.target)) {
+      dd.classList.remove('is-open');
+    }
+  }
+});
+
+// ============ Radio card single-select ============
+function selectRadio(el) {
+  const group = el.closest('.radio-card-grid');
+  if (group) {
+    group.querySelectorAll('.radio-card').forEach(c => c.classList.remove('is-selected'));
+  }
+  el.classList.add('is-selected');
+}
+
+// ============ Live slug preview ============
+function updateSlug(value, targetId) {
+  const slug = (value || '').toLowerCase()
+    .replace(/[^a-z0-9\s-]/g, '')
+    .replace(/\s+/g, '-')
+    .replace(/-+/g, '-')
+    .trim() || '___';
+  const el = document.getElementById(targetId || 'wizSlug');
+  if (el) el.textContent = slug;
+}
+
+// ============ Secret reveal ============
+function toggleSecret() {
+  const el = document.getElementById('secretReveal');
+  if (!el) return;
+  if (el.textContent.startsWith('•')) {
+    el.textContent = 'secret_9f8a72b34c56de01f9a82e';
+  } else {
+    el.textContent = '••••••••••••••••••••••••••••';
+  }
+}
+
+// ============ Copy to clipboard ============
+function copyToClipboard(btn, text) {
+  if (navigator.clipboard) {
+    navigator.clipboard.writeText(text);
+  }
+  const original = btn.innerHTML;
+  btn.innerHTML = '✓';
+  setTimeout(() => btn.innerHTML = original, 1200);
+}
+</script>
+
+</body>
+</html>
