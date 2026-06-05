@@ -25,6 +25,7 @@ module.exports = {
   apiReference: [
     "api-reference/intro",
     "api-reference/api-overview",
+    "api-reference/ai-services",
     "api-reference/webhooks",
     {
       type: "link",
