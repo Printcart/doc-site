@@ -1,6 +1,6 @@
 ---
 sidebar_position: 4
-title: AI Services (Preflight & Background Removal)
+title: AI Services (Preflight, Background Removal & Upscale)
 ---
 
 # AI Services
@@ -9,6 +9,7 @@ Printcart offers pay-per-token AI services that you can call directly from the R
 
 - **Background Removal** — remove the background from an image with AI.
 - **Preflight AI** — check a print file's quality (DPI rating, bleed, colour, fonts) before production.
+- **Image Upscale & Auto-fix** — increase image resolution and apply print fixes (bleed, sharpen, flatten) via AI fix jobs.
 
 These endpoints live under the `/v1/services/*` prefix and are billed from your token **wallet** — there is no fixed fee, you only pay tokens when you use them.
 
@@ -24,8 +25,11 @@ Content-Type: application/json
 | Service | Token cost |
 |---|---|
 | Background Removal | **150 tokens / image** |
-| Preflight — DPI score | metered (lightweight) |
-| Preflight — full check | metered per check |
+| Preflight — DPI score | free (lightweight) |
+| Preflight — full check | metered per plan (no token charge) |
+| Upscale 2× (`upscale_resolution_2x`) | **30 tokens** |
+| Upscale 4× (`upscale_resolution_4x`) | **50 tokens** |
+| Add bleed (`add_bleed`) | ~120 tokens |
 
 If your wallet balance is too low, the API responds with **HTTP 402**:
 
@@ -205,11 +209,77 @@ curl -X POST https://api.printcart.com/v1/services/preflight/checks \
 
 ---
 
+## Image Upscale & AI Auto-fix
+
+AI fixes run as **jobs** created from a preflight report. The most common use is **upscaling** a low-resolution raster image so it prints sharp.
+
+### 1. Create a report for the image
+
+```bash
+curl -X POST https://api.printcart.com/v1/services/preflight/checks \
+  -H "Authorization: Bearer <access_token>" -H "Content-Type: application/json" \
+  -d '{ "designId": "upscale-001", "fileUrl": "https://example.com/photo.jpg", "fileType": "jpeg" }'
+# → { "data": { "reportId": "report_..." , ... } }
+```
+
+### 2. Create an AI fix job — `POST /v1/services/preflight/ai-jobs`
+
+```bash
+curl -X POST https://api.printcart.com/v1/services/preflight/ai-jobs \
+  -H "Authorization: Bearer <access_token>" -H "Content-Type: application/json" \
+  -d '{
+    "preflightReportId": "report_...",
+    "options": { "fixTypes": ["upscale_resolution_2x"], "targetDpi": 300 }
+  }'
+```
+
+`fixTypes` (auto-derived from the report's issues if omitted):
+
+| Fix type | Description | Tokens |
+|---|---|---|
+| `upscale_resolution_2x` | Upscale raster image 2× | 30 |
+| `upscale_resolution_4x` | Upscale raster image 4× | 50 |
+| `add_bleed` | Add bleed (raster mirror / PDF scale-to-bleed) | ~120 |
+| `remove_transparency` | Flatten transparency to white | ~20 |
+| `sharpen_edges` | Sharpen edges | ~35 |
+
+**Response — `202 Accepted`**
+
+```json
+{ "data": { "jobId": "job_...", "status": "analyzing", "estimatedTokenCost": { "min": 30, "max": 30 } } }
+```
+
+Tokens are deducted when the job is created (refunded automatically if the job fails).
+
+### 3. Poll the job — `GET /v1/services/preflight/ai-jobs/{jobId}`
+
+```json
+{
+  "data": {
+    "jobId": "job_...",
+    "status": "completed",
+    "correctedFileUrl": "https://.../output.png?X-Amz-...",
+    "tokensDeducted": 30,
+    "completedAt": "2026-06-10T10:01:30.000Z"
+  }
+}
+```
+
+`status`: `analyzing` → `applying` → `completed` | `failed`. `correctedFileUrl` is a presigned URL valid for 24 hours.
+
+:::info
+- **Upscaling** uses a high-quality **Lanczos** algorithm (not AI super-resolution) — it enlarges cleanly but does not invent new detail.
+- **PDF auto-fix** currently supports `add_bleed` only. CMYK conversion and in-PDF image resolution are **not** auto-fixed (color is typically converted at the printer's RIP).
+:::
+
+---
+
 ## Using it from the dashboard
 
-You can try both services without writing code in **Dashboard → API Services**:
+You can try every service without writing code in **Dashboard → API Services**:
 
 - **Background Removal** — paste an image URL, choose options, and run.
 - **Preflight AI** — enter dimensions (Quick DPI) or a file URL (Full check).
+- **Image Upscale** — paste an image URL, choose 2× or 4×, and run.
 
 Token usage and history are shown on the API Services overview and in **Wallet & Billing → Transactions**.
