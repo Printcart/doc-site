@@ -26,6 +26,7 @@ module.exports = {
     "api-reference/intro",
     "api-reference/api-overview",
     "api-reference/ai-services",
+    "api-reference/printcart-studio",
     "api-reference/webhooks",
     {
       type: "link",
