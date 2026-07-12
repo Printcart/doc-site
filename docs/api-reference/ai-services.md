@@ -27,9 +27,9 @@ Content-Type: application/json
 | Background Removal | **150 tokens / image** |
 | Preflight — DPI score | free (lightweight) |
 | Preflight — full check | metered per plan (no token charge) |
-| Upscale 2× (`upscale_resolution_2x`) | **30 tokens** |
-| Upscale 4× (`upscale_resolution_4x`) | **50 tokens** |
-| Add bleed (`add_bleed`) | ~120 tokens |
+| AI fix job — raster (upscale / sharpen / flatten / resize…) | **200 tokens / job** |
+| AI fix job — PDF, bleed only (`add_bleed`) | **150 tokens / job** |
+| AI fix job — PDF, full (CMYK + resolution + flatten via Ghostscript) | **300 tokens / job** |
 
 If your wallet balance is too low, the API responds with **HTTP 402**:
 
@@ -233,20 +233,20 @@ curl -X POST https://api.printcart.com/v1/services/preflight/ai-jobs \
   }'
 ```
 
-`fixTypes` (auto-derived from the report's issues if omitted):
+An AI fix job is priced **flat per job** (not per fix): a raster job = **200 tokens**, a PDF job (bleed) = **150 tokens**. `fixTypes` (auto-derived from the report's issues if omitted):
 
-| Fix type | Description | Tokens |
+| Fix type | Description | File types |
 |---|---|---|
-| `upscale_resolution_2x` | Upscale raster image 2× | 30 |
-| `upscale_resolution_4x` | Upscale raster image 4× | 50 |
-| `add_bleed` | Add bleed (raster mirror / PDF scale-to-bleed) | ~120 |
-| `remove_transparency` | Flatten transparency to white | ~20 |
-| `sharpen_edges` | Sharpen edges | ~35 |
+| `upscale_resolution_2x` / `_4x` | Upscale raster image (Lanczos) | raster |
+| `add_bleed` | Add bleed (raster mirror / PDF scale-to-bleed) | raster, PDF |
+| `remove_transparency` | Flatten transparency to white | raster |
+| `sharpen_edges` | Sharpen edges | raster |
+| `resize_to_spec` / `convert_color_mode` | Resize / RGB→CMYK | raster |
 
 **Response — `202 Accepted`**
 
 ```json
-{ "data": { "jobId": "job_...", "status": "analyzing", "estimatedTokenCost": { "min": 30, "max": 30 } } }
+{ "data": { "jobId": "job_...", "status": "analyzing", "estimatedTokenCost": { "min": 200, "max": 200 } } }
 ```
 
 Tokens are deducted when the job is created (refunded automatically if the job fails).
@@ -269,7 +269,7 @@ Tokens are deducted when the job is created (refunded automatically if the job f
 
 :::info
 - **Upscaling** uses a high-quality **Lanczos** algorithm (not AI super-resolution) — it enlarges cleanly but does not invent new detail.
-- **PDF auto-fix** currently supports `add_bleed` only. CMYK conversion and in-PDF image resolution are **not** auto-fixed (color is typically converted at the printer's RIP).
+- **PDF auto-fix** supports `add_bleed` (pdf-lib scale-to-bleed) and, via Ghostscript, a **full prepress fix**: embed all fonts, convert RGB→CMYK (DeviceCMYK), downsample images to 300 DPI, and flatten transparency. A PDF job that requests any Ghostscript fix is billed at the full PDF tier (300 tokens); bleed-only is 150.
 :::
 
 ---

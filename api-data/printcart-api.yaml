@@ -32,6 +32,7 @@ tags:
   - name: Webhook
   - name: Clipart Storage
   - name: Project Folder
+  - name: 3D Preview
 paths:
   /account:
     post:
@@ -5780,6 +5781,324 @@ paths:
       security:
         - BasicAuth: []
         - UnAuthToken: []
+  /products/{productId}/3d-config:
+    get:
+      tags:
+        - "3D Preview"
+      operationId: "getProduct3DConfig"
+      summary: "Get product 3D preview config"
+      description: "Returns the 3D preview configuration for a product: whether 3D preview is enabled, the render profile, and per-side print geometry needed by the render widget. Intended for the embedded designer / storefront SDK."
+      parameters:
+        - in: "path"
+          name: "productId"
+          description: "Product ID"
+          required: true
+          schema:
+            type: "string"
+      responses:
+        "200":
+          description: "Retrieved successfully"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Product3DConfigResponse"
+        "401":
+          description: "Unauthenticated"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Unauthenticated"
+        "404":
+          description: "Not found"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NotFound"
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalServerError"
+      security:
+        - BasicAuth: []
+        - UnAuthToken: []
+  /products/{productId}/3d-profiles:
+    post:
+      tags:
+        - "3D Preview"
+      operationId: "createProduct3DProfile"
+      summary: "Create product 3D profile"
+      description: "Enables and configures 3D edge preview for a product. One profile per product."
+      parameters:
+        - in: "path"
+          name: "productId"
+          description: "Product ID"
+          required: true
+          schema:
+            type: "string"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Product3DProfileRequest"
+        required: true
+      responses:
+        "200":
+          description: "Created successfully"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Product3DProfileResponse"
+        "400":
+          description: "Invalid input or profile already exists"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidInput"
+        "401":
+          description: "Unauthenticated"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Unauthenticated"
+        "404":
+          description: "Not found"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NotFound"
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalServerError"
+      security:
+        - BasicAuth: []
+  /products/{productId}/3d-profiles/{profileId}:
+    put:
+      tags:
+        - "3D Preview"
+      operationId: "updateProduct3DProfile"
+      summary: "Update product 3D profile"
+      description: "Updates the 3D preview profile. Changing a render-affecting field (mode, edge style, edge depth, edge depth unit) bumps config_version so cached renders invalidate."
+      parameters:
+        - in: "path"
+          name: "productId"
+          description: "Product ID"
+          required: true
+          schema:
+            type: "string"
+        - in: "path"
+          name: "profileId"
+          description: "3D Profile ID"
+          required: true
+          schema:
+            type: "string"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Product3DProfileRequest"
+        required: true
+      responses:
+        "200":
+          description: "Updated successfully"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Product3DProfileResponse"
+        "400":
+          description: "Invalid input"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidInput"
+        "401":
+          description: "Unauthenticated"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Unauthenticated"
+        "404":
+          description: "Not found"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NotFound"
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalServerError"
+      security:
+        - BasicAuth: []
+    delete:
+      tags:
+        - "3D Preview"
+      operationId: "deleteProduct3DProfile"
+      summary: "Delete product 3D profile"
+      description: "Disables 3D preview for the product (soft delete). Re-creating the profile later restores it with a bumped config_version."
+      parameters:
+        - in: "path"
+          name: "productId"
+          description: "Product ID"
+          required: true
+          schema:
+            type: "string"
+        - in: "path"
+          name: "profileId"
+          description: "3D Profile ID"
+          required: true
+          schema:
+            type: "string"
+      responses:
+        "200":
+          description: "Deleted successfully"
+        "401":
+          description: "Unauthenticated"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Unauthenticated"
+        "404":
+          description: "Not found"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NotFound"
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalServerError"
+      security:
+        - BasicAuth: []
+  /3d/edge-preview:
+    post:
+      tags:
+        - "3D Preview"
+      operationId: "renderEdgePreview"
+      summary: "Render a 3D edge preview"
+      description: |
+        Renders a 2D artwork into a procedural 3D edge preview image (canvas / wall-art style).
+        Requires the product to have an enabled 3D profile and a Pro plan or higher.
+
+        Artwork resolution order: `design_id` preview image → `artwork_url` (must be a Printcart CDN URL) → the side background image.
+        Results are cached by content hash — identical requests return `cache_hit: true` without re-rendering. Send `reset: true` to force a re-render.
+        Rate limited to 10 renders per minute per store.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/EdgePreviewRequest"
+        required: true
+      responses:
+        "200":
+          description: "Rendered successfully (or served from cache)"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ThreeDPreviewResultResponse"
+        "400":
+          description: "Invalid input, 3D preview disabled, invalid artwork URL, or plan upgrade required"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidInput"
+        "401":
+          description: "Unauthenticated"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Unauthenticated"
+        "404":
+          description: "Not found"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NotFound"
+        "429":
+          description: "Too many render requests (rate limited)"
+        "500":
+          description: "Render failed"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalServerError"
+      security:
+        - BasicAuth: []
+        - UnAuthToken: []
+  /designs/{designId}/generate/3d-preview:
+    post:
+      tags:
+        - "3D Preview"
+      operationId: "generateSavedDesign3DPreview"
+      summary: "Generate 3D preview for a saved design"
+      description: |
+        Generates a 3D edge preview for an already-saved design. Print geometry is read from the
+        design's `original_side` snapshot (captured when the design was saved), so later product
+        edits never change the proof of an existing customer design.
+
+        Requires the design's product to have an enabled 3D profile and a Pro plan or higher.
+        Results are cached — send `reset: true` in the body to force a re-render.
+        Rate limited to 10 renders per minute per store.
+      parameters:
+        - in: "path"
+          name: "designId"
+          description: "Design ID"
+          required: true
+          schema:
+            type: "string"
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                reset:
+                  type: boolean
+                  description: "Force a re-render, bypassing the cached result"
+                  example: false
+      responses:
+        "200":
+          description: "Rendered successfully (or served from cache)"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ThreeDPreviewResultResponse"
+        "400":
+          description: "Invalid input, 3D preview disabled, missing design snapshot, or plan upgrade required"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidInput"
+        "401":
+          description: "Unauthenticated"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Unauthenticated"
+        "404":
+          description: "Not found"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NotFound"
+        "429":
+          description: "Too many render requests (rate limited)"
+        "500":
+          description: "Render failed"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalServerError"
+      security:
+        - BasicAuth: []
 components:
   securitySchemes:
     BasicAuth:
@@ -10208,3 +10527,235 @@ components:
           example: "No data"
       xml:
         name: "NoData"
+    Product3DProfileRequest:
+      type: "object"
+      properties:
+        mode:
+          type: "string"
+          enum: ["edge_preview", "model_preview", "hybrid"]
+          description: "Render mode. Only edge_preview is available currently."
+          example: "edge_preview"
+        enabled:
+          type: "boolean"
+          description: "Enable/disable 3D preview for the product"
+          example: true
+        edge_style_default:
+          type: "string"
+          enum: ["wrap", "mirror", "blur", "solid_color"]
+          description: "Default edge fill style"
+          example: "wrap"
+        edge_depth:
+          type: "number"
+          description: "Physical depth of the product edge (0-50)"
+          example: 1.5
+        edge_depth_unit:
+          type: "string"
+          enum: ["mm", "cm", "in"]
+          example: "cm"
+      xml:
+        name: "Product3DProfileRequest"
+    Product3DProfileData:
+      type: "object"
+      properties:
+        id:
+          type: "string"
+          description: "3D profile ID"
+          example: "9a1b2c3d-4e5f-6a7b-8c9d-0e1f2a3b4c5d"
+        mode:
+          type: "string"
+          example: "edge_preview"
+        enabled:
+          type: "boolean"
+          example: true
+        edge_style_default:
+          type: "string"
+          example: "wrap"
+        edge_depth:
+          type: "number"
+          example: 1.5
+        edge_depth_unit:
+          type: "string"
+          example: "cm"
+        config_version:
+          type: "integer"
+          description: "Bumped on render-affecting changes; part of the render cache key"
+          example: 3
+      xml:
+        name: "Product3DProfileData"
+    Product3DProfileResponse:
+      type: "object"
+      properties:
+        data:
+          $ref: "#/components/schemas/Product3DProfileData"
+      xml:
+        name: "Product3DProfileResponse"
+    Product3DConfigResponse:
+      type: "object"
+      properties:
+        data:
+          type: "object"
+          properties:
+            product_id:
+              type: "string"
+              example: "1a2b3c4d-5e6f-7a8b-9c0d-1e2f3a4b5c6d"
+            enabled:
+              type: "boolean"
+              example: true
+            mode:
+              type: "string"
+              example: "edge_preview"
+            profile:
+              $ref: "#/components/schemas/Product3DProfileData"
+            model:
+              type: "object"
+              nullable: true
+              description: "Reserved for the 3D model library (always null currently)"
+              example: null
+            sides:
+              type: "array"
+              items:
+                type: "object"
+                properties:
+                  side_id:
+                    type: "string"
+                    example: "2b3c4d5e-6f7a-8b9c-0d1e-2f3a4b5c6d7e"
+                  name:
+                    type: "string"
+                    example: "Front"
+                  side_image_size:
+                    type: "object"
+                    properties:
+                      width:
+                        type: "number"
+                        example: 40
+                      height:
+                        type: "number"
+                        example: 30
+                  design_area:
+                    type: "object"
+                    properties:
+                      width:
+                        type: "number"
+                        example: 36
+                      height:
+                        type: "number"
+                        example: 26
+                      top:
+                        type: "number"
+                        example: 2
+                      left:
+                        type: "number"
+                        example: 2
+                  cut_line_margin:
+                    type: "object"
+                    properties:
+                      x:
+                        type: "number"
+                        example: 1
+                      y:
+                        type: "number"
+                        example: 1
+                  safe_zone_margin:
+                    type: "object"
+                    properties:
+                      x:
+                        type: "number"
+                        example: 0.5
+                      y:
+                        type: "number"
+                        example: 0.5
+                  mapping:
+                    type: "object"
+                    properties:
+                      surface_type:
+                        type: "string"
+                        example: "front"
+                      mesh_name:
+                        type: "string"
+                        nullable: true
+                        example: null
+      xml:
+        name: "Product3DConfigResponse"
+    EdgePreviewRequest:
+      type: "object"
+      required:
+        - product_id
+        - side_id
+      properties:
+        product_id:
+          type: "string"
+          description: "Product ID (must have an enabled 3D profile)"
+          example: "1a2b3c4d-5e6f-7a8b-9c0d-1e2f3a4b5c6d"
+        side_id:
+          type: "string"
+          description: "Side ID providing the print geometry"
+          example: "2b3c4d5e-6f7a-8b9c-0d1e-2f3a4b5c6d7e"
+        design_id:
+          type: "string"
+          nullable: true
+          description: "Optional design whose preview image is used as artwork"
+        artwork_url:
+          type: "string"
+          nullable: true
+          description: "Optional artwork URL. Must be an https URL on the Printcart CDN."
+          example: "https://dcisb67tbokpv.cloudfront.net/preview-design/abc/artwork.png"
+        edge_style:
+          type: "string"
+          enum: ["wrap", "mirror", "blur", "solid_color"]
+          description: "Overrides the profile's default edge style"
+          example: "wrap"
+        edge_color:
+          type: "string"
+          nullable: true
+          description: "Hex color, used with edge_style solid_color"
+          example: "#ffffff"
+        output:
+          type: "object"
+          properties:
+            format:
+              type: "string"
+              enum: ["webp", "png"]
+              example: "webp"
+            width:
+              type: "integer"
+              minimum: 100
+              maximum: 1600
+              example: 1200
+            height:
+              type: "integer"
+              minimum: 100
+              maximum: 1600
+              example: 900
+        reset:
+          type: "boolean"
+          description: "Force a re-render, bypassing the cached result"
+          example: false
+      xml:
+        name: "EdgePreviewRequest"
+    ThreeDPreviewResultResponse:
+      type: "object"
+      properties:
+        data:
+          type: "object"
+          properties:
+            status:
+              type: "string"
+              enum: ["ready", "failed"]
+              example: "ready"
+            name:
+              type: "string"
+              example: "a1b2c3.webp"
+            url:
+              type: "string"
+              description: "CDN URL of the rendered preview image"
+              example: "https://dcisb67tbokpv.cloudfront.net/3d-preview/store-uuid/a1b2c3.webp"
+            cache_hit:
+              type: "boolean"
+              description: "True when the result was served from the render cache"
+              example: false
+            input_hash:
+              type: "string"
+              description: "Content hash identifying this render (cache key)"
+              example: "9f2c1e...64-char sha256"
+      xml:
+        name: "ThreeDPreviewResultResponse"

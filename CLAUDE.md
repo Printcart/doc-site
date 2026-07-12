@@ -216,6 +216,14 @@ Server: `https://api.printcart.com/v1`. Liệt kê theo tag, format `METHOD path
 - `GET    /project-folder/{storageId}/projects` — Get a list of Projects by Folder
 - `GET    /project-folder/{projectId}/folders` — Get a list of Folders by Project
 
+### 3D Preview
+- `GET    /products/{productId}/3d-config` — Get product 3D preview config *(BasicAuth hoặc UnAuthToken)*
+- `POST   /products/{productId}/3d-profiles` — Create product 3D profile *(BasicAuth)*
+- `PUT    /products/{productId}/3d-profiles/{profileId}` — Update product 3D profile *(BasicAuth)*
+- `DELETE /products/{productId}/3d-profiles/{profileId}` — Delete product 3D profile *(BasicAuth)*
+- `POST   /3d/edge-preview` — Render a 3D edge preview *(BasicAuth hoặc UnAuthToken; yêu cầu Pro plan; rate limit 10 req/phút/store; cache theo content hash, `reset: true` để render lại)*
+- `POST   /designs/{designId}/generate/3d-preview` — Generate 3D preview cho design đã lưu *(BasicAuth; dùng `original_side` snapshot; yêu cầu Pro plan; rate limit 10 req/phút/store)*
+
 ## Webhook events
 
 Định nghĩa trong `docs/api-reference/webhooks.mdx` (file rất lớn, ~260 KB — đọc theo `offset/limit`). Chữ ký xác thực: `base64_encode(sid:secret)` — lấy `sid`/`secret` khi tạo store. Topic chính: Designs, Projects, … (mỗi topic có payload JSON mẫu trong MDX).
