@@ -6099,6 +6099,378 @@ paths:
                 $ref: "#/components/schemas/InternalServerError"
       security:
         - BasicAuth: []
+  /3d-models:
+    get:
+      tags:
+        - "3D Preview"
+      operationId: "listThreeDModels"
+      summary: "Get a list of 3D models"
+      description: |
+        Lists the store's uploaded 3D models (GLB assets). Cursor paginated.
+      parameters:
+        - in: "query"
+          name: "limit"
+          description: "Items per page (1–100, default 24)"
+          required: false
+          schema:
+            type: "integer"
+            minimum: 1
+            maximum: 100
+            default: 24
+        - in: "query"
+          name: "status"
+          description: "Filter by lifecycle status"
+          required: false
+          schema:
+            type: "string"
+            enum: ["uploaded", "queued", "validating", "active", "failed"]
+        - in: "query"
+          name: "search"
+          description: "Filter by model name (substring match)"
+          required: false
+          schema:
+            type: "string"
+      responses:
+        "200":
+          description: "A list of 3D models"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ThreeDModelListResponse"
+        "401":
+          description: "Unauthenticated"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Unauthenticated"
+      security:
+        - BasicAuth: []
+    post:
+      tags:
+        - "3D Preview"
+      operationId: "createThreeDModel"
+      summary: "Register a new 3D model"
+      description: |
+        Registers a previously uploaded GLB file (via the multipart upload flow) as a 3D model.
+        The referenced image must be a `.glb` file under the `images/` prefix and no larger than 25MB.
+        The model starts in `uploaded` status; call the validate endpoint to run async GLB validation.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ThreeDModelCreateRequest"
+      responses:
+        "201":
+          description: "3D model registered"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ThreeDModelResponse"
+        "400":
+          description: "Invalid file (not a GLB, wrong path, too large, or source missing)"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidInput"
+        "401":
+          description: "Unauthenticated"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Unauthenticated"
+        "404":
+          description: "Source image not found"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NotFound"
+      security:
+        - BasicAuth: []
+  /3d-models/{modelId}:
+    get:
+      tags:
+        - "3D Preview"
+      operationId: "getThreeDModel"
+      summary: "Get 3D model details"
+      parameters:
+        - in: "path"
+          name: "modelId"
+          description: "3D model ID"
+          required: true
+          schema:
+            type: "string"
+      responses:
+        "200":
+          description: "3D model details"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ThreeDModelResponse"
+        "401":
+          description: "Unauthenticated"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Unauthenticated"
+        "404":
+          description: "Not found"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NotFound"
+      security:
+        - BasicAuth: []
+    put:
+      tags:
+        - "3D Preview"
+      operationId: "updateThreeDModel"
+      summary: "Update 3D model details"
+      description: "Updates editable metadata (name, metadata). Does not change the uploaded file."
+      parameters:
+        - in: "path"
+          name: "modelId"
+          description: "3D model ID"
+          required: true
+          schema:
+            type: "string"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ThreeDModelUpdateRequest"
+      responses:
+        "200":
+          description: "3D model updated"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ThreeDModelResponse"
+        "400":
+          description: "Invalid input"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidInput"
+        "401":
+          description: "Unauthenticated"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Unauthenticated"
+        "404":
+          description: "Not found"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NotFound"
+      security:
+        - BasicAuth: []
+    delete:
+      tags:
+        - "3D Preview"
+      operationId: "deleteThreeDModel"
+      summary: "Delete a 3D model"
+      description: "Soft-deletes the model. Returns 409 if the model is still referenced by a profile or a side mapping."
+      parameters:
+        - in: "path"
+          name: "modelId"
+          description: "3D model ID"
+          required: true
+          schema:
+            type: "string"
+      responses:
+        "200":
+          description: "Deleted"
+        "401":
+          description: "Unauthenticated"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Unauthenticated"
+        "404":
+          description: "Not found"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NotFound"
+        "409":
+          description: "Model is in use by a profile or side mapping"
+      security:
+        - BasicAuth: []
+  /3d-models/{modelId}/validate:
+    post:
+      tags:
+        - "3D Preview"
+      operationId: "validateThreeDModel"
+      summary: "Validate a 3D model"
+      description: |
+        Queues async validation of the model's GLB file (geometry, textures ≤ 4096px, no external
+        dependencies). Returns `202` with the model in `queued` status while validation runs; on
+        success the model becomes `active`. If the model is already `active`, returns `200` without
+        re-queuing unless `reset: true` is sent. Rate limited to 10 requests per minute per store.
+      parameters:
+        - in: "path"
+          name: "modelId"
+          description: "3D model ID"
+          required: true
+          schema:
+            type: "string"
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: "object"
+              properties:
+                reset:
+                  type: "boolean"
+                  description: "Re-run validation even if the model is already active"
+                  example: false
+      responses:
+        "200":
+          description: "Model already validated (active)"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ThreeDModelResponse"
+        "202":
+          description: "Validation queued"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ThreeDModelResponse"
+        "401":
+          description: "Unauthenticated"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Unauthenticated"
+        "404":
+          description: "Not found"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NotFound"
+        "429":
+          description: "Too many validation requests (rate limited)"
+        "503":
+          description: "Validation could not be dispatched"
+      security:
+        - BasicAuth: []
+  /sides/{sideId}/3d-mapping:
+    get:
+      tags:
+        - "3D Preview"
+      operationId: "getSide3DMapping"
+      summary: "Get a side's 3D model mapping"
+      description: "Returns the 3D model mapping bound to a product side, if any."
+      parameters:
+        - in: "path"
+          name: "sideId"
+          description: "Side ID"
+          required: true
+          schema:
+            type: "string"
+      responses:
+        "200":
+          description: "The side's 3D mapping"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Side3DMappingResponse"
+        "401":
+          description: "Unauthenticated"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Unauthenticated"
+        "404":
+          description: "No mapping for this side"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NotFound"
+      security:
+        - BasicAuth: []
+    put:
+      tags:
+        - "3D Preview"
+      operationId: "updateSide3DMapping"
+      summary: "Create or update a side's 3D model mapping"
+      description: |
+        Binds an `active` 3D model to a product side and sets its surface/material mapping and
+        transform. Creating or changing the mapping bumps its `config_version`.
+      parameters:
+        - in: "path"
+          name: "sideId"
+          description: "Side ID"
+          required: true
+          schema:
+            type: "string"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Side3DMappingRequest"
+      responses:
+        "200":
+          description: "Mapping created or updated"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Side3DMappingResponse"
+        "400":
+          description: "Invalid input"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidInput"
+        "401":
+          description: "Unauthenticated"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Unauthenticated"
+        "404":
+          description: "Side not found, or model not found / not active"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NotFound"
+      security:
+        - BasicAuth: []
+    delete:
+      tags:
+        - "3D Preview"
+      operationId: "deleteSide3DMapping"
+      summary: "Delete a side's 3D model mapping"
+      parameters:
+        - in: "path"
+          name: "sideId"
+          description: "Side ID"
+          required: true
+          schema:
+            type: "string"
+      responses:
+        "200":
+          description: "Deleted"
+        "401":
+          description: "Unauthenticated"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Unauthenticated"
+        "404":
+          description: "No mapping for this side"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NotFound"
+      security:
+        - BasicAuth: []
 components:
   securitySchemes:
     BasicAuth:
@@ -10759,3 +11131,216 @@ components:
               example: "9f2c1e...64-char sha256"
       xml:
         name: "ThreeDPreviewResultResponse"
+    ThreeDModelData:
+      type: "object"
+      properties:
+        id:
+          type: "string"
+          description: "3D model ID"
+          example: "7c8d9e0f-1a2b-3c4d-5e6f-7a8b9c0d1e2f"
+        name:
+          type: "string"
+          example: "Coffee Mug 350ml"
+        file_name:
+          type: "string"
+          example: "coffee-mug.glb"
+        file_extension:
+          type: "string"
+          example: "glb"
+        file_size:
+          type: "integer"
+          description: "File size in bytes"
+          example: 4194304
+        source_url:
+          type: "string"
+          nullable: true
+          description: "CDN URL of the source GLB file"
+          example: "https://dcisb67tbokpv.cloudfront.net/images/store-uuid/coffee-mug.glb"
+        status:
+          type: "string"
+          enum: ["uploaded", "queued", "validating", "active", "failed"]
+          example: "active"
+        validation_report:
+          type: "object"
+          nullable: true
+          description: "Validator output (populated after validation)"
+        validation_error:
+          type: "string"
+          nullable: true
+          description: "Reason validation failed, if any"
+        validator_version:
+          type: "string"
+          nullable: true
+          example: "glb-core-v1"
+        metadata:
+          type: "object"
+          nullable: true
+        preview_image:
+          type: "object"
+          nullable: true
+          description: "Rendered preview image of the model, if generated"
+        validated_at:
+          type: "string"
+          nullable: true
+          format: "date-time"
+        created_at:
+          type: "string"
+          format: "date-time"
+        updated_at:
+          type: "string"
+          format: "date-time"
+      xml:
+        name: "ThreeDModelData"
+    ThreeDModelResponse:
+      type: "object"
+      properties:
+        data:
+          $ref: "#/components/schemas/ThreeDModelData"
+      xml:
+        name: "ThreeDModelResponse"
+    ThreeDModelListResponse:
+      type: "object"
+      properties:
+        data:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/ThreeDModelData"
+        links:
+          type: "object"
+          description: "Cursor pagination links"
+          properties:
+            first:
+              type: "string"
+              nullable: true
+            last:
+              type: "string"
+              nullable: true
+            prev:
+              type: "string"
+              nullable: true
+            next:
+              type: "string"
+              nullable: true
+      xml:
+        name: "ThreeDModelListResponse"
+    ThreeDModelCreateRequest:
+      type: "object"
+      required:
+        - name
+        - source_image_id
+      properties:
+        name:
+          type: "string"
+          maxLength: 255
+          example: "Coffee Mug 350ml"
+        source_image_id:
+          type: "string"
+          format: "uuid"
+          description: "UUID of the uploaded GLB image (must be a .glb under images/)"
+          example: "3f2a1b0c-9d8e-7f6a-5b4c-3d2e1f0a9b8c"
+        metadata:
+          type: "object"
+          nullable: true
+          description: "Optional arbitrary metadata"
+      xml:
+        name: "ThreeDModelCreateRequest"
+    ThreeDModelUpdateRequest:
+      type: "object"
+      properties:
+        name:
+          type: "string"
+          maxLength: 255
+          example: "Coffee Mug (updated)"
+        metadata:
+          type: "object"
+          nullable: true
+      xml:
+        name: "ThreeDModelUpdateRequest"
+    Side3DMappingData:
+      type: "object"
+      properties:
+        id:
+          type: "string"
+          example: "5b4c3d2e-1f0a-9b8c-7d6e-5f4a3b2c1d0e"
+        side_id:
+          type: "string"
+          example: "2b3c4d5e-6f7a-8b9c-0d1e-2f3a4b5c6d7e"
+        model:
+          $ref: "#/components/schemas/ThreeDModelData"
+        surface_name:
+          type: "string"
+          nullable: true
+          description: "Mesh/surface the artwork maps onto"
+          example: "front_panel"
+        material_name:
+          type: "string"
+          nullable: true
+          example: "body"
+        mapping:
+          type: "object"
+          nullable: true
+          description: "UV / surface mapping configuration"
+        transform:
+          type: "object"
+          nullable: true
+          description: "Position / rotation / scale of the artwork on the surface"
+        camera:
+          type: "object"
+          nullable: true
+          description: "Default camera framing for the preview"
+        enabled:
+          type: "boolean"
+          example: true
+        config_version:
+          type: "integer"
+          example: 1
+        created_at:
+          type: "string"
+          format: "date-time"
+        updated_at:
+          type: "string"
+          format: "date-time"
+      xml:
+        name: "Side3DMappingData"
+    Side3DMappingResponse:
+      type: "object"
+      properties:
+        data:
+          $ref: "#/components/schemas/Side3DMappingData"
+      xml:
+        name: "Side3DMappingResponse"
+    Side3DMappingRequest:
+      type: "object"
+      required:
+        - model_id
+      properties:
+        model_id:
+          type: "string"
+          format: "uuid"
+          description: "UUID of an active 3D model to bind to this side"
+          example: "7c8d9e0f-1a2b-3c4d-5e6f-7a8b9c0d1e2f"
+        surface_name:
+          type: "string"
+          nullable: true
+          maxLength: 255
+          example: "front_panel"
+        material_name:
+          type: "string"
+          nullable: true
+          maxLength: 255
+          example: "body"
+        mapping:
+          type: "object"
+          nullable: true
+        transform:
+          type: "object"
+          nullable: true
+        camera:
+          type: "object"
+          nullable: true
+        enabled:
+          type: "boolean"
+          nullable: true
+          example: true
+      xml:
+        name: "Side3DMappingRequest"
