@@ -10913,7 +10913,7 @@ components:
           example: true
         edge_style_default:
           type: "string"
-          enum: ["wrap", "mirror", "blur", "solid_color"]
+          enum: ["wrap", "mirror", "blur", "solid_color", "blurred_mirror"]
           description: "Default edge fill style"
           example: "wrap"
         edge_depth:
