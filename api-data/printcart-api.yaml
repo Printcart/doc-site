@@ -11073,7 +11073,7 @@ components:
           example: "https://dcisb67tbokpv.cloudfront.net/preview-design/abc/artwork.png"
         edge_style:
           type: "string"
-          enum: ["wrap", "mirror", "blur", "solid_color"]
+          enum: ["wrap", "mirror", "blur", "solid_color", "blurred_mirror"]
           description: "Overrides the profile's default edge style"
           example: "wrap"
         edge_color:
