@@ -1,0 +1,42 @@
+# docs.printcart.com retired 2026-10-01 — content moved to https://www.printcart.com/docs
+# Map: printcart-dashboard-v2 docs/specs/docs-printcart-com-301-map.md
+# Netlify applies the first matching rule; specific paths first, catch-alls last.
+
+# Keep the Search Console verification file until the property is removed.
+/google27c583bb92d37a4d/*  /google27c583bb92d37a4d/index.html  200
+
+/sitemap.xml              https://www.printcart.com/sitemap.xml          301!
+
+/docs/welcome             https://www.printcart.com/docs                 301!
+/docs/api-reference/intro           https://www.printcart.com/docs/getting-started   301!
+/docs/api-reference/api-overview    https://www.printcart.com/docs/authentication    301!
+/docs/api-reference/webhooks        https://www.printcart.com/docs/webhooks          301!
+/docs/api-reference/ai-services     https://www.printcart.com/docs/ai-services       301!
+/docs/api-reference/printcart-studio  https://www.printcart.com/docs/studio-ai       301!
+/rest-api-reference       https://www.printcart.com/docs/api-reference   301!
+/rest-api-reference/*     https://www.printcart.com/docs/api-reference   301!
+/docs/sdk-reference/intro             https://www.printcart.com/docs/sdk/design-tool  301!
+/docs/sdk-reference/design-tool-sdk   https://www.printcart.com/docs/sdk/design-tool  301!
+/docs/sdk-reference/uploader-sdk      https://www.printcart.com/docs/sdk/uploader     301!
+/docs/guides/quickstart               https://www.printcart.com/docs/getting-started  301!
+/docs/guides/integrating-rest-api     https://www.printcart.com/docs/guides/build-path  301!
+/docs/guides/integrating-design-tool  https://www.printcart.com/docs/sdk/design-tool  301!
+/docs/userflow/intro      https://www.printcart.com/docs                 301!
+
+/docs/users-manual/integrations       https://www.printcart.com/apps       301!
+/docs/users-manual/online-design      https://www.printcart.com/tutorial/setting-up-the-online-product-designer-a-complete-guide  301!
+/docs/users-manual/*      https://www.printcart.com/tutorials            301!
+/docs/dashboard-manual/ecommerce      https://www.printcart.com/apps       301!
+/docs/dashboard-manual/templates      https://www.printcart.com/templates  301!
+/docs/dashboard-manual/*  https://www.printcart.com/tutorials            301!
+/docs/dashboard           https://www.printcart.com/tutorials            301!
+/docs/dashboard/*         https://www.printcart.com/tutorials            301!
+/docs/online-design/use-clipart       https://www.printcart.com/cliparts   301!
+/docs/online-design/*     https://www.printcart.com/tutorial/setting-up-the-online-product-designer-a-complete-guide  301!
+
+/markdown-page            https://www.printcart.com/docs                 301!
+/blog                     https://www.printcart.com/docs                 301!
+/blog/*                   https://www.printcart.com/docs                 301!
+/docs/*                   https://www.printcart.com/docs                 301!
+/                         https://www.printcart.com/docs                 301!
+/*                        https://www.printcart.com/docs                 301!
